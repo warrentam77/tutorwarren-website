@@ -3,394 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tutor Warren | Electrical Learning Resources</title>
-  <meta name="description" content="Tutor Warren provides electrical learning resources, interactive quizzes and study support for college students." />
+  <title>TutorWarren.com – Interactive Learning Resources</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f8fb;
-      color: #1f2933;
-      line-height: 1.6;
-    }
-
-    header {
-      background: linear-gradient(135deg, #0f4c81, #1e88c8);
-      color: white;
-      padding: 24px 20px;
-    }
-
-    .top-bar {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 18px;
-      font-weight: bold;
-      font-size: 15px;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    .hero {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 70px 20px 80px;
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 35px;
-      align-items: center;
-    }
-
-    .hero h1 {
-      font-size: 46px;
-      line-height: 1.15;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 20px;
-      max-width: 650px;
-      margin-bottom: 28px;
-    }
-
-    .hero-card {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.35);
-      border-radius: 22px;
-      padding: 28px;
-      box-shadow: 0 14px 35px rgba(0,0,0,0.16);
-    }
-
-    .hero-card h2 {
-      font-size: 24px;
-      margin-bottom: 14px;
-    }
-
-    .hero-card ul {
-      padding-left: 22px;
-    }
-
-    .hero-card li {
-      margin-bottom: 8px;
-      font-size: 17px;
-    }
-
-    .button-row {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 14px 22px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.2s ease;
-    }
-
-    .btn-primary {
-      background: #ffcb05;
-      color: #13293d;
-    }
-
-    .btn-secondary {
-      background: white;
-      color: #0f4c81;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
-    }
-
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 50px 20px;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-
-    .section-title h2 {
-      font-size: 34px;
-      color: #0f4c81;
-      margin-bottom: 10px;
-    }
-
-    .section-title p {
-      font-size: 18px;
-      color: #52616b;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-bottom: 55px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 26px;
-      box-shadow: 0 8px 24px rgba(15, 76, 129, 0.10);
-      border-top: 6px solid #1e88c8;
-    }
-
-    .card .icon {
-      font-size: 42px;
-      margin-bottom: 12px;
-    }
-
-    .card h3 {
-      font-size: 22px;
-      color: #0f4c81;
-      margin-bottom: 12px;
-    }
-
-    .card p {
-      color: #52616b;
-      margin-bottom: 18px;
-    }
-
-    .card a {
-      color: #0f4c81;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .card a:hover {
-      text-decoration: underline;
-    }
-
-    .highlight {
-      background: #e8f4fb;
-      border-radius: 24px;
-      padding: 35px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-      align-items: center;
-      margin-bottom: 55px;
-    }
-
-    .highlight h2 {
-      color: #0f4c81;
-      font-size: 30px;
-      margin-bottom: 14px;
-    }
-
-    .highlight p {
-      font-size: 18px;
-      color: #334e68;
-    }
-
-    .feature-list {
-      background: white;
-      border-radius: 18px;
-      padding: 25px;
-      box-shadow: 0 8px 24px rgba(15, 76, 129, 0.08);
-    }
-
-    .feature-list li {
-      margin-bottom: 10px;
-      list-style: none;
-      font-size: 17px;
-    }
-
-    .feature-list li::before {
-      content: "✓ ";
-      color: #1e88c8;
-      font-weight: bold;
-    }
-
-    .coming-soon {
-      background: white;
-      border-radius: 24px;
-      padding: 35px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(15, 76, 129, 0.10);
-    }
-
-    .coming-soon h2 {
-      color: #0f4c81;
-      font-size: 30px;
-      margin-bottom: 12px;
-    }
-
-    .coming-soon p {
-      font-size: 18px;
-      color: #52616b;
-      max-width: 760px;
-      margin: 0 auto;
-    }
-
-    footer {
-      background: #13293d;
-      color: white;
-      text-align: center;
-      padding: 28px 20px;
-      margin-top: 40px;
-    }
-
-    footer p {
-      margin-bottom: 8px;
-    }
-
-    @media (max-width: 850px) {
-      .hero {
-        grid-template-columns: 1fr;
-        padding-top: 45px;
-      }
-
-      .hero h1 {
-        font-size: 36px;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
-      .highlight {
-        grid-template-columns: 1fr;
-      }
-
-      nav a {
-        display: inline-block;
-        margin: 8px 10px 0 0;
-      }
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --blue-bg:#dff2ff; --blue-soft:#eef9ff; --navy:#071d49; --bright-blue:#063cc2; --brown:#7a3b06; --white:#fff; --shadow:rgba(7,29,73,.16); }
+    body { font-family: Arial, Helvetica, sans-serif; background: radial-gradient(circle at top,#f6fcff 0%,var(--blue-bg) 55%,#cbeaff 100%); color:var(--navy); min-height:100vh; padding:24px 14px 60px; }
+    .page { width:100%; max-width:1180px; margin:0 auto; }
+    header { text-align:center; margin-bottom:28px; }
+    .logo { width:min(760px,96%); max-height:360px; object-fit:contain; display:block; margin:0 auto 8px; border-radius:20px; box-shadow:0 10px 34px rgba(7,29,73,.10); }
+    .hero { background:rgba(255,255,255,.72); border:2px solid rgba(255,255,255,.8); border-radius:28px; padding:28px; box-shadow:0 16px 45px var(--shadow); margin-bottom:28px; text-align:center; }
+    .hero h1 { font-size:clamp(2rem,5vw,4rem); line-height:1.05; margin-bottom:10px; }
+    .brown { color:var(--brown); } .blue { color:var(--bright-blue); }
+    .hero p { max-width:760px; margin:0 auto; color:#254569; font-size:clamp(1rem,2.2vw,1.18rem); line-height:1.65; }
+    .subjects { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:28px; }
+    .subject-card { background:var(--white); border-radius:24px; padding:24px 18px; text-align:center; min-height:215px; box-shadow:0 12px 30px var(--shadow); border:2px solid #fff; display:flex; flex-direction:column; justify-content:space-between; transition:.18s; text-decoration:none; color:var(--navy); }
+    .subject-card:hover { transform:translateY(-5px); box-shadow:0 18px 44px rgba(7,29,73,.22); }
+    .icon { font-size:3.1rem; margin-bottom:8px; }
+    .subject-card h2 { font-size:1.45rem; margin-bottom:10px; color:var(--bright-blue); }
+    .subject-card p { font-size:.95rem; line-height:1.45; color:#31506f; }
+    .open-btn { margin-top:18px; display:inline-block; background:var(--bright-blue); color:#fff; padding:10px 18px; border-radius:999px; font-weight:800; font-size:.9rem; }
+    .section { background:rgba(255,255,255,.74); border-radius:28px; padding:26px; box-shadow:0 12px 32px var(--shadow); margin-bottom:24px; }
+    .section h2 { text-align:center; font-size:clamp(1.45rem,3vw,2rem); margin-bottom:18px; }
+    .pathways { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .pathway { background:var(--blue-soft); border:2px solid #cdeeff; border-radius:18px; padding:18px; }
+    .pathway h3 { color:var(--bright-blue); margin-bottom:10px; font-size:1.15rem; }
+    .pathway ul { margin-left:20px; line-height:1.75; color:#234868; font-size:.98rem; }
+    .publication-preview { display:grid; grid-template-columns:220px 1fr; gap:22px; align-items:center; }
+    .book-placeholder { min-height:290px; border-radius:18px; background:linear-gradient(145deg,#0b1f4b,#0a46c7); color:#fff; padding:22px 16px; display:flex; flex-direction:column; justify-content:center; text-align:center; box-shadow:0 10px 24px rgba(7,29,73,.22); }
+    .book-placeholder .small { font-size:.82rem; text-transform:uppercase; letter-spacing:.1em; color:#ffd66b; margin-bottom:16px; font-weight:800; }
+    .book-placeholder .title { font-size:1.35rem; line-height:1.25; font-weight:900; }
+    .book-placeholder .author { margin-top:22px; font-size:.9rem; color:#eaf3ff; }
+    .available { display:inline-block; background:#fff2c8; color:#7a3b06; border:2px solid #ffd36b; padding:10px 20px; border-radius:999px; font-size:1.1rem; font-weight:900; margin-top:14px; }
+    footer { text-align:center; color:#365a7b; font-size:.9rem; margin-top:30px; }
+    @media (max-width:900px) { .subjects,.pathways { grid-template-columns:repeat(2,1fr); } .publication-preview{grid-template-columns:1fr;} .book-placeholder{max-width:260px;margin:0 auto;} }
+    @media (max-width:560px) { body{padding:16px 10px 45px;} .hero,.section{padding:20px 15px;border-radius:22px;} .subjects,.pathways{grid-template-columns:1fr;} .subject-card{min-height:auto;} }
   </style>
 </head>
 <body>
-  <header>
-    <div class="top-bar">
-      <img src="images/logo.png" alt="Tutor Warren Logo" class="site-logo">
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="electrical.html">Electrical</a>
-        <a href="quiz.html">Quizzes</a>
-        <a href="maths.html">GCSE Maths</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </div>
+  <div class="page">
+    <header><img class="logo" src="tutorwarren-logo.png" alt="TutorWarren.com Interactive Learning Resources logo"></header>
 
     <section class="hero">
-      <div>
-        <h1>Electrical Learning Resources for College Students</h1>
-        <p>
-          Clear notes, practical diagrams, interactive quizzes and study support for learners studying Electrical Installation at college.
-        </p>
-        <div class="button-row">
-          <a class="btn btn-primary" href="electrical.html">Start Learning</a>
-          <a class="btn btn-secondary" href="quiz.html">Try Quizzes</a>
-        </div>
-      </div>
-
-      <div class="hero-card">
-        <h2>What you will find here</h2>
-        <ul>
-          <li>Electrical science explained simply</li>
-          <li>Inspection and testing support</li>
-          <li>Practical installation learning resources</li>
-          <li>Interactive revision quizzes</li>
-          <li>GCSE Maths support coming later</li>
-        </ul>
-      </div>
-    </section>
-  </header>
-
-  <main>
-    <section class="section-title">
-      <h2>Learning Areas</h2>
-      <p>Choose a topic area and build your understanding step by step.</p>
+      <h1><span class="brown">tutor</span><span class="blue">warren.com</span></h1>
+      <p>Interactive learning resources for Electrical, English and Maths — designed for college learners, adult learners, apprentices and new immigrants.</p>
     </section>
 
-    <section class="cards">
-      <div class="card">
-        <div class="icon">⚡</div>
-        <h3>Electrical Installation</h3>
-        <p>
-          Resources for Level 1, Level 2 and Level 3 learners, including wiring systems, containment, circuits and practical skills.
-        </p>
-        <a href="electrical.html">View resources →</a>
-      </div>
-
-      <div class="card">
-        <div class="icon">🧪</div>
-        <h3>Inspection & Testing</h3>
-        <p>
-          Learn safe isolation, continuity, insulation resistance, polarity, earth fault loop impedance and RCD testing.
-        </p>
-        <a href="electrical.html#testing">Study testing →</a>
-      </div>
-
-      <div class="card">
-        <div class="icon">✅</div>
-        <h3>Interactive Quizzes</h3>
-        <p>
-          Practise multiple-choice questions with instant feedback to improve confidence before assessments and exams.
-        </p>
-        <a href="quiz.html">Try a quiz →</a>
-      </div>
+    <section class="subjects" aria-label="Main subjects">
+      <a class="subject-card" href="#electrical"><div><div class="icon">⚡</div><h2>Electrical</h2><p>Electrical installation, testing, practical skills, quizzes and learning resources.</p></div><span class="open-btn">Open Electrical</span></a>
+      <a class="subject-card" href="#english"><div><div class="icon">📘</div><h2>English</h2><p>Functional Skills English, GCSE English and multilingual support for Entry Levels.</p></div><span class="open-btn">Open English</span></a>
+      <a class="subject-card" href="#maths"><div><div class="icon">➗</div><h2>Maths</h2><p>Functional Skills Maths, GCSE Foundation, GCSE Higher and interactive assessments.</p></div><span class="open-btn">Open Maths</span></a>
+      <a class="subject-card" href="#publications"><div><div class="icon">📚</div><h2>Publications</h2><p>Books and future learning publications by Tutor Warren.</p></div><span class="open-btn">Open Publications</span></a>
     </section>
 
-    <section class="highlight">
-      <div>
-        <h2>Designed for real college learners</h2>
-        <p>
-          Tutor Warren resources are written in a clear and practical style, helping students connect classroom theory with workshop practice and assessment preparation.
-        </p>
-      </div>
-      <ul class="feature-list">
-        <li>Simple explanations for difficult topics</li>
-        <li>Step-by-step practical guidance</li>
-        <li>Suitable for mobile phone learning</li>
-        <li>Useful for revision before exams</li>
-        <li>More subjects will be added gradually</li>
-      </ul>
-    </section>
+    <section id="electrical" class="section"><h2>⚡ Electrical Learning Resources</h2><div class="pathways">
+      <div class="pathway"><h3>Levels</h3><ul><li>Level 1 Electrical</li><li>Level 2 Electrical</li><li>Level 3 Electrical</li></ul></div>
+      <div class="pathway"><h3>Practical Skills</h3><ul><li>Lighting circuits</li><li>Power circuits</li><li>Motor circuits</li></ul></div>
+      <div class="pathway"><h3>Testing & Quizzes</h3><ul><li>Inspection and testing</li><li>Safe isolation</li><li>Interactive quizzes</li></ul></div>
+    </div></section>
 
-    <section class="coming-soon">
-      <h2>Coming Soon: GCSE Maths</h2>
-      <p>
-        This website will later include GCSE Maths support, including fractions, algebra, graphs, area, volume and exam-style practice questions.
-      </p>
-    </section>
-  </main>
+    <section id="english" class="section"><h2>📘 English Learning Resources</h2><div class="pathways">
+      <div class="pathway"><h3>Functional Skills</h3><ul><li>Entry Level 1 – multilingual</li><li>Entry Level 2 – multilingual</li><li>Entry Level 3 – multilingual</li><li>Level 1</li><li>Level 2</li></ul></div>
+      <div class="pathway"><h3>GCSE English</h3><ul><li>Reading practice</li><li>Writing practice</li><li>Language skills</li></ul></div>
+      <div class="pathway"><h3>Interactive Practice</h3><ul><li>Listen and answer</li><li>Vocabulary support</li><li>Practice tests</li></ul></div>
+    </div></section>
 
-  <footer>
-    <p><strong>Tutor Warren</strong></p>
-    <p>Electrical Learning Resources for College Students</p>
-    <p>www.tutorwarren.com</p>
-  </footer>
+    <section id="maths" class="section"><h2>➗ Maths Learning Resources</h2><div class="pathways">
+      <div class="pathway"><h3>Functional Skills</h3><ul><li>Entry Level 1 – multilingual</li><li>Entry Level 2 – multilingual</li><li>Entry Level 3 – multilingual</li><li>Level 1</li><li>Level 2</li></ul></div>
+      <div class="pathway"><h3>GCSE Maths</h3><ul><li>Foundation</li><li>Higher</li><li>10-question assessments</li></ul></div>
+      <div class="pathway"><h3>Topics</h3><ul><li>Number</li><li>Algebra</li><li>Geometry and statistics</li></ul></div>
+    </div></section>
+
+    <section id="publications" class="section"><h2>📚 Publications</h2><div class="publication-preview">
+      <div class="book-placeholder"><div class="small">Tutor Warren</div><div class="title">A Comprehensive Learning Resource on Electrical Science & Principles</div><div class="author">Developed by Tutor Warren</div></div>
+      <div><h3 style="font-size:1.6rem;color:#063cc2;margin-bottom:10px;">A Comprehensive Guide</h3><p style="font-size:1.05rem;line-height:1.7;color:#254569;">This section will show the book front cover and future publication details.</p><span class="available">Available Soon</span></div>
+    </div></section>
+
+    <footer>© TutorWarren.com · Interactive Learning Resources · Where learning goes live</footer>
+  </div>
 </body>
 </html>
