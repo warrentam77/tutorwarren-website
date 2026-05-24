@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSE English Language — Introduction & Paper 1</title>
+<style>
+  :root {
+    --bg:#F8F6F1; --white:#fff; --ink:#1C1C2E; --rule:#DDD8CC; --muted:#7A7468;
+    --p1:#B5451B; --p1l:#FDF1EC; --p1b:#F3C4B0;
+    --intro:#2D6A4F; --introl:#EAF4EE; --introb:#A8D5B5;
+    --g34:#6B4C9B; --g34l:#F3EEF9; --g34b:#C9B5E8;
+    --g5:#1B7B5E; --g5l:#EAFAF4; --g5b:#9FD9C4;
+    --ok:#14532D; --okl:#F0FDF4; --okb:#86EFAC;
+    --err:#7F1D1D; --errl:#FFF1F2; --errb:#FECDD3;
+    --voc:#7C2D12; --vocl:#FFF7ED; --vocb:#FED7AA;
+    --frame:#1E3A5F; --framel:#EFF6FF; --frameb:#BFDBFE;
+    --p2:#1B5E8A; --p2l:#EBF4FB; --p2b:#A8CEE6;
+    --gold:#C9A84C;
+    --serif:'Palatino Linotype','Palatino','Book Antiqua',Georgia,serif;
+    --sans:'Trebuchet MS','Gill Sans MT',Verdana,sans-serif;
+    --mono:'Courier New',Courier,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:var(--serif);color:var(--ink);min-height:100vh;}
+  /* NAV */
+  header{background:var(--ink);color:#fff;padding:28px 20px 22px;text-align:center;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(181,69,27,.28) 0%,transparent 55%),radial-gradient(ellipse at 80% 20%,rgba(181,69,27,.15) 0%,transparent 50%);pointer-events:none;}
+  header>div{position:relative;}
+  .eyebrow{font-family:var(--sans);font-size:10px;letter-spacing:.25em;color:#6B7280;margin-bottom:7px;text-transform:uppercase;}
+  h1{font-family:var(--serif);font-size:clamp(20px,4vw,34px);font-weight:normal;margin-bottom:5px;letter-spacing:-.02em;}
+  .subhead{font-family:var(--sans);color:#9CA3AF;font-size:12px;margin-bottom:14px;}
+  .nav-tabs{display:inline-flex;background:#2D2D44;border-radius:10px;padding:4px;gap:2px;}
+  .nav-tab{padding:8px 18px;border-radius:7px;border:none;background:transparent;color:#9CA3AF;font-family:var(--sans);font-size:13px;font-weight:400;cursor:pointer;transition:all .15s;}
+  .nav-tab.active{background:var(--p1);color:#fff;font-weight:700;}
+  /* LAYOUT */
+  main{max-width:760px;margin:0 auto;padding:24px 16px 60px;}
+  .page{display:none;} .page.active{display:block;}
+  /* TAGS & BADGES */
+  .tag{display:inline-block;padding:3px 11px;border-radius:20px;font-size:11px;font-family:var(--sans);font-weight:700;letter-spacing:.09em;text-transform:uppercase;}
+  .tag-sm{padding:2px 8px;font-size:10px;}
+  .mark-badge{display:inline-block;padding:3px 10px;border-radius:5px;font-size:11px;font-family:var(--sans);font-weight:700;background:var(--ink);color:#fff;}
+  .ao-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-family:var(--sans);font-weight:700;background:var(--ink);color:#fff;}
+  /* CARDS */
+  .card{background:var(--white);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;margin-bottom:10px;}
+  .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;}
+  .stat-card{background:var(--white);border:1px solid var(--rule);border-radius:10px;padding:13px 12px;}
+  .stat-icon{font-size:20px;margin-bottom:4px;}
+  .stat-h{font-family:var(--serif);font-size:14px;color:var(--ink);}
+  .stat-d{font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:2px;}
+  /* SOURCE BOX */
+  .source-box{background:var(--bg);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:18px 20px;margin-bottom:16px;}
+  .source-label{font-family:var(--sans);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:700;}
+  .source-text{font-family:var(--serif);font-size:14px;line-height:1.95;color:#1a1a1a;white-space:pre-line;}
+  /* VOCAB */
+  .vocab-box{background:var(--vocl);border:1.5px solid var(--vocb);border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+  .vocab-title{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--voc);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
+  .vocab-row{display:flex;gap:10px;align-items:baseline;margin-bottom:5px;}
+  .vocab-word{font-family:var(--serif);font-size:13px;color:var(--voc);font-weight:bold;flex-shrink:0;min-width:130px;}
+  .vocab-def{font-family:var(--sans);font-size:13px;color:#555;line-height:1.5;}
+  /* SCAFFOLD */
+  .scaffold-box{background:var(--framel);border:1.5px solid var(--frameb);border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+  .scaffold-title{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--frame);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
+  .scaffold-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:7px;}
+  .scaffold-num{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--frame);background:var(--frameb);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .scaffold-text{font-family:var(--mono);font-size:12px;color:var(--frame);line-height:1.6;}
+  /* ACCORDION */
+  .accordion{background:var(--white);border-radius:12px;border:1.5px solid var(--rule);margin-bottom:12px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
+  .accordion.open{border-color:var(--p1);box-shadow:0 4px 20px rgba(181,69,27,.12);}
+  .acc-btn{width:100%;background:none;border:none;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:10px;}
+  .acc-btn-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .acc-icon{color:#bbb;font-size:20px;font-family:var(--sans);transition:color .15s;}
+  .accordion.open .acc-icon{color:var(--p1);}
+  .acc-body{padding:0 20px 22px;border-top:1px solid rgba(181,69,27,.15);}
+  /* WHAT BOX */
+  .what-box{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:10px 14px;margin:14px 0 10px;}
+  .what-title{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--p2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
+  .what-text{font-family:var(--sans);font-size:13px;color:var(--p2);line-height:1.6;}
+  .tip-box{background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-family:var(--sans);font-size:12px;color:#78350F;line-height:1.6;}
+  .instr-box{background:var(--bg);border-left:4px solid var(--p1);border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:14px;font-family:var(--serif);font-size:14px;line-height:1.85;color:#222;}
+  /* MC */
+  .mc-opts{margin-bottom:14px;}
+  .mc-sub{font-family:var(--sans);font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .mc-btn{width:100%;background:#FAFAFA;border:1.5px solid var(--rule);border-radius:8px;padding:10px 14px;margin-bottom:5px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;transition:all .15s;font-family:var(--sans);font-size:13px;color:#333;}
+  .mc-btn:hover:not(.done){border-color:var(--p1);background:var(--p1l);}
+  .mc-btn.selected{background:var(--p1l);border-color:var(--p1);color:var(--p1);}
+  .mc-btn.correct{background:var(--okl);border-color:var(--okb);color:var(--ok);}
+  .mc-btn.wrong{background:var(--errl);border-color:var(--errb);color:var(--err);}
+  .mc-circle{width:22px;height:22px;border-radius:50%;background:#E5E7EB;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;font-family:var(--sans);transition:background .15s;}
+  .mc-btn.selected .mc-circle{background:var(--p1);}
+  .mc-btn.correct .mc-circle{background:var(--ok);}
+  .mc-btn.wrong .mc-circle{background:var(--err);}
+  .check-btn{background:#E5E7EB;color:#aaa;border:none;border-radius:8px;padding:10px 22px;cursor:not-allowed;font-family:var(--sans);font-size:13px;font-weight:700;margin-top:6px;transition:all .15s;}
+  .check-btn.ready{background:var(--p1);color:#fff;cursor:pointer;}
+  .mc-result{background:var(--okl);border:1px solid var(--okb);border-radius:8px;padding:10px 14px;margin-top:8px;}
+  .mc-score{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--ok);}
+  .mc-exp{font-family:var(--sans);font-size:12px;color:#555;margin-top:4px;line-height:1.6;}
+  /* GRADE ANSWERS */
+  .grade-acc{border-radius:10px;margin-bottom:10px;overflow:hidden;}
+  .grade-btn{width:100%;border:none;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+  .grade-body{padding:12px 16px;font-family:var(--serif);font-size:14px;line-height:1.85;color:#222;white-space:pre-line;}
+  /* CHECKLIST */
+  .checklist{background:#FAFAFA;border:1px solid var(--rule);border-radius:10px;padding:14px 16px;}
+  .check-title{font-family:var(--sans);font-size:11px;font-weight:700;color:#666;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+  .check-item{width:100%;background:none;border:none;display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--rule);cursor:pointer;text-align:left;}
+  .check-item:last-of-type{border-bottom:none;}
+  .check-box{width:18px;height:18px;border-radius:4px;border:2px solid var(--rule);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;}
+  .check-box.ticked{border-color:var(--p1);background:var(--p1);}
+  .check-label{font-family:var(--sans);font-size:13px;color:var(--ink);line-height:1.5;transition:all .15s;}
+  .check-label.done{color:#aaa;text-decoration:line-through;}
+  .check-count{font-family:var(--sans);font-size:12px;font-weight:600;margin-top:10px;}
+  /* SECTION DIVIDER */
+  .section-div{border-top:2px solid var(--p1);padding-top:14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  /* SPLIT MARKS */
+  .split-marks{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .split-badge{border-radius:6px;padding:6px 12px;font-family:var(--sans);font-size:12px;}
+  /* INFO CARDS */
+  .info-row{background:var(--white);border:1px solid var(--rule);border-radius:10px;padding:12px 15px;display:flex;gap:12px;align-items:flex-start;margin-bottom:7px;}
+  .info-h{font-family:var(--serif);font-size:14px;color:var(--ink);margin-bottom:2px;}
+  .info-d{font-family:var(--sans);font-size:13px;color:#555;line-height:1.55;}
+  /* WARNING */
+  .warning-box{background:#FFFBEB;border:1.5px solid #FDE68A;border-radius:12px;padding:16px 18px;margin-bottom:20px;}
+  .warning-title{font-family:var(--sans);font-size:12px;font-weight:700;color:#92400E;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+  .warning-text{font-family:var(--sans);font-size:13px;color:#78350F;line-height:1.7;}
+  /* FAQ */
+  .faq{background:var(--white);border:1px solid var(--rule);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+  .faq.open{border-color:var(--intro);}
+  .faq-btn{width:100%;background:none;border:none;padding:13px 17px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:10px;}
+  .faq-q{font-family:var(--serif);font-size:14px;color:var(--ink);text-align:left;}
+  .faq-icon{color:#aaa;font-size:18px;font-family:var(--sans);}
+  .faq.open .faq-icon{color:var(--intro);}
+  .faq-a{padding:0 17px 14px;border-top:1px solid var(--introb);font-family:var(--sans);font-size:13px;color:#444;line-height:1.7;padding-top:10px;}
+  /* PAPER OVERVIEW */
+  .paper-overview{border-radius:14px;padding:20px 22px;margin-bottom:20px;}
+  .paper-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .paper-kv{font-family:var(--sans);font-size:12px;color:#444;}
+  .paper-kv strong{color:var(--ink);}
+  /* SECTION HEADING */
+  h3.sec{font-family:var(--serif);font-size:17px;font-weight:normal;color:var(--ink);margin:0 0 10px;}
+  h3.sec-lg{font-family:var(--serif);font-size:20px;font-weight:normal;color:var(--ink);margin:0 0 12px;}
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--introl),var(--white));border:1.5px solid var(--introb);border-radius:16px;padding:26px 24px;margin-bottom:22px;}
+  .hero h2{font-family:var(--serif);font-size:22px;font-weight:normal;margin:12px 0 10px;color:var(--ink);}
+  .hero p{font-family:var(--sans);font-size:14px;color:#444;line-height:1.75;}
+  footer{background:#111827;padding:16px 20px;text-align:center;font-family:var(--sans);font-size:12px;color:#4B5563;}
+  @media(max-width:480px){.card-grid,.paper-grid{grid-template-columns:1fr;}.split-marks{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">AQA 8700 · Foundation Support · Introduction & Paper 1</div>
+    <h1>GCSE English Language</h1>
+    <p class="subhead">Grades 3–5 · Scaffolded Support · Model Answers at Every Level</p>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('intro',this)">Introduction</button>
+      <button class="nav-tab" onclick="showPage('p1',this)">Paper 1</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════ INTRODUCTION PAGE ═══════════ -->
+<div id="intro" class="page active">
+
+  <div class="hero">
+    <span class="tag" style="background:var(--introl);color:var(--intro);border:1px solid var(--introb);">AQA 8700 — English Language</span>
+    <h2>Your Foundation Guide to GCSE English Language</h2>
+    <p>Designed for students working towards <strong>grades 3, 4 and 5</strong>. Every question has vocabulary support, sentence starters, and two model answers — one at grade 3–4 and one at grade 5.</p>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">⚠️ No Foundation Tier</div>
+    <p class="warning-text">Unlike Maths and Science, <strong>GCSE English Language has no Foundation or Higher tier</strong>. Every student sits the same papers. You are not capped at grade 5. The grade you receive depends entirely on the quality of your answers.</p>
+  </div>
+
+  <h3 class="sec-lg">Key Facts</h3>
+  <div class="card-grid" style="margin-bottom:20px;">
+    <div class="stat-card"><div class="stat-icon">📄</div><div class="stat-h">2 Papers</div><div class="stat-d">Paper 1 and Paper 2</div></div>
+    <div class="stat-card"><div class="stat-icon">⏱</div><div class="stat-h">1h 45m each</div><div class="stat-d">Same time for all students</div></div>
+    <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-h">160 marks</div><div class="stat-d">80 per paper</div></div>
+    <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-h">Grades 1–9</div><div class="stat-d">Untiered — no grade cap</div></div>
+    <div class="stat-card"><div class="stat-icon">✍️</div><div class="stat-h">50% Writing</div><div class="stat-d">40 marks writing per paper</div></div>
+    <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-h">Unseen texts</div><div class="stat-d">No set texts to memorise</div></div>
+  </div>
+
+  <h3 class="sec-lg">What Examiners Want at Each Grade</h3>
+  <div style="margin-bottom:20px;">
+    <div style="background:var(--g34l);border:1.5px solid var(--g34b);border-radius:10px;padding:13px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:8px;">
+      <span class="tag" style="background:var(--g34l);color:var(--g34);border:1px solid var(--g34b);flex-shrink:0;">Grade 3</span>
+      <p style="font-family:var(--sans);font-size:13px;color:#444;line-height:1.65;">Some relevant points about the text. Simple language analysis with quotations. Writing that communicates a clear idea. Mostly accurate punctuation and spelling.</p>
+    </div>
+    <div style="background:var(--g34l);border:1.5px solid var(--g34b);border-radius:10px;padding:13px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:8px;">
+      <span class="tag" style="background:var(--g34l);color:var(--g34);border:1px solid var(--g34b);flex-shrink:0;">Grade 4</span>
+      <p style="font-family:var(--sans);font-size:13px;color:#444;line-height:1.65;">Developed comments showing understanding of effects. Language analysis that explains impact on the reader. Writing with clear structure. Generally accurate with occasional errors.</p>
+    </div>
+    <div style="background:var(--g5l);border:1.5px solid var(--g5b);border-radius:10px;padding:13px 16px;display:flex;gap:12px;align-items:flex-start;">
+      <span class="tag" style="background:var(--g5l);color:var(--g5);border:1px solid var(--g5b);flex-shrink:0;">Grade 5</span>
+      <p style="font-family:var(--sans);font-size:13px;color:#444;line-height:1.65;">Clear, explained analysis with subject terminology. Structural comments linked to writer's purpose. Writing that engages the reader using deliberate techniques. Mostly accurate throughout.</p>
+    </div>
+  </div>
+
+  <h3 class="sec-lg">Assessment Objectives — Plain English</h3>
+  <div style="margin-bottom:20px;">
+    <div class="info-row"><span class="ao-badge">AO1</span><div><div class="info-h">Find & Use Information</div><div class="info-d">Locate facts, pick quotes, summarise what texts say.</div></div></div>
+    <div class="info-row"><span class="ao-badge">AO2</span><div><div class="info-h">Analyse Language & Structure</div><div class="info-d">Explain how and why a writer uses specific words or techniques.</div></div></div>
+    <div class="info-row"><span class="ao-badge">AO4</span><div><div class="info-h">Evaluate</div><div class="info-d">Read a statement about the text. Agree or disagree using evidence.</div></div></div>
+    <div class="info-row"><span class="ao-badge">AO5</span><div><div class="info-h">Writing — Content</div><div class="info-d">Write for a purpose. Organise ideas into clear paragraphs.</div></div></div>
+    <div class="info-row"><span class="ao-badge">AO6</span><div><div class="info-h">Writing — Accuracy (SPAG)</div><div class="info-d">Correct spelling, punctuation and grammar. Varied sentences.</div></div></div>
+  </div>
+
+  <h3 class="sec-lg">Top Tips for Grades 3–5</h3>
+  <div style="margin-bottom:20px;">
+    <div class="info-row"><span style="font-size:20px;flex-shrink:0;">⏱</span><div><div class="info-h">Manage your time</div><div class="info-d">Q5 is worth 40 marks — half the paper. Don't spend too long on Q1–Q3.</div></div></div>
+    <div class="info-row"><span style="font-size:20px;flex-shrink:0;">🖊</span><div><div class="info-h">Always quote</div><div class="info-d">Even a short quote shows you're using the text. Never analyse without evidence.</div></div></div>
+    <div class="info-row"><span style="font-size:20px;flex-shrink:0;">🏗️</span><div><div class="info-h">Use the scaffolds</div><div class="info-d">The sentence starters on each question are designed to reach grade 4. Use them until you can write without them.</div></div></div>
+    <div class="info-row"><span style="font-size:20px;flex-shrink:0;">📋</span><div><div class="info-h">Check your writing</div><div class="info-d">Leave 5 minutes at the end to fix spelling and punctuation. SPAG = 16 of 40 marks.</div></div></div>
+    <div class="info-row"><span style="font-size:20px;flex-shrink:0;">🎯</span><div><div class="info-h">Answer the question</div><div class="info-d">Underline key words in the question. Keep returning to them — don't drift.</div></div></div>
+  </div>
+
+  <h3 class="sec-lg">FAQs</h3>
+  <div class="faq" id="faq0"><button class="faq-btn" onclick="toggleFaq('faq0')"><span class="faq-q">Is there a Foundation tier for GCSE English Language?</span><span class="faq-icon">+</span></button><div class="faq-a" style="display:none;">No. GCSE English Language (AQA 8700) is untiered — every student sits the same Paper 1 and Paper 2, whatever their predicted grade. Unlike Maths and Science, there is no tier decision and no grade cap.</div></div>
+  <div class="faq" id="faq1"><button class="faq-btn" onclick="toggleFaq('faq1')"><span class="faq-q">What grades can I get?</span><span class="faq-icon">+</span></button><div class="faq-a" style="display:none;">Grades 1–9. Grade 4 is the standard pass. Grade 5 is the strong pass most sixth forms require. There is no ceiling on what you can achieve.</div></div>
+  <div class="faq" id="faq2"><button class="faq-btn" onclick="toggleFaq('faq2')"><span class="faq-q">Are there set texts to revise?</span><span class="faq-icon">+</span></button><div class="faq-a" style="display:none;">No. Both papers use unseen texts you read for the first time in the exam. Practise reading and analysis skills using past papers rather than memorising texts.</div></div>
+  <div class="faq" id="faq3"><button class="faq-btn" onclick="toggleFaq('faq3')"><span class="faq-q">What changed in 2026?</span><span class="faq-icon">+</span></button><div class="faq-a" style="display:none;">Paper 1 only: Q1 is now multiple choice; Q3 names a specific structural effect; Q4 addresses you directly; Q5 allows a story opening. Paper 2 is unchanged.</div></div>
+  <div class="faq" id="faq4"><button class="faq-btn" onclick="toggleFaq('faq4')"><span class="faq-q">How is writing marked?</span><span class="faq-icon">+</span></button><div class="faq-a" style="display:none;">Q5 on each paper = 40 marks: 24 for content & organisation (AO5) and 16 for accuracy — spelling, punctuation, grammar (AO6). SPAG alone is worth 10% of the whole GCSE.</div></div>
+
+</div><!-- /intro -->
+
+
+<!-- ═══════════ PAPER 1 PAGE ═══════════ -->
+<div id="p1" class="page">
+
+  <div class="paper-overview" style="background:var(--p1l);border:1.5px solid var(--p1b);">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <span class="tag" style="background:var(--p1l);color:var(--p1);border:1px solid var(--p1b);">Paper 1</span>
+      <span style="font-family:var(--serif);font-size:17px;color:var(--ink);">Explorations in Creative Reading and Writing</span>
+    </div>
+    <div class="paper-grid">
+      <div class="paper-kv"><strong>Source:</strong> One fiction extract — 20th/21st century</div>
+      <div class="paper-kv"><strong>Time:</strong> 1 hour 45 minutes</div>
+      <div class="paper-kv"><strong>Section A:</strong> Reading — Q1–Q4 (40 marks)</div>
+      <div class="paper-kv"><strong>Section B:</strong> Writing — Q5 (40 marks)</div>
+      <div class="paper-kv"><strong>2026 note:</strong> Q1 is now multiple choice</div>
+      <div class="paper-kv"><strong>Total:</strong> 80 marks · 50% of GCSE</div>
+    </div>
+  </div>
+
+  <h3 class="sec">Source A — Fiction Extract</h3>
+  <div class="source-box">
+    <div class="source-label">Source A — Fiction extract, 20th/21st century</div>
+    <div class="source-text">The old lighthouse had stood on the cliff for over a century, but Mara had never once climbed its rusted spiral stairs until the night her brother disappeared.
+
+She pressed her back against the cold iron door, listening. The wind off the Atlantic threw itself against the tower in furious, irregular gusts — more like a creature trying to break in than weather. Below, the village lights were smeared yellow through the salt-thick glass. She counted them the way she used to count her brother's breaths when he was ill as a child: one, two, three, steady, four.
+
+The beam swept past. In that half-second of white light, she saw something on the stairs above her. Not a person. Not quite. More like the memory of a person — a shape that her mind knew before her eyes did, the way you recognise a voice before you hear the words. She closed her eyes. When she opened them, the stairs were empty.
+
+She had told the coastguard he had gone to the lighthouse. She had told her mother the same. But she had not told either of them what she had found in his room — the sketches, dozens of them, all of the lighthouse, all drawn from the inside looking out, dated across six months. He had been coming here. He had been preparing.
+
+She began to climb.</div>
+  </div>
+
+  <div class="section-div">
+    <span class="tag" style="background:var(--p1l);color:var(--p1);border:1px solid var(--p1b);">Section A — Reading</span>
+    <span style="font-family:var(--sans);font-size:12px;color:var(--muted);">40 marks · ~45 minutes</span>
+  </div>
+
+  <!-- Q1 -->
+  <div class="accordion" id="acc-q1">
+    <button class="acc-btn" onclick="toggleAcc('acc-q1','p1')">
+      <div class="acc-btn-left">
+        <span style="font-family:var(--serif);font-size:17px;">Q1</span>
+        <span class="ao-badge">AO1</span>
+        <span class="mark-badge">4 marks</span>
+        <span style="font-family:var(--sans);font-size:13px;color:#555;">Find Information (Multiple Choice)</span>
+      </div>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body" style="display:none;">
+      <div class="what-box"><div class="what-title">📌 What this question asks</div><div class="what-text">Choose FOUR statements that are true according to lines 1–8.</div></div>
+      <div class="tip-box">⏱ <strong>Strategy:</strong> 4 marks · 5 minutes max. Go back to the exact lines for each option. Don't guess.</div>
+      <div class="instr-box">Read lines 1–8 ("The old lighthouse … steady, four."). Choose FOUR statements that are TRUE according to the source.</div>
+      <div class="vocab-box">
+        <div class="vocab-title">📖 Key Vocabulary</div>
+        <div class="vocab-row"><span class="vocab-word">furious</span><span class="vocab-def">extremely strong and violent</span></div>
+        <div class="vocab-row"><span class="vocab-word">irregular</span><span class="vocab-def">not steady — changing all the time</span></div>
+        <div class="vocab-row"><span class="vocab-word">smeared</span><span class="vocab-def">spread in a blurry, unclear way</span></div>
+      </div>
+      <div class="mc-opts">
+        <div class="mc-sub">Select exactly 4 correct statements:</div>
+        <button class="mc-btn" data-opt="0" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">A</span>Mara had visited the lighthouse many times before</button>
+        <button class="mc-btn" data-opt="1" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">B</span>The lighthouse had been there for more than a hundred years</button>
+        <button class="mc-btn" data-opt="2" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">C</span>Mara pressed her back against an iron door</button>
+        <button class="mc-btn" data-opt="3" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">D</span>The wind was calm and gentle</button>
+        <button class="mc-btn" data-opt="4" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">E</span>Mara could see the village lights from inside</button>
+        <button class="mc-btn" data-opt="5" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">F</span>Mara counted the lights to comfort herself</button>
+        <button class="mc-btn" data-opt="6" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">G</span>Her brother had always been healthy as a child</button>
+        <button class="check-btn" id="check-q1" onclick="checkMC('q1',[1,2,4,5])">Check Answers (0/4)</button>
+        <div id="result-q1" style="display:none;" class="mc-result"><div class="mc-score"></div><div class="mc-exp">Correct answers: B, C, E, F. A is wrong — Mara had never climbed it. D is wrong — the wind was furious. G is wrong — her brother was ill as a child.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="accordion" id="acc-q2">
+    <button class="acc-btn" onclick="toggleAcc('acc-q2','p1')">
+      <div class="acc-btn-left"><span style="font-family:var(--serif);font-size:17px;">Q2</span><span class="ao-badge">AO2</span><span class="mark-badge">8 marks</span><span style="font-family:var(--sans);font-size:13px;color:#555;">Language Analysis</span></div>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body" style="display:none;">
+      <div class="what-box"><div class="what-title">📌 What this question asks</div><div class="what-text">How does the writer use language to create unease and mystery in lines 9–16?</div></div>
+      <div class="tip-box">⏱ <strong>Strategy:</strong> 8 marks · 10 minutes. Write 2–3 paragraphs. Quote → name technique → explain effect.</div>
+      <div class="instr-box">Read lines 9–16 ("The beam swept past … He had been preparing."). How does the writer use language to create a sense of unease and mystery? You could comment on: word choices; phrases; language techniques.</div>
+      <div class="vocab-box"><div class="vocab-title">📖 Key Vocabulary</div>
+        <div class="vocab-row"><span class="vocab-word">unease</span><span class="vocab-def">a feeling of worry — something feels wrong</span></div>
+        <div class="vocab-row"><span class="vocab-word">technique</span><span class="vocab-def">a deliberate method a writer uses, e.g. metaphor, repetition</span></div>
+        <div class="vocab-row"><span class="vocab-word">implicit</span><span class="vocab-def">not stated directly — you have to read between the lines</span></div>
+        <div class="vocab-row"><span class="vocab-word">fragmented</span><span class="vocab-def">broken into short pieces — not complete</span></div>
+      </div>
+      <div class="scaffold-box"><div class="scaffold-title">🏗️ Writing Scaffold — Sentence Starters</div>
+        <div class="scaffold-row"><span class="scaffold-num">1</span><span class="scaffold-text">The writer creates unease through the phrase "..." which suggests...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">2</span><span class="scaffold-text">The word/phrase "..." makes the reader feel... because...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">3</span><span class="scaffold-text">The writer also uses [technique] in "..." The effect of this is...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">4</span><span class="scaffold-text">This adds to the mystery because the reader does not know...</span></div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <div style="font-family:var(--sans);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Model Answers</div>
+        <div class="grade-acc" style="border:1.5px solid var(--g34b);">
+          <button class="grade-btn" style="background:var(--g34l);" onclick="toggleGrade(this)">
+            <div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g34l);color:var(--g34);border:1px solid var(--g34b);">Grade 3–4</span><span style="font-family:var(--sans);font-size:13px;">Achievable target</span></div>
+            <span style="color:var(--g34);font-size:16px;">+</span>
+          </button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g34b);">The writer creates unease when they describe the shape as "Not a person. Not quite." The short sentences feel broken and strange, which makes the reader feel uneasy. It is as if Mara cannot think clearly because she is scared.
+
+The writer also uses repetition at the end: "He had been coming here. He had been preparing." The word "preparing" creates mystery because we don't know what he was preparing for. This leaves the reader with an unanswered question.</div>
+        </div>
+        <div class="grade-acc" style="border:1.5px solid var(--g5b);">
+          <button class="grade-btn" style="background:var(--g5l);" onclick="toggleGrade(this)">
+            <div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g5l);color:var(--g5);border:1px solid var(--g5b);">Grade 5</span><span style="font-family:var(--sans);font-size:13px;">Stretch target</span></div>
+            <span style="color:var(--g5);font-size:16px;">+</span>
+          </button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g5b);">The writer creates powerful unease through the fragmented syntax of "Not a person. Not quite." The incomplete sentences mirror Mara's fractured state of mind — the dashes and full stops force the reader to pause, simulating the disorientation of confronting something inexplicable. By leaving the description incomplete, the writer generates more fear through absence than description could.
+
+The repetition of "He had been coming here. He had been preparing" builds dread through deliberate withholding. Stripped of explanation, the simple declarative sentences deny the reader the information they crave. The verb "preparing" carries sinister weight precisely because it is never completed — preparing for what? The unresolved question traps the reader in the same uncertainty as Mara.</div>
+        </div>
+      </div>
+      <div class="checklist" id="cl-q2">
+        <div class="check-title">✅ Self-Assessment — tick when done</div>
+        <button class="check-item" onclick="tickItem(this,'cl-q2','p1')"><span class="check-box"></span><span class="check-label">Quoted from lines 9–16</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q2','p1')"><span class="check-box"></span><span class="check-label">Named at least one technique</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q2','p1')"><span class="check-box"></span><span class="check-label">Explained the effect on the reader</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q2','p1')"><span class="check-box"></span><span class="check-label">Used 'because' to link technique to effect</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q2','p1')"><span class="check-box"></span><span class="check-label">Focused on unease/mystery throughout</span></button>
+        <div class="check-count" style="color:var(--p1);">0/5 completed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="accordion" id="acc-q3">
+    <button class="acc-btn" onclick="toggleAcc('acc-q3','p1')">
+      <div class="acc-btn-left"><span style="font-family:var(--serif);font-size:17px;">Q3</span><span class="ao-badge">AO2</span><span class="mark-badge">8 marks</span><span style="font-family:var(--sans);font-size:13px;color:#555;">Structure Analysis</span></div>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body" style="display:none;">
+      <div class="what-box"><div class="what-title">📌 What this question asks</div><div class="what-text">How has the writer structured the whole text to build tension?</div></div>
+      <div class="tip-box">⏱ <strong>Strategy:</strong> 8 marks · 10 minutes. Comment on beginning, middle AND end. Think about the whole text — not just words.</div>
+      <div class="instr-box">How has the writer structured the text to create a sense of building tension? Consider: what the writer focuses on at the start; how the focus changes; how the ending creates tension.</div>
+      <div class="vocab-box"><div class="vocab-title">📖 Key Vocabulary</div>
+        <div class="vocab-row"><span class="vocab-word">structure</span><span class="vocab-def">how a text is organised — its shape and order</span></div>
+        <div class="vocab-row"><span class="vocab-word">contrast</span><span class="vocab-def">two very different things placed near each other for effect</span></div>
+        <div class="vocab-row"><span class="vocab-word">turning point</span><span class="vocab-def">a moment when something significant changes</span></div>
+        <div class="vocab-row"><span class="vocab-word">chronological</span><span class="vocab-def">events told in time order</span></div>
+      </div>
+      <div class="scaffold-box"><div class="scaffold-title">🏗️ Writing Scaffold</div>
+        <div class="scaffold-row"><span class="scaffold-num">1</span><span class="scaffold-text">At the start, the writer focuses on... This creates tension because...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">2</span><span class="scaffold-text">As the text develops, the focus shifts from... to... The effect is...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">3</span><span class="scaffold-text">The writer ends with... This creates tension because the reader...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">4</span><span class="scaffold-text">The contrast between... and... is effective because...</span></div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <div style="font-family:var(--sans);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Model Answers</div>
+        <div class="grade-acc" style="border:1.5px solid var(--g34b);">
+          <button class="grade-btn" style="background:var(--g34l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g34l);color:var(--g34);border:1px solid var(--g34b);">Grade 3–4</span><span style="font-family:var(--sans);font-size:13px;">Achievable target</span></div><span style="color:var(--g34);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g34b);">At the start, the writer focuses on Mara being alone in the lighthouse. This creates tension because the reader wants to know why she is there and what happened to her brother.
+
+In the middle, the focus shifts to what Mara saw on the stairs. This builds tension because we don't know if it was real.
+
+At the end, the text ends with "She began to climb." This short sentence creates tension because we don't know what will happen next.</div>
+        </div>
+        <div class="grade-acc" style="border:1.5px solid var(--g5b);">
+          <button class="grade-btn" style="background:var(--g5l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g5l);color:var(--g5);border:1px solid var(--g5b);">Grade 5</span><span style="font-family:var(--sans);font-size:13px;">Stretch target</span></div><span style="color:var(--g5);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g5b);">The writer opens with historical permanence — "over a century" — before immediately disrupting it with crisis. This contrast between the lighthouse's endurance and the sudden disappearance creates unease and propels the reader forward.
+
+The middle section shifts focus inward from the external setting to Mara's psychological state. The counting ritual — "one, two, three, steady, four" — is a fragile, domestic act that contrasts sharply with the threatening environment, heightening tension through the collision of the mundane and the sinister.
+
+The closing sentence, "She began to climb," acts as a structural pivot. Its brevity — a short simple sentence following longer, complex ones — gives it a finality that feels decisive and deeply ominous. Resolution is denied entirely: the reader cannot follow Mara upward, leaving the tension suspended and unresolved.</div>
+        </div>
+      </div>
+      <div class="checklist" id="cl-q3">
+        <div class="check-title">✅ Self-Assessment</div>
+        <button class="check-item" onclick="tickItem(this,'cl-q3','p1')"><span class="check-box"></span><span class="check-label">Commented on the beginning</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q3','p1')"><span class="check-box"></span><span class="check-label">Commented on the middle or a shift in focus</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q3','p1')"><span class="check-box"></span><span class="check-label">Commented on the ending</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q3','p1')"><span class="check-box"></span><span class="check-label">Linked structural choices to tension</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q3','p1')"><span class="check-box"></span><span class="check-label">Discussed the whole text, not just one part</span></button>
+        <div class="check-count" style="color:var(--p1);">0/5 completed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="accordion" id="acc-q4">
+    <button class="acc-btn" onclick="toggleAcc('acc-q4','p1')">
+      <div class="acc-btn-left"><span style="font-family:var(--serif);font-size:17px;">Q4</span><span class="ao-badge">AO4</span><span class="mark-badge">20 marks</span><span style="font-family:var(--sans);font-size:13px;color:#555;">Critical Evaluation</span></div>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body" style="display:none;">
+      <div class="what-box"><div class="what-title">📌 What this question asks</div><div class="what-text">Do you agree that the writer makes you feel trapped alongside Mara? Use evidence to support your view.</div></div>
+      <div class="tip-box">⏱ <strong>Strategy:</strong> 20 marks · 20 minutes minimum. Write 4–5 paragraphs. Agree, disagree or both — just justify with evidence and analysis.</div>
+      <div class="instr-box">A reader said: "This extract is highly effective at making the reader feel trapped alongside Mara — the writer never lets you escape the atmosphere of dread." To what extent do you agree? Write about your own impressions and support your ideas with quotations.</div>
+      <div class="vocab-box"><div class="vocab-title">📖 Key Vocabulary</div>
+        <div class="vocab-row"><span class="vocab-word">evaluate</span><span class="vocab-def">weigh up how well something works and explain why</span></div>
+        <div class="vocab-row"><span class="vocab-word">impression</span><span class="vocab-def">the feeling you get when reading</span></div>
+        <div class="vocab-row"><span class="vocab-word">perspective</span><span class="vocab-def">your personal point of view on the text</span></div>
+        <div class="vocab-row"><span class="vocab-word">extent</span><span class="vocab-def">how much — fully agree, partly agree, or disagree</span></div>
+      </div>
+      <div class="scaffold-box"><div class="scaffold-title">🏗️ Writing Scaffold</div>
+        <div class="scaffold-row"><span class="scaffold-num">1</span><span class="scaffold-text">I agree/partly agree/disagree that the writer makes the reader feel trapped because...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">2</span><span class="scaffold-text">For example, when the writer writes "..." the reader feels... because...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">3</span><span class="scaffold-text">The technique of [name] is effective because it creates a sense of...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">4</span><span class="scaffold-text">However, one could argue that... because...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">5</span><span class="scaffold-text">Overall, I think the writer [is/is not] successful at creating this feeling because...</span></div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <div style="font-family:var(--sans);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Model Answers</div>
+        <div class="grade-acc" style="border:1.5px solid var(--g34b);">
+          <button class="grade-btn" style="background:var(--g34l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g34l);color:var(--g34);border:1px solid var(--g34b);">Grade 3–4</span><span style="font-family:var(--sans);font-size:13px;">Achievable target</span></div><span style="color:var(--g34);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g34b);">I agree that the writer makes the reader feel trapped alongside Mara. The lighthouse feels like a trap because there is nowhere safe for Mara to go. The writer uses the phrase "pressed her back against the cold iron door" to show she is cornered, which makes the reader feel trapped too.
+
+The writer also makes the reader feel trapped by not explaining what the shape was. The phrase "Not a person. Not quite" leaves unanswered questions that the reader cannot escape from, just like Mara.
+
+However, at the very end Mara chooses to climb, which shows she has some control. So she is not completely trapped. But overall the atmosphere of dread is strong throughout.</div>
+        </div>
+        <div class="grade-acc" style="border:1.5px solid var(--g5b);">
+          <button class="grade-btn" style="background:var(--g5l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g5l);color:var(--g5);border:1px solid var(--g5b);">Grade 5</span><span style="font-family:var(--sans);font-size:13px;">Stretch target</span></div><span style="color:var(--g5);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g5b);">I strongly agree that the writer creates a suffocating sense of entrapment from the first paragraph. Mara is physically enclosed — pressing her back against a door with the hostile Atlantic behind her and an unknown shape above. The village lights "smeared yellow through the salt-thick glass" are visible but unreachable, and the word "smeared" suggests something contaminated — even the view of safety offers no comfort.
+
+The accumulation of withheld information reinforces entrapment. We are told the brother had been "preparing" — but for what is never disclosed. This deliberate withholding traps the reader in the same ignorance as Mara. We cannot escape the mystery any more than she can escape the tower.
+
+However, the final sentence complicates this reading. "She began to climb" is an act of agency — Mara chooses to move forward. The reader, paradoxically, is more trapped than Mara at this point: we cannot follow her up the stairs. The extract ends here, locking us below while she ascends into the unknown.</div>
+        </div>
+      </div>
+      <div class="checklist" id="cl-q4">
+        <div class="check-title">✅ Self-Assessment</div>
+        <button class="check-item" onclick="tickItem(this,'cl-q4','p1')"><span class="check-box"></span><span class="check-label">Stated a clear opinion in response to the statement</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q4','p1')"><span class="check-box"></span><span class="check-label">Used at least three quotations</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q4','p1')"><span class="check-box"></span><span class="check-label">Analysed HOW each quote creates an effect</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q4','p1')"><span class="check-box"></span><span class="check-label">Included a 'However' — considered another view</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q4','p1')"><span class="check-box"></span><span class="check-label">Reached an overall conclusion</span></button>
+        <div class="check-count" style="color:var(--p1);">0/5 completed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="accordion" id="acc-q5">
+    <button class="acc-btn" onclick="toggleAcc('acc-q5','p1')">
+      <div class="acc-btn-left"><span style="font-family:var(--serif);font-size:17px;">Q5</span><span class="ao-badge">AO5/AO6</span><span class="mark-badge">40 marks</span><span style="font-family:var(--sans);font-size:13px;color:#555;">Creative Writing</span><span class="tag tag-sm" style="background:var(--p1l);color:var(--p1);border:1px solid var(--p1b);">Section B</span></div>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body" style="display:none;">
+      <div class="what-box"><div class="what-title">📌 What this question asks</div><div class="what-text">Write the opening of a story that creates a strong atmosphere from the very beginning.</div></div>
+      <div class="tip-box">⏱ <strong>Strategy:</strong> 40 marks · 45 minutes total: 5 plan + 35 write + 5 check. Content = 24 marks. SPAG = 16 marks.</div>
+      <div class="instr-box">Write the opening of a story about a character who discovers something unexpected. Use your imagination freely. Establish a strong atmosphere from the very beginning. (40 marks)</div>
+      <div class="vocab-box"><div class="vocab-title">📖 Key Vocabulary</div>
+        <div class="vocab-row"><span class="vocab-word">atmosphere</span><span class="vocab-def">the mood or feeling created in writing</span></div>
+        <div class="vocab-row"><span class="vocab-word">foreshadowing</span><span class="vocab-def">hinting at what will happen later</span></div>
+        <div class="vocab-row"><span class="vocab-word">narrative voice</span><span class="vocab-def">who is telling the story — I (first person) or he/she/they (third person)</span></div>
+        <div class="vocab-row"><span class="vocab-word">motif</span><span class="vocab-def">a repeated image or idea that runs through a piece</span></div>
+      </div>
+      <div class="scaffold-box"><div class="scaffold-title">🏗️ Writing Scaffold</div>
+        <div class="scaffold-row"><span class="scaffold-num">1</span><span class="scaffold-text">OPENING: 'The [noun] had [action] for [time], but [character] had never...'</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">2</span><span class="scaffold-text">ATMOSPHERE: Use the senses — 'The [sound/smell/sight] of... filled/spread through...'</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">3</span><span class="scaffold-text">TENSION: 'It was only when [character] [action] that she noticed...'</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">4</span><span class="scaffold-text">HOOK: End with a short, shocking sentence or an unanswered question.</span></div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <div style="font-family:var(--sans);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Model Answers</div>
+        <div class="grade-acc" style="border:1.5px solid var(--g34b);">
+          <button class="grade-btn" style="background:var(--g34l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g34l);color:var(--g34);border:1px solid var(--g34b);">Grade 3–4</span><span style="font-family:var(--sans);font-size:13px;">Achievable target</span></div><span style="color:var(--g34);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g34b);">The letter arrived on an ordinary Tuesday morning, which was the first strange thing about it.
+
+Jade picked it up from the doormat and turned it over. There was no stamp. No postmark. Just her name, written in dark blue ink that had soaked into the paper like a bruise. She didn't recognise the handwriting.
+
+She carried it to the kitchen table and put the kettle on. She told herself it was probably nothing — a mistake, a lost letter, something simple. But her hands were shaking as she opened it.
+
+Inside was a single photograph. It was a picture of her bedroom, taken from inside, while she slept.</div>
+        </div>
+        <div class="grade-acc" style="border:1.5px solid var(--g5b);">
+          <button class="grade-btn" style="background:var(--g5l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g5l);color:var(--g5);border:1px solid var(--g5b);">Grade 5</span><span style="font-family:var(--sans);font-size:13px;">Stretch target</span></div><span style="color:var(--g5);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g5b);">The letter arrived on a Tuesday, which seemed wrong somehow. Important things should arrive on Mondays, Elena thought — Mondays had weight, the feel of a door being knocked on with intention. Tuesdays were leftover.
+
+She turned it over in her hands. Her name was written in ink so dark it looked pressed into the paper rather than drawn upon it, the letters leaning slightly to the right as if straining towards something she couldn't see. No postage stamp. No return address. Only her name, and beneath it, a single word she couldn't bring herself to look at directly: Soon.
+
+The flat felt different now. She had lived here for six years, had mapped its sounds the way you map a city — the particular groan of the third floorboard, the radiator's mid-afternoon tick. But the flat was silent. Completely, unreasonably silent, the way silence only is when something has just stopped.
+
+She placed the letter on the table. She made tea she didn't drink. Then she opened it.</div>
+        </div>
+      </div>
+      <div class="split-marks">
+        <div class="split-badge" style="background:var(--introl);border:1px solid var(--introb);color:var(--intro);">Content & Organisation: <strong>24 marks (AO5)</strong></div>
+        <div class="split-badge" style="background:var(--p2l);border:1px solid var(--p2b);color:var(--p2);">SPAG: <strong>16 marks (AO6)</strong></div>
+      </div>
+      <div class="checklist" id="cl-q5">
+        <div class="check-title">✅ Self-Assessment</div>
+        <button class="check-item" onclick="tickItem(this,'cl-q5','p1')"><span class="check-box"></span><span class="check-label">Planned before writing</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5','p1')"><span class="check-box"></span><span class="check-label">Strong opening sentence</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5','p1')"><span class="check-box"></span><span class="check-label">Built atmosphere using description</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5','p1')"><span class="check-box"></span><span class="check-label">Used at least one technique deliberately</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5','p1')"><span class="check-box"></span><span class="check-label">Clear paragraphs</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5','p1')"><span class="check-box"></span><span class="check-label">Checked spelling</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5','p1')"><span class="check-box"></span><span class="check-label">Checked punctuation</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5','p1')"><span class="check-box"></span><span class="check-label">Varied sentence lengths</span></button>
+        <div class="check-count" style="color:var(--p1);">0/8 completed</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /p1 -->
+
+</main>
+<footer>AQA GCSE English Language 8700 · Introduction &amp; Paper 1 · Foundation Support (Grades 3–5)</footer>
+
+<script>
+// PAGE NAVIGATION
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  // Update nav button colour
+  const colors = {intro:'var(--intro)', p1:'var(--p1)'};
+  document.querySelectorAll('.nav-tab.active').forEach(t => t.style.background = colors[id] || 'var(--p1)');
+}
+
+// ACCORDION
+function toggleAcc(id, page) {
+  const el = document.getElementById(id);
+  const body = el.querySelector('.acc-body');
+  const icon = el.querySelector('.acc-icon');
+  const isOpen = el.classList.contains('open');
+  el.classList.toggle('open', !isOpen);
+  body.style.display = isOpen ? 'none' : 'block';
+  icon.textContent = isOpen ? '+' : '−';
+}
+
+// FAQ
+function toggleFaq(id) {
+  const el = document.getElementById(id);
+  const a = el.querySelector('.faq-a');
+  const icon = el.querySelector('.faq-icon');
+  const isOpen = el.classList.contains('open');
+  el.classList.toggle('open', !isOpen);
+  a.style.display = isOpen ? 'none' : 'block';
+  icon.textContent = isOpen ? '+' : '−';
+}
+
+// GRADE ANSWER TOGGLE
+function toggleGrade(btn) {
+  const body = btn.nextElementSibling;
+  const icon = btn.querySelector('span:last-child');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  icon.textContent = isOpen ? '+' : '−';
+}
+
+// MULTIPLE CHOICE
+const mcState = {};
+function toggleMC(btn, qid, correct) {
+  if (!mcState[qid]) mcState[qid] = { selected: [], done: false };
+  if (mcState[qid].done) return;
+  const opt = parseInt(btn.dataset.opt);
+  const s = mcState[qid].selected;
+  const idx = s.indexOf(opt);
+  if (idx > -1) { s.splice(idx, 1); btn.classList.remove('selected'); btn.querySelector('.mc-circle').style.background='#E5E7EB'; }
+  else if (s.length < 4) { s.push(opt); btn.classList.add('selected'); btn.querySelector('.mc-circle').style.background='var(--p1)'; }
+  const checkBtn = document.getElementById('check-' + qid);
+  checkBtn.textContent = 'Check Answers (' + s.length + '/4)';
+  checkBtn.classList.toggle('ready', s.length === 4);
+}
+function checkMC(qid, correct) {
+  if (!mcState[qid] || mcState[qid].selected.length !== 4) return;
+  mcState[qid].done = true;
+  const btns = document.querySelectorAll('[data-q="' + qid + '"]');
+  let score = 0;
+  btns.forEach(btn => {
+    btn.classList.add('done');
+    const opt = parseInt(btn.dataset.opt);
+    const sel = mcState[qid].selected.includes(opt);
+    const cor = correct.includes(opt);
+    if (cor) { btn.classList.add('correct'); btn.querySelector('.mc-circle').style.background='var(--ok)'; score++; }
+    else if (sel) { btn.classList.add('wrong'); btn.querySelector('.mc-circle').style.background='var(--err)'; }
+  });
+  document.getElementById('check-' + qid).style.display = 'none';
+  const result = document.getElementById('result-' + qid);
+  result.style.display = 'block';
+  result.querySelector('.mc-score').textContent = 'Score: ' + mcState[qid].selected.filter(x => correct.includes(x)).length + '/4 correct';
+}
+
+// CHECKLIST
+function tickItem(btn, clId, color) {
+  const box = btn.querySelector('.check-box');
+  const label = btn.querySelector('.check-label');
+  const isTicked = box.classList.contains('ticked');
+  box.classList.toggle('ticked', !isTicked);
+  label.classList.toggle('done', !isTicked);
+  const cl = document.getElementById(clId);
+  const total = cl.querySelectorAll('.check-item').length;
+  const done = cl.querySelectorAll('.check-box.ticked').length;
+  cl.querySelector('.check-count').textContent = done + '/' + total + ' completed';
+}
+</script>
+</body>
+</html>

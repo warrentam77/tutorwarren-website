@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSE English Language — Paper 2</title>
+<style>
+  :root {
+    --bg:#F8F6F1; --white:#fff; --ink:#1C1C2E; --rule:#DDD8CC; --muted:#7A7468;
+    --p2:#1B5E8A; --p2l:#EBF4FB; --p2b:#A8CEE6;
+    --intro:#2D6A4F; --introl:#EAF4EE; --introb:#A8D5B5;
+    --g34:#6B4C9B; --g34l:#F3EEF9; --g34b:#C9B5E8;
+    --g5:#1B7B5E; --g5l:#EAFAF4; --g5b:#9FD9C4;
+    --ok:#14532D; --okl:#F0FDF4; --okb:#86EFAC;
+    --err:#7F1D1D; --errl:#FFF1F2; --errb:#FECDD3;
+    --voc:#7C2D12; --vocl:#FFF7ED; --vocb:#FED7AA;
+    --frame:#1E3A5F; --framel:#EFF6FF; --frameb:#BFDBFE;
+    --gold:#C9A84C;
+    --serif:'Palatino Linotype','Palatino','Book Antiqua',Georgia,serif;
+    --sans:'Trebuchet MS','Gill Sans MT',Verdana,sans-serif;
+    --mono:'Courier New',Courier,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);font-family:var(--serif);color:var(--ink);min-height:100vh;}
+  header{background:var(--ink);color:#fff;padding:28px 20px 24px;text-align:center;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(27,94,138,.28) 0%,transparent 55%);pointer-events:none;}
+  header>div{position:relative;}
+  .eyebrow{font-family:var(--sans);font-size:10px;letter-spacing:.25em;color:#6B7280;margin-bottom:7px;text-transform:uppercase;}
+  h1{font-family:var(--serif);font-size:clamp(20px,4vw,34px);font-weight:normal;margin-bottom:5px;}
+  .subhead{font-family:var(--sans);color:#9CA3AF;font-size:12px;}
+  main{max-width:760px;margin:0 auto;padding:24px 16px 60px;}
+  .tag{display:inline-block;padding:3px 11px;border-radius:20px;font-size:11px;font-family:var(--sans);font-weight:700;letter-spacing:.09em;text-transform:uppercase;}
+  .tag-sm{padding:2px 8px;font-size:10px;}
+  .mark-badge{display:inline-block;padding:3px 10px;border-radius:5px;font-size:11px;font-family:var(--sans);font-weight:700;background:var(--ink);color:#fff;}
+  .ao-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-family:var(--sans);font-weight:700;background:var(--ink);color:#fff;}
+  .source-box{background:var(--bg);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:18px 20px;margin-bottom:16px;}
+  .source-label{font-family:var(--sans);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:700;}
+  .source-text{font-family:var(--serif);font-size:14px;line-height:1.95;color:#1a1a1a;white-space:pre-line;}
+  .vocab-box{background:var(--vocl);border:1.5px solid var(--vocb);border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+  .vocab-title{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--voc);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
+  .vocab-row{display:flex;gap:10px;align-items:baseline;margin-bottom:5px;}
+  .vocab-word{font-family:var(--serif);font-size:13px;color:var(--voc);font-weight:bold;flex-shrink:0;min-width:130px;}
+  .vocab-def{font-family:var(--sans);font-size:13px;color:#555;line-height:1.5;}
+  .scaffold-box{background:var(--framel);border:1.5px solid var(--frameb);border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+  .scaffold-title{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--frame);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
+  .scaffold-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:7px;}
+  .scaffold-num{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--frame);background:var(--frameb);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .scaffold-text{font-family:var(--mono);font-size:12px;color:var(--frame);line-height:1.6;}
+  .accordion{background:var(--white);border-radius:12px;border:1.5px solid var(--rule);margin-bottom:12px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
+  .accordion.open{border-color:var(--p2);box-shadow:0 4px 20px rgba(27,94,138,.12);}
+  .acc-btn{width:100%;background:none;border:none;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:10px;}
+  .acc-btn-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .acc-icon{color:#bbb;font-size:20px;font-family:var(--sans);transition:color .15s;}
+  .accordion.open .acc-icon{color:var(--p2);}
+  .acc-body{padding:0 20px 22px;border-top:1px solid rgba(27,94,138,.15);}
+  .what-box{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:10px 14px;margin:14px 0 10px;}
+  .what-title{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--p2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
+  .what-text{font-family:var(--sans);font-size:13px;color:var(--p2);line-height:1.6;}
+  .tip-box{background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-family:var(--sans);font-size:12px;color:#78350F;line-height:1.6;}
+  .instr-box{background:var(--bg);border-left:4px solid var(--p2);border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:14px;font-family:var(--serif);font-size:14px;line-height:1.85;color:#222;}
+  .mc-sub{font-family:var(--sans);font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .mc-btn{width:100%;background:#FAFAFA;border:1.5px solid var(--rule);border-radius:8px;padding:10px 14px;margin-bottom:5px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;transition:all .15s;font-family:var(--sans);font-size:13px;color:#333;}
+  .mc-btn.selected{background:var(--p2l);border-color:var(--p2);color:var(--p2);}
+  .mc-btn.correct{background:var(--okl);border-color:var(--okb);color:var(--ok);}
+  .mc-btn.wrong{background:var(--errl);border-color:var(--errb);color:var(--err);}
+  .mc-circle{width:22px;height:22px;border-radius:50%;background:#E5E7EB;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;transition:background .15s;}
+  .mc-btn.selected .mc-circle{background:var(--p2);}
+  .mc-btn.correct .mc-circle{background:var(--ok);}
+  .mc-btn.wrong .mc-circle{background:var(--err);}
+  .check-btn{background:#E5E7EB;color:#aaa;border:none;border-radius:8px;padding:10px 22px;cursor:not-allowed;font-family:var(--sans);font-size:13px;font-weight:700;margin-top:6px;transition:all .15s;}
+  .check-btn.ready{background:var(--p2);color:#fff;cursor:pointer;}
+  .mc-result{background:var(--okl);border:1px solid var(--okb);border-radius:8px;padding:10px 14px;margin-top:8px;}
+  .mc-score{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--ok);}
+  .mc-exp{font-family:var(--sans);font-size:12px;color:#555;margin-top:4px;line-height:1.6;}
+  .grade-acc{border-radius:10px;margin-bottom:10px;overflow:hidden;}
+  .grade-btn{width:100%;border:none;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+  .grade-body{padding:12px 16px;font-family:var(--serif);font-size:14px;line-height:1.85;color:#222;white-space:pre-line;}
+  .checklist{background:#FAFAFA;border:1px solid var(--rule);border-radius:10px;padding:14px 16px;}
+  .check-title{font-family:var(--sans);font-size:11px;font-weight:700;color:#666;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+  .check-item{width:100%;background:none;border:none;display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--rule);cursor:pointer;text-align:left;}
+  .check-item:last-of-type{border-bottom:none;}
+  .check-box{width:18px;height:18px;border-radius:4px;border:2px solid var(--rule);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;}
+  .check-box.ticked{border-color:var(--p2);background:var(--p2);}
+  .check-label{font-family:var(--sans);font-size:13px;color:var(--ink);line-height:1.5;}
+  .check-label.done{color:#aaa;text-decoration:line-through;}
+  .check-count{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--p2);margin-top:10px;}
+  .section-div{border-top:2px solid var(--p2);padding-top:14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .split-marks{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .split-badge{border-radius:6px;padding:6px 12px;font-family:var(--sans);font-size:12px;}
+  .paper-overview{border-radius:14px;padding:20px 22px;margin-bottom:20px;}
+  .paper-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .paper-kv{font-family:var(--sans);font-size:12px;color:#444;}
+  .paper-kv strong{color:var(--ink);}
+  h3.sec{font-family:var(--serif);font-size:17px;font-weight:normal;color:var(--ink);margin:0 0 10px;}
+  .model-heading{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+  footer{background:#111827;padding:16px 20px;text-align:center;font-family:var(--sans);font-size:12px;color:#4B5563;}
+  @media(max-width:480px){.paper-grid{grid-template-columns:1fr;}.split-marks{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">AQA 8700 · Foundation Support · Paper 2 of 2</div>
+    <h1>GCSE English Language — Paper 2</h1>
+    <p class="subhead">Writers' Viewpoints &amp; Perspectives · Grades 3–5 Scaffolded Support</p>
+  </div>
+</header>
+
+<main>
+
+  <div class="paper-overview" style="background:var(--p2l);border:1.5px solid var(--p2b);">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <span class="tag" style="background:var(--p2l);color:var(--p2);border:1px solid var(--p2b);">Paper 2</span>
+      <span style="font-family:var(--serif);font-size:17px;color:var(--ink);">Writers' Viewpoints and Perspectives</span>
+    </div>
+    <div class="paper-grid">
+      <div class="paper-kv"><strong>Sources:</strong> Two non-fiction texts</div>
+      <div class="paper-kv"><strong>Source A:</strong> Modern text (20th/21st century)</div>
+      <div class="paper-kv"><strong>Source B:</strong> Victorian text (19th century)</div>
+      <div class="paper-kv"><strong>Time:</strong> 1 hour 45 minutes</div>
+      <div class="paper-kv"><strong>Key skill:</strong> Compare how writers present similar topics</div>
+      <div class="paper-kv"><strong>Total:</strong> 80 marks · 50% of GCSE</div>
+    </div>
+  </div>
+
+  <h3 class="sec">Source A — Modern Non-Fiction</h3>
+  <div class="source-box">
+    <div class="source-label">Source A — Modern travel writing, 2019</div>
+    <div class="source-text">In Praise of Slow Travel
+(Modern travel writing, 2019)
+
+There is a particular kind of stillness that belongs only to a train pulling away from a station — a moment when the platform slides back and the world opens, and you realise that the journey has, finally, actually begun.
+
+I have been travelling by train across Europe for three weeks, from the grey northern coasts of England through France, into Spain, and back through Italy. I have covered slightly more than four thousand miles. I have not once felt the urge to arrive.
+
+This is the peculiar gift of slow travel: the journey is not something to be endured before the destination — it is the destination. On a train, you cannot pretend that the space between places is dead time. The light changes. The landscape shifts from flat plains to the violent geometry of mountains. You eat, sleep, read, talk to strangers, and wake up somewhere entirely different.
+
+What we have given up in our enthusiasm for budget airlines is not merely time but texture — the accumulated sensation of distance, of genuinely moving through the world rather than being teleported between airports. We arrive exhausted by airports and call it travel. We do not arrive anywhere; we are deposited.</div>
+  </div>
+
+  <h3 class="sec">Source B — 19th Century Text</h3>
+  <div class="source-box">
+    <div class="source-label">Source B — Victorian letter, 1847</div>
+    <div class="source-text">Letter from a Traveller on the Great Western Railway
+(Victorian letter, published 1847)
+
+To the Editor of The Times, London
+
+Sir, — I write to you from the railway carriage itself, having just completed the journey from Bristol to London Paddington in two hours, thirty minutes — a feat which, not ten years since, would have required a full day's jolting discomfort by stage-coach.
+
+The sensations of railway travel are difficult to render in prose. One sits in what amounts to a small furnished room, drawn at a speed which the eye cannot reconcile with safety, and yet is perfectly safe. The fields rush past in a green continuity that begins to resemble painting more than landscape. Villages appear and vanish before one has formed an impression of them.
+
+Whether this constitutes genuine travel, I am not certain. My father, who journeyed by mail-coach, knew every public house between Bath and London, every stretch of bad road, every ostler by name. He arrived with knowledge accumulated mile by mile. I arrived knowing nothing of the country I had passed through — only that I had passed through it very quickly indeed.
+
+Speed, it seems to me, is a form of abstraction. The railway gives us distance; whether it gives us travel is another matter entirely.</div>
+  </div>
+
+  <div class="section-div">
+    <span class="tag" style="background:var(--p2l);color:var(--p2);border:1px solid var(--p2b);">Section A — Reading</span>
+    <span style="font-family:var(--sans);font-size:12px;color:var(--muted);">40 marks · ~45 minutes</span>
+  </div>
+
+  <!-- Q1 -->
+  <div class="accordion" id="acc-q1">
+    <button class="acc-btn" onclick="toggleAcc('acc-q1')">
+      <div class="acc-btn-left"><span style="font-family:var(--serif);font-size:17px;">Q1</span><span class="ao-badge">AO1</span><span class="mark-badge">4 marks</span><span style="font-family:var(--sans);font-size:13px;color:#555;">Find Information — Source A (Multiple Choice)</span></div>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body" style="display:none;">
+      <div class="what-box"><div class="what-title">📌 What this question asks</div><div class="what-text">Choose FOUR true statements about Source A only.</div></div>
+      <div class="tip-box">⏱ <strong>Strategy:</strong> 4 marks · 5 minutes max. Only read Source A. Return to the text for every option — don't rely on memory.</div>
+      <div class="instr-box">Read Source A only. Choose FOUR statements that are TRUE according to Source A.</div>
+      <div class="vocab-box"><div class="vocab-title">📖 Key Vocabulary</div>
+        <div class="vocab-row"><span class="vocab-word">destination</span><span class="vocab-def">the place you are travelling to</span></div>
+        <div class="vocab-row"><span class="vocab-word">accumulated</span><span class="vocab-def">gradually built up over time</span></div>
+        <div class="vocab-row"><span class="vocab-word">texture</span><span class="vocab-def">here: richness and depth of an experience</span></div>
+      </div>
+      <div>
+        <div class="mc-sub">Select exactly 4 correct statements:</div>
+        <button class="mc-btn" data-opt="0" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">A</span>The writer travelled by aeroplane across Europe</button>
+        <button class="mc-btn" data-opt="1" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">B</span>The writer travelled for three weeks</button>
+        <button class="mc-btn" data-opt="2" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">C</span>The writer covered more than four thousand miles</button>
+        <button class="mc-btn" data-opt="3" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">D</span>The writer felt a strong urge to arrive quickly</button>
+        <button class="mc-btn" data-opt="4" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">E</span>The writer went through France, Spain and Italy</button>
+        <button class="mc-btn" data-opt="5" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">F</span>The writer believes the journey itself is the destination</button>
+        <button class="mc-btn" data-opt="6" data-q="q1" onclick="toggleMC(this,'q1',[1,2,4,5])"><span class="mc-circle">G</span>The writer thinks budget airlines are better than trains</button>
+        <button class="check-btn" id="check-q1" onclick="checkMC('q1',[1,2,4,5])">Check Answers (0/4)</button>
+        <div id="result-q1" style="display:none;" class="mc-result"><div class="mc-score"></div><div class="mc-exp">Correct answers: B, C, E, F. A wrong (travelled by train). D wrong (no urge to arrive). G wrong (criticises airlines).</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="accordion" id="acc-q2">
+    <button class="acc-btn" onclick="toggleAcc('acc-q2')">
+      <div class="acc-btn-left"><span style="font-family:var(--serif);font-size:17px;">Q2</span><span class="ao-badge">AO1</span><span class="mark-badge">8 marks</span><span style="font-family:var(--sans);font-size:13px;color:#555;">Summarise Both Sources</span></div>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body" style="display:none;">
+      <div class="what-box"><div class="what-title">📌 What this question asks</div><div class="what-text">What do both writers value about travel — and what do they find unsatisfying? Use both sources.</div></div>
+      <div class="tip-box">⏱ <strong>Strategy:</strong> 8 marks · 10–12 minutes. Use BOTH sources equally. Find connections AND contrasts — don't just describe each separately.</div>
+      <div class="instr-box">Refer to Source A and Source B. Both writers reflect on the nature of travel. Use evidence from both sources to write a summary of what the writers value — and what they find unsatisfying — about their journeys.</div>
+      <div class="vocab-box"><div class="vocab-title">📖 Key Vocabulary</div>
+        <div class="vocab-row"><span class="vocab-word">synthesise</span><span class="vocab-def">bring ideas from different texts together to show connections</span></div>
+        <div class="vocab-row"><span class="vocab-word">perspective</span><span class="vocab-def">point of view — the way a person sees something</span></div>
+        <div class="vocab-row"><span class="vocab-word">contrast</span><span class="vocab-def">a clear difference between two things</span></div>
+        <div class="vocab-row"><span class="vocab-word">imply</span><span class="vocab-def">to suggest something without stating it directly</span></div>
+      </div>
+      <div class="scaffold-box"><div class="scaffold-title">🏗️ Writing Scaffold</div>
+        <div class="scaffold-row"><span class="scaffold-num">1</span><span class="scaffold-text">Both writers value... For example, Source A says... while Source B says...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">2</span><span class="scaffold-text">However, the writers differ in that... Source A suggests... whereas Source B...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">3</span><span class="scaffold-text">A similarity between them is that both feel... shown in Source A when... and Source B when...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">4</span><span class="scaffold-text">Both writers have concerns about... In Source A: ... In Source B: ...</span></div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <div class="model-heading">Model Answers</div>
+        <div class="grade-acc" style="border:1.5px solid var(--g34b);">
+          <button class="grade-btn" style="background:var(--g34l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g34l);color:var(--g34);border:1px solid var(--g34b);">Grade 3–4</span><span style="font-family:var(--sans);font-size:13px;">Achievable target</span></div><span style="color:var(--g34);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g34b);">Both writers are interested in what makes travel meaningful. In Source A, the writer thinks slow travel is better because "the journey is not something to be endured before the destination — it is the destination." This shows they believe the journey itself has value, not just the place you end up.
+
+In Source B, the Victorian writer also thinks about what travel really means. He compares himself to his father, who "arrived with knowledge accumulated mile by mile," suggesting his father's slower journey was more worthwhile.
+
+Both writers are unhappy with fast travel. Source A says we "are deposited" at airports, which sounds negative. Source B says speed is "a form of abstraction," meaning it removes the traveller from real experience.</div>
+        </div>
+        <div class="grade-acc" style="border:1.5px solid var(--g5b);">
+          <button class="grade-btn" style="background:var(--g5l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g5l);color:var(--g5);border:1px solid var(--g5b);">Grade 5</span><span style="font-family:var(--sans);font-size:13px;">Stretch target</span></div><span style="color:var(--g5);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g5b);">Both writers share a concern that speed in travel removes something important. The modern writer argues that air travel has robbed travellers of "texture — the accumulated sensation of distance", suggesting genuine travel requires gradual, physical movement. Similarly, the Victorian writer implies that the railway fails to provide the "knowledge accumulated mile by mile" that his father gained from slower travel.
+
+However, the writers occupy opposite positions. For the modern writer, the train is the solution — the means of recovering what has been lost. For the Victorian writer, the train is the problem. This contrast reveals how perceptions of speed shift across time: one era's revolutionary technology becomes the next era's route to slower, more meaningful experience.</div>
+        </div>
+      </div>
+      <div class="checklist" id="cl-q2">
+        <div class="check-title">✅ Self-Assessment</div>
+        <button class="check-item" onclick="tickItem(this,'cl-q2')"><span class="check-box"></span><span class="check-label">Used evidence from Source A</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q2')"><span class="check-box"></span><span class="check-label">Used evidence from Source B</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q2')"><span class="check-box"></span><span class="check-label">Identified what each writer values</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q2')"><span class="check-box"></span><span class="check-label">Identified what each writer finds unsatisfying</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q2')"><span class="check-box"></span><span class="check-label">Made a connection or contrast between the two</span></button>
+        <div class="check-count">0/5 completed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="accordion" id="acc-q3">
+    <button class="acc-btn" onclick="toggleAcc('acc-q3')">
+      <div class="acc-btn-left"><span style="font-family:var(--serif);font-size:17px;">Q3</span><span class="ao-badge">AO2</span><span class="mark-badge">12 marks</span><span style="font-family:var(--sans);font-size:13px;color:#555;">Language Analysis — Source A</span></div>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body" style="display:none;">
+      <div class="what-box"><div class="what-title">📌 What this question asks</div><div class="what-text">How does the writer of Source A use language to show enthusiasm for slow travel?</div></div>
+      <div class="tip-box">⏱ <strong>Strategy:</strong> 12 marks · 14 minutes. Aim for 3 developed paragraphs. Quote → technique → effect.</div>
+      <div class="instr-box">How does the writer of Source A use language to convey enthusiasm for slow travel? Comment on: words and phrases; language techniques; the effects created on the reader.</div>
+      <div class="vocab-box"><div class="vocab-title">📖 Key Vocabulary</div>
+        <div class="vocab-row"><span class="vocab-word">convey</span><span class="vocab-def">to express or communicate a feeling</span></div>
+        <div class="vocab-row"><span class="vocab-word">vivid</span><span class="vocab-def">very clear and detailed — creates a strong picture</span></div>
+        <div class="vocab-row"><span class="vocab-word">connotation</span><span class="vocab-def">the feeling a word carries beyond its dictionary meaning</span></div>
+        <div class="vocab-row"><span class="vocab-word">passive voice</span><span class="vocab-def">when the subject receives the action, e.g. "we were deposited"</span></div>
+      </div>
+      <div class="scaffold-box"><div class="scaffold-title">🏗️ Writing Scaffold</div>
+        <div class="scaffold-row"><span class="scaffold-num">1</span><span class="scaffold-text">The writer shows enthusiasm through the phrase "..." which suggests...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">2</span><span class="scaffold-text">The [technique] of "..." creates a sense of... because...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">3</span><span class="scaffold-text">The writer's choice of the word "..." is effective because it implies...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">4</span><span class="scaffold-text">This conveys enthusiasm because the reader feels...</span></div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <div class="model-heading">Model Answers</div>
+        <div class="grade-acc" style="border:1.5px solid var(--g34b);">
+          <button class="grade-btn" style="background:var(--g34l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g34l);color:var(--g34);border:1px solid var(--g34b);">Grade 3–4</span><span style="font-family:var(--sans);font-size:13px;">Achievable target</span></div><span style="color:var(--g34);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g34b);">The writer shows enthusiasm for slow travel through the phrase "the journey is not something to be endured before the destination — it is the destination." This shows the writer is very positive because they think the journey itself is the best part, not just arriving.
+
+The writer also uses a list: "you eat, sleep, read, talk to strangers, and wake up somewhere entirely different." This makes slow travel sound exciting and full of different experiences.
+
+The writer criticises flying by saying "we are deposited" at airports. The word "deposited" sounds negative because it treats people like objects, making train travel seem much better by comparison.</div>
+        </div>
+        <div class="grade-acc" style="border:1.5px solid var(--g5b);">
+          <button class="grade-btn" style="background:var(--g5l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g5l);color:var(--g5);border:1px solid var(--g5b);">Grade 5</span><span style="font-family:var(--sans);font-size:13px;">Stretch target</span></div><span style="color:var(--g5);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g5b);">The writer conveys enthusiasm through rich sensory contrast. The phrase "the landscape shifts from flat plains to the violent geometry of mountains" juxtaposes the mundane with the dramatic. The adjective "violent" is strikingly unexpected applied to a visual experience — it elevates looking out of a train window into something physically thrilling.
+
+The writer's use of the collective "we" — "we are deposited" — implicates readers directly in the habits being criticised. This is a persuasive technique: by making readers feel they have lost something, the writer creates appetite for the recovery of slow travel.
+
+The final sentence uses the passive voice deliberately: "we are deposited." Against the active verbs of train travel — "eat, sleep, read, talk" — this passivity reads as a kind of death of experience, reinforcing the writer's enthusiasm for the alternative.</div>
+        </div>
+      </div>
+      <div class="checklist" id="cl-q3">
+        <div class="check-title">✅ Self-Assessment</div>
+        <button class="check-item" onclick="tickItem(this,'cl-q3')"><span class="check-box"></span><span class="check-label">Quoted from Source A</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q3')"><span class="check-box"></span><span class="check-label">Named at least one technique</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q3')"><span class="check-box"></span><span class="check-label">Explained the effect on the reader</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q3')"><span class="check-box"></span><span class="check-label">Focused on 'enthusiasm for slow travel' throughout</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q3')"><span class="check-box"></span><span class="check-label">Used subject terminology</span></button>
+        <div class="check-count">0/5 completed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="accordion" id="acc-q4">
+    <button class="acc-btn" onclick="toggleAcc('acc-q4')">
+      <div class="acc-btn-left"><span style="font-family:var(--serif);font-size:17px;">Q4</span><span class="ao-badge">AO1/AO2</span><span class="mark-badge">16 marks</span><span style="font-family:var(--sans);font-size:13px;color:#555;">Compare Both Writers</span></div>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body" style="display:none;">
+      <div class="what-box"><div class="what-title">📌 What this question asks</div><div class="what-text">Compare how both writers present their views on travel and the language methods they use. Use BOTH sources throughout.</div></div>
+      <div class="tip-box">⏱ <strong>Strategy:</strong> 16 marks · 16–18 minutes. Compare directly throughout — don't write about one source then the other. Use: Similarly, However, In contrast, Both writers, Whereas.</div>
+      <div class="instr-box">Refer to the whole of Source A and Source B. Compare how the two writers present their perspectives on travel. Consider: their different attitudes; the language methods they use to convey their perspectives.</div>
+      <div class="vocab-box"><div class="vocab-title">📖 Key Vocabulary</div>
+        <div class="vocab-row"><span class="vocab-word">juxtapose</span><span class="vocab-def">place two contrasting things near each other for effect</span></div>
+        <div class="vocab-row"><span class="vocab-word">register</span><span class="vocab-def">level of formality — formal, informal, conversational</span></div>
+        <div class="vocab-row"><span class="vocab-word">rhetorical</span><span class="vocab-def">language designed to persuade or have a strong effect</span></div>
+        <div class="vocab-row"><span class="vocab-word">irony</span><span class="vocab-def">when the reality is very different from what is expected</span></div>
+      </div>
+      <div class="scaffold-box"><div class="scaffold-title">🏗️ Writing Scaffold</div>
+        <div class="scaffold-row"><span class="scaffold-num">1</span><span class="scaffold-text">Both writers share the view that... shown in Source A when... and Source B when...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">2</span><span class="scaffold-text">However, they differ in that... Source A suggests... whereas Source B argues...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">3</span><span class="scaffold-text">Source A uses [method] to convey their view: "..." The effect is...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">4</span><span class="scaffold-text">In contrast, Source B uses [method]: "..." This is different because...</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">5</span><span class="scaffold-text">Overall, both writers are concerned about... but reach [similar/different] conclusions.</span></div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <div class="model-heading">Model Answers</div>
+        <div class="grade-acc" style="border:1.5px solid var(--g34b);">
+          <button class="grade-btn" style="background:var(--g34l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g34l);color:var(--g34);border:1px solid var(--g34b);">Grade 3–4</span><span style="font-family:var(--sans);font-size:13px;">Achievable target</span></div><span style="color:var(--g34);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g34b);">Both writers think that fast travel takes away from the experience. Source A says we "are deposited" at airports, which sounds negative. Source B says speed is "a form of abstraction," meaning it removes the traveller from real experience. Both writers agree something important is lost when we travel too quickly.
+
+However, the writers have different attitudes. Source A is enthusiastic about trains as a solution to bad modern travel. Source B is less certain — the Victorian writer says he is "not certain" whether the train counts as genuine travel.
+
+The language is also different. Source A uses "we" to include the reader and feels personal and passionate. Source B is a formal letter to a newspaper editor and feels more measured and cautious.</div>
+        </div>
+        <div class="grade-acc" style="border:1.5px solid var(--g5b);">
+          <button class="grade-btn" style="background:var(--g5l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g5l);color:var(--g5);border:1px solid var(--g5b);">Grade 5</span><span style="font-family:var(--sans);font-size:13px;">Stretch target</span></div><span style="color:var(--g5);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g5b);">Both writers use abstract concepts to express what speed takes from travel. The modern writer mourns "texture — the accumulated sensation of distance" while the Victorian writer laments the loss of "knowledge accumulated mile by mile." The echo of "accumulated" across both texts — separated by over 170 years — suggests an enduring human need for gradual, layered experience that speed continues to frustrate.
+
+However, the writers occupy opposite positions on the same technological spectrum. The modern writer celebrates the train as a corrective to dead airport time. The Victorian writer views the train with the same unease the modern writer reserves for aeroplanes. This irony only becomes visible when the two texts are read together.
+
+The methods reflect different rhetorical contexts. The modern writer's inclusive "we" implicates readers in collective failure. The Victorian writer's deliberate uncertainty — "I am not certain", "it seems to me" — makes his critique more persuasive through intellectual caution, a tone that carries authority in Victorian print culture.</div>
+        </div>
+      </div>
+      <div class="checklist" id="cl-q4">
+        <div class="check-title">✅ Self-Assessment</div>
+        <button class="check-item" onclick="tickItem(this,'cl-q4')"><span class="check-box"></span><span class="check-label">Compared both sources throughout (not one then the other)</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q4')"><span class="check-box"></span><span class="check-label">Commented on attitudes to travel in both sources</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q4')"><span class="check-box"></span><span class="check-label">Analysed language methods in both sources</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q4')"><span class="check-box"></span><span class="check-label">Used comparative connectives (Similarly, However, Whereas)</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q4')"><span class="check-box"></span><span class="check-label">Quoted from both texts</span></button>
+        <div class="check-count">0/5 completed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="accordion" id="acc-q5">
+    <button class="acc-btn" onclick="toggleAcc('acc-q5')">
+      <div class="acc-btn-left"><span style="font-family:var(--serif);font-size:17px;">Q5</span><span class="ao-badge">AO5/AO6</span><span class="mark-badge">40 marks</span><span style="font-family:var(--sans);font-size:13px;color:#555;">Non-Fiction Writing</span><span class="tag tag-sm" style="background:var(--p2l);color:var(--p2);border:1px solid var(--p2b);">Section B</span></div>
+      <span class="acc-icon">+</span>
+    </button>
+    <div class="acc-body" style="display:none;">
+      <div class="what-box"><div class="what-title">📌 What this question asks</div><div class="what-text">Write an article arguing for or against: "We are all travelling too fast through life."</div></div>
+      <div class="tip-box">⏱ <strong>Strategy:</strong> 40 marks · 45 minutes: 5 plan + 35 write + 5 check. Content = 24 marks. SPAG = 16 marks.</div>
+      <div class="instr-box">"We are all travelling too fast through life." Write an article for a broadsheet newspaper arguing for or against this view. (40 marks)</div>
+      <div class="vocab-box"><div class="vocab-title">📖 Key Vocabulary</div>
+        <div class="vocab-row"><span class="vocab-word">broadsheet</span><span class="vocab-def">a serious newspaper written for educated adult readers</span></div>
+        <div class="vocab-row"><span class="vocab-word">rhetoric</span><span class="vocab-def">language used to persuade — includes repetition, rhetorical questions</span></div>
+        <div class="vocab-row"><span class="vocab-word">tricolon</span><span class="vocab-def">a list of three for emphasis: "We rush, we scroll, we forget"</span></div>
+        <div class="vocab-row"><span class="vocab-word">counter-argument</span><span class="vocab-def">acknowledging the other side before dismissing it — makes your writing stronger</span></div>
+      </div>
+      <div class="scaffold-box"><div class="scaffold-title">🏗️ Writing Scaffold</div>
+        <div class="scaffold-row"><span class="scaffold-num">1</span><span class="scaffold-text">HEADLINE: Write a punchy headline first.</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">2</span><span class="scaffold-text">INTRO: Hook the reader — startling fact, short anecdote or rhetorical question.</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">3</span><span class="scaffold-text">PARA 1: State your clearest reason and support it with evidence or example.</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">4</span><span class="scaffold-text">PARA 2: Second argument — develop with a different point.</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">5</span><span class="scaffold-text">PARA 3: Counter-argument — acknowledge the other view, then dismiss it.</span></div>
+        <div class="scaffold-row"><span class="scaffold-num">6</span><span class="scaffold-text">CONCLUSION: Return to your opening idea. End memorably.</span></div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <div class="model-heading">Model Answers</div>
+        <div class="grade-acc" style="border:1.5px solid var(--g34b);">
+          <button class="grade-btn" style="background:var(--g34l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g34l);color:var(--g34);border:1px solid var(--g34b);">Grade 3–4</span><span style="font-family:var(--sans);font-size:13px;">Achievable target</span></div><span style="color:var(--g34);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g34b);">Slow Down: Why Life Is Not a Race
+
+Have you ever arrived home at the end of a day and realised you cannot remember a single moment of it? This is what happens when we travel too fast through life.
+
+We rush from place to place, task to task, screen to screen. We check our phones over 150 times a day. We eat lunch at our desks without tasting it. We are always busy, but are we actually living?
+
+Some people argue that speed is progress. Modern technology allows us to do more in a day than our grandparents managed in a week. This is true. But progress and happiness are not the same thing.
+
+Research suggests that people who report the highest happiness spend time in meaningful conversation and creative activity — things that require slowness.
+
+It is time to stop. To look up. To notice the world before we arrive at the end of it without ever having really seen it.</div>
+        </div>
+        <div class="grade-acc" style="border:1.5px solid var(--g5b);">
+          <button class="grade-btn" style="background:var(--g5l);" onclick="toggleGrade(this)"><div style="display:flex;align-items:center;gap:8px;"><span class="tag" style="background:var(--g5l);color:var(--g5);border:1px solid var(--g5b);">Grade 5</span><span style="font-family:var(--sans);font-size:13px;">Stretch target</span></div><span style="color:var(--g5);font-size:16px;">+</span></button>
+          <div class="grade-body" style="display:none;border-top:1px solid var(--g5b);">The Tyranny of Now
+
+Something strange happened at a dinner party recently. Eight people sat around a table, but at any given moment, three of them were somewhere else — in an inbox, a feed, a notification — anywhere but the room they occupied. Nobody mentioned it. It had become normal.
+
+We have built a civilisation in which speed is its own virtue. Fast food. Fast fashion. Fast broadband. We have reorganised daily life around the assumption that quicker is better and instantaneous is best. The question nobody asks is: better for what?
+
+Speed has real achievements to its name. Medical technology that once demanded months of waiting now delivers results in hours. Information travels in milliseconds. The connected world has driven scientific collaboration, democratised knowledge, and saved lives. It would be absurd to deny this.
+
+But speed has costs we rarely measure. When we choose the express checkout, a local business closes. When we read the summary instead of the book, a texture of understanding goes missing that no summary restores. We are not travelling too fast through life because life is moving slowly. We are travelling too fast because we have forgotten that the journey is the point.
+
+Slow down. The world will still be there.</div>
+        </div>
+      </div>
+      <div class="split-marks">
+        <div class="split-badge" style="background:var(--introl);border:1px solid var(--introb);color:var(--intro);">Content & Organisation: <strong>24 marks (AO5)</strong></div>
+        <div class="split-badge" style="background:var(--p2l);border:1px solid var(--p2b);color:var(--p2);">SPAG: <strong>16 marks (AO6)</strong></div>
+      </div>
+      <div class="checklist" id="cl-q5">
+        <div class="check-title">✅ Self-Assessment</div>
+        <button class="check-item" onclick="tickItem(this,'cl-q5')"><span class="check-box"></span><span class="check-label">Written a headline</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5')"><span class="check-box"></span><span class="check-label">Strong opening that hooks the reader</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5')"><span class="check-box"></span><span class="check-label">Clear argument maintained throughout</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5')"><span class="check-box"></span><span class="check-label">Used at least one rhetorical device</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5')"><span class="check-box"></span><span class="check-label">Included a counter-argument and responded to it</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5')"><span class="check-box"></span><span class="check-label">Formal register for a broadsheet</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5')"><span class="check-box"></span><span class="check-label">Clear paragraphs</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5')"><span class="check-box"></span><span class="check-label">Accurate punctuation</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5')"><span class="check-box"></span><span class="check-label">Accurate spelling</span></button>
+        <button class="check-item" onclick="tickItem(this,'cl-q5')"><span class="check-box"></span><span class="check-label">Varied sentence lengths</span></button>
+        <div class="check-count">0/10 completed</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+<footer>AQA GCSE English Language 8700 · Paper 2 · Writers' Viewpoints &amp; Perspectives · Foundation Support (Grades 3–5)</footer>
+
+<script>
+function toggleAcc(id) {
+  const el = document.getElementById(id);
+  const body = el.querySelector('.acc-body');
+  const icon = el.querySelector('.acc-icon');
+  const isOpen = el.classList.contains('open');
+  el.classList.toggle('open', !isOpen);
+  body.style.display = isOpen ? 'none' : 'block';
+  icon.textContent = isOpen ? '+' : '−';
+}
+function toggleGrade(btn) {
+  const body = btn.nextElementSibling;
+  const icon = btn.querySelector('span:last-child');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  icon.textContent = isOpen ? '+' : '−';
+}
+const mcState = {};
+function toggleMC(btn, qid, correct) {
+  if (!mcState[qid]) mcState[qid] = { selected: [], done: false };
+  if (mcState[qid].done) return;
+  const opt = parseInt(btn.dataset.opt);
+  const s = mcState[qid].selected;
+  const idx = s.indexOf(opt);
+  if (idx > -1) { s.splice(idx, 1); btn.classList.remove('selected'); btn.querySelector('.mc-circle').style.background='#E5E7EB'; }
+  else if (s.length < 4) { s.push(opt); btn.classList.add('selected'); btn.querySelector('.mc-circle').style.background='var(--p2)'; }
+  const checkBtn = document.getElementById('check-' + qid);
+  checkBtn.textContent = 'Check Answers (' + s.length + '/4)';
+  checkBtn.classList.toggle('ready', s.length === 4);
+}
+function checkMC(qid, correct) {
+  if (!mcState[qid] || mcState[qid].selected.length !== 4) return;
+  mcState[qid].done = true;
+  document.querySelectorAll('[data-q="' + qid + '"]').forEach(btn => {
+    const opt = parseInt(btn.dataset.opt);
+    const sel = mcState[qid].selected.includes(opt);
+    const cor = correct.includes(opt);
+    if (cor) { btn.classList.add('correct'); btn.querySelector('.mc-circle').style.background='var(--ok)'; }
+    else if (sel) { btn.classList.add('wrong'); btn.querySelector('.mc-circle').style.background='var(--err)'; }
+  });
+  document.getElementById('check-' + qid).style.display = 'none';
+  const result = document.getElementById('result-' + qid);
+  result.style.display = 'block';
+  result.querySelector('.mc-score').textContent = 'Score: ' + mcState[qid].selected.filter(x => correct.includes(x)).length + '/4 correct';
+}
+function tickItem(btn, clId) {
+  const box = btn.querySelector('.check-box');
+  const label = btn.querySelector('.check-label');
+  const isTicked = box.classList.contains('ticked');
+  box.classList.toggle('ticked', !isTicked);
+  label.classList.toggle('done', !isTicked);
+  const cl = document.getElementById(clId);
+  const total = cl.querySelectorAll('.check-item').length;
+  const done = cl.querySelectorAll('.check-box.ticked').length;
+  cl.querySelector('.check-count').textContent = done + '/' + total + ' completed';
+}
+</script>
+</body>
+</html>

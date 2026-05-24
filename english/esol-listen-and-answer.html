@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ESOL – Listen & Answer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sky:    #e8f4fd;
+      --cloud:  #ffffff;
+      --navy:   #1a3a5c;
+      --teal:   #2a9d8f;
+      --amber:  #e9c46a;
+      --coral:  #e76f51;
+      --green:  #52b788;
+      --soft:   #f0f7ff;
+      --muted:  #6b8caa;
+      --radius: 14px;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--sky);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px 80px;
+      background-image: radial-gradient(circle at 20% 20%, #d0eaff 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, #c8f0e8 0%, transparent 50%);
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--teal);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      color: var(--navy);
+      font-weight: 600;
+    }
+    .subtitle { color: var(--muted); font-size: 0.95rem; margin-top: 6px; }
+
+    /* ── Card ── */
+    .card {
+      background: var(--cloud);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 24px rgba(26,58,92,0.10);
+      width: 100%;
+      max-width: 680px;
+      padding: 36px 40px;
+      margin-bottom: 24px;
+    }
+
+    /* ── Paragraph section ── */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+
+    #paragraph {
+      font-family: 'Lora', serif;
+      font-size: 1.08rem;
+      line-height: 1.9;
+      color: var(--navy);
+    }
+
+    .word { display: inline; border-radius: 3px; padding: 0 1px; transition: background 0.1s; }
+    .word.active  { background: var(--amber); font-weight: 700; }
+    .word.spoken  { color: #aac0d8; }
+
+    /* ── Listen button ── */
+    .listen-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .btn-listen {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 99px;
+      padding: 11px 26px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      box-shadow: 0 3px 12px rgba(42,157,143,0.30);
+    }
+    .btn-listen:hover  { background: #238a7d; box-shadow: 0 5px 18px rgba(42,157,143,0.38); }
+    .btn-listen:active { transform: scale(0.97); }
+    .btn-listen svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .voice-note { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+
+    /* ── Progress bar ── */
+    .prog-wrap {
+      height: 5px;
+      background: #ddeef9;
+      border-radius: 3px;
+      margin-top: 16px;
+      overflow: hidden;
+    }
+    #prog-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--green));
+      border-radius: 3px;
+      transition: width 0.2s;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 2px dashed #d6eaf8;
+      margin: 28px 0;
+    }
+
+    /* ── Questions ── */
+    #questions-section { display: none; }
+
+    .q-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .q-num {
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 800;
+      border-radius: 99px;
+      padding: 3px 12px;
+      flex-shrink: 0;
+    }
+    .q-text {
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    /* ── Choices ── */
+    .choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 18px;
+      border: 2px solid #d6eaf8;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      font-size: 0.97rem;
+      color: var(--navy);
+      background: var(--soft);
+      user-select: none;
+    }
+    .choice:hover { border-color: var(--teal); background: #e6f7f5; }
+    .choice.selected { border-color: var(--teal); background: #d0f0ec; }
+    .choice.wrong    { border-color: var(--coral); background: #fdeee9; animation: shake 0.35s; }
+    .choice.correct  { border-color: var(--green); background: #d6f5e6; pointer-events: none; }
+
+    .choice-letter {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #d6eaf8;
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 0.82rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .choice.selected .choice-letter { background: var(--teal); color: #fff; }
+    .choice.correct  .choice-letter { background: var(--green); color: #fff; }
+    .choice.wrong    .choice-letter { background: var(--coral); color: #fff; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+
+    /* ── Feedback message ── */
+    .feedback {
+      min-height: 28px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .feedback.show { opacity: 1; }
+    .feedback.wrong-fb { color: var(--coral); }
+    .feedback.right-fb { color: var(--green); }
+
+    /* ── Check button ── */
+    .btn-check {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: 99px;
+      padding: 12px 36px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      box-shadow: 0 3px 12px rgba(26,58,92,0.18);
+      letter-spacing: 0.03em;
+    }
+    .btn-check:hover  { background: #122d4a; }
+    .btn-check:active { transform: scale(0.97); }
+    .btn-check:disabled { background: #b0c4d8; cursor: not-allowed; box-shadow: none; }
+
+    /* ── Completion banner ── */
+    #completion {
+      display: none;
+      text-align: center;
+      padding: 20px 0 4px;
+    }
+    .star-row { font-size: 2rem; margin-bottom: 8px; letter-spacing: 4px; }
+    .complete-msg {
+      font-family: 'Lora', serif;
+      font-size: 1.3rem;
+      color: var(--navy);
+      font-weight: 600;
+    }
+    .complete-sub { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .card { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">ESOL · Reading &amp; Listening</div>
+  <h1>Listen &amp; Answer</h1>
+  <p class="subtitle">Listen to the passage, then answer the questions.</p>
+</header>
+
+<div class="card">
+
+  <!-- ── Paragraph ── -->
+  <div class="section-label">📖 Reading Passage</div>
+  <div id="paragraph"></div>
+
+  <div class="prog-wrap"><div id="prog-bar"></div></div>
+
+  <div class="listen-row">
+    <button class="btn-listen" id="btn-listen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+      Listen to Passage
+    </button>
+    <span class="voice-note" id="voice-note">Using Samantha voice…</span>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- ── Questions ── -->
+  <div id="questions-section">
+    <div id="q-container"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="btn-check" id="btn-check" disabled>Check Answer</button>
+    <div id="completion">
+      <div class="star-row">⭐⭐⭐</div>
+      <div class="complete-msg">Excellent work!</div>
+      <div class="complete-sub">You answered all the questions correctly.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  CONTENT
+// ─────────────────────────────────────────────
+const passage = `Every morning, Maria walks to the small bakery on the corner of her street. 
+She always buys a fresh loaf of bread and a cup of hot coffee. 
+The baker, Mr. Chen, knows her order by heart and starts preparing it as soon as he sees her come through the door. 
+Maria loves the smell of warm bread in the morning. 
+She says it makes her feel happy and ready for the day ahead.`;
+
+const questions = [
+  {
+    text: "Where does Maria go every morning?",
+    choices: [
+      "To the supermarket",
+      "To the small bakery on the corner",
+      "To a coffee shop in town",
+      "To her friend's house"
+    ],
+    correct: 1   // 0-indexed
+  },
+  {
+    text: "How does Mr. Chen know what Maria wants?",
+    choices: [
+      "Maria writes her order on a piece of paper",
+      "Maria calls him before she arrives",
+      "He knows her order by heart and starts when he sees her",
+      "Maria always points to the same item"
+    ],
+    correct: 2
+  }
+];
+
+// ─────────────────────────────────────────────
+//  TOKENISE PARAGRAPH
+// ─────────────────────────────────────────────
+const paraEl   = document.getElementById('paragraph');
+const wordEls  = [];
+
+passage.split(/(\s+)/).forEach(token => {
+  if (/^\s+$/.test(token)) {
+    paraEl.appendChild(document.createTextNode(token));
+  } else if (token.length) {
+    const sp = document.createElement('span');
+    sp.className   = 'word';
+    sp.textContent = token;
+    paraEl.appendChild(sp);
+    wordEls.push(sp);
+  }
+});
+
+// ─────────────────────────────────────────────
+//  SPEECH HELPERS
+// ─────────────────────────────────────────────
+const synth = window.speechSynthesis;
+let samantha = null;
+
+function loadVoices() {
+  const all = synth.getVoices();
+  // Prefer "Samantha" exactly, then any voice with "samantha" in the name
+  samantha = all.find(v => v.name === 'Samantha')
+          || all.find(v => v.name.toLowerCase().includes('samantha'))
+          || all.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes('ava'))
+          || all.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes('aria'))
+          || all.find(v => v.lang.startsWith('en'));
+  if (samantha) {
+    document.getElementById('voice-note').textContent = `Voice: ${samantha.name}`;
+  }
+}
+loadVoices();
+if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+function speak(text, onEnd) {
+  synth.cancel();
+  const utt  = new SpeechSynthesisUtterance(text);
+  utt.rate   = 0.92;
+  utt.pitch  = 1.0;
+  if (samantha) utt.voice = samantha;
+  if (onEnd) utt.onend = onEnd;
+  synth.speak(utt);
+}
+
+function speakPassage() {
+  synth.cancel();
+  const text = wordEls.map(el => el.textContent).join(' ');
+  const utt  = new SpeechSynthesisUtterance(text);
+  utt.rate   = 0.90;
+  utt.pitch  = 1.0;
+  if (samantha) utt.voice = samantha;
+
+  const btnListen = document.getElementById('btn-listen');
+  const progBar   = document.getElementById('prog-bar');
+
+  // highlight word by word
+  utt.onboundary = (e) => {
+    if (e.name !== 'word') return;
+    const chunk = text.substring(0, e.charIndex);
+    const n = chunk.split(/\s+/).filter(Boolean).length;
+    wordEls.forEach((el, i) => {
+      el.classList.remove('active', 'spoken');
+      if (i < n)    el.classList.add('spoken');
+      if (i === n)  el.classList.add('active');
+    });
+    progBar.style.width = ((n / wordEls.length) * 100).toFixed(1) + '%';
+  };
+
+  utt.onend = () => {
+    wordEls.forEach(el => { el.classList.remove('active'); el.classList.add('spoken'); });
+    progBar.style.width = '100%';
+    btnListen.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Listen Again`;
+    // short pause then show questions
+    setTimeout(showQuestions, 600);
+  };
+
+  btnListen.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Listening…`;
+  synth.speak(utt);
+}
+
+// ─────────────────────────────────────────────
+//  QUESTIONS ENGINE
+// ─────────────────────────────────────────────
+let currentQ    = 0;
+let selected    = null;
+
+function showQuestions() {
+  document.getElementById('questions-section').style.display = 'block';
+  renderQuestion(0);
+  // ask the first question aloud after a beat
+  setTimeout(() => {
+    speak(`Now answer the questions. Question 1. ${questions[0].text}`);
+  }, 400);
+}
+
+function renderQuestion(idx) {
+  const q          = questions[idx];
+  const container  = document.getElementById('q-container');
+  const letters    = ['A','B','C','D'];
+  selected         = null;
+
+  document.getElementById('btn-check').disabled = true;
+  const fb = document.getElementById('feedback');
+  fb.textContent = '';
+  fb.className   = 'feedback';
+
+  container.innerHTML = `
+    <div class="q-header">
+      <span class="q-num">Q${idx + 1} of ${questions.length}</span>
+      <span class="q-text">${q.text}</span>
+    </div>
+    <div class="choices">
+      ${q.choices.map((c, i) => `
+        <div class="choice" data-idx="${i}">
+          <span class="choice-letter">${letters[i]}</span>
+          <span>${c}</span>
+        </div>`).join('')}
+    </div>`;
+
+  // attach click handlers
+  container.querySelectorAll('.choice').forEach(el => {
+    el.addEventListener('click', () => {
+      if (el.classList.contains('correct')) return;
+      container.querySelectorAll('.choice').forEach(c => {
+        c.classList.remove('selected', 'wrong');
+      });
+      el.classList.add('selected');
+      selected = parseInt(el.dataset.idx, 10);
+      document.getElementById('btn-check').disabled = false;
+    });
+  });
+}
+
+document.getElementById('btn-check').addEventListener('click', () => {
+  if (selected === null) return;
+  const q       = questions[currentQ];
+  const choices = document.querySelectorAll('.choice');
+  const fb      = document.getElementById('feedback');
+
+  if (selected === q.correct) {
+    // ✅ Correct
+    choices[selected].classList.remove('selected');
+    choices[selected].classList.add('correct');
+    fb.innerHTML  = '✅ Correct!';
+    fb.className  = 'feedback show right-fb';
+    document.getElementById('btn-check').disabled = true;
+
+    speak('Well done!', () => {
+      setTimeout(() => {
+        currentQ++;
+        if (currentQ < questions.length) {
+          renderQuestion(currentQ);
+          setTimeout(() => {
+            speak(`Question ${currentQ + 1}. ${questions[currentQ].text}`);
+          }, 300);
+        } else {
+          showCompletion();
+        }
+      }, 600);
+    });
+
+  } else {
+    // ❌ Wrong
+    choices[selected].classList.remove('selected');
+    choices[selected].classList.add('wrong');
+    fb.innerHTML = '❌ Not quite — try again!';
+    fb.className = 'feedback show wrong-fb';
+    selected     = null;
+    document.getElementById('btn-check').disabled = true;
+
+    speak('Not quite, try again.', () => {
+      // remove wrong highlight after voice finishes
+      setTimeout(() => {
+        choices.forEach(c => c.classList.remove('wrong'));
+        fb.className = 'feedback';
+      }, 400);
+    });
+  }
+});
+
+function showCompletion() {
+  document.getElementById('q-container').style.display    = 'none';
+  document.getElementById('feedback').style.display       = 'none';
+  document.getElementById('btn-check').style.display      = 'none';
+  document.getElementById('completion').style.display     = 'block';
+  speak('Congratulations! You answered all the questions correctly. Excellent work!');
+}
+
+// ─────────────────────────────────────────────
+//  LISTEN BUTTON
+// ─────────────────────────────────────────────
+document.getElementById('btn-listen').addEventListener('click', speakPassage);
+
+window.addEventListener('beforeunload', () => synth.cancel());
+</script>
+</body>
+</html>
