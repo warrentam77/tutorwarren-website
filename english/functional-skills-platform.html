@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Functional Skills English — Foundation Learning Platform</title>
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F7F6F2; }
+  button, textarea { font: inherit; }
+  @media (max-width: 520px) {
+    body { font-size: 15px; }
+  }
+
+/* Back to home button added for TutorWarren English pages */
+.tw-home-bar {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 14px 16px 0;
+}
+.tw-back-home {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #073fd1;
+  color: #ffffff !important;
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 900;
+  font-size: 0.92rem;
+  box-shadow: 0 8px 20px rgba(7, 63, 209, 0.18);
+}
+.tw-back-home:hover {
+  background: #052f9f;
+}
+
+</style>
+</head>
+<body>
+
+<div class="tw-home-bar"><a class="tw-back-home" href="../index.html">← Back to Home</a></div>
+<div id="root"></div>
+
+<!-- React runtime for this standalone HTML version -->
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+
+const LEVELS = [
+  { id: 1, label: "Entry Level 1", short: "EL1", color: "#D97706", light: "#FEF3C7", border: "#FDE68A", tag: "Foundation" },
+  { id: 2, label: "Entry Level 2", short: "EL2", color: "#0D9488", light: "#CCFBF1", border: "#99F6E4", tag: "Developing" },
+  { id: 3, label: "Entry Level 3", short: "EL3", color: "#7C3AED", light: "#EDE9FE", border: "#DDD6FE", tag: "Progressing" },
+];
+
+const EXAMPLES = {
+  1: [
+    {
+      component: "Reading",
+      icon: "📖",
+      title: "Reading a Sign",
+      instruction: "Read the sign below, then answer the question.",
+      text: `⚠️  WET FLOOR\n\nPlease take care.\nCleaning in progress.\nStaff only beyond this point.`,
+      question: "What does the sign warn you about?",
+      answer: "The sign warns you that the floor is wet and to take care. It also says the area beyond is for staff only.",
+      tip: "At Entry Level 1, signs and notices use simple, clear language. Look for the main warning word first.",
+    },
+    {
+      component: "Writing",
+      icon: "✏️",
+      title: "Writing a Simple Note",
+      instruction: "Read this example of a simple note written correctly at Entry Level 1.",
+      text: `Hi Mum,\n\nI am at the shops.\nI will be home at 5.\n\nLove,\nSam`,
+      question: "What makes this a good Entry Level 1 note?",
+      answer: "It uses capital letters at the start of sentences. It uses full stops. The message is short and clear. It says who it is from.",
+      tip: "Always start sentences with a capital letter and end with a full stop.",
+    },
+    {
+      component: "Speaking & Listening",
+      icon: "🗣️",
+      title: "Following Instructions",
+      instruction: "Listen to these spoken instructions. Number them in the correct order.",
+      text: `A) Put on your coat.\nB) Get your bag.\nC) Open the front door.\nD) Lock the door behind you.`,
+      question: "What is the correct order of these instructions?",
+      answer: "The correct order is: B) Get your bag → A) Put on your coat → C) Open the front door → D) Lock the door behind you.",
+      tip: "Look for action words (verbs) to help you understand what to do first.",
+    },
+  ],
+  2: [
+    {
+      component: "Reading",
+      icon: "📖",
+      title: "Reading an Information Text",
+      instruction: "Read the passage carefully, then answer the question.",
+      text: `Recycling at Home\n\nRecycling helps protect the environment. You can recycle paper, glass, plastic and metal. Most councils collect recycling from your home once a week.\n\nMake sure you rinse containers before putting them in the recycling bin. This helps to keep the bins clean and stops bad smells.`,
+      question: "Give two things you should do when recycling at home.",
+      answer: "1. Rinse containers before putting them in the recycling bin. 2. Make sure you use the recycling bin (not general waste) for paper, glass, plastic and metal.",
+      tip: "At EL2, questions often ask you to find two or more points. Scan the text for numbers or list-like sentences.",
+    },
+    {
+      component: "Writing",
+      icon: "✏️",
+      title: "Writing a Short Email",
+      instruction: "Read this example of a well-written Entry Level 2 email.",
+      text: `To: manager@greenleafcafe.co.uk\nSubject: Absence on Monday\n\nDear Manager,\n\nI am writing to let you know that I cannot come to work on Monday 12th May. I have a doctor's appointment in the morning.\n\nI am sorry for any problems this may cause.\n\nYours sincerely,\nPriya Sharma`,
+      question: "What features make this a good Entry Level 2 email?",
+      answer: "It has a clear subject line. It uses a proper greeting (Dear Manager). It explains the reason clearly. It uses polite, formal language. It ends with 'Yours sincerely' and the writer's name.",
+      tip: "Formal emails need a greeting, a clear reason, and a sign-off. Keep sentences simple and polite.",
+    },
+    {
+      component: "Speaking & Listening",
+      icon: "🗣️",
+      title: "Taking Part in a Discussion",
+      instruction: "Read this extract from a group discussion about healthy eating.",
+      text: `Tutor: "What do you think is the easiest way to eat more healthily?"\n\nAlex: "I think cooking at home is the best way because you know what's in your food."\n\nRita: "I agree, but it can be hard when you're busy. Maybe planning meals in advance could help?"\n\nAlex: "That's a good point, Rita. I could try doing that at weekends."`,
+      question: "What does Alex do well in this discussion?",
+      answer: "Alex gives an opinion with a reason. Alex listens to Rita's point and responds to it. Alex agrees politely and offers to take the advice on board.",
+      tip: "Good discussion means listening as well as speaking. Always respond to what others say.",
+    },
+  ],
+  3: [
+    {
+      component: "Reading",
+      icon: "📖",
+      title: "Reading an Article",
+      instruction: "Read the article extract and answer the question below.",
+      text: `The Benefits of Walking\n\nWalking is one of the most accessible forms of exercise available to people of all ages. Unlike gym memberships or sports equipment, it costs nothing and can be done almost anywhere.\n\nResearch suggests that walking for just 30 minutes a day can reduce the risk of heart disease, improve mood and help maintain a healthy weight. Despite these benefits, many people still choose to drive short distances rather than walk.\n\nLocal councils are now investing in better pavements and walking routes to encourage more people to leave their cars at home.`,
+      question: "Identify the main purpose of this article and give two benefits of walking mentioned in the text.",
+      answer: "The main purpose is to inform the reader about the benefits of walking. Two benefits: (1) It can reduce the risk of heart disease. (2) It can improve mood and help maintain a healthy weight.",
+      tip: "At EL3, identify purpose first (inform, persuade, instruct, describe) before answering detail questions.",
+    },
+    {
+      component: "Writing",
+      icon: "✏️",
+      title: "Writing a Report",
+      instruction: "Read this example of an Entry Level 3 report. Notice how it is structured.",
+      text: `Report: Facilities at Riverside Community Centre\n\nIntroduction\nThis report describes the facilities available at Riverside Community Centre and suggests possible improvements.\n\nCurrent Facilities\nThe centre has a sports hall, a café and meeting rooms. These are well used by local residents. However, the café closes at 3pm, which is inconvenient for people who work during the day.\n\nRecommendations\nIt is recommended that the café extends its opening hours until 6pm. This would allow more people to use the facilities after work.\n\nConclusion\nRiverside Community Centre provides a good range of services. With small improvements, it could serve the community even better.`,
+      question: "What structural features make this a strong EL3 report?",
+      answer: "It uses clear headings (Introduction, Current Facilities, Recommendations, Conclusion). It is written in paragraphs. It uses formal language (e.g. 'It is recommended'). It gives specific detail and makes suggestions.",
+      tip: "Reports at EL3 need clear headings, paragraphs, formal tone and a conclusion.",
+    },
+    {
+      component: "Speaking & Listening",
+      icon: "🗣️",
+      title: "Expressing an Opinion",
+      instruction: "Read this example of someone expressing and justifying a clear opinion in a group discussion.",
+      text: `Topic: Should mobile phones be allowed in schools?\n\n"I believe mobile phones should not be allowed in classrooms because they are a major distraction. Research has shown that students concentrate better without them. However, I do think schools could allow phones to be used at break times, as they help young people stay in contact with their families. On balance, a clear phone policy would benefit everyone."`,
+      question: "How does the speaker structure their argument?",
+      answer: "They state a clear opinion ('I believe...'). They give a reason ('because...'). They refer to evidence ('Research has shown...'). They consider the other side ('However...'). They reach a balanced conclusion ('On balance...').",
+      tip: "Use phrases like 'I believe', 'because', 'however' and 'on balance' to structure a strong spoken argument.",
+    },
+  ],
+};
+
+const QUIZZES = {
+  1: [
+    { q: "Which sentence uses capital letters and full stops correctly?", options: ["the dog is brown", "The dog is brown.", "The dog is Brown.", "the Dog is brown."], answer: 1, explain: "Sentences start with a capital letter and end with a full stop. Only proper nouns (names of people/places) get capitals mid-sentence." },
+    { q: "What is the main purpose of a 'WET FLOOR' sign?", options: ["To tell you where the mop is", "To warn you of danger", "To tell you to clean up", "To show where staff work"], answer: 1, explain: "Warning signs alert people to potential hazards. 'WET FLOOR' warns of slipping danger." },
+    { q: "Which word is spelled correctly?", options: ["frend", "freind", "friend", "frind"], answer: 2, explain: "'Friend' follows the rule: i before e except after c." },
+    { q: "Which is the correct simple sentence?", options: ["cats and dogs", "The cat sat.", "sat on mat", "is very big"], answer: 1, explain: "A sentence needs a subject (The cat) and a verb (sat), plus a full stop." },
+    { q: "What does this symbol mean? ⚠️", options: ["No entry", "Warning / Take care", "Information", "Exit this way"], answer: 1, explain: "The triangle with exclamation mark is a universal warning symbol meaning take care or danger ahead." },
+  ],
+  2: [
+    { q: "Which sentence uses a comma correctly?", options: ["I like tea, and coffee.", "I like tea and, coffee.", "I like, tea and coffee.", "I like tea and coffee,"], answer: 0, explain: "A comma before a conjunction (and, but, or) is correct when joining two independent clauses. Option A is correct here." },
+    { q: "What does 'alphabetical order' mean?", options: ["Ordering by length", "Ordering by first letter A–Z", "Ordering by importance", "Ordering by number"], answer: 1, explain: "Alphabetical order arranges words by their first letter from A to Z, like in a dictionary or index." },
+    { q: "Which is the correct plural of 'knife'?", options: ["knifes", "knives", "knifs", "knife's"], answer: 1, explain: "Words ending in '-fe' change to '-ves' in the plural: knife → knives, life → lives." },
+    { q: "Read: 'Recycling helps protect the environment.' What is the main point?", options: ["The environment is dangerous", "Recycling is good for the environment", "You should recycle glass only", "Councils collect recycling"], answer: 1, explain: "The sentence directly states that recycling helps (protects) the environment — this is the main point." },
+    { q: "Which opening is correct for a formal email?", options: ["Hey there!", "Yo Manager,", "Dear Manager,", "Hi mate,"], answer: 2, explain: "'Dear [Name/Title],' is the standard formal email greeting in British English." },
+  ],
+  3: [
+    { q: "Which sentence uses an apostrophe for possession correctly?", options: ["The dogs' bone (one dog)", "The dog's bone (one dog)", "The dogs bone (one dog)", "The dog'es bone (one dog)"], answer: 1, explain: "For a single owner, add apostrophe + s: dog's. The dogs' (with apostrophe after s) is for multiple dogs." },
+    { q: "What is the purpose of a report?", options: ["To entertain the reader with a story", "To give factual information about a topic", "To persuade the reader to buy something", "To describe a personal experience"], answer: 1, explain: "Reports present factual information, often with headings, for a specific audience." },
+    { q: "Which word is a conjunction?", options: ["quickly", "although", "green", "running"], answer: 1, explain: "Conjunctions join clauses: although, because, however, but, and. 'Although' is a subordinating conjunction." },
+    { q: "Read: 'Despite these benefits, many people still drive short distances.' What does 'despite' tell us?", options: ["In addition to the benefits", "There is a contrast — people don't act on the benefits", "Because of the benefits", "As a result of the benefits"], answer: 1, explain: "'Despite' signals a contrast or unexpected result. Even though there are benefits, people still drive — this is the contrast." },
+    { q: "Which sentence is written in the correct formal register for a report?", options: ["It's well good and loads of people use it.", "Loads of folks turn up every week.", "The facility is well-used by local residents.", "Everyone loves going there loads."], answer: 2, explain: "Formal writing avoids slang and contractions. 'The facility is well-used by local residents' uses precise, formal vocabulary." },
+  ],
+};
+
+const TESTS = {
+  1: {
+    title: "Entry Level 1 Mock Test",
+    duration: 600,
+    sections: [
+      {
+        name: "Reading",
+        passage: `NOTICE\n\nLibrary Opening Hours\n\nMonday – Friday: 9am – 6pm\nSaturday: 10am – 4pm\nSunday: CLOSED\n\nPlease return books on time.\nFines apply for late returns.\nChildren's books are on the ground floor.`,
+        questions: [
+          { q: "What time does the library open on Monday?", options: ["8am", "9am", "10am", "11am"], answer: 1 },
+          { q: "Is the library open on Sunday?", options: ["Yes, all day", "Yes, in the morning", "No, it is closed", "Only in the evening"], answer: 2 },
+          { q: "Where are the children's books?", options: ["First floor", "Ground floor", "Second floor", "In the garden"], answer: 1 },
+        ],
+      },
+      {
+        name: "Writing",
+        task: "Writing Task",
+        prompt: "Write a short note (3–4 sentences) to your friend to say you cannot meet them today. Say why you cannot meet and suggest another day.",
+        modelAnswer: `Hi [Name],\n\nI am sorry but I cannot meet you today. I have to help my mum at home.\n\nCan we meet on Saturday instead?\n\nFrom,\n[Your name]`,
+        checklist: ["Starts with a greeting", "Gives a reason for not meeting", "Suggests another day", "Uses capital letters at start of sentences", "Uses full stops"],
+      },
+    ],
+  },
+  2: {
+    title: "Entry Level 2 Mock Test",
+    duration: 900,
+    sections: [
+      {
+        name: "Reading",
+        passage: `Community Garden Project\n\nA new community garden has opened in Westfield Park. The project was started by a group of local volunteers who wanted to improve the area for residents.\n\nThe garden is open to everyone and includes vegetable plots, a seating area and a small pond. Volunteers meet every Saturday morning to maintain the garden. New members are always welcome.\n\nIf you would like to get involved, contact Sarah on 07700 900123 or email garden@westfield.org.uk.`,
+        questions: [
+          { q: "Who started the community garden?", options: ["The council", "Local volunteers", "The school", "A business"], answer: 1 },
+          { q: "What THREE things does the garden include?", options: ["Vegetable plots, a car park and a pond", "Vegetable plots, a seating area and a pond", "Flower beds, a seating area and a pond", "Vegetable plots, a café and a pond"], answer: 1 },
+          { q: "When do volunteers meet to maintain the garden?", options: ["Every Sunday afternoon", "Every Friday evening", "Every Saturday morning", "Every Wednesday morning"], answer: 2 },
+          { q: "How can you contact Sarah?", options: ["By visiting the park", "By phone or email", "By letter only", "By visiting the council"], answer: 1 },
+        ],
+      },
+      {
+        name: "Writing",
+        task: "Writing Task",
+        prompt: "Write a short email (about 60–80 words) to a local gym asking about membership prices and opening times. Use a suitable greeting and sign off.",
+        modelAnswer: `To: info@localgyms.co.uk\nSubject: Membership Enquiry\n\nDear Sir/Madam,\n\nI am writing to ask about membership at your gym. Could you please tell me the prices for monthly membership and your opening times during the week?\n\nI am interested in joining as soon as possible.\n\nThank you for your help.\n\nYours sincerely,\n[Your name]`,
+        checklist: ["Correct email format (To, Subject)", "Formal greeting (Dear...)", "Asks about prices", "Asks about opening times", "Polite close (Yours sincerely)", "Uses correct punctuation"],
+      },
+    ],
+  },
+  3: {
+    title: "Entry Level 3 Mock Test",
+    duration: 1200,
+    sections: [
+      {
+        name: "Reading",
+        passage: `The Rise of Food Banks\n\nFood banks have become an increasingly important part of the social support network in the UK. Run mainly by volunteers and charities, they provide emergency food parcels to people who cannot afford to buy food.\n\nThe Trussell Trust, one of the UK's largest food bank networks, reported a significant increase in demand over recent years. Economic pressures, including rising living costs and changes to benefits, have been cited as key reasons for this growth.\n\nCritics argue that food banks are merely a short-term fix and that the government should do more to address the root causes of food poverty. Supporters, however, say that food banks provide a vital lifeline that should be celebrated and expanded.\n\nLocal food banks often rely on donations from supermarkets, schools and individuals. Without this community support, many would be forced to close.`,
+        questions: [
+          { q: "What is the main purpose of this article?", options: ["To persuade you to donate to food banks", "To inform the reader about food banks in the UK", "To tell a personal story about using a food bank", "To advertise the Trussell Trust"], answer: 1 },
+          { q: "According to the text, what has caused an increase in demand for food banks?", options: ["Poor diet choices", "Rising living costs and changes to benefits", "Lack of supermarkets", "Too many volunteers"], answer: 1 },
+          { q: "What view do critics hold about food banks?", options: ["They should be expanded", "They are too expensive to run", "They are only a short-term solution", "They should be run by the government"], answer: 2 },
+          { q: "What does the word 'vital' mean in paragraph 4?", options: ["Optional", "Unnecessary", "Extremely important", "Quite useful"], answer: 2 },
+          { q: "Identify ONE way food banks receive donations according to the text.", options: ["From foreign governments", "From supermarkets, schools and individuals", "From hospitals", "From food manufacturers only"], answer: 1 },
+        ],
+      },
+      {
+        name: "Writing",
+        task: "Writing Task",
+        prompt: "Write a report (approximately 120–150 words) about a local issue in your area. Include an introduction, key points, a recommendation and a conclusion. Use formal language and clear paragraphs.",
+        modelAnswer: `Report: Traffic Congestion on High Street\n\nIntroduction\nThis report examines the problem of traffic congestion on High Street and suggests possible solutions.\n\nCurrent Situation\nHigh Street experiences heavy traffic between 8am and 9am and again between 4pm and 6pm. This causes long delays for drivers and makes it difficult for pedestrians to cross safely. Local businesses have reported that deliveries are frequently delayed.\n\nRecommendations\nIt is recommended that the council introduces a one-way system and extends the bus lane during peak hours. Additionally, improving local cycle paths may encourage more residents to cycle instead of drive.\n\nConclusion\nTraffic congestion is a significant problem for the local community. With targeted investment in transport infrastructure, conditions could be greatly improved.`,
+        checklist: ["Clear report structure with headings", "Formal language throughout", "States the problem clearly", "Gives at least one recommendation", "Has a conclusion", "Uses correct grammar and punctuation", "Written in paragraphs"],
+      },
+    ],
+  },
+};
+
+// ─── COMPONENTS ──────────────────────────────────────────────────────────────
+
+function Badge({ color, children }) {
+  return (
+    <span style={{
+      background: color + "22", color, border: `1px solid ${color}44`,
+      borderRadius: 20, padding: "2px 10px", fontSize: 11,
+      fontFamily: "system-ui, sans-serif", fontWeight: 700,
+      letterSpacing: "0.08em", textTransform: "uppercase",
+    }}>{children}</span>
+  );
+}
+
+function SectionTab({ label, active, color, onClick }) {
+  return (
+    <button onClick={onClick} style={{
+      padding: "10px 20px", border: "none", cursor: "pointer",
+      background: active ? color : "transparent",
+      color: active ? "#fff" : "#666",
+      borderRadius: 8, fontFamily: "system-ui, sans-serif",
+      fontSize: 13, fontWeight: active ? 700 : 400,
+      transition: "all 0.15s", letterSpacing: "0.02em",
+    }}>{label}</button>
+  );
+}
+
+// ─── EXAMPLES PAGE ───────────────────────────────────────────────────────────
+
+function ExamplesPage({ levelIndex }) {
+  const level = LEVELS[levelIndex];
+  const examples = EXAMPLES[level.id];
+  const [open, setOpen] = useState(null);
+  const [revealed, setRevealed] = useState({});
+
+  return (
+    <div>
+      <p style={{ fontFamily: "system-ui, sans-serif", fontSize: 14, color: "#555", marginBottom: 24, lineHeight: 1.6 }}>
+        Study these worked examples to understand what is expected at <strong>{level.label}</strong>. Read each text carefully, then reveal the model answer.
+      </p>
+      {examples.map((ex, i) => {
+        const isOpen = open === i;
+        return (
+          <div key={i} style={{
+            background: "#fff", borderRadius: 14,
+            border: `1.5px solid ${isOpen ? level.color : "#E5E7EB"}`,
+            marginBottom: 14, overflow: "hidden",
+            boxShadow: isOpen ? `0 4px 20px ${level.color}18` : "none",
+            transition: "all 0.2s",
+          }}>
+            <button onClick={() => { setOpen(isOpen ? null : i); setRevealed(r => ({ ...r, [i]: false })); }}
+              style={{
+                width: "100%", background: "none", border: "none",
+                padding: "18px 22px", display: "flex", alignItems: "center",
+                justifyContent: "space-between", cursor: "pointer", textAlign: "left", gap: 12,
+              }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ fontSize: 20 }}>{ex.icon}</span>
+                <div>
+                  <div style={{ fontFamily: "Georgia, serif", fontSize: 15, color: "#111" }}>{ex.title}</div>
+                  <div style={{ fontFamily: "system-ui, sans-serif", fontSize: 12, color: "#888", marginTop: 2 }}>{ex.component}</div>
+                </div>
+              </div>
+              <span style={{
+                width: 28, height: 28, borderRadius: "50%",
+                background: isOpen ? level.color : "#F3F4F6",
+                color: isOpen ? "#fff" : "#555",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 16, flexShrink: 0, transition: "all 0.2s",
+              }}>{isOpen ? "−" : "+"}</span>
+            </button>
+
+            {isOpen && (
+              <div style={{ padding: "0 22px 22px", borderTop: `1px solid ${level.color}20` }}>
+                <p style={{ fontFamily: "system-ui, sans-serif", fontSize: 13, color: "#555", marginTop: 16, marginBottom: 10, fontStyle: "italic" }}>{ex.instruction}</p>
+
+                <div style={{
+                  background: "#FAFAFA", border: "1px solid #E5E7EB",
+                  borderRadius: 10, padding: "16px 18px", marginBottom: 16,
+                  fontFamily: "Georgia, serif", fontSize: 14, lineHeight: 1.8,
+                  whiteSpace: "pre-line", color: "#222",
+                }}>
+                  {ex.text}
+                </div>
+
+                <div style={{
+                  background: level.light, borderRadius: 10,
+                  padding: "14px 16px", marginBottom: 14,
+                  border: `1px solid ${level.border}`,
+                }}>
+                  <div style={{ fontFamily: "system-ui, sans-serif", fontSize: 12, fontWeight: 700, color: level.color, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>Question</div>
+                  <p style={{ fontFamily: "Georgia, serif", fontSize: 15, margin: 0, color: "#222" }}>{ex.question}</p>
+                </div>
+
+                {!revealed[i] ? (
+                  <button onClick={() => setRevealed(r => ({ ...r, [i]: true }))}
+                    style={{
+                      background: level.color, color: "#fff", border: "none",
+                      borderRadius: 8, padding: "10px 20px", cursor: "pointer",
+                      fontFamily: "system-ui, sans-serif", fontSize: 13, fontWeight: 600,
+                    }}>
+                    Reveal Model Answer
+                  </button>
+                ) : (
+                  <div>
+                    <div style={{
+                      background: "#F0FDF4", border: "1px solid #BBF7D0",
+                      borderRadius: 10, padding: "14px 16px", marginBottom: 12,
+                    }}>
+                      <div style={{ fontFamily: "system-ui, sans-serif", fontSize: 12, fontWeight: 700, color: "#15803D", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>✓ Model Answer</div>
+                      <p style={{ fontFamily: "Georgia, serif", fontSize: 14, margin: 0, color: "#166534", lineHeight: 1.7 }}>{ex.answer}</p>
+                    </div>
+                    <div style={{
+                      background: "#FFFBEB", border: "1px solid #FDE68A",
+                      borderRadius: 10, padding: "12px 16px",
+                    }}>
+                      <div style={{ fontFamily: "system-ui, sans-serif", fontSize: 12, fontWeight: 700, color: "#92400E", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>💡 Tutor Tip</div>
+                      <p style={{ fontFamily: "system-ui, sans-serif", fontSize: 13, margin: 0, color: "#78350F", lineHeight: 1.6 }}>{ex.tip}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── QUIZ PAGE ───────────────────────────────────────────────────────────────
+
+function QuizPage({ levelIndex }) {
+  const level = LEVELS[levelIndex];
+  const questions = QUIZZES[level.id];
+  const [answers, setAnswers] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [current, setCurrent] = useState(0);
+
+  const score = submitted ? questions.filter((q, i) => answers[i] === q.answer).length : 0;
+
+  const reset = () => { setAnswers({}); setSubmitted(false); setCurrent(0); };
+
+  const q = questions[current];
+
+  return (
+    <div>
+      {!submitted ? (
+        <div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <p style={{ fontFamily: "system-ui, sans-serif", fontSize: 14, color: "#555", margin: 0 }}>
+              Question {current + 1} of {questions.length}
+            </p>
+            <div style={{ display: "flex", gap: 4 }}>
+              {questions.map((_, i) => (
+                <div key={i} style={{
+                  width: 10, height: 10, borderRadius: "50%",
+                  background: i === current ? level.color : answers[i] !== undefined ? level.color + "66" : "#E5E7EB",
+                  transition: "all 0.2s",
+                }} />
+              ))}
+            </div>
+          </div>
+
+          <div style={{
+            background: "#fff", borderRadius: 14, padding: "24px 22px",
+            border: `1.5px solid ${level.color}30`,
+            boxShadow: `0 4px 20px ${level.color}10`,
+            marginBottom: 16,
+          }}>
+            <p style={{ fontFamily: "Georgia, serif", fontSize: 17, lineHeight: 1.6, color: "#111", margin: "0 0 20px" }}>{q.q}</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {q.options.map((opt, oi) => {
+                const selected = answers[current] === oi;
+                return (
+                  <button key={oi} onClick={() => !submitted && setAnswers(a => ({ ...a, [current]: oi }))}
+                    style={{
+                      background: selected ? level.color + "15" : "#FAFAFA",
+                      border: `2px solid ${selected ? level.color : "#E5E7EB"}`,
+                      borderRadius: 10, padding: "12px 16px", cursor: "pointer",
+                      textAlign: "left", fontFamily: "system-ui, sans-serif",
+                      fontSize: 14, color: selected ? level.color : "#333",
+                      fontWeight: selected ? 600 : 400,
+                      transition: "all 0.15s",
+                    }}>
+                    <span style={{
+                      display: "inline-block", width: 22, height: 22,
+                      borderRadius: "50%", background: selected ? level.color : "#E5E7EB",
+                      color: selected ? "#fff" : "#888", fontSize: 11, fontWeight: 700,
+                      textAlign: "center", lineHeight: "22px", marginRight: 10,
+                    }}>
+                      {String.fromCharCode(65 + oi)}
+                    </span>
+                    {opt}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
+            <button onClick={() => setCurrent(c => Math.max(0, c - 1))} disabled={current === 0}
+              style={{
+                background: "#F3F4F6", border: "none", borderRadius: 8,
+                padding: "10px 20px", cursor: current === 0 ? "not-allowed" : "pointer",
+                fontFamily: "system-ui, sans-serif", fontSize: 13, color: current === 0 ? "#ccc" : "#444",
+              }}>← Back</button>
+
+            {current < questions.length - 1 ? (
+              <button onClick={() => setCurrent(c => c + 1)} disabled={answers[current] === undefined}
+                style={{
+                  background: answers[current] !== undefined ? level.color : "#E5E7EB",
+                  border: "none", borderRadius: 8, padding: "10px 20px",
+                  cursor: answers[current] !== undefined ? "pointer" : "not-allowed",
+                  fontFamily: "system-ui, sans-serif", fontSize: 13, fontWeight: 600,
+                  color: answers[current] !== undefined ? "#fff" : "#aaa",
+                }}>Next →</button>
+            ) : (
+              <button onClick={() => setSubmitted(true)}
+                disabled={Object.keys(answers).length < questions.length}
+                style={{
+                  background: Object.keys(answers).length === questions.length ? level.color : "#E5E7EB",
+                  border: "none", borderRadius: 8, padding: "10px 24px",
+                  cursor: Object.keys(answers).length === questions.length ? "pointer" : "not-allowed",
+                  fontFamily: "system-ui, sans-serif", fontSize: 13, fontWeight: 700,
+                  color: Object.keys(answers).length === questions.length ? "#fff" : "#aaa",
+                }}>Submit Quiz</button>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div style={{
+            background: score >= 4 ? "#F0FDF4" : score >= 3 ? "#FFFBEB" : "#FEF2F2",
+            border: `1.5px solid ${score >= 4 ? "#BBF7D0" : score >= 3 ? "#FDE68A" : "#FECACA"}`,
+            borderRadius: 14, padding: "24px", textAlign: "center", marginBottom: 20,
+          }}>
+            <div style={{ fontSize: 40, marginBottom: 8 }}>{score >= 4 ? "🎉" : score >= 3 ? "👍" : "📚"}</div>
+            <div style={{ fontFamily: "Georgia, serif", fontSize: 26, marginBottom: 6 }}>{score} / {questions.length}</div>
+            <div style={{ fontFamily: "system-ui, sans-serif", fontSize: 14, color: "#555" }}>
+              {score >= 4 ? "Excellent! Well done." : score >= 3 ? "Good effort — review the ones you missed." : "Keep practising — look at the explanations below."}
+            </div>
+          </div>
+
+          {questions.map((q, i) => {
+            const correct = answers[i] === q.answer;
+            return (
+              <div key={i} style={{
+                background: "#fff", borderRadius: 12,
+                border: `1.5px solid ${correct ? "#BBF7D0" : "#FECACA"}`,
+                padding: "16px 18px", marginBottom: 10,
+              }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 8 }}>
+                  <span style={{ fontSize: 18 }}>{correct ? "✅" : "❌"}</span>
+                  <p style={{ fontFamily: "Georgia, serif", fontSize: 14, margin: 0, lineHeight: 1.5 }}>{q.q}</p>
+                </div>
+                {!correct && (
+                  <div style={{ marginLeft: 28, marginBottom: 6 }}>
+                    <span style={{ fontFamily: "system-ui, sans-serif", fontSize: 12, color: "#DC2626" }}>
+                      Your answer: {q.options[answers[i]]}
+                    </span>
+                    <br />
+                    <span style={{ fontFamily: "system-ui, sans-serif", fontSize: 12, color: "#15803D" }}>
+                      Correct: {q.options[q.answer]}
+                    </span>
+                  </div>
+                )}
+                <div style={{
+                  marginLeft: 28, background: "#F8FAFC", borderRadius: 8,
+                  padding: "8px 12px", fontFamily: "system-ui, sans-serif",
+                  fontSize: 12, color: "#555", lineHeight: 1.5,
+                }}>
+                  💡 {q.explain}
+                </div>
+              </div>
+            );
+          })}
+
+          <button onClick={reset} style={{
+            background: level.color, color: "#fff", border: "none",
+            borderRadius: 8, padding: "12px 28px", cursor: "pointer",
+            fontFamily: "system-ui, sans-serif", fontSize: 14, fontWeight: 600,
+            marginTop: 10,
+          }}>Try Again</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── MOCK TEST PAGE ───────────────────────────────────────────────────────────
+
+function MockTestPage({ levelIndex }) {
+  const level = LEVELS[levelIndex];
+  const test = TESTS[level.id];
+  const [phase, setPhase] = useState("intro");
+  const [sectionIdx, setSectionIdx] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [writingAnswer, setWritingAnswer] = useState("");
+  const [timeLeft, setTimeLeft] = useState(test.duration);
+  const [showResults, setShowResults] = useState(false);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    if (phase === "test") {
+      timerRef.current = setInterval(() => {
+        setTimeLeft(t => {
+          if (t <= 1) { clearInterval(timerRef.current); setPhase("results"); return 0; }
+          return t - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [phase]);
+
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
+  const section = test.sections[sectionIdx];
+  const readingSection = test.sections[0];
+  const writingSection = test.sections[1];
+
+  const readingScore = readingSection.questions
+    ? readingSection.questions.filter((q, i) => answers[i] === q.answer).length
+    : 0;
+
+  const wordCount = writingAnswer.trim().split(/\s+/).filter(Boolean).length;
+
+  if (phase === "intro") return (
+    <div>
+      <div style={{
+        background: "#fff", borderRadius: 14, padding: "28px 24px",
+        border: `1.5px solid ${level.color}30`, marginBottom: 20,
+      }}>
+        <h3 style={{ fontFamily: "Georgia, serif", fontSize: 20, margin: "0 0 12px" }}>{test.title}</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
+          {[
+            { label: "Time allowed", value: `${Math.floor(test.duration / 60)} minutes` },
+            { label: "Sections", value: "Reading + Writing" },
+            { label: "Reading questions", value: `${readingSection.questions?.length || 0} questions` },
+            { label: "Writing task", value: "1 extended task" },
+          ].map((item, i) => (
+            <div key={i} style={{
+              background: level.light, borderRadius: 10,
+              padding: "12px 14px", border: `1px solid ${level.border}`,
+            }}>
+              <div style={{ fontFamily: "system-ui, sans-serif", fontSize: 11, color: level.color, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}>{item.label}</div>
+              <div style={{ fontFamily: "Georgia, serif", fontSize: 16, marginTop: 3 }}>{item.value}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ background: "#FFFBEB", borderRadius: 10, padding: "14px 16px", marginBottom: 20, border: "1px solid #FDE68A" }}>
+          <p style={{ fontFamily: "system-ui, sans-serif", fontSize: 13, margin: 0, color: "#78350F", lineHeight: 1.6 }}>
+            <strong>Instructions:</strong> Read the passage carefully before answering the reading questions. For the writing task, plan your answer before you begin. Write in sentences and check your work when finished.
+          </p>
+        </div>
+        <button onClick={() => setPhase("test")} style={{
+          background: level.color, color: "#fff", border: "none",
+          borderRadius: 8, padding: "13px 28px", cursor: "pointer",
+          fontFamily: "system-ui, sans-serif", fontSize: 15, fontWeight: 700,
+        }}>Start Test →</button>
+      </div>
+    </div>
+  );
+
+  if (phase === "results") return (
+    <div>
+      <div style={{
+        background: "#F0FDF4", border: "1.5px solid #BBF7D0",
+        borderRadius: 14, padding: "24px", textAlign: "center", marginBottom: 24,
+      }}>
+        <div style={{ fontSize: 36, marginBottom: 8 }}>📋</div>
+        <h3 style={{ fontFamily: "Georgia, serif", fontSize: 22, margin: "0 0 6px" }}>Test Complete</h3>
+        <p style={{ fontFamily: "system-ui, sans-serif", fontSize: 14, color: "#555", margin: 0 }}>
+          Reading: {readingScore}/{readingSection.questions?.length} correct
+        </p>
+      </div>
+
+      <h4 style={{ fontFamily: "Georgia, serif", fontSize: 16, marginBottom: 14 }}>Reading Answers</h4>
+      {readingSection.questions?.map((q, i) => {
+        const correct = answers[i] === q.answer;
+        return (
+          <div key={i} style={{
+            background: "#fff", borderRadius: 10,
+            border: `1px solid ${correct ? "#BBF7D0" : "#FECACA"}`,
+            padding: "12px 16px", marginBottom: 8,
+          }}>
+            <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+              <span>{correct ? "✅" : "❌"}</span>
+              <div>
+                <p style={{ fontFamily: "system-ui, sans-serif", fontSize: 13, margin: "0 0 4px", color: "#333" }}>{q.q}</p>
+                {!correct && <p style={{ fontFamily: "system-ui, sans-serif", fontSize: 12, color: "#DC2626", margin: "0 0 2px" }}>Your answer: {q.options[answers[i]]}</p>}
+                <p style={{ fontFamily: "system-ui, sans-serif", fontSize: 12, color: "#15803D", margin: 0 }}>Correct: {q.options[q.answer]}</p>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
+      <h4 style={{ fontFamily: "Georgia, serif", fontSize: 16, margin: "24px 0 10px" }}>Your Writing</h4>
+      <div style={{ background: "#fff", border: "1px solid #E5E7EB", borderRadius: 10, padding: "16px", marginBottom: 16, fontFamily: "Georgia, serif", fontSize: 14, lineHeight: 1.8, whiteSpace: "pre-wrap", color: "#333", minHeight: 80 }}>
+        {writingAnswer || <em style={{ color: "#aaa" }}>No answer written.</em>}
+      </div>
+
+      <h4 style={{ fontFamily: "Georgia, serif", fontSize: 16, marginBottom: 10 }}>Model Answer</h4>
+      <div style={{ background: "#F0FDF4", border: "1px solid #BBF7D0", borderRadius: 10, padding: "16px", marginBottom: 20, fontFamily: "Georgia, serif", fontSize: 14, lineHeight: 1.8, whiteSpace: "pre-line", color: "#166534" }}>
+        {writingSection.modelAnswer}
+      </div>
+
+      <h4 style={{ fontFamily: "Georgia, serif", fontSize: 16, marginBottom: 10 }}>Self-Assessment Checklist</h4>
+      <div style={{ background: "#fff", border: "1px solid #E5E7EB", borderRadius: 10, padding: "16px", marginBottom: 20 }}>
+        {writingSection.checklist?.map((item, i) => (
+          <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 0", borderBottom: i < writingSection.checklist.length - 1 ? "1px solid #F3F4F6" : "none" }}>
+            <span style={{ fontSize: 16, color: level.color }}>☐</span>
+            <span style={{ fontFamily: "system-ui, sans-serif", fontSize: 13, color: "#444" }}>{item}</span>
+          </div>
+        ))}
+      </div>
+
+      <button onClick={() => { setPhase("intro"); setAnswers({}); setWritingAnswer(""); setTimeLeft(test.duration); setSectionIdx(0); }}
+        style={{
+          background: level.color, color: "#fff", border: "none",
+          borderRadius: 8, padding: "12px 24px", cursor: "pointer",
+          fontFamily: "system-ui, sans-serif", fontSize: 14, fontWeight: 600,
+        }}>Retake Test</button>
+    </div>
+  );
+
+  return (
+    <div>
+      {/* Timer bar */}
+      <div style={{
+        background: "#fff", borderRadius: 10, padding: "10px 16px",
+        border: `1px solid ${timeLeft < 120 ? "#FECACA" : "#E5E7EB"}`,
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+        marginBottom: 20,
+      }}>
+        <div style={{ display: "flex", gap: 8 }}>
+          {test.sections.map((s, i) => (
+            <button key={i} onClick={() => setSectionIdx(i)} style={{
+              padding: "5px 14px", borderRadius: 6, border: "none",
+              background: i === sectionIdx ? level.color : "#F3F4F6",
+              color: i === sectionIdx ? "#fff" : "#555",
+              fontFamily: "system-ui, sans-serif", fontSize: 12, fontWeight: 600, cursor: "pointer",
+            }}>{s.name}</button>
+          ))}
+        </div>
+        <div style={{
+          fontFamily: "system-ui, monospace", fontSize: 15, fontWeight: 700,
+          color: timeLeft < 120 ? "#DC2626" : "#333",
+        }}>
+          ⏱ {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
+        </div>
+      </div>
+
+      {/* Reading section */}
+      {sectionIdx === 0 && (
+        <div>
+          <div style={{ background: "#FAFAFA", border: "1px solid #E5E7EB", borderRadius: 12, padding: "18px", marginBottom: 20, fontFamily: "Georgia, serif", fontSize: 14, lineHeight: 1.85, whiteSpace: "pre-line", color: "#222" }}>
+            {section.passage}
+          </div>
+          {section.questions?.map((q, i) => (
+            <div key={i} style={{ background: "#fff", borderRadius: 10, border: "1px solid #E5E7EB", padding: "16px", marginBottom: 12 }}>
+              <p style={{ fontFamily: "Georgia, serif", fontSize: 15, margin: "0 0 12px" }}>{i + 1}. {q.q}</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {q.options.map((opt, oi) => (
+                  <button key={oi} onClick={() => setAnswers(a => ({ ...a, [i]: oi }))}
+                    style={{
+                      background: answers[i] === oi ? level.color + "15" : "#FAFAFA",
+                      border: `1.5px solid ${answers[i] === oi ? level.color : "#E5E7EB"}`,
+                      borderRadius: 8, padding: "9px 14px", cursor: "pointer",
+                      textAlign: "left", fontFamily: "system-ui, sans-serif",
+                      fontSize: 13, color: answers[i] === oi ? level.color : "#333",
+                      fontWeight: answers[i] === oi ? 600 : 400,
+                    }}>
+                    <span style={{ marginRight: 8, fontWeight: 700 }}>{String.fromCharCode(65 + oi)}.</span>{opt}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+          <button onClick={() => setSectionIdx(1)} style={{
+            background: level.color, color: "#fff", border: "none",
+            borderRadius: 8, padding: "11px 24px", cursor: "pointer",
+            fontFamily: "system-ui, sans-serif", fontSize: 14, fontWeight: 600, marginTop: 4,
+          }}>Continue to Writing →</button>
+        </div>
+      )}
+
+      {/* Writing section */}
+      {sectionIdx === 1 && (
+        <div>
+          <div style={{ background: level.light, border: `1px solid ${level.border}`, borderRadius: 12, padding: "16px 18px", marginBottom: 18 }}>
+            <div style={{ fontFamily: "system-ui, sans-serif", fontSize: 11, fontWeight: 700, color: level.color, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>Writing Task</div>
+            <p style={{ fontFamily: "Georgia, serif", fontSize: 15, margin: 0, lineHeight: 1.7, color: "#222" }}>{section.prompt}</p>
+          </div>
+          <textarea
+            value={writingAnswer}
+            onChange={e => setWritingAnswer(e.target.value)}
+            placeholder="Write your answer here..."
+            style={{
+              width: "100%", minHeight: 200, borderRadius: 12,
+              border: "1.5px solid #E5E7EB", padding: "14px 16px",
+              fontFamily: "Georgia, serif", fontSize: 14, lineHeight: 1.8,
+              color: "#222", resize: "vertical", outline: "none",
+              boxSizing: "border-box",
+            }}
+          />
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10 }}>
+            <span style={{ fontFamily: "system-ui, sans-serif", fontSize: 12, color: "#888" }}>
+              Word count: {wordCount}
+            </span>
+            <button onClick={() => { clearInterval(timerRef.current); setPhase("results"); }}
+              style={{
+                background: level.color, color: "#fff", border: "none",
+                borderRadius: 8, padding: "11px 24px", cursor: "pointer",
+                fontFamily: "system-ui, sans-serif", fontSize: 14, fontWeight: 700,
+              }}>Submit Test</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── MAIN APP ─────────────────────────────────────────────────────────────────
+
+function App() {
+  const [levelIdx, setLevelIdx] = useState(0);
+  const [section, setSection] = useState("examples");
+  const level = LEVELS[levelIdx];
+
+  const sections = [
+    { key: "examples", label: "📚 Examples" },
+    { key: "quiz", label: "🧠 Quiz" },
+    { key: "test", label: "📝 Mock Test" },
+  ];
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#F7F6F2", fontFamily: "Georgia, serif" }}>
+      {/* Header */}
+      <header style={{
+        background: "#111827", color: "#fff",
+        padding: "32px 24px 28px", textAlign: "center", position: "relative", overflow: "hidden",
+      }}>
+        <div style={{
+          position: "absolute", inset: 0,
+          background: `radial-gradient(ellipse at 25% 50%, ${level.color}25 0%, transparent 55%), radial-gradient(ellipse at 75% 30%, ${level.color}12 0%, transparent 50%)`,
+          transition: "background 0.4s", pointerEvents: "none",
+        }} />
+        <div style={{ position: "relative" }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.22em", color: "#6B7280", marginBottom: 8, textTransform: "uppercase", fontFamily: "system-ui, sans-serif" }}>Functional Skills English</div>
+          <h1 style={{ fontSize: "clamp(22px, 4vw, 36px)", fontWeight: "normal", margin: "0 0 6px", letterSpacing: "-0.02em" }}>Foundation Learning Platform</h1>
+          <p style={{ color: "#9CA3AF", fontSize: 13, margin: 0, fontFamily: "system-ui, sans-serif" }}>Examples · Quizzes · Mock Tests — Entry Levels 1, 2 & 3</p>
+        </div>
+      </header>
+
+      {/* Level selector */}
+      <div style={{ background: "#fff", borderBottom: "1px solid #E5E7EB" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", overflowX: "auto" }}>
+          {LEVELS.map((l, i) => (
+            <button key={l.id} onClick={() => { setLevelIdx(i); setSection("examples"); }}
+              style={{
+                padding: "14px 24px", border: "none",
+                borderBottom: levelIdx === i ? `3px solid ${l.color}` : "3px solid transparent",
+                background: "none", cursor: "pointer", whiteSpace: "nowrap",
+                fontFamily: "system-ui, sans-serif", fontSize: 13,
+                fontWeight: levelIdx === i ? 700 : 400,
+                color: levelIdx === i ? l.color : "#666",
+                transition: "all 0.15s",
+              }}>
+              {l.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "24px 16px 60px" }}>
+        {/* Level badge */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+          <Badge color={level.color}>{level.tag}</Badge>
+          <span style={{ fontFamily: "system-ui, sans-serif", fontSize: 13, color: "#888" }}>{level.label}</span>
+        </div>
+
+        {/* Section tabs */}
+        <div style={{
+          background: "#F3F4F6", borderRadius: 12, padding: 5,
+          display: "flex", gap: 4, marginBottom: 24,
+        }}>
+          {sections.map(s => (
+            <SectionTab key={s.key} label={s.label} active={section === s.key} color={level.color} onClick={() => setSection(s.key)} />
+          ))}
+        </div>
+
+        {/* Content */}
+        {section === "examples" && <ExamplesPage levelIndex={levelIdx} />}
+        {section === "quiz" && <QuizPage key={`${levelIdx}-quiz`} levelIndex={levelIdx} />}
+        {section === "test" && <MockTestPage key={`${levelIdx}-test`} levelIndex={levelIdx} />}
+      </div>
+    </div>
+  );
+}
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>
