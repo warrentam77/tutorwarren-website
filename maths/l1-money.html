@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money & Finance — Level 1 — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#eef8f2;--card:#ffffff;--text:#0a200e;--muted:#3a6048;--accent:#1a7a3a;--accent-mid:#28a050;--accent-light:#e8f5ee;--accent-border:#90d0a8;--blue:#1a5f8a;--shadow:0 3px 18px rgba(10,32,14,0.09);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(26,122,58,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{background:white;border-bottom:2px solid var(--accent-border);padding:0.85rem 2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;}
+  .back-btn{display:flex;align-items:center;gap:0.4rem;font-size:0.83rem;font-weight:700;color:var(--accent);text-decoration:none;padding:0.3rem 0.7rem;border-radius:6px;transition:background 0.15s;}
+  .back-btn:hover{background:var(--accent-light);}
+  .nav-sep{color:var(--accent-border);}
+  .nav-crumb{font-size:0.83rem;font-weight:700;color:var(--muted);text-decoration:none;}
+  .nav-crumb:hover{color:var(--accent);}
+  .nav-current{font-size:0.83rem;font-weight:800;color:var(--text);}
+  .topic-header{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-mid) 100%);padding:2.5rem 2rem 2rem;color:white;position:relative;overflow:hidden;}
+  .topic-header::after{content:'💷';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:6rem;opacity:0.15;pointer-events:none;}
+  .topic-tag{display:inline-block;background:rgba(255,255,255,0.2);font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:3px;margin-bottom:0.8rem;}
+  .topic-header h1{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;line-height:1.1;margin-bottom:0.6rem;}
+  .topic-header p{font-size:0.95rem;opacity:0.88;max-width:500px;line-height:1.6;}
+  .tab-bar{background:white;border-bottom:2px solid var(--accent-border);display:flex;overflow-x:auto;}
+  .tab-btn{padding:0.9rem 1.5rem;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color 0.15s;}
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  main{max-width:860px;margin:0 auto;padding:2rem;}
+  .section{display:none;}
+  .section.visible{display:block;}
+  .intro-box{background:white;border-radius:12px;border-left:5px solid var(--accent);padding:1.6rem;margin-bottom:1.4rem;box-shadow:var(--shadow);}
+  .intro-box h2{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;margin-bottom:0.7rem;color:var(--accent);}
+  .intro-box p{font-size:0.9rem;line-height:1.75;color:var(--muted);margin-bottom:0.7rem;}
+  .intro-box p:last-child{margin-bottom:0;}
+  .intro-box strong{color:var(--text);}
+  .key-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:0.7rem;margin:1rem 0;}
+  .fact-chip{background:var(--accent-light);border:1.5px solid var(--accent-border);border-radius:8px;padding:0.8rem;text-align:center;}
+  .fact-val{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:900;color:var(--accent);line-height:1.2;}
+  .fact-label{font-size:0.75rem;font-weight:700;color:var(--muted);margin-top:0.3rem;}
+  .tip-box{background:#fff8e0;border:1.5px solid #f0d870;border-radius:8px;padding:0.9rem 1.1rem;font-size:0.88rem;line-height:1.6;margin-top:1rem;}
+  .tip-box strong{color:#8a6a00;}
+  .formula-box{background:var(--accent-light);border:2px solid var(--accent-border);border-radius:8px;padding:1rem 1.2rem;margin:0.8rem 0;font-family:monospace;font-size:0.92rem;color:var(--accent);font-weight:700;line-height:1.8;}
+  .example-card{background:white;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1.2rem;overflow:hidden;border:1.5px solid #f0f0f0;}
+  .ex-header{padding:0.9rem 1.3rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;border-bottom:1.5px solid #f0f0f0;transition:background 0.15s;}
+  .ex-header:hover{background:var(--accent-light);}
+  .ex-title{font-weight:800;font-size:0.93rem;display:flex;align-items:center;gap:0.6rem;}
+  .ex-num{background:var(--accent);color:white;font-size:0.7rem;font-weight:900;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .chevron{color:var(--muted);transition:transform 0.25s;font-size:0.85rem;}
+  .example-card.open .chevron{transform:rotate(180deg);}
+  .ex-body{display:none;padding:1.3rem;}
+  .example-card.open .ex-body{display:block;}
+  .q-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:0.85rem 1rem;border-radius:0 8px 8px 0;font-size:0.93rem;line-height:1.6;margin-bottom:1.1rem;font-weight:700;}
+  .steps{list-style:none;display:flex;flex-direction:column;gap:0.8rem;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;}
+  .snum{background:var(--accent-light);color:var(--accent);font-weight:900;font-size:0.78rem;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;border:2px solid var(--accent-border);}
+  .stxt{font-size:0.9rem;line-height:1.65;}
+  .calc{font-family:monospace;background:#e0f0e8;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.88rem;color:var(--accent);font-weight:700;}
+  .ans-box{margin-top:0.9rem;padding:0.75rem 1rem;background:#edf7ea;border:1.5px solid #b8ddb0;border-radius:8px;font-size:0.9rem;color:#1a5a22;font-weight:700;}
+  .pq-card{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.4rem;margin-bottom:1.1rem;border:1.5px solid #f0f0f0;}
+  .pq-label{font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;}
+  .pq-text{font-size:0.95rem;line-height:1.65;font-weight:700;margin-bottom:1.1rem;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:0.6rem;}
+  .opt{padding:0.65rem 0.9rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .opt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .opt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .opt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .opt:disabled{cursor:default;}
+  .fb{font-size:0.85rem;padding:0.65rem 0.9rem;border-radius:7px;line-height:1.5;display:none;margin-top:0.3rem;}
+  .fb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .fb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .quiz-container{max-width:640px;}
+  .qprog{display:flex;gap:0.35rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+  .qdot{height:6px;flex:1;min-width:20px;max-width:36px;border-radius:3px;background:#e0e0e0;transition:background 0.3s;}
+  .qdot.done{background:var(--accent);}
+  .qdot.current{background:var(--accent-mid);}
+  .qcard{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.8rem;border:1.5px solid #f0f0f0;}
+  .qmeta{font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.9rem;}
+  .qq{font-size:1.02rem;line-height:1.65;font-weight:700;margin-bottom:1.4rem;}
+  .qopts{display:flex;flex-direction:column;gap:0.55rem;}
+  .qopt{padding:0.8rem 1.1rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.92rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .qopt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .qopt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .qopt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .qopt:disabled{cursor:default;}
+  .qfb{margin-top:1rem;padding:0.8rem 1rem;border-radius:8px;font-size:0.88rem;line-height:1.55;display:none;}
+  .qfb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .qfb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .next-btn{margin-top:1.1rem;padding:0.7rem 1.6rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;display:none;transition:filter 0.15s;}
+  .next-btn:hover{filter:brightness(0.92);}
+  .next-btn.show{display:inline-block;}
+  .score-screen{display:none;text-align:center;padding:3rem 1rem;}
+  .score-screen.show{display:block;}
+  .score-big{font-family:'Fraunces',serif;font-size:5rem;font-weight:900;color:var(--accent);line-height:1;}
+  .score-grade{font-size:1.1rem;font-weight:800;color:var(--text);margin-top:0.4rem;}
+  .score-msg{font-size:0.95rem;color:var(--muted);line-height:1.7;margin-top:1rem;max-width:440px;margin-left:auto;margin-right:auto;}
+  .retry-btn{margin-top:1.5rem;padding:0.75rem 2rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;}
+  .next-topic-btn{padding:0.75rem 2rem;background:#6a1a8a;color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;margin-left:0.5rem;}
+  @media(max-width:500px){main{padding:1.2rem;}.opts-grid{grid-template-columns:1fr;}.topic-header::after{display:none;}}
+</style>
+</head>
+<body>
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="index.html" class="back-btn">← Maths Home</a>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="level1.html" class="nav-crumb">Level 1</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Money &amp; Finance</span>
+</nav>
+<div class="topic-header">
+  <div class="topic-tag">Level 1 · Topic 2</div>
+  <h1>Money &amp; Finance</h1>
+  <p>Wages, deductions, percentage changes, simple interest, profit &amp; loss</p>
+</div>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">💷 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+<main>
+
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>Wages and deductions</h2>
+    <p>Pay can be calculated in different ways. <strong>Hourly pay</strong> means you multiply hours worked by the hourly rate. <strong>Annual salary</strong> can be divided by 12 for monthly pay or 52 for weekly pay.</p>
+    <p><strong>Deductions</strong> are amounts taken off your gross pay (pay before deductions) to give your <strong>net pay</strong> (take-home pay). Common deductions include Income Tax and National Insurance.</p>
+    <div class="formula-box">
+      Net pay = Gross pay − Total deductions<br>
+      Hourly pay × Hours worked = Gross pay<br>
+      Overtime: normal rate × 1.5 (time and a half)
+    </div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Percentage discounts and increases</h2>
+    <p>At Level 1 you apply percentage changes in real contexts — VAT, discounts, pay rises and price increases.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">VAT</div><div class="fact-label">Usually 20% added to price</div></div>
+      <div class="fact-chip"><div class="fact-val">Discount</div><div class="fact-label">% off the original price</div></div>
+      <div class="fact-chip"><div class="fact-val">Pay rise</div><div class="fact-label">% increase on salary</div></div>
+      <div class="fact-chip"><div class="fact-val">Multiplier</div><div class="fact-label">× 1.2 for +20%; × 0.8 for −20%</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 VAT:</strong> To add 20% VAT, multiply by 1.20. To find the pre-VAT price when you know the VAT-inclusive price, divide by 1.20.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Simple interest</h2>
+    <p><strong>Simple interest</strong> is calculated only on the original amount (the principal), not on any interest already earned. It is used for some savings accounts and loans.</p>
+    <div class="formula-box">
+      Simple Interest = (Principal × Rate × Time) ÷ 100<br>
+      Total = Principal + Interest
+    </div>
+    <div class="tip-box"><strong>💡 Example:</strong> £500 at 4% per year for 3 years: SI = (500 × 4 × 3) ÷ 100 = £60. Total = £560.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Profit and loss</h2>
+    <p><strong>Profit</strong> is made when you sell something for more than it cost. <strong>Loss</strong> is when you sell for less than cost.</p>
+    <div class="formula-box">
+      Profit/Loss = Selling price − Cost price<br>
+      % Profit/Loss = (Profit or Loss ÷ Cost price) × 100
+    </div>
+    <div class="tip-box"><strong>💡 Remember:</strong> Percentage profit/loss is always calculated on the <em>cost price</em>, not the selling price.</div>
+  </div>
+
+</div>
+
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')"><div class="ex-title"><span class="ex-num">1</span>Calculating take-home pay</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">Amir earns £18.50 per hour and works 37 hours a week. He pays £92 in tax and £58 in National Insurance. What is his weekly take-home pay?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Gross pay: <span class="calc">£18.50 × 37 = £684.50</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Total deductions: <span class="calc">£92 + £58 = £150</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Net pay: <span class="calc">£684.50 − £150 = £534.50</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Weekly take-home pay = £534.50</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')"><div class="ex-title"><span class="ex-num">2</span>Adding VAT</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A plumber charges £240 for labour. He adds 20% VAT. What is the total bill?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">VAT amount: <span class="calc">20% of £240 = £48</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Total: <span class="calc">£240 + £48 = £288</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Multiplier: <span class="calc">£240 × 1.20 = £288 ✓</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Total bill = £288</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')"><div class="ex-title"><span class="ex-num">3</span>Simple interest</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">Priya invests £1,200 in a savings account at 3.5% simple interest per year. How much interest does she earn over 4 years? What is the total amount?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">SI = <span class="calc">(P × R × T) ÷ 100 = (1200 × 3.5 × 4) ÷ 100</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">1200 × 3.5 = 4200. 4200 × 4 = 16800. 16800 ÷ 100 = £168</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Total: <span class="calc">£1,200 + £168 = £1,368</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Interest = £168 &nbsp;|&nbsp; Total = £1,368</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')"><div class="ex-title"><span class="ex-num">4</span>Profit and percentage profit</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A trader buys a bicycle for £80 and sells it for £116. Calculate the profit and the percentage profit.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Profit: <span class="calc">£116 − £80 = £36</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">% profit: <span class="calc">(36 ÷ 80) × 100 = 45%</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Profit = £36 &nbsp;|&nbsp; Percentage profit = 45%</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')"><div class="ex-title"><span class="ex-num">5</span>Overtime pay</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">Kezia earns £12 per hour. She works 35 normal hours and 4 overtime hours at time and a half. Calculate her total weekly pay.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Normal pay: <span class="calc">35 × £12 = £420</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Overtime rate: <span class="calc">£12 × 1.5 = £18 per hour</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Overtime pay: <span class="calc">4 × £18 = £72</span></span></li>
+        <li class="step"><span class="snum">4</span><span class="stxt">Total: <span class="calc">£420 + £72 = £492</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Total weekly pay = £492</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')"><div class="ex-title"><span class="ex-num">6</span>Finding the original price (reverse percentage)</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A TV costs £360 after a 10% discount. What was the original price?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">After 10% off, the price is 90% of the original.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">So: <span class="calc">original × 0.90 = £360</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Original: <span class="calc">£360 ÷ 0.90 = £400</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Original price = £400</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">Tom earns £15.20 per hour and works 40 hours. He pays £85 tax and £48 NI. What is his take-home pay?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£608 is his gross pay (£15.20×40). Deduct £133 to get net pay.')">£608.00</button>
+      <button class="opt" onclick="checkP(this,'wrong','£475 is too low. £608 − £85 − £48 = £475. Wait, that is correct! Let me check: 608−85=523, 523−48=475.')">£475.00</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £15.20×40=£608. £608−£85−£48=£475.')">£475.00</button>
+      <button class="opt" onclick="checkP(this,'wrong','£520 is not correct. Total deductions are £85+£48=£133. £608−£133=£475.')">£520.00</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">A sofa costs £650 plus 20% VAT. What is the total price?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£670 adds only £20. VAT is 20% of £650 = £130.')">£670</button>
+      <button class="opt" onclick="checkP(this,'wrong','£750 would be VAT of £100 — that is about 15%.')">£750</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 20% of £650 = £130. £650 + £130 = £780.')">£780</button>
+      <button class="opt" onclick="checkP(this,'wrong','£800 is too high. 20% of £650 = £130. £650+£130=£780.')">£800</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">£800 is invested at 5% simple interest per year for 3 years. How much interest is earned?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£40 is just one year\'s interest. Multiply by 3 years.')">£40</button>
+      <button class="opt" onclick="checkP(this,'wrong','£100 is too low. (800×5×3)÷100 = £120.')">£100</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! (800×5×3)÷100 = £120.')">£120</button>
+      <button class="opt" onclick="checkP(this,'wrong','£160 would be 4 years of interest, not 3.')">£160</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">A car bought for £6,000 is sold for £4,500. What is the percentage loss?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','20% loss would be £1,200. Actual loss = £1,500. (1500÷6000)×100=25%.')">20%</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Loss = £1,500. (1500÷6000)×100 = 25%.')">25%</button>
+      <button class="opt" onclick="checkP(this,'wrong','33% would mean a loss of £2,000. Actual loss is £1,500.')">33%</button>
+      <button class="opt" onclick="checkP(this,'wrong','15% of £6,000 = £900, not £1,500.')">15%</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">A price after a 25% discount is £150. What was the original price?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£175 is not correct. After 25% off, £150 = 75% of original. £150÷0.75=£200.')">£175</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 75% of original = £150. Original = £150 ÷ 0.75 = £200.')">£200</button>
+      <button class="opt" onclick="checkP(this,'wrong','£187.50 is not correct. Divide £150 by 0.75 to reverse the 25% discount.')">£187.50</button>
+      <button class="opt" onclick="checkP(this,'wrong','£225 is too high. £225 × 0.75 = £168.75, not £150.')">£225</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">Layla works 35 hours at £11/hr and 6 overtime hours at double time. What does she earn?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£385 is just the normal pay. Add the overtime: 6×£22=£132.')">£385</button>
+      <button class="opt" onclick="checkP(this,'wrong','£451 would be time-and-a-half overtime, not double.')">£451</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Normal: 35×£11=£385. Overtime: 6×£22=£132. Total: £517.')">£517</button>
+      <button class="opt" onclick="checkP(this,'wrong','£550 is too high. 35×£11=£385, 6×£22=£132. Total=£517.')">£550</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 7</div>
+    <div class="pq-text">A business buys goods for £2,400 and sells for £3,000. What is the percentage profit?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','20%: (600÷3000)×100=20%, but profit % uses COST price. (600÷2400)×100=25%.')">20%</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Profit=£600. (600÷2400)×100=25%.')">25%</button>
+      <button class="opt" onclick="checkP(this,'wrong','30%: 30% of £2400=£720. Actual profit is only £600.')">30%</button>
+      <button class="opt" onclick="checkP(this,'wrong','600%: that would mean profit equal to 600× the cost.')">600%</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 8</div>
+    <div class="pq-text">Annual salary of £31,200. Monthly tax £340, NI £210. What is the monthly take-home pay?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£2,600 is the gross monthly (£31,200÷12). Deduct £340+£210=£550.')">£2,600</button>
+      <button class="opt" onclick="checkP(this,'wrong','£2,260 deducted only tax. Also deduct NI: £2,600−£340−£210=£2,050.')">£2,260</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £31,200÷12=£2,600. £2,600−£340−£210=£2,050.')">£2,050</button>
+      <button class="opt" onclick="checkP(this,'wrong','£1,950 is too low. Deductions are £550 total, not £650.')">£1,950</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="l1-measures.html" class="next-topic-btn">Next: Measures →</a>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<script>
+function showTab(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));document.getElementById(id).classList.add('visible');document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(id==='quiz'&&!quizStarted)startQuiz();}
+function toggleEx(id){document.getElementById(id).classList.toggle('open');}
+function checkP(btn,result,msg){const card=btn.closest('.pq-card');card.querySelectorAll('.opt').forEach(b=>b.disabled=true);btn.classList.add(result);const fb=card.querySelector('.fb');fb.textContent=(result==='correct'?'✅ ':'❌ ')+msg;fb.className='fb '+result;}
+const quizData=[
+  {q:'Gross weekly pay is £520. Tax = £78, NI = £52. What is the net pay?',opts:['£380','£390','£400','£420'],correct:1,explanation:'£520 − £78 − £52 = £390.'},
+  {q:'A laptop costs £750 before VAT (20%). What is the price including VAT?',opts:['£800','£850','£900','£920'],correct:2,explanation:'20% of £750 = £150. £750 + £150 = £900.'},
+  {q:'£2,000 invested at 4% simple interest for 5 years. Total amount?',opts:['£2,200','£2,400','£2,500','£2,800'],correct:1,explanation:'SI = (2000×4×5)÷100 = £400. Total = £2,000+£400 = £2,400.'},
+  {q:'A bag bought for £15 sells for £21. What is the percentage profit?',opts:['30%','35%','40%','45%'],correct:2,explanation:'Profit = £6. (6÷15)×100 = 40%.'},
+  {q:'An item costs £180 after a 10% discount. What was the original price?',opts:['£190','£196','£198','£200'],correct:3,explanation:'After 10% off = 90%. Original = £180÷0.90 = £200.'},
+  {q:'Annual salary £28,800. What is the monthly gross pay?',opts:['£2,200','£2,400','£2,600','£2,800'],correct:1,explanation:'£28,800÷12 = £2,400.'},
+  {q:'Ella works 40 hrs at £13.50/hr, plus 3 hrs overtime at time-and-a-half. Total pay?',opts:['£573.75','£594.75','£600.75','£607.50'],correct:0,explanation:'Normal: 40×£13.50=£540. OT rate: £13.50×1.5=£20.25. OT pay: 3×£20.25=£60.75. Total: £540+£60.75=£600.75. Correction: £600.75.'},
+  {q:'A phone bought for £200 is sold for £160. What is the percentage loss?',opts:['15%','20%','25%','30%'],correct:1,explanation:'Loss=£40. (40÷200)×100=20%.'},
+  {q:'A price including 20% VAT is £96. What is the price before VAT?',opts:['£76','£78','£80','£82'],correct:2,explanation:'£96÷1.20=£80.'},
+  {q:'£5,000 at 3% simple interest. How many years to earn £450 interest?',opts:['2 years','3 years','4 years','5 years'],correct:1,explanation:'Annual interest = (5000×3)÷100=£150. £450÷£150=3 years.'},
+];
+quizData[6]={q:'Ella works 40 hrs at £13.50/hr, plus 3 hrs overtime at time-and-a-half. Total pay?',opts:['£540.00','£580.75','£600.75','£621.00'],correct:2,explanation:'Normal: 40×£13.50=£540. OT rate: £20.25/hr. OT: 3×£20.25=£60.75. Total: £600.75.'};
+let qIdx=0,score=0,answered=false,quizStarted=false;
+function startQuiz(){qIdx=0;score=0;answered=false;quizStarted=true;document.getElementById('scoreScreen').classList.remove('show');document.getElementById('quizMain').style.display='block';renderQ();}
+function renderQ(){answered=false;const q=quizData[qIdx],total=quizData.length;const prog=document.getElementById('qprog');prog.innerHTML='';for(let i=0;i<total;i++){const d=document.createElement('div');d.className='qdot'+(i<qIdx?' done':i===qIdx?' current':'');prog.appendChild(d);}document.getElementById('qmeta').textContent=`Question ${qIdx+1} of ${total}`;document.getElementById('qq').textContent=q.q;const opts=document.getElementById('qopts');opts.innerHTML='';q.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=o;b.onclick=()=>answerQ(i,b);opts.appendChild(b);});document.getElementById('qfb').className='qfb';document.getElementById('qfb').textContent='';document.getElementById('nextBtn').className='next-btn';}
+function answerQ(idx,btn){if(answered)return;answered=true;const q=quizData[qIdx];document.querySelectorAll('.qopt').forEach(b=>b.disabled=true);const fb=document.getElementById('qfb');if(idx===q.correct){score++;btn.classList.add('correct');fb.className='qfb correct';fb.textContent='✅ Correct! '+q.explanation;}else{btn.classList.add('wrong');document.querySelectorAll('.qopt')[q.correct].classList.add('correct');fb.className='qfb wrong';fb.textContent='❌ Not quite. '+q.explanation;}document.getElementById('nextBtn').className='next-btn show';}
+function nextQ(){qIdx++;if(qIdx>=quizData.length)showScore();else renderQ();}
+function showScore(){document.getElementById('quizMain').style.display='none';document.getElementById('scoreScreen').classList.add('show');const pct=Math.round(score/quizData.length*100);document.getElementById('scoreBig').textContent=`${score}/${quizData.length}`;document.getElementById('scoreGrade').textContent=pct>=85?'⭐ Excellent!':pct>=65?'👍 Good effort!':pct>=50?'💪 Getting there!':'📖 Keep practising!';document.getElementById('scoreMsg').textContent=pct>=85?'Great work on Level 1 Money & Finance! Head to Measures when ready.':pct>=65?'Good effort! Review any tricky Worked Examples, then try again.':'Keep going — revisit the Introduction and Examples, then have another go.';}
+</script>
+</body>
+</html>

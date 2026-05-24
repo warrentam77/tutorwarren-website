@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Measures, Shape & Space — Entry Level — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5eef5;
+    --card: #ffffff;
+    --text: #2a0a2a;
+    --muted: #6a486a;
+    --accent: #7a2d7a;
+    --accent-mid: #9e3d9e;
+    --accent-light: #f5e8f5;
+    --accent-border: #d0a0d0;
+    --green: #2d7a22;
+    --shadow: 0 3px 18px rgba(42,10,42,0.09);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 80% 10%, rgba(122,45,122,0.06) 0%, transparent 50%); pointer-events: none; }
+  nav { background: white; border-bottom: 2px solid var(--accent-border); padding: 0.85rem 2rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .back-btn { display: flex; align-items: center; gap: 0.4rem; font-size: 0.83rem; font-weight: 700; color: var(--accent); text-decoration: none; padding: 0.3rem 0.7rem; border-radius: 6px; transition: background 0.15s; }
+  .back-btn:hover { background: var(--accent-light); }
+  .nav-sep { color: var(--accent-border); }
+  .nav-crumb { font-size: 0.83rem; font-weight: 700; color: var(--muted); text-decoration: none; }
+  .nav-crumb:hover { color: var(--accent); }
+  .nav-current { font-size: 0.83rem; font-weight: 800; color: var(--text); }
+  .topic-header { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); padding: 2.5rem 2rem 2rem; color: white; position: relative; overflow: hidden; }
+  .topic-header::after { content: '📏'; position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); font-size: 6rem; opacity: 0.15; pointer-events: none; }
+  .topic-tag { display: inline-block; background: rgba(255,255,255,0.2); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 3px; margin-bottom: 0.8rem; }
+  .topic-header h1 { font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; line-height: 1.1; margin-bottom: 0.6rem; }
+  .topic-header p { font-size: 0.95rem; opacity: 0.88; max-width: 500px; line-height: 1.6; }
+  .tab-bar { background: white; border-bottom: 2px solid var(--accent-border); display: flex; overflow-x: auto; }
+  .tab-btn { padding: 0.9rem 1.5rem; border: none; background: transparent; font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 800; color: var(--muted); cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: color 0.15s; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+  .section { display: none; }
+  .section.visible { display: block; }
+  .intro-box { background: white; border-radius: 12px; border-left: 5px solid var(--accent); padding: 1.6rem; margin-bottom: 1.4rem; box-shadow: var(--shadow); }
+  .intro-box h2 { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 900; margin-bottom: 0.7rem; color: var(--accent); }
+  .intro-box p { font-size: 0.9rem; line-height: 1.75; color: var(--muted); margin-bottom: 0.7rem; }
+  .intro-box p:last-child { margin-bottom: 0; }
+  .intro-box strong { color: var(--text); }
+  .key-facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 0.7rem; margin: 1rem 0; }
+  .fact-chip { background: var(--accent-light); border: 1.5px solid var(--accent-border); border-radius: 8px; padding: 0.8rem; text-align: center; }
+  .fact-val { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 900; color: var(--accent); line-height: 1.2; }
+  .fact-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-top: 0.2rem; }
+  .tip-box { background: #fff8e0; border: 1.5px solid #f0d870; border-radius: 8px; padding: 0.9rem 1.1rem; font-size: 0.88rem; line-height: 1.6; margin-top: 1rem; }
+  .tip-box strong { color: #8a6a00; }
+  .example-card { background: white; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 1.2rem; overflow: hidden; border: 1.5px solid #f0f0f0; }
+  .ex-header { padding: 0.9rem 1.3rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; border-bottom: 1.5px solid #f0f0f0; transition: background 0.15s; }
+  .ex-header:hover { background: var(--accent-light); }
+  .ex-title { font-weight: 800; font-size: 0.93rem; display: flex; align-items: center; gap: 0.6rem; }
+  .ex-num { background: var(--accent); color: white; font-size: 0.7rem; font-weight: 900; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .chevron { color: var(--muted); transition: transform 0.25s; font-size: 0.85rem; }
+  .example-card.open .chevron { transform: rotate(180deg); }
+  .ex-body { display: none; padding: 1.3rem; }
+  .example-card.open .ex-body { display: block; }
+  .q-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.85rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.93rem; line-height: 1.6; margin-bottom: 1.1rem; font-weight: 700; }
+  .steps { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+  .step { display: flex; gap: 0.9rem; align-items: flex-start; }
+  .snum { background: var(--accent-light); color: var(--accent); font-weight: 900; font-size: 0.78rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; border: 2px solid var(--accent-border); }
+  .stxt { font-size: 0.9rem; line-height: 1.65; }
+  .calc { font-family: monospace; background: #f0e8f0; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.88rem; color: var(--accent); font-weight: 700; }
+  .ans-box { margin-top: 0.9rem; padding: 0.75rem 1rem; background: #edf7ea; border: 1.5px solid #b8ddb0; border-radius: 8px; font-size: 0.9rem; color: #2d5a22; font-weight: 700; }
+  .pq-card { background: white; border-radius: 12px; box-shadow: var(--shadow); padding: 1.4rem; margin-bottom: 1.1rem; border: 1.5px solid #f0f0f0; }
+  .pq-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+  .pq-text { font-size: 0.95rem; line-height: 1.65; font-weight: 700; margin-bottom: 1.1rem; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; margin-bottom: 0.6rem; }
+  .opt { padding: 0.65rem 0.9rem; border-radius: 8px; border: 2px solid #e8e8e8; background: #fafafa; font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; text-align: left; transition: all 0.15s; }
+  .opt:hover:not(:disabled) { border-color: var(--accent-border); background: var(--accent-light); }
+  .opt.correct { border-color: #78c878; background: #edf7ea; color: #1a5a1a; }
+  .opt.wrong { border-color: #e89090; background: #fdf0f0; color: #8a1a1a; }
+  .opt:disabled { cursor: default; }
+  .fb { font-size: 0.85rem; padding: 0.65rem 0.9rem; border-radius: 7px; line-height: 1.5; display: none; margin-top: 0.3rem; }
+  .fb.correct { display: block; background: #edf7ea; border: 1.5px solid #b8ddb0; color: #1a5a1a; }
+  .fb.wrong { display: block; background: #fdf0f0; border: 1.5px solid #f0b8b8; color: #7a1a1a; }
+  .quiz-container { max-width: 640px; }
+  .qprog { display: flex; gap: 0.35rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .qdot { height: 6px; flex: 1; min-width: 20px; max-width: 36px; border-radius: 3px; background: #e0e0e0; transition: background 0.3s; }
+  .qdot.done { background: var(--accent); }
+  .qdot.current { background: var(--accent-mid); }
+  .qcard { background: white; border-radius: 12px; box-shadow: var(--shadow); padding: 1.8rem; border: 1.5px solid #f0f0f0; }
+  .qmeta { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.9rem; }
+  .qq { font-size: 1.02rem; line-height: 1.65; font-weight: 700; margin-bottom: 1.4rem; }
+  .qopts { display: flex; flex-direction: column; gap: 0.55rem; }
+  .qopt { padding: 0.8rem 1.1rem; border-radius: 8px; border: 2px solid #e8e8e8; background: #fafafa; font-family: 'Nunito', sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer; text-align: left; transition: all 0.15s; }
+  .qopt:hover:not(:disabled) { border-color: var(--accent-border); background: var(--accent-light); }
+  .qopt.correct { border-color: #78c878; background: #edf7ea; color: #1a5a1a; }
+  .qopt.wrong { border-color: #e89090; background: #fdf0f0; color: #8a1a1a; }
+  .qopt:disabled { cursor: default; }
+  .qfb { margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.88rem; line-height: 1.55; display: none; }
+  .qfb.correct { display: block; background: #edf7ea; border: 1.5px solid #b8ddb0; color: #1a5a1a; }
+  .qfb.wrong { display: block; background: #fdf0f0; border: 1.5px solid #f0b8b8; color: #7a1a1a; }
+  .next-btn { margin-top: 1.1rem; padding: 0.7rem 1.6rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; cursor: pointer; display: none; transition: filter 0.15s; }
+  .next-btn:hover { filter: brightness(0.92); }
+  .next-btn.show { display: inline-block; }
+  .score-screen { display: none; text-align: center; padding: 3rem 1rem; }
+  .score-screen.show { display: block; }
+  .score-big { font-family: 'Fraunces', serif; font-size: 5rem; font-weight: 900; color: var(--accent); line-height: 1; }
+  .score-grade { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-top: 0.4rem; }
+  .score-msg { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-top: 1rem; max-width: 440px; margin-left: auto; margin-right: auto; }
+  .retry-btn { margin-top: 1.5rem; padding: 0.75rem 2rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; cursor: pointer; }
+  .next-topic-btn { padding: 0.75rem 2rem; background: #8a6a00; color: white; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; cursor: pointer; text-decoration: none; display: inline-block; margin-left: 0.5rem; }
+  @media (max-width: 500px) { main { padding: 1.2rem; } .opts-grid { grid-template-columns: 1fr; } .topic-header::after { display: none; } }
+</style>
+</head>
+<body>
+
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="index.html" class="back-btn">← Maths Home</a>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="entry.html" class="nav-crumb">Entry Level</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Measures, Shape &amp; Space</span>
+</nav>
+
+<div class="topic-header">
+  <div class="topic-tag">Entry Level · Topic 3</div>
+  <h1>Measures, Shape &amp; Space</h1>
+  <p>Reading measurements, telling the time, understanding shapes and simple area &amp; perimeter</p>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">📏 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+
+<main>
+
+<!-- INTRO -->
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>Units of measurement</h2>
+    <p>We measure different things using different units. In the UK, we mainly use <strong>metric units</strong> (metres, kilograms, litres) but you may also see <strong>imperial units</strong> (miles, pounds, pints) in everyday life.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">Length</div><div class="fact-label">mm, cm, m, km / inches, feet, miles</div></div>
+      <div class="fact-chip"><div class="fact-val">Weight</div><div class="fact-label">g, kg / ounces, pounds</div></div>
+      <div class="fact-chip"><div class="fact-val">Capacity</div><div class="fact-label">ml, litres / pints, gallons</div></div>
+      <div class="fact-chip"><div class="fact-val">Time</div><div class="fact-label">seconds, minutes, hours, days</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Key conversions:</strong> 10 mm = 1 cm · 100 cm = 1 m · 1000 m = 1 km · 1000 g = 1 kg · 1000 ml = 1 litre</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Telling the time</h2>
+    <p>Time can be written in <strong>12-hour</strong> (am/pm) or <strong>24-hour</strong> format. Timetables and digital clocks often use 24-hour time.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">60 sec</div><div class="fact-label">= 1 minute</div></div>
+      <div class="fact-chip"><div class="fact-val">60 min</div><div class="fact-label">= 1 hour</div></div>
+      <div class="fact-chip"><div class="fact-val">24 hrs</div><div class="fact-label">= 1 day</div></div>
+      <div class="fact-chip"><div class="fact-val">2:30 pm</div><div class="fact-label">= 14:30</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 24-hour tip:</strong> For afternoon times, add 12 to the hour. 3 pm = 15:00. 9 pm = 21:00. Midnight = 00:00. Noon = 12:00.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>2D Shapes</h2>
+    <p>Flat shapes (2D) have <strong>length</strong> and <strong>width</strong> but no depth. Here are the key ones you need to know at Entry Level:</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">Square</div><div class="fact-label">4 equal sides, 4 right angles</div></div>
+      <div class="fact-chip"><div class="fact-val">Rectangle</div><div class="fact-label">2 pairs of equal sides, 4 right angles</div></div>
+      <div class="fact-chip"><div class="fact-val">Triangle</div><div class="fact-label">3 sides, 3 angles</div></div>
+      <div class="fact-chip"><div class="fact-val">Circle</div><div class="fact-label">Perfectly round, no corners</div></div>
+    </div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Perimeter &amp; Area</h2>
+    <p><strong>Perimeter</strong> is the total distance around the outside of a shape — add up all the sides.</p>
+    <p><strong>Area</strong> is how much space a shape covers. For rectangles: <strong>Area = length × width</strong>.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">Perimeter</div><div class="fact-label">Sum of all sides (cm, m)</div></div>
+      <div class="fact-chip"><div class="fact-val">Area</div><div class="fact-label">Length × Width (cm², m²)</div></div>
+      <div class="fact-chip"><div class="fact-val">5 × 3 = 15</div><div class="fact-label">Area of a 5m × 3m room</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Remember:</strong> Area is always measured in <em>square</em> units (cm² or m²). Perimeter is measured in regular units (cm or m).</div>
+  </div>
+
+</div>
+
+<!-- EXAMPLES -->
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')">
+      <div class="ex-title"><span class="ex-num">1</span>Converting units of length</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A piece of ribbon is 2.5 metres long. How long is this in centimetres?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">There are <span class="calc">100 cm in 1 metre</span>.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Multiply: <span class="calc">2.5 × 100 = 250 cm</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: 250 cm</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')">
+      <div class="ex-title"><span class="ex-num">2</span>Reading the time — 24-hour clock</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A train leaves at 14:35 and arrives at 16:10. How long is the journey?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">From 14:35 to 15:00 = <span class="calc">25 minutes</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">From 15:00 to 16:10 = <span class="calc">1 hour 10 minutes</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Total: <span class="calc">25 min + 1 hr 10 min = 1 hour 35 minutes</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: The journey is 1 hour 35 minutes.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')">
+      <div class="ex-title"><span class="ex-num">3</span>Calculating perimeter</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A rectangular garden is 8 m long and 5 m wide. What is the perimeter?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Perimeter = add all sides. A rectangle has 2 long sides and 2 short sides.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">8 + 8 + 5 + 5 = 26 m</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Or use the formula: <span class="calc">2 × (8 + 5) = 2 × 13 = 26 m</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: The perimeter is 26 m.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')">
+      <div class="ex-title"><span class="ex-num">4</span>Calculating area</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A bedroom floor is 4 m long and 3.5 m wide. What is the area?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Area of a rectangle = <span class="calc">length × width</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">4 × 3.5 = 14 m²</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: The area is 14 m².</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')">
+      <div class="ex-title"><span class="ex-num">5</span>Converting weight</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A bag of potatoes weighs 2.5 kg. How much is this in grams?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">There are <span class="calc">1000 g in 1 kg</span>.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Multiply: <span class="calc">2.5 × 1000 = 2500 g</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: 2500 g</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')">
+      <div class="ex-title"><span class="ex-num">6</span>Reading a scale</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A ruler shows markings at 0, 5, 10 and 15 cm. A pencil ends halfway between 10 and 15. How long is the pencil?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Find the midpoint between 10 and 15: <span class="calc">(10 + 15) ÷ 2 = 12.5</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">The pencil ends at <span class="calc">12.5 cm</span>.</span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: The pencil is 12.5 cm long.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRACTICE -->
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">How many centimetres are in 3.2 metres?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','32 cm would only be 0.32 m. Multiply by 100: 3.2 × 100 = 320.')">32 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','3,200 cm would be 32 m. There are 100 cm in 1 m.')">3,200 cm</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 3.2 × 100 = 320 cm.')">320 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','302 cm is not correct. 3.2 m × 100 = 320 cm.')">302 cm</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">A bus leaves at 09:15 and the journey takes 45 minutes. When does it arrive?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','09:45 is only 30 minutes after 09:15, not 45 minutes.')">09:45</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 09:15 + 45 minutes: 09:15 + 45 = 10:00.')">10:00</button>
+      <button class="opt" onclick="checkP(this,'wrong','10:15 would be 1 hour after departure, not 45 minutes.')">10:15</button>
+      <button class="opt" onclick="checkP(this,'wrong','10:05 is not correct. 15 + 45 = 60 minutes = 1 hour, so it arrives at 10:00.')">10:05</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">A square has sides of 6 cm. What is its perimeter?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','36 cm² is the area (6×6), not the perimeter. Perimeter = add all 4 sides.')">36 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','18 cm would be 3 sides. A square has 4 equal sides: 4 × 6 = 24 cm.')">18 cm</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 4 sides of 6 cm each: 4 × 6 = 24 cm.')">24 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','12 cm would be only 2 sides. Perimeter uses all 4 sides.')">12 cm</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">A room is 5 m long and 4 m wide. What is the area of the floor?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','18 m is the perimeter (5+4+5+4). Area = length × width.')">18 m²</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Area = 5 × 4 = 20 m².')">20 m²</button>
+      <button class="opt" onclick="checkP(this,'wrong','9 m² = 3×3. The area of this room is 5×4=20 m².')">9 m²</button>
+      <button class="opt" onclick="checkP(this,'wrong','25 m² would be a 5×5 room. This room is 5×4=20 m².')">25 m²</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">How many grams are in 1.75 kg?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','175 g = 0.175 kg. Multiply by 1000: 1.75 × 1000 = 1750 g.')">175 g</button>
+      <button class="opt" onclick="checkP(this,'wrong','17,500 g = 17.5 kg. There are 1000 g in 1 kg, so 1.75 × 1000 = 1750 g.')">17,500 g</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 1.75 × 1000 = 1750 g.')">1,750 g</button>
+      <button class="opt" onclick="checkP(this,'wrong','1,075 g is not correct. 1.75 kg × 1000 = 1750 g.')">1,075 g</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">What is 3:45 pm in 24-hour clock?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','03:45 is 3:45 in the morning. For pm, add 12 to the hour.')">03:45</button>
+      <button class="opt" onclick="checkP(this,'wrong','13:45 is 1:45 pm. For 3:45 pm, add 12 to 3: 3+12=15.')">13:45</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 3 pm + 12 = 15. So 3:45 pm = 15:45.')">15:45</button>
+      <button class="opt" onclick="checkP(this,'wrong','16:45 is 4:45 pm, not 3:45 pm.')">16:45</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 7</div>
+    <div class="pq-text">How many sides does a hexagon have?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','4 sides is a quadrilateral (like a square or rectangle).')">4</button>
+      <button class="opt" onclick="checkP(this,'wrong','5 sides is a pentagon.')">5</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! A hexagon has 6 sides. Think of a honeycomb cell.')">6</button>
+      <button class="opt" onclick="checkP(this,'wrong','8 sides is an octagon.')">8</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 8</div>
+    <div class="pq-text">A rectangle is 9 cm long and 4 cm wide. What is its area?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','26 cm is the perimeter (9+4+9+4). Area = length × width.')">26 cm²</button>
+      <button class="opt" onclick="checkP(this,'wrong','13 cm² would be 9+4. Area = multiply, not add.')">13 cm²</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Area = 9 × 4 = 36 cm².')">36 cm²</button>
+      <button class="opt" onclick="checkP(this,'wrong','81 cm² = 9×9. The width is 4, not 9.')">81 cm²</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="entry-data.html" class="next-topic-btn">Next Topic: Data →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.getElementById(id).classList.add('visible');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (id === 'quiz' && !quizStarted) startQuiz();
+}
+function toggleEx(id) { document.getElementById(id).classList.toggle('open'); }
+function checkP(btn, result, msg) {
+  const card = btn.closest('.pq-card');
+  card.querySelectorAll('.opt').forEach(b => b.disabled = true);
+  btn.classList.add(result);
+  const fb = card.querySelector('.fb');
+  fb.textContent = (result === 'correct' ? '✅ ' : '❌ ') + msg;
+  fb.className = 'fb ' + result;
+}
+const quizData = [
+  { q: 'How many centimetres are in 4.5 metres?', opts: ['45 cm','450 cm','4,500 cm','405 cm'], correct: 1, explanation: '4.5 × 100 = 450 cm.' },
+  { q: 'A rectangle is 7 m long and 3 m wide. What is the area?', opts: ['10 m²','20 m²','21 m²','42 m²'], correct: 2, explanation: 'Area = 7 × 3 = 21 m².' },
+  { q: 'What is 6:20 pm in 24-hour clock?', opts: ['06:20','16:20','18:20','20:06'], correct: 2, explanation: '6 pm + 12 = 18. So 6:20 pm = 18:20.' },
+  { q: 'A square has a perimeter of 28 cm. How long is each side?', opts: ['4 cm','6 cm','7 cm','14 cm'], correct: 2, explanation: 'Perimeter ÷ 4 sides = 28 ÷ 4 = 7 cm.' },
+  { q: 'How many grams are in 3 kg?', opts: ['300 g','30 g','3,000 g','30,000 g'], correct: 2, explanation: '3 × 1000 = 3,000 g.' },
+  { q: 'A train departs at 11:50 and arrives at 13:25. How long is the journey?', opts: ['1 hr 25 min','1 hr 35 min','2 hr 25 min','2 hr 35 min'], correct: 1, explanation: '11:50 to 12:00 = 10 min. 12:00 to 13:25 = 1 hr 25 min. Total = 1 hr 35 min.' },
+  { q: 'A shape has 3 sides. What is it called?', opts: ['Square','Pentagon','Triangle','Hexagon'], correct: 2, explanation: 'A triangle has 3 sides and 3 angles.' },
+  { q: 'How many millilitres are in 2.5 litres?', opts: ['25 ml','250 ml','2,500 ml','25,000 ml'], correct: 2, explanation: '2.5 × 1000 = 2,500 ml.' },
+  { q: 'A path is 12 m long and 2 m wide. What is the area?', opts: ['14 m²','24 m²','28 m²','144 m²'], correct: 1, explanation: 'Area = 12 × 2 = 24 m².' },
+  { q: 'How many minutes are in 2½ hours?', opts: ['120 min','130 min','150 min','180 min'], correct: 2, explanation: '2 hours = 120 min. ½ hour = 30 min. Total = 150 min.' },
+];
+let qIdx = 0, score = 0, answered = false, quizStarted = false;
+function startQuiz() {
+  qIdx = 0; score = 0; answered = false; quizStarted = true;
+  document.getElementById('scoreScreen').classList.remove('show');
+  document.getElementById('quizMain').style.display = 'block';
+  renderQ();
+}
+function renderQ() {
+  answered = false;
+  const q = quizData[qIdx], total = quizData.length;
+  const prog = document.getElementById('qprog');
+  prog.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'qdot' + (i < qIdx ? ' done' : i === qIdx ? ' current' : '');
+    prog.appendChild(d);
+  }
+  document.getElementById('qmeta').textContent = `Question ${qIdx + 1} of ${total}`;
+  document.getElementById('qq').textContent = q.q;
+  const opts = document.getElementById('qopts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'qopt'; b.textContent = o;
+    b.onclick = () => answerQ(i, b);
+    opts.appendChild(b);
+  });
+  document.getElementById('qfb').className = 'qfb';
+  document.getElementById('qfb').textContent = '';
+  document.getElementById('nextBtn').className = 'next-btn';
+}
+function answerQ(idx, btn) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[qIdx];
+  document.querySelectorAll('.qopt').forEach(b => b.disabled = true);
+  const fb = document.getElementById('qfb');
+  if (idx === q.correct) {
+    score++; btn.classList.add('correct');
+    fb.className = 'qfb correct'; fb.textContent = '✅ Correct! ' + q.explanation;
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.qopt')[q.correct].classList.add('correct');
+    fb.className = 'qfb wrong'; fb.textContent = '❌ Not quite. ' + q.explanation;
+  }
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+function nextQ() {
+  qIdx++;
+  if (qIdx >= quizData.length) showScore();
+  else renderQ();
+}
+function showScore() {
+  document.getElementById('quizMain').style.display = 'none';
+  document.getElementById('scoreScreen').classList.add('show');
+  const pct = Math.round(score / quizData.length * 100);
+  document.getElementById('scoreBig').textContent = `${score}/${quizData.length}`;
+  document.getElementById('scoreGrade').textContent = pct >= 85 ? '⭐ Excellent!' : pct >= 65 ? '👍 Good effort!' : pct >= 50 ? '💪 Getting there!' : '📖 Keep practising!';
+  document.getElementById('scoreMsg').textContent = pct >= 85
+    ? 'Brilliant! You have a strong grasp of measures, shapes and space. Move on to Data when you are ready!'
+    : pct >= 65 ? 'Good work! Look back at any areas you found tricky in the Worked Examples, then try again.'
+    : 'Keep going — review the Introduction and Worked Examples, then have another go at the quiz.';
+}
+</script>
+</body>
+</html>

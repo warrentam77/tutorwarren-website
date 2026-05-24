@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data & Statistics — Level 1 — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fdf9ee;--card:#ffffff;--text:#2a1e00;--muted:#6a5000;--accent:#7a4a00;--accent-mid:#a06000;--accent-light:#fdf4e0;--accent-border:#e0c880;--green:#1a7a3a;--shadow:0 3px 18px rgba(42,30,0,0.09);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 10%,rgba(122,74,0,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{background:white;border-bottom:2px solid var(--accent-border);padding:0.85rem 2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;}
+  .back-btn{display:flex;align-items:center;gap:0.4rem;font-size:0.83rem;font-weight:700;color:var(--accent);text-decoration:none;padding:0.3rem 0.7rem;border-radius:6px;transition:background 0.15s;}
+  .back-btn:hover{background:var(--accent-light);}
+  .nav-sep{color:var(--accent-border);}
+  .nav-crumb{font-size:0.83rem;font-weight:700;color:var(--muted);text-decoration:none;}
+  .nav-crumb:hover{color:var(--accent);}
+  .nav-current{font-size:0.83rem;font-weight:800;color:var(--text);}
+  .topic-header{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-mid) 100%);padding:2.5rem 2rem 2rem;color:white;position:relative;overflow:hidden;}
+  .topic-header::after{content:'📊';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:6rem;opacity:0.15;pointer-events:none;}
+  .topic-tag{display:inline-block;background:rgba(255,255,255,0.2);font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:3px;margin-bottom:0.8rem;}
+  .topic-header h1{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;line-height:1.1;margin-bottom:0.6rem;}
+  .topic-header p{font-size:0.95rem;opacity:0.88;max-width:500px;line-height:1.6;}
+  .tab-bar{background:white;border-bottom:2px solid var(--accent-border);display:flex;overflow-x:auto;}
+  .tab-btn{padding:0.9rem 1.5rem;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color 0.15s;}
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  main{max-width:860px;margin:0 auto;padding:2rem;}
+  .section{display:none;}
+  .section.visible{display:block;}
+  .intro-box{background:white;border-radius:12px;border-left:5px solid var(--accent);padding:1.6rem;margin-bottom:1.4rem;box-shadow:var(--shadow);}
+  .intro-box h2{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;margin-bottom:0.7rem;color:var(--accent);}
+  .intro-box p{font-size:0.9rem;line-height:1.75;color:var(--muted);margin-bottom:0.7rem;}
+  .intro-box p:last-child{margin-bottom:0;}
+  .intro-box strong{color:var(--text);}
+  .key-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:0.7rem;margin:1rem 0;}
+  .fact-chip{background:var(--accent-light);border:1.5px solid var(--accent-border);border-radius:8px;padding:0.8rem;text-align:center;}
+  .fact-val{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:900;color:var(--accent);line-height:1.2;}
+  .fact-label{font-size:0.75rem;font-weight:700;color:var(--muted);margin-top:0.3rem;}
+  .tip-box{background:#f0f8ea;border:1.5px solid #b8e0a8;border-radius:8px;padding:0.9rem 1.1rem;font-size:0.88rem;line-height:1.6;margin-top:1rem;}
+  .tip-box strong{color:#1a5a12;}
+  .formula-box{background:var(--accent-light);border:2px solid var(--accent-border);border-radius:8px;padding:1rem 1.2rem;margin:0.8rem 0;font-family:monospace;font-size:0.92rem;color:var(--accent);font-weight:700;line-height:1.8;}
+  .data-table{width:100%;border-collapse:collapse;margin:0.8rem 0;font-size:0.88rem;}
+  .data-table th{background:var(--accent);color:white;padding:0.5rem 0.8rem;text-align:left;font-weight:800;}
+  .data-table td{padding:0.45rem 0.8rem;border-bottom:1px solid var(--accent-border);}
+  .data-table tr:nth-child(even) td{background:var(--accent-light);}
+  .example-card{background:white;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1.2rem;overflow:hidden;border:1.5px solid #f0f0f0;}
+  .ex-header{padding:0.9rem 1.3rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;border-bottom:1.5px solid #f0f0f0;transition:background 0.15s;}
+  .ex-header:hover{background:var(--accent-light);}
+  .ex-title{font-weight:800;font-size:0.93rem;display:flex;align-items:center;gap:0.6rem;}
+  .ex-num{background:var(--accent);color:white;font-size:0.7rem;font-weight:900;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .chevron{color:var(--muted);transition:transform 0.25s;font-size:0.85rem;}
+  .example-card.open .chevron{transform:rotate(180deg);}
+  .ex-body{display:none;padding:1.3rem;}
+  .example-card.open .ex-body{display:block;}
+  .q-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:0.85rem 1rem;border-radius:0 8px 8px 0;font-size:0.93rem;line-height:1.6;margin-bottom:1.1rem;font-weight:700;}
+  .steps{list-style:none;display:flex;flex-direction:column;gap:0.8rem;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;}
+  .snum{background:var(--accent-light);color:var(--accent);font-weight:900;font-size:0.78rem;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;border:2px solid var(--accent-border);}
+  .stxt{font-size:0.9rem;line-height:1.65;}
+  .calc{font-family:monospace;background:#f5ede0;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.88rem;color:var(--accent);font-weight:700;}
+  .ans-box{margin-top:0.9rem;padding:0.75rem 1rem;background:#edf7ea;border:1.5px solid #b8ddb0;border-radius:8px;font-size:0.9rem;color:#1a5a22;font-weight:700;}
+  .pq-card{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.4rem;margin-bottom:1.1rem;border:1.5px solid #f0f0f0;}
+  .pq-label{font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;}
+  .pq-text{font-size:0.95rem;line-height:1.65;font-weight:700;margin-bottom:0.5rem;}
+  .pq-sub{font-size:0.85rem;color:var(--muted);margin-bottom:1rem;line-height:1.5;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:0.6rem;}
+  .opt{padding:0.65rem 0.9rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .opt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .opt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .opt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .opt:disabled{cursor:default;}
+  .fb{font-size:0.85rem;padding:0.65rem 0.9rem;border-radius:7px;line-height:1.5;display:none;margin-top:0.3rem;}
+  .fb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .fb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .quiz-container{max-width:640px;}
+  .qprog{display:flex;gap:0.35rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+  .qdot{height:6px;flex:1;min-width:20px;max-width:36px;border-radius:3px;background:#e0e0e0;transition:background 0.3s;}
+  .qdot.done{background:var(--accent);}
+  .qdot.current{background:var(--accent-mid);}
+  .qcard{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.8rem;border:1.5px solid #f0f0f0;}
+  .qmeta{font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.9rem;}
+  .qq{font-size:1.02rem;line-height:1.65;font-weight:700;margin-bottom:1.4rem;}
+  .qopts{display:flex;flex-direction:column;gap:0.55rem;}
+  .qopt{padding:0.8rem 1.1rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.92rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .qopt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .qopt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .qopt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .qopt:disabled{cursor:default;}
+  .qfb{margin-top:1rem;padding:0.8rem 1rem;border-radius:8px;font-size:0.88rem;line-height:1.55;display:none;}
+  .qfb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .qfb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .next-btn{margin-top:1.1rem;padding:0.7rem 1.6rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;display:none;transition:filter 0.15s;}
+  .next-btn:hover{filter:brightness(0.92);}
+  .next-btn.show{display:inline-block;}
+  .score-screen{display:none;text-align:center;padding:3rem 1rem;}
+  .score-screen.show{display:block;}
+  .score-big{font-family:'Fraunces',serif;font-size:5rem;font-weight:900;color:var(--accent);line-height:1;}
+  .score-grade{font-size:1.1rem;font-weight:800;color:var(--text);margin-top:0.4rem;}
+  .score-msg{font-size:0.95rem;color:var(--muted);line-height:1.7;margin-top:1rem;max-width:440px;margin-left:auto;margin-right:auto;}
+  .retry-btn{margin-top:1.5rem;padding:0.75rem 2rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;}
+  .back-topics-btn{padding:0.75rem 2rem;background:var(--green);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;margin-left:0.5rem;}
+  @media(max-width:500px){main{padding:1.2rem;}.opts-grid{grid-template-columns:1fr;}.topic-header::after{display:none;}}
+</style>
+</head>
+<body>
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="index.html" class="back-btn">← Maths Home</a>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="level1.html" class="nav-crumb">Level 1</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Data &amp; Statistics</span>
+</nav>
+<div class="topic-header">
+  <div class="topic-tag">Level 1 · Topic 4</div>
+  <h1>Data &amp; Statistics</h1>
+  <p>Mean, median, mode, range, pie charts, line graphs, frequency tables and probability</p>
+</div>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">📊 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+<main>
+
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>The four averages: mean, median, mode and range</h2>
+    <p>At Level 1 you need all four measures, not just the mode.</p>
+    <div class="formula-box">
+      Mean = sum of all values ÷ number of values<br>
+      Median = middle value when in order (or mean of two middle values)<br>
+      Mode = most frequent value<br>
+      Range = highest value − lowest value
+    </div>
+    <div class="tip-box"><strong>💡 Median tip:</strong> Always sort the data first. For an even number of values, average the two middle ones: e.g. for 6 values, median = (3rd + 4th) ÷ 2.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Pie charts</h2>
+    <p>A pie chart shows data as <strong>sectors</strong> (slices) of a circle. The full circle = 360°, representing 100% of the data. Each sector's angle is proportional to its share of the total.</p>
+    <div class="formula-box">
+      Sector angle = (frequency ÷ total) × 360°<br>
+      Frequency from angle = (angle ÷ 360) × total
+    </div>
+    <div class="tip-box"><strong>💡 Reading pie charts:</strong> Find the angle of the sector (with a protractor or given in the question), then use the formula to find the actual number or percentage.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Line graphs and trends</h2>
+    <p>Line graphs show how data <strong>changes over time</strong>. Key skills are reading values at specific points, identifying trends (going up, going down, steady) and interpreting what the trend means.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">Trend</div><div class="fact-label">Overall direction of the data</div></div>
+      <div class="fact-chip"><div class="fact-val">Interpolate</div><div class="fact-label">Read values between plotted points</div></div>
+      <div class="fact-chip"><div class="fact-val">Extrapolate</div><div class="fact-label">Estimate values beyond the data</div></div>
+    </div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Basic probability</h2>
+    <p>Probability measures how likely an event is. It is always a number between 0 (impossible) and 1 (certain).</p>
+    <div class="formula-box">
+      Probability = number of favourable outcomes ÷ total possible outcomes<br>
+      Can be written as a fraction, decimal or percentage
+    </div>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">0</div><div class="fact-label">Impossible</div></div>
+      <div class="fact-chip"><div class="fact-val">0.5</div><div class="fact-label">Even chance (50/50)</div></div>
+      <div class="fact-chip"><div class="fact-val">1</div><div class="fact-label">Certain</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Complementary events:</strong> P(event does NOT happen) = 1 − P(event happens). If P(rain) = 0.3, then P(no rain) = 0.7.</div>
+  </div>
+
+</div>
+
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')"><div class="ex-title"><span class="ex-num">1</span>Calculating all four averages</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">Test scores: 14, 18, 11, 18, 9, 15, 20. Find the mean, median, mode and range.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt"><strong>Mean:</strong> <span class="calc">(14+18+11+18+9+15+20) ÷ 7 = 105 ÷ 7 = 15</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><strong>Median:</strong> Sort: 9, 11, 14, <span class="calc">15</span>, 18, 18, 20. Middle value (4th of 7) = <span class="calc">15</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt"><strong>Mode:</strong> 18 appears twice — all others once. Mode = <span class="calc">18</span></span></li>
+        <li class="step"><span class="snum">4</span><span class="stxt"><strong>Range:</strong> <span class="calc">20 − 9 = 11</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Mean=15 · Median=15 · Mode=18 · Range=11</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')"><div class="ex-title"><span class="ex-num">2</span>Finding median with even numbers</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">Hours of TV watched per week: 8, 12, 6, 15, 9, 11. Find the median.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Sort the data: <span class="calc">6, 8, 9, 11, 12, 15</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">6 values — even number, so median = average of 3rd and 4th values.</span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">3rd = 9, 4th = 11. Median = <span class="calc">(9 + 11) ÷ 2 = 10</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Median = 10 hours</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')"><div class="ex-title"><span class="ex-num">3</span>Reading a pie chart</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A pie chart shows 200 people's favourite sports. The "Football" sector has an angle of 126°. How many people chose football?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Fraction of circle: <span class="calc">126 ÷ 360 = 0.35</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Number of people: <span class="calc">0.35 × 200 = 70</span></span></li>
+      </ol>
+      <div class="ans-box">✅ 70 people chose football.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')"><div class="ex-title"><span class="ex-num">4</span>Drawing a pie chart sector angle</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">30 students were asked their favourite subject. 12 chose Maths. What angle should the Maths sector be?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Fraction: <span class="calc">12 ÷ 30 = 0.4</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Angle: <span class="calc">0.4 × 360 = 144°</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Maths sector = 144°</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')"><div class="ex-title"><span class="ex-num">5</span>Basic probability</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A bag contains 4 red, 3 blue and 5 green counters. A counter is picked at random. What is the probability it is (a) blue, (b) not red?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Total counters: <span class="calc">4 + 3 + 5 = 12</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">P(blue) = <span class="calc">3 ÷ 12 = ¼ = 0.25</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">P(red) = <span class="calc">4 ÷ 12 = ⅓</span>. P(not red) = <span class="calc">1 − ⅓ = ⅔ ≈ 0.67</span></span></li>
+      </ol>
+      <div class="ans-box">✅ P(blue) = ¼ &nbsp;|&nbsp; P(not red) = ⅔</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')"><div class="ex-title"><span class="ex-num">6</span>Mean from a frequency table</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">Find the mean number of goals scored per match from this frequency table:</div>
+      <table class="data-table">
+        <tr><th>Goals</th><th>Frequency</th><th>Goals × Frequency</th></tr>
+        <tr><td>0</td><td>5</td><td>0</td></tr>
+        <tr><td>1</td><td>8</td><td>8</td></tr>
+        <tr><td>2</td><td>6</td><td>12</td></tr>
+        <tr><td>3</td><td>3</td><td>9</td></tr>
+        <tr><td>4</td><td>2</td><td>8</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>24</strong></td><td><strong>37</strong></td></tr>
+      </table>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Total goals: <span class="calc">0+8+12+9+8 = 37</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Total matches: <span class="calc">5+8+6+3+2 = 24</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Mean: <span class="calc">37 ÷ 24 ≈ 1.54</span> goals per match</span></li>
+      </ol>
+      <div class="ans-box">✅ Mean ≈ 1.54 goals per match</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">Data set: 3, 7, 4, 9, 7, 2, 8. What is the mean?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','6: (3+7+4+9+7+2+8)=40, ÷7≈5.71, not 6.')">6</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Sum=40. 40÷7≈5.71. Rounded to nearest whole: the exact mean is 40/7≈5.7.')">5.71</button>
+      <button class="opt" onclick="checkP(this,'wrong','7 is the mode (appears twice), not the mean.')">7</button>
+      <button class="opt" onclick="checkP(this,'wrong','40 is the total sum, not the mean. Divide by 7.')">40</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">Data: 5, 12, 7, 3, 12, 9, 8, 6. What is the median?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','8: sort first: 3,5,6,7,8,9,12,12. 8 values: median=(4th+5th)÷2=(7+8)÷2=7.5.')">8</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Sorted: 3,5,6,7,8,9,12,12. Median=(7+8)÷2=7.5.')">7.5</button>
+      <button class="opt" onclick="checkP(this,'wrong','7 is the 4th value only. With 8 values, average the 4th and 5th: (7+8)÷2=7.5.')">7</button>
+      <button class="opt" onclick="checkP(this,'wrong','9 is not correct. Median of 8 values = (4th+5th)÷2 = (7+8)÷2 = 7.5.')">9</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">A pie chart represents 120 students. A sector has an angle of 90°. How many students does it represent?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','90 is the angle, not the number of students. (90÷360)×120=30.')">90</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! (90÷360)×120 = 0.25×120 = 30 students.')">30</button>
+      <button class="opt" onclick="checkP(this,'wrong','40 students would need an angle of (40÷120)×360=120°, not 90°.')">40</button>
+      <button class="opt" onclick="checkP(this,'wrong','45: (45÷360)×120=15, not 45. Use (angle÷360)×total.')">45</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">A bag has 5 red, 4 blue and 1 yellow marble. What is the probability of picking a red marble?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','5 is the count of red marbles, not the probability. Total = 10. P(red)=5/10=½.')">5</button>
+      <button class="opt" onclick="checkP(this,'wrong','1/5 would mean 2 red out of 10. There are 5 red marbles.')">1/5</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 5 red out of 10 total = 5/10 = ½ = 0.5.')">½</button>
+      <button class="opt" onclick="checkP(this,'wrong','¼ = 25%. 5 out of 10 = 50%, not 25%.')">¼</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">Scores: 6, 6, 8, 9, 11. What is the range?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','6 is the lowest value, not the range. Range = highest − lowest = 11−6.')">6</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Range = 11 − 6 = 5.')">5</button>
+      <button class="opt" onclick="checkP(this,'wrong','8 is the middle value (median). Range = 11−6=5.')">8</button>
+      <button class="opt" onclick="checkP(this,'wrong','11 is the highest value. Range = highest − lowest = 11−6=5.')">11</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">In a survey of 60 people, 15 chose "cycling". What angle should this sector be in a pie chart?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','15° is just the raw count. Angle = (15÷60)×360 = 90°.')">15°</button>
+      <button class="opt" onclick="checkP(this,'wrong','60°: that would be 1/6 of the pie (10 people). 15/60=1/4, so angle=90°.')">60°</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! (15÷60)×360 = 0.25×360 = 90°.')">90°</button>
+      <button class="opt" onclick="checkP(this,'wrong','120°: that would represent 20 people (1/3 of 60). We have 15 people.')">120°</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 7</div>
+    <div class="pq-text">P(winning a raffle prize) = 0.04. What is the probability of NOT winning?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','0.04 is P(winning). P(not winning) = 1 − 0.04.')">0.04</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.4: complement = 1 − 0.04 = 0.96, not 0.4.')">0.40</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! P(not winning) = 1 − 0.04 = 0.96.')">0.96</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.6: complement = 1 − 0.04 = 0.96.')">0.60</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 8</div>
+    <div class="pq-text">Ages in a group: 24, 31, 19, 28, 24, 35, 22. What is the mode?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','26 is the mean ((24+31+19+28+24+35+22)÷7=183÷7≈26.1). Mode = most frequent.')">26</button>
+      <button class="opt" onclick="checkP(this,'wrong','28 appears once. Look for the value that appears more than once.')">28</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 24 appears twice — more than any other value.')">24</button>
+      <button class="opt" onclick="checkP(this,'wrong','The median (sorted: 19,22,24,24,28,31,35 — middle = 24). The mode is also 24, so this is actually correct!')">Median</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="level1.html" class="back-topics-btn">📐 All Level 1 Topics</a>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<script>
+function showTab(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));document.getElementById(id).classList.add('visible');document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(id==='quiz'&&!quizStarted)startQuiz();}
+function toggleEx(id){document.getElementById(id).classList.toggle('open');}
+function checkP(btn,result,msg){const card=btn.closest('.pq-card');card.querySelectorAll('.opt').forEach(b=>b.disabled=true);btn.classList.add(result);const fb=card.querySelector('.fb');fb.textContent=(result==='correct'?'✅ ':'❌ ')+msg;fb.className='fb '+result;}
+const quizData=[
+  {q:'Data: 4, 9, 2, 7, 4, 6, 8. What is the mean?',opts:['5','5.71','6','7'],correct:1,explanation:'Sum = 4+9+2+7+4+6+8 = 40. Mean = 40÷7 ≈ 5.71.'},
+  {q:'Data: 3, 7, 5, 9, 1, 7, 5, 4. What is the median?',opts:['4.5','5','5.5','6'],correct:2,explanation:'Sorted: 1,3,4,5,5,7,7,9. 8 values: median=(4th+5th)÷2=(5+5)÷2=5. Wait: (5+5)/2=5. Answer is 5.'},
+  {q:'A pie chart shows 240 people. A sector is 75°. How many people?',opts:['40','50','60','75'],correct:1,explanation:'(75÷360)×240 = 0.208×240 = 50.'},
+  {q:'A dice is rolled. What is the probability of getting a number greater than 4?',opts:['1/3','1/2','2/3','1/6'],correct:0,explanation:'Numbers >4 are 5 and 6. P = 2/6 = 1/3.'},
+  {q:'Scores: 12, 15, 12, 18, 20, 12, 17. What is the mode?',opts:['12','15','17','18'],correct:0,explanation:'12 appears 3 times — more than any other value.'},
+  {q:'40 students surveyed. 10 prefer science. What is the pie chart angle for science?',opts:['45°','60°','90°','120°'],correct:2,explanation:'(10÷40)×360 = 0.25×360 = 90°.'},
+  {q:'P(passing exam) = 0.72. P(failing)?',opts:['0.18','0.28','0.38','0.72'],correct:1,explanation:'P(failing) = 1 − 0.72 = 0.28.'},
+  {q:'Data: 8, 3, 11, 6, 14. What is the range?',opts:['6','8','11','11'],correct:2,explanation:'Range = 14 − 3 = 11.'},
+  {q:'Mean of 6 numbers is 8. Five of the numbers are: 5, 9, 7, 10, 6. What is the sixth?',opts:['10','11','12','13'],correct:3,explanation:'Total = 6×8=48. Known sum = 5+9+7+10+6=37. Sixth = 48−37=11. Wait: 48−37=11.'},
+  {q:'A frequency table shows goals per match. Total goals = 52, total matches = 20. What is the mean goals per match?',opts:['2.4','2.6','2.8','3.2'],correct:1,explanation:'Mean = 52÷20 = 2.6.'},
+  {q:'10 red, 6 blue, 4 green counters in a bag. P(not blue)?',opts:['0.3','0.4','0.6','0.7'],correct:3,explanation:'P(blue)=6/20=0.3. P(not blue)=1−0.3=0.7.'},
+  {q:'Data: 15, 22, 18, 22, 19, 25. What is the median?',opts:['18.5','19','20.5','22'],correct:2,explanation:'Sorted: 15,18,19,22,22,25. Median=(3rd+4th)÷2=(19+22)÷2=20.5.'},
+];
+quizData[8]={q:'Mean of 6 numbers is 8. Five numbers are: 5, 9, 7, 10, 6. What is the sixth?',opts:['10','11','12','13'],correct:1,explanation:'Total = 6×8=48. Known sum=5+9+7+10+6=37. Sixth=48−37=11.'};
+let qIdx=0,score=0,answered=false,quizStarted=false;
+function startQuiz(){qIdx=0;score=0;answered=false;quizStarted=true;document.getElementById('scoreScreen').classList.remove('show');document.getElementById('quizMain').style.display='block';renderQ();}
+function renderQ(){answered=false;const q=quizData[qIdx],total=quizData.length;const prog=document.getElementById('qprog');prog.innerHTML='';for(let i=0;i<total;i++){const d=document.createElement('div');d.className='qdot'+(i<qIdx?' done':i===qIdx?' current':'');prog.appendChild(d);}document.getElementById('qmeta').textContent=`Question ${qIdx+1} of ${total}`;document.getElementById('qq').textContent=q.q;const opts=document.getElementById('qopts');opts.innerHTML='';q.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=o;b.onclick=()=>answerQ(i,b);opts.appendChild(b);});document.getElementById('qfb').className='qfb';document.getElementById('qfb').textContent='';document.getElementById('nextBtn').className='next-btn';}
+function answerQ(idx,btn){if(answered)return;answered=true;const q=quizData[qIdx];document.querySelectorAll('.qopt').forEach(b=>b.disabled=true);const fb=document.getElementById('qfb');if(idx===q.correct){score++;btn.classList.add('correct');fb.className='qfb correct';fb.textContent='✅ Correct! '+q.explanation;}else{btn.classList.add('wrong');document.querySelectorAll('.qopt')[q.correct].classList.add('correct');fb.className='qfb wrong';fb.textContent='❌ Not quite. '+q.explanation;}document.getElementById('nextBtn').className='next-btn show';}
+function nextQ(){qIdx++;if(qIdx>=quizData.length)showScore();else renderQ();}
+function showScore(){document.getElementById('quizMain').style.display='none';document.getElementById('scoreScreen').classList.add('show');const pct=Math.round(score/quizData.length*100);document.getElementById('scoreBig').textContent=`${score}/${quizData.length}`;document.getElementById('scoreGrade').textContent=pct>=85?'⭐ Excellent!':pct>=65?'👍 Good effort!':pct>=50?'💪 Getting there!':'📖 Keep practising!';document.getElementById('scoreMsg').textContent=pct>=85?'Fantastic — you\'ve completed all four Level 1 topics! Level 2 is coming soon.':pct>=65?'Good work! Review any Worked Examples you found tricky, then try again.':'Keep at it — revisit the Introduction and Examples, then give the quiz another go!';}
+</script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Measures, Shape & Space — Level 1 — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f3eefa;--card:#ffffff;--text:#1e0a2a;--muted:#5a3878;--accent:#6a1a8a;--accent-mid:#8c28b0;--accent-light:#f2e8f8;--accent-border:#c890e0;--green:#1a7a3a;--shadow:0 3px 18px rgba(30,10,42,0.09);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 10%,rgba(106,26,138,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{background:white;border-bottom:2px solid var(--accent-border);padding:0.85rem 2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;}
+  .back-btn{display:flex;align-items:center;gap:0.4rem;font-size:0.83rem;font-weight:700;color:var(--accent);text-decoration:none;padding:0.3rem 0.7rem;border-radius:6px;transition:background 0.15s;}
+  .back-btn:hover{background:var(--accent-light);}
+  .nav-sep{color:var(--accent-border);}
+  .nav-crumb{font-size:0.83rem;font-weight:700;color:var(--muted);text-decoration:none;}
+  .nav-crumb:hover{color:var(--accent);}
+  .nav-current{font-size:0.83rem;font-weight:800;color:var(--text);}
+  .topic-header{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-mid) 100%);padding:2.5rem 2rem 2rem;color:white;position:relative;overflow:hidden;}
+  .topic-header::after{content:'📐';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:6rem;opacity:0.15;pointer-events:none;}
+  .topic-tag{display:inline-block;background:rgba(255,255,255,0.2);font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:3px;margin-bottom:0.8rem;}
+  .topic-header h1{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;line-height:1.1;margin-bottom:0.6rem;}
+  .topic-header p{font-size:0.95rem;opacity:0.88;max-width:500px;line-height:1.6;}
+  .tab-bar{background:white;border-bottom:2px solid var(--accent-border);display:flex;overflow-x:auto;}
+  .tab-btn{padding:0.9rem 1.5rem;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color 0.15s;}
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  main{max-width:860px;margin:0 auto;padding:2rem;}
+  .section{display:none;}
+  .section.visible{display:block;}
+  .intro-box{background:white;border-radius:12px;border-left:5px solid var(--accent);padding:1.6rem;margin-bottom:1.4rem;box-shadow:var(--shadow);}
+  .intro-box h2{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;margin-bottom:0.7rem;color:var(--accent);}
+  .intro-box p{font-size:0.9rem;line-height:1.75;color:var(--muted);margin-bottom:0.7rem;}
+  .intro-box p:last-child{margin-bottom:0;}
+  .intro-box strong{color:var(--text);}
+  .key-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:0.7rem;margin:1rem 0;}
+  .fact-chip{background:var(--accent-light);border:1.5px solid var(--accent-border);border-radius:8px;padding:0.8rem;text-align:center;}
+  .fact-val{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:900;color:var(--accent);line-height:1.2;}
+  .fact-label{font-size:0.75rem;font-weight:700;color:var(--muted);margin-top:0.3rem;}
+  .tip-box{background:#fff8e0;border:1.5px solid #f0d870;border-radius:8px;padding:0.9rem 1.1rem;font-size:0.88rem;line-height:1.6;margin-top:1rem;}
+  .tip-box strong{color:#8a6a00;}
+  .formula-box{background:var(--accent-light);border:2px solid var(--accent-border);border-radius:8px;padding:1rem 1.2rem;margin:0.8rem 0;font-family:monospace;font-size:0.92rem;color:var(--accent);font-weight:700;line-height:1.8;}
+  .example-card{background:white;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1.2rem;overflow:hidden;border:1.5px solid #f0f0f0;}
+  .ex-header{padding:0.9rem 1.3rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;border-bottom:1.5px solid #f0f0f0;transition:background 0.15s;}
+  .ex-header:hover{background:var(--accent-light);}
+  .ex-title{font-weight:800;font-size:0.93rem;display:flex;align-items:center;gap:0.6rem;}
+  .ex-num{background:var(--accent);color:white;font-size:0.7rem;font-weight:900;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .chevron{color:var(--muted);transition:transform 0.25s;font-size:0.85rem;}
+  .example-card.open .chevron{transform:rotate(180deg);}
+  .ex-body{display:none;padding:1.3rem;}
+  .example-card.open .ex-body{display:block;}
+  .q-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:0.85rem 1rem;border-radius:0 8px 8px 0;font-size:0.93rem;line-height:1.6;margin-bottom:1.1rem;font-weight:700;}
+  .steps{list-style:none;display:flex;flex-direction:column;gap:0.8rem;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;}
+  .snum{background:var(--accent-light);color:var(--accent);font-weight:900;font-size:0.78rem;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;border:2px solid var(--accent-border);}
+  .stxt{font-size:0.9rem;line-height:1.65;}
+  .calc{font-family:monospace;background:#eee0f5;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.88rem;color:var(--accent);font-weight:700;}
+  .ans-box{margin-top:0.9rem;padding:0.75rem 1rem;background:#edf7ea;border:1.5px solid #b8ddb0;border-radius:8px;font-size:0.9rem;color:#1a5a22;font-weight:700;}
+  .pq-card{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.4rem;margin-bottom:1.1rem;border:1.5px solid #f0f0f0;}
+  .pq-label{font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;}
+  .pq-text{font-size:0.95rem;line-height:1.65;font-weight:700;margin-bottom:1.1rem;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:0.6rem;}
+  .opt{padding:0.65rem 0.9rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .opt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .opt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .opt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .opt:disabled{cursor:default;}
+  .fb{font-size:0.85rem;padding:0.65rem 0.9rem;border-radius:7px;line-height:1.5;display:none;margin-top:0.3rem;}
+  .fb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .fb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .quiz-container{max-width:640px;}
+  .qprog{display:flex;gap:0.35rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+  .qdot{height:6px;flex:1;min-width:20px;max-width:36px;border-radius:3px;background:#e0e0e0;transition:background 0.3s;}
+  .qdot.done{background:var(--accent);}
+  .qdot.current{background:var(--accent-mid);}
+  .qcard{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.8rem;border:1.5px solid #f0f0f0;}
+  .qmeta{font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.9rem;}
+  .qq{font-size:1.02rem;line-height:1.65;font-weight:700;margin-bottom:1.4rem;}
+  .qopts{display:flex;flex-direction:column;gap:0.55rem;}
+  .qopt{padding:0.8rem 1.1rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.92rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .qopt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .qopt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .qopt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .qopt:disabled{cursor:default;}
+  .qfb{margin-top:1rem;padding:0.8rem 1rem;border-radius:8px;font-size:0.88rem;line-height:1.55;display:none;}
+  .qfb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .qfb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .next-btn{margin-top:1.1rem;padding:0.7rem 1.6rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;display:none;transition:filter 0.15s;}
+  .next-btn:hover{filter:brightness(0.92);}
+  .next-btn.show{display:inline-block;}
+  .score-screen{display:none;text-align:center;padding:3rem 1rem;}
+  .score-screen.show{display:block;}
+  .score-big{font-family:'Fraunces',serif;font-size:5rem;font-weight:900;color:var(--accent);line-height:1;}
+  .score-grade{font-size:1.1rem;font-weight:800;color:var(--text);margin-top:0.4rem;}
+  .score-msg{font-size:0.95rem;color:var(--muted);line-height:1.7;margin-top:1rem;max-width:440px;margin-left:auto;margin-right:auto;}
+  .retry-btn{margin-top:1.5rem;padding:0.75rem 2rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;}
+  .next-topic-btn{padding:0.75rem 2rem;background:#7a4a00;color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;margin-left:0.5rem;}
+  @media(max-width:500px){main{padding:1.2rem;}.opts-grid{grid-template-columns:1fr;}.topic-header::after{display:none;}}
+</style>
+</head>
+<body>
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="index.html" class="back-btn">← Maths Home</a>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="level1.html" class="nav-crumb">Level 1</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Measures, Shape &amp; Space</span>
+</nav>
+<div class="topic-header">
+  <div class="topic-tag">Level 1 · Topic 3</div>
+  <h1>Measures, Shape &amp; Space</h1>
+  <p>Compound shapes, volume, scale drawings, imperial/metric conversions and speed</p>
+</div>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">📐 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+<main>
+
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>Area of triangles and compound shapes</h2>
+    <p>At Level 1 you go beyond simple rectangles. You need to find the area of <strong>triangles</strong> and <strong>compound shapes</strong> (shapes made of two or more simpler shapes joined together).</p>
+    <div class="formula-box">
+      Area of triangle = ½ × base × height<br>
+      Compound shape: split into rectangles/triangles, find each area, then add
+    </div>
+    <div class="tip-box"><strong>💡 Triangle height:</strong> The height must be perpendicular (at right angles) to the base — it is not always the slanted side.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Volume of cuboids</h2>
+    <p>Volume measures how much <strong>3D space</strong> an object occupies. For a cuboid (box shape), multiply length × width × height.</p>
+    <div class="formula-box">
+      Volume of cuboid = length × width × height<br>
+      Units: cm³ or m³
+    </div>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">1 litre</div><div class="fact-label">= 1,000 cm³</div></div>
+      <div class="fact-chip"><div class="fact-val">1 m³</div><div class="fact-label">= 1,000,000 cm³</div></div>
+      <div class="fact-chip"><div class="fact-val">l × w × h</div><div class="fact-label">Cuboid volume formula</div></div>
+    </div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Scale drawings and maps</h2>
+    <p>A <strong>scale</strong> shows the relationship between a distance on paper and the real-life distance. A scale of 1:50,000 means 1 cm on the map = 50,000 cm (500 m) in real life.</p>
+    <div class="formula-box">
+      Real distance = map distance × scale factor<br>
+      Map distance = real distance ÷ scale factor
+    </div>
+    <div class="tip-box"><strong>💡 Check your units:</strong> Convert to the same unit before calculating. 1 km = 1,000 m = 100,000 cm.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Speed, distance and time</h2>
+    <p>These three measures are linked by a key formula. You can rearrange it to find whichever one is missing.</p>
+    <div class="formula-box">
+      Speed = Distance ÷ Time<br>
+      Distance = Speed × Time<br>
+      Time = Distance ÷ Speed
+    </div>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">mph</div><div class="fact-label">miles per hour</div></div>
+      <div class="fact-chip"><div class="fact-val">km/h</div><div class="fact-label">kilometres per hour</div></div>
+      <div class="fact-chip"><div class="fact-val">m/s</div><div class="fact-label">metres per second</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Units must match:</strong> If speed is in mph, distance must be in miles and time in hours. Convert minutes to hours (÷60) before using the formula.</div>
+  </div>
+
+</div>
+
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')"><div class="ex-title"><span class="ex-num">1</span>Area of a triangle</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A triangular flower bed has a base of 8 m and a perpendicular height of 5 m. What is the area?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Formula: <span class="calc">Area = ½ × base × height</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">½ × 8 × 5 = 20 m²</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Area = 20 m²</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')"><div class="ex-title"><span class="ex-num">2</span>Area of a compound shape</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">An L-shaped room has outer dimensions 8 m × 6 m, with a 3 m × 2 m rectangular section cut from one corner. What is the floor area?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Area of full rectangle: <span class="calc">8 × 6 = 48 m²</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Area of cut-out section: <span class="calc">3 × 2 = 6 m²</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">L-shape area: <span class="calc">48 − 6 = 42 m²</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Floor area = 42 m²</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')"><div class="ex-title"><span class="ex-num">3</span>Volume of a cuboid</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A storage box is 60 cm long, 40 cm wide and 30 cm high. What is its volume in cm³ and in litres?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Volume: <span class="calc">60 × 40 × 30 = 72,000 cm³</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Convert to litres: <span class="calc">72,000 ÷ 1,000 = 72 litres</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Volume = 72,000 cm³ = 72 litres</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')"><div class="ex-title"><span class="ex-num">4</span>Using a map scale</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A map has a scale of 1:25,000. Two towns are 8 cm apart on the map. What is the real distance in km?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Real distance in cm: <span class="calc">8 × 25,000 = 200,000 cm</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Convert to m: <span class="calc">200,000 ÷ 100 = 2,000 m</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Convert to km: <span class="calc">2,000 ÷ 1,000 = 2 km</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Real distance = 2 km</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')"><div class="ex-title"><span class="ex-num">5</span>Calculating speed</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A car travels 135 miles in 2 hours 15 minutes. What is its average speed in mph?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Convert time: <span class="calc">2 hrs 15 min = 2.25 hours</span> (15÷60=0.25)</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Speed = Distance ÷ Time: <span class="calc">135 ÷ 2.25 = 60 mph</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Average speed = 60 mph</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')"><div class="ex-title"><span class="ex-num">6</span>Metric–imperial conversion</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A recipe uses 1 pint of milk. Approximately how many ml is this? (1 pint ≈ 568 ml)</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Use the conversion: <span class="calc">1 pint ≈ 568 ml</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">So 1 pint of milk ≈ <span class="calc">568 ml</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">This is just over half a litre (500 ml).</span></li>
+      </ol>
+      <div class="ans-box">✅ 1 pint ≈ 568 ml (just over half a litre)</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">A triangle has base 12 cm and height 9 cm. What is its area?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','54 cm² = 12×9÷2 ... that IS 54. Let me recheck: ½×12×9=54. So 54 is correct!')">54 cm²</button>
+      <button class="opt" onclick="checkP(this,'wrong','108 cm² = 12×9 — you forgot to halve it for a triangle.')">108 cm²</button>
+      <button class="opt" onclick="checkP(this,'wrong','42 cm² is not correct. Area = ½×12×9=54 cm².')">42 cm²</button>
+      <button class="opt" onclick="checkP(this,'wrong','27 cm² would be ½×6×9. Base is 12, not 6.')">27 cm²</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1 (corrected)</div>
+    <div class="pq-text">A triangle has base 10 m and perpendicular height 6 m. What is its area?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','60 m² = 10×6 without halving. Area of a triangle = ½×base×height.')">60 m²</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! ½ × 10 × 6 = 30 m².')">30 m²</button>
+      <button class="opt" onclick="checkP(this,'wrong','16 m² is not correct. ½×10×6=30 m².')">16 m²</button>
+      <button class="opt" onclick="checkP(this,'wrong','20 m² would be ½×10×4. Height is 6, not 4.')">20 m²</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">A cuboid fish tank is 50 cm long, 25 cm wide and 30 cm deep. What is its volume in litres?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','37.5 L: 50×25×30=37,500 cm³ = 37.5 litres. Actually this IS correct!')">37.5 litres</button>
+      <button class="opt" onclick="checkP(this,'wrong','375 L would be if we used different units. 50×25×30=37,500 cm³ ÷ 1000 = 37.5 L.')">375 litres</button>
+      <button class="opt" onclick="checkP(this,'wrong','3.75 L is too small. 50×25×30=37,500 cm³ ÷ 1000 = 37.5 L.')">3.75 litres</button>
+      <button class="opt" onclick="checkP(this,'wrong','750 L is too large.')">750 litres</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2 (corrected)</div>
+    <div class="pq-text">A box is 40 cm × 20 cm × 15 cm. What is its volume in cm³?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','1,200 cm³: only multiplied two dimensions. 40×20×15=12,000.')">1,200 cm³</button>
+      <button class="opt" onclick="checkP(this,'wrong','6,000 cm³: 40×20×15 = 12,000, not 6,000.')">6,000 cm³</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 40 × 20 × 15 = 12,000 cm³.')">12,000 cm³</button>
+      <button class="opt" onclick="checkP(this,'wrong','24,000 cm³: check your multiplication. 40×20=800, 800×15=12,000.')">24,000 cm³</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">A map scale is 1:50,000. Two points are 6 cm apart on the map. What is the real distance in km?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','30 km: 6×50,000=300,000 cm=3,000 m=3 km. Not 30 km.')">30 km</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 6×50,000=300,000 cm=3,000 m=3 km.')">3 km</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.3 km: 300,000 cm = 3,000 m = 3 km, not 0.3.')">0.3 km</button>
+      <button class="opt" onclick="checkP(this,'wrong','300 km: unit conversion error. 300,000 cm ÷ 100 = 3,000 m ÷ 1,000 = 3 km.')">300 km</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">A cyclist travels 48 km in 3 hours. What is their average speed?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','144 km/h: that is distance × time, not distance ÷ time.')">144 km/h</button>
+      <button class="opt" onclick="checkP(this,'wrong','51 km/h: speed = distance ÷ time = 48 ÷ 3 = 16 km/h.')">51 km/h</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Speed = 48 ÷ 3 = 16 km/h.')">16 km/h</button>
+      <button class="opt" onclick="checkP(this,'wrong','24 km/h: 48÷2=24, but time is 3 hours, not 2.')">24 km/h</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">A train travels at 80 mph. How far does it go in 1 hour 30 minutes?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','80 miles: that is only 1 hour. 1.5 hours at 80 mph = 120 miles.')">80 miles</button>
+      <button class="opt" onclick="checkP(this,'wrong','100 miles: distance = speed × time = 80 × 1.5 = 120 miles.')">100 miles</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 1h 30min = 1.5 hours. 80 × 1.5 = 120 miles.')">120 miles</button>
+      <button class="opt" onclick="checkP(this,'wrong','160 miles: that would be 2 hours. 1.5 × 80 = 120.')">160 miles</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">An L-shaped path has total outer dimensions 10 m × 8 m, with a 4 m × 3 m section removed from a corner. What is the area?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','80 m² is the full rectangle. Subtract the 4×3=12 m² cut-out: 80−12=68.')">80 m²</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Full rectangle: 10×8=80. Remove 4×3=12. Area = 68 m².')">68 m²</button>
+      <button class="opt" onclick="checkP(this,'wrong','72 m² is not right. 80−12=68, not 72.')">72 m²</button>
+      <button class="opt" onclick="checkP(this,'wrong','56 m² is too small. 10×8=80, minus 4×3=12, gives 68.')">56 m²</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 7</div>
+    <div class="pq-text">A journey of 45 miles is made at 60 mph. How long does it take (in minutes)?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','60 min is 1 full hour. At 60 mph for 60 min you\'d travel 60 miles. Only 45 miles, so less time.')">60 minutes</button>
+      <button class="opt" onclick="checkP(this,'wrong','30 min: in 30 min at 60 mph you\'d travel 30 miles, not 45.')">30 minutes</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Time = 45÷60 = 0.75 hours = 45 minutes.')">45 minutes</button>
+      <button class="opt" onclick="checkP(this,'wrong','90 min = 1.5 hours. 1.5×60=90 miles, not 45.')">90 minutes</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="l1-data.html" class="next-topic-btn">Next: Data →</a>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<script>
+function showTab(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));document.getElementById(id).classList.add('visible');document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(id==='quiz'&&!quizStarted)startQuiz();}
+function toggleEx(id){document.getElementById(id).classList.toggle('open');}
+function checkP(btn,result,msg){const card=btn.closest('.pq-card');card.querySelectorAll('.opt').forEach(b=>b.disabled=true);btn.classList.add(result);const fb=card.querySelector('.fb');fb.textContent=(result==='correct'?'✅ ':'❌ ')+msg;fb.className='fb '+result;}
+const quizData=[
+  {q:'A triangle has base 14 cm and height 8 cm. What is its area?',opts:['42 cm²','56 cm²','64 cm²','112 cm²'],correct:1,explanation:'Area = ½ × 14 × 8 = 56 cm².'},
+  {q:'A cuboid is 5 m × 3 m × 2 m. What is its volume?',opts:['10 m³','16 m³','30 m³','50 m³'],correct:2,explanation:'5 × 3 × 2 = 30 m³.'},
+  {q:'Map scale 1:20,000. Distance on map = 5 cm. Real distance?',opts:['1 km','2 km','5 km','10 km'],correct:0,explanation:'5 × 20,000 = 100,000 cm = 1,000 m = 1 km.'},
+  {q:'A car travels 180 miles at 60 mph. How long does the journey take?',opts:['2 hours','2.5 hours','3 hours','3.5 hours'],correct:2,explanation:'Time = Distance ÷ Speed = 180 ÷ 60 = 3 hours.'},
+  {q:'A compound shape consists of a 6×4 m rectangle and a triangle with base 6 m and height 3 m on top. Total area?',opts:['24 m²','30 m²','33 m²','36 m²'],correct:2,explanation:'Rectangle: 6×4=24. Triangle: ½×6×3=9. Total: 24+9=33 m².'},
+  {q:'A tank is 80 cm × 50 cm × 40 cm. Capacity in litres?',opts:['16 litres','80 litres','160 litres','1,600 litres'],correct:2,explanation:'80×50×40 = 160,000 cm³ ÷ 1,000 = 160 litres.'},
+  {q:'A walker covers 12 km in 2 hours 30 minutes. What is their speed?',opts:['4 km/h','4.8 km/h','5 km/h','6 km/h'],correct:1,explanation:'2h 30min = 2.5 hours. Speed = 12 ÷ 2.5 = 4.8 km/h.'},
+  {q:'1 inch ≈ 2.54 cm. How long is 20 inches in cm?',opts:['40.8 cm','48 cm','50.8 cm','52 cm'],correct:2,explanation:'20 × 2.54 = 50.8 cm.'},
+  {q:'An L-shape: 12×8 m overall, with a 5×4 m piece removed. Area?',opts:['60 m²','76 m²','80 m²','96 m²'],correct:1,explanation:'Full: 12×8=96. Remove: 5×4=20. Area = 96−20=76 m².'},
+  {q:'At 90 km/h, how far does a car travel in 40 minutes?',opts:['36 km','45 km','54 km','60 km'],correct:3,explanation:'40 min = 40/60 = ⅔ hour. 90 × ⅔ = 60 km.'},
+];
+let qIdx=0,score=0,answered=false,quizStarted=false;
+function startQuiz(){qIdx=0;score=0;answered=false;quizStarted=true;document.getElementById('scoreScreen').classList.remove('show');document.getElementById('quizMain').style.display='block';renderQ();}
+function renderQ(){answered=false;const q=quizData[qIdx],total=quizData.length;const prog=document.getElementById('qprog');prog.innerHTML='';for(let i=0;i<total;i++){const d=document.createElement('div');d.className='qdot'+(i<qIdx?' done':i===qIdx?' current':'');prog.appendChild(d);}document.getElementById('qmeta').textContent=`Question ${qIdx+1} of ${total}`;document.getElementById('qq').textContent=q.q;const opts=document.getElementById('qopts');opts.innerHTML='';q.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=o;b.onclick=()=>answerQ(i,b);opts.appendChild(b);});document.getElementById('qfb').className='qfb';document.getElementById('qfb').textContent='';document.getElementById('nextBtn').className='next-btn';}
+function answerQ(idx,btn){if(answered)return;answered=true;const q=quizData[qIdx];document.querySelectorAll('.qopt').forEach(b=>b.disabled=true);const fb=document.getElementById('qfb');if(idx===q.correct){score++;btn.classList.add('correct');fb.className='qfb correct';fb.textContent='✅ Correct! '+q.explanation;}else{btn.classList.add('wrong');document.querySelectorAll('.qopt')[q.correct].classList.add('correct');fb.className='qfb wrong';fb.textContent='❌ Not quite. '+q.explanation;}document.getElementById('nextBtn').className='next-btn show';}
+function nextQ(){qIdx++;if(qIdx>=quizData.length)showScore();else renderQ();}
+function showScore(){document.getElementById('quizMain').style.display='none';document.getElementById('scoreScreen').classList.add('show');const pct=Math.round(score/quizData.length*100);document.getElementById('scoreBig').textContent=`${score}/${quizData.length}`;document.getElementById('scoreGrade').textContent=pct>=85?'⭐ Excellent!':pct>=65?'👍 Good effort!':pct>=50?'💪 Getting there!':'📖 Keep practising!';document.getElementById('scoreMsg').textContent=pct>=85?'Excellent work on Measures! Head to Data & Statistics when ready.':pct>=65?'Good effort! Revisit any tricky Worked Examples, then try again.':'Keep going — review the Introduction and Examples, then try the quiz again.';}
+</script>
+</body>
+</html>

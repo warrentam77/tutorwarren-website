@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entry Level — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f7ee;
+    --card-bg: #ffffff;
+    --text: #1a2e1a;
+    --muted: #5a6e5a;
+    --green: #2d7a22;
+    --green-mid: #3aa32d;
+    --green-light: #e8f5e0;
+    --green-border: #b8ddb0;
+    --shadow: 0 4px 20px rgba(26,46,26,0.09);
+    --number: #c8440c;
+    --number-bg: #fdf0ea;
+    --money: #1a5f8a;
+    --money-bg: #e8f2f8;
+    --measures: #7a2d7a;
+    --measures-bg: #f5e8f5;
+    --data: #8a6a00;
+    --data-bg: #fdf6e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 10%, rgba(45,122,34,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 90%, rgba(58,163,45,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* NAV */
+  nav {
+    background: white;
+    border-bottom: 1px solid var(--green-border);
+    padding: 0.9rem 2rem;
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .back-btn {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.85rem; font-weight: 700;
+    color: var(--green);
+    text-decoration: none;
+    padding: 0.35rem 0.8rem;
+    border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .back-btn:hover { background: var(--green-light); }
+  .nav-sep { color: var(--green-border); font-size: 1rem; }
+  .nav-crumb { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+
+  /* HERO */
+  .hero {
+    padding: 3rem 2rem 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .level-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--green);
+    color: white;
+    font-size: 0.7rem; font-weight: 800;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    padding: 0.35rem 1rem; border-radius: 3px;
+    margin-bottom: 1.2rem;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 0.9rem;
+  }
+  h1 span { color: var(--green-mid); font-style: italic; }
+  .hero p {
+    font-size: 1rem; color: var(--muted); line-height: 1.7;
+    max-width: 520px; margin: 0 auto 0.5rem;
+  }
+  .hero-rule { width: 50px; height: 3px; background: var(--green); margin: 1.5rem auto; border-radius: 2px; }
+
+  .what-label {
+    font-size: 0.78rem; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* TOPIC GRID */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.4rem;
+    max-width: 960px;
+    margin: 2rem auto 4rem;
+    padding: 0 2rem;
+  }
+
+  .topic-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    border: 2px solid transparent;
+    text-decoration: none;
+    color: inherit;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s, border-color 0.2s;
+  }
+  .topic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 36px rgba(26,46,26,0.13);
+  }
+  .topic-card.number:hover { border-color: #f0c0a0; }
+  .topic-card.money:hover { border-color: #9ec8e0; }
+  .topic-card.measures:hover { border-color: #d0a0d0; }
+  .topic-card.data:hover { border-color: #e0d090; }
+
+  .card-top {
+    padding: 1.6rem 1.6rem 1.2rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .card-icon-wrap {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  .number .card-icon-wrap { background: var(--number-bg); }
+  .money .card-icon-wrap { background: var(--money-bg); }
+  .measures .card-icon-wrap { background: var(--measures-bg); }
+  .data .card-icon-wrap { background: var(--data-bg); }
+
+  .card-topic-label {
+    font-size: 0.65rem; font-weight: 800;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .number .card-topic-label { color: var(--number); }
+  .money .card-topic-label { color: var(--money); }
+  .measures .card-topic-label { color: var(--measures); }
+  .data .card-topic-label { color: var(--data); }
+
+  .card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem; font-weight: 900;
+    margin-bottom: 0.5rem; line-height: 1.2;
+  }
+  .card-desc {
+    font-size: 0.85rem; color: var(--muted); line-height: 1.6;
+  }
+
+  .card-bottom { padding: 1.1rem 1.6rem; }
+  .what-covered {
+    font-size: 0.68rem; font-weight: 800;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.6rem;
+  }
+  .topics-list { list-style: none; display: flex; flex-direction: column; gap: 0.32rem; margin-bottom: 1.2rem; }
+  .topics-list li {
+    font-size: 0.82rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .topics-list li::before {
+    content: '✓';
+    font-size: 0.7rem; font-weight: 900;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: white;
+  }
+  .number .topics-list li::before { background: var(--number); }
+  .money .topics-list li::before { background: var(--money); }
+  .measures .topics-list li::before { background: var(--measures); }
+  .data .topics-list li::before { background: var(--data); }
+
+  .go-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.88rem; font-weight: 800;
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: filter 0.15s;
+  }
+  .go-btn:hover { filter: brightness(0.93); }
+  .number .go-btn { background: var(--number-bg); color: var(--number); }
+  .money .go-btn { background: var(--money-bg); color: var(--money); }
+  .measures .go-btn { background: var(--measures-bg); color: var(--measures); }
+  .data .go-btn { background: var(--data-bg); color: var(--data); }
+
+  /* PROGRESS SECTION */
+  .progress-bar-wrap {
+    max-width: 960px; margin: 0 auto;
+    padding: 0 2rem 1rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .progress-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+  .progress-track {
+    flex: 1; height: 6px;
+    background: var(--green-border);
+    border-radius: 3px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--green-mid);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.6s ease;
+  }
+  .progress-pct { font-size: 0.78rem; font-weight: 800; color: var(--green); }
+
+  footer {
+    text-align: center; padding: 2rem;
+    color: var(--muted); font-size: 0.82rem;
+    border-top: 1px solid var(--green-border);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero { animation: fadeUp 0.4s ease both; }
+  .topic-card:nth-child(1) { animation: fadeUp 0.4s 0.05s ease both; }
+  .topic-card:nth-child(2) { animation: fadeUp 0.4s 0.10s ease both; }
+  .topic-card:nth-child(3) { animation: fadeUp 0.4s 0.15s ease both; }
+  .topic-card:nth-child(4) { animation: fadeUp 0.4s 0.20s ease both; }
+</style>
+</head>
+<body>
+
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="index.html" class="back-btn">← Maths Home</a>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-crumb">Entry Level</span>
+</nav>
+
+<section class="hero">
+  <div class="level-badge">🌱 Entry Level 1–3</div>
+  <h1>Your <span>Entry Level</span><br>Maths Topics</h1>
+  <div class="hero-rule"></div>
+  <p>Work through each topic at your own pace. Every topic includes a clear introduction, step-by-step examples, practice questions and a quiz to test yourself.</p>
+  <p class="what-label">Choose a topic below</p>
+</section>
+
+<div class="topics-grid">
+
+  <!-- NUMBER -->
+  <a href="entry-number.html" class="topic-card number">
+    <div class="card-top">
+      <div class="card-icon-wrap">🔢</div>
+      <div class="card-topic-label">Topic 1</div>
+      <div class="card-title">Number</div>
+      <p class="card-desc">Understand and work with whole numbers, simple fractions, decimals and basic percentages in everyday situations.</p>
+    </div>
+    <div class="card-bottom">
+      <div class="what-covered">What you'll learn</div>
+      <ul class="topics-list">
+        <li>Simple fractions — ½, ¼, ¾</li>
+        <li>Reading &amp; ordering decimals</li>
+        <li>Understanding 10%, 25%, 50%</li>
+        <li>Rounding to whole numbers</li>
+        <li>Fractions of amounts</li>
+      </ul>
+      <button class="go-btn" onclick="event.preventDefault(); window.location='entry-number.html'">
+        <span>Go to Number</span><span>→</span>
+      </button>
+    </div>
+  </a>
+
+  <!-- MONEY -->
+  <a href="entry-money.html" class="topic-card money">
+    <div class="card-top">
+      <div class="card-icon-wrap">💷</div>
+      <div class="card-topic-label">Topic 2</div>
+      <div class="card-title">Money &amp; Finance</div>
+      <p class="card-desc">Use maths in real money situations — shopping, budgeting, paying bills and working out change.</p>
+    </div>
+    <div class="card-bottom">
+      <div class="what-covered">What you'll learn</div>
+      <ul class="topics-list">
+        <li>Counting &amp; comparing prices</li>
+        <li>Calculating change</li>
+        <li>Simple budgeting</li>
+        <li>Reading receipts &amp; bills</li>
+        <li>Best value comparisons</li>
+      </ul>
+      <button class="go-btn" onclick="event.preventDefault(); window.location='entry-money.html'">
+        <span>Go to Money</span><span>→</span>
+      </button>
+    </div>
+  </a>
+
+  <!-- MEASURES -->
+  <a href="entry-measures.html" class="topic-card measures">
+    <div class="card-top">
+      <div class="card-icon-wrap">📏</div>
+      <div class="card-topic-label">Topic 3</div>
+      <div class="card-title">Measures, Shape &amp; Space</div>
+      <p class="card-desc">Read measurements, tell the time, understand basic shapes and work with simple distances and weights.</p>
+    </div>
+    <div class="card-bottom">
+      <div class="what-covered">What you'll learn</div>
+      <ul class="topics-list">
+        <li>Length, weight &amp; capacity</li>
+        <li>Telling &amp; reading the time</li>
+        <li>Simple perimeter &amp; area</li>
+        <li>2D shapes &amp; properties</li>
+        <li>Reading scales &amp; rulers</li>
+      </ul>
+      <button class="go-btn" onclick="event.preventDefault(); window.location='entry-measures.html'">
+        <span>Go to Measures</span><span>→</span>
+      </button>
+    </div>
+  </a>
+
+  <!-- DATA -->
+  <a href="entry-data.html" class="topic-card data">
+    <div class="card-top">
+      <div class="card-icon-wrap">📊</div>
+      <div class="card-topic-label">Topic 4</div>
+      <div class="card-title">Data &amp; Information</div>
+      <p class="card-desc">Read and interpret everyday charts, tables and graphs — from bar charts to timetables and pictograms.</p>
+    </div>
+    <div class="card-bottom">
+      <div class="what-covered">What you'll learn</div>
+      <ul class="topics-list">
+        <li>Reading bar charts</li>
+        <li>Pictograms &amp; tally charts</li>
+        <li>Simple tables &amp; timetables</li>
+        <li>Finding the most common value</li>
+        <li>Comparing data sets</li>
+      </ul>
+      <button class="go-btn" onclick="event.preventDefault(); window.location='entry-data.html'">
+        <span>Go to Data</span><span>→</span>
+      </button>
+    </div>
+  </a>
+
+</div>
+
+<footer style="background:#0d1b3e;color:white;margin-top:auto;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;max-width:600px;margin:0 auto;">
+    <a href="https://www.tutorwarren.com/" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">ℹ️ About</a>
+    <a href="https://www.tutorwarren.com/electrical" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">⚡ Electrical</a>
+    <a href="https://www.tutorwarren.com/english" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">📘 English</a>
+    <a href="index.html" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">➗ Maths Home</a>
+    <a href="https://www.tutorwarren.com/publications" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">📚 Publications</a>
+    <a href="https://www.tutorwarren.com/contact" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">✉️ Contact</a>
+  </div>
+  <div style="text-align:center;padding:0.9rem;font-size:0.76rem;opacity:0.6;border-top:1px solid rgba(255,255,255,0.1);">tutorwarren.com &nbsp;·&nbsp; Interactive Learning Resources</div>
+</footer>
+
+</body>
+</html>

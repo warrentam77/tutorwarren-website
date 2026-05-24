@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level 2 — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faeef2;
+    --card-bg: #ffffff;
+    --text: #2a0a14;
+    --muted: #7a3050;
+    --red: #8a1a3a;
+    --red-mid: #bb2455;
+    --red-light: #faeef2;
+    --red-border: #e09eb8;
+    --shadow: 0 4px 20px rgba(42,10,20,0.09);
+    --number: #8a3a00;
+    --number-bg: #fdf2e8;
+    --money: #005a3a;
+    --money-bg: #e8f5f0;
+    --measures: #003a7a;
+    --measures-bg: #e8f0fa;
+    --data: #4a008a;
+    --data-bg: #f2e8fa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 15% 15%, rgba(138,26,58,0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 85%, rgba(187,36,85,0.05) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  nav { background: white; border-bottom: 1px solid var(--red-border); padding: 0.9rem 2rem; display: flex; align-items: center; gap: 0.7rem; }
+  .back-btn { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 700; color: var(--red); text-decoration: none; padding: 0.35rem 0.8rem; border-radius: 6px; transition: background 0.15s; }
+  .back-btn:hover { background: var(--red-light); }
+  .nav-sep { color: var(--red-border); }
+  .nav-crumb { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+
+  .hero { padding: 3rem 2rem 1.5rem; max-width: 800px; margin: 0 auto; text-align: center; }
+  .level-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--red); color: white; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 3px; margin-bottom: 1.2rem; }
+  h1 { font-family: 'Fraunces', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.05; margin-bottom: 0.9rem; }
+  h1 span { color: var(--red-mid); font-style: italic; }
+  .hero p { font-size: 1rem; color: var(--muted); line-height: 1.7; max-width: 520px; margin: 0 auto 0.5rem; }
+  .hero-rule { width: 50px; height: 3px; background: var(--red); margin: 1.5rem auto; border-radius: 2px; }
+  .what-label { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .equiv-banner { background: var(--red-light); border: 1.5px solid var(--red-border); border-radius: 10px; padding: 0.9rem 1.4rem; max-width: 600px; margin: 0 auto; display: flex; align-items: center; gap: 0.8rem; font-size: 0.88rem; color: var(--red); font-weight: 700; }
+
+  .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.4rem; max-width: 960px; margin: 2rem auto 4rem; padding: 0 2rem; }
+  .topic-card { background: var(--card-bg); border-radius: 14px; box-shadow: var(--shadow); border: 2px solid transparent; text-decoration: none; color: inherit; display: flex; flex-direction: column; overflow: hidden; transition: transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s, border-color 0.2s; }
+  .topic-card:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(42,10,20,0.13); }
+  .topic-card.number:hover { border-color: #f0c090; }
+  .topic-card.money:hover { border-color: #90d0b8; }
+  .topic-card.measures:hover { border-color: #90b8e0; }
+  .topic-card.data:hover { border-color: #c890e0; }
+
+  .card-top { padding: 1.6rem 1.6rem 1.2rem; border-bottom: 1px solid #f0f0f0; }
+  .card-icon-wrap { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1rem; }
+  .number .card-icon-wrap { background: var(--number-bg); }
+  .money .card-icon-wrap { background: var(--money-bg); }
+  .measures .card-icon-wrap { background: var(--measures-bg); }
+  .data .card-icon-wrap { background: var(--data-bg); }
+
+  .card-topic-label { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .number .card-topic-label { color: var(--number); }
+  .money .card-topic-label { color: var(--money); }
+  .measures .card-topic-label { color: var(--measures); }
+  .data .card-topic-label { color: var(--data); }
+
+  .card-title { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 900; margin-bottom: 0.5rem; line-height: 1.2; }
+  .card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+  .card-bottom { padding: 1.1rem 1.6rem; }
+  .what-covered { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+  .topics-list { list-style: none; display: flex; flex-direction: column; gap: 0.32rem; margin-bottom: 1.2rem; }
+  .topics-list li { font-size: 0.82rem; display: flex; align-items: center; gap: 0.5rem; }
+  .topics-list li::before { content: '✓'; font-size: 0.7rem; font-weight: 900; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white; }
+  .number .topics-list li::before { background: var(--number); }
+  .money .topics-list li::before { background: var(--money); }
+  .measures .topics-list li::before { background: var(--measures); }
+  .data .topics-list li::before { background: var(--data); }
+
+  .go-btn { width: 100%; padding: 0.75rem; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: filter 0.15s; }
+  .go-btn:hover { filter: brightness(0.93); }
+  .number .go-btn { background: var(--number-bg); color: var(--number); }
+  .money .go-btn { background: var(--money-bg); color: var(--money); }
+  .measures .go-btn { background: var(--measures-bg); color: var(--measures); }
+  .data .go-btn { background: var(--data-bg); color: var(--data); }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.82rem; border-top: 1px solid var(--red-border); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero { animation: fadeUp 0.4s ease both; }
+  .topic-card:nth-child(1) { animation: fadeUp 0.4s 0.05s ease both; }
+  .topic-card:nth-child(2) { animation: fadeUp 0.4s 0.10s ease both; }
+  .topic-card:nth-child(3) { animation: fadeUp 0.4s 0.15s ease both; }
+  .topic-card:nth-child(4) { animation: fadeUp 0.4s 0.20s ease both; }
+</style>
+</head>
+<body>
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="index.html" class="back-btn">← Maths Home</a>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-crumb">Level 2</span>
+</nav>
+
+<section class="hero">
+  <div class="level-badge">🎯 Level 2</div>
+  <h1>Your <span>Level 2</span><br>Maths Topics</h1>
+  <div class="hero-rule"></div>
+  <p>Master the skills needed for work and further education. Level 2 is the highest Functional Skills Maths qualification — equivalent to a GCSE grade 4 pass.</p>
+  <div class="equiv-banner">🎓 Level 2 is equivalent to GCSE Maths Grade 4. Topics include compound interest, reverse percentages, complex algebra, and advanced data analysis.</div>
+  <br><p class="what-label">Choose a topic below</p>
+</section>
+
+<div class="topics-grid">
+
+  <a href="l2-number.html" class="topic-card number">
+    <div class="card-top">
+      <div class="card-icon-wrap">🔢</div>
+      <div class="card-topic-label">Topic 1</div>
+      <div class="card-title">Number &amp; Algebra</div>
+      <p class="card-desc">Work with powers, roots, standard form, complex fractions and introduce algebraic thinking with formulae and equations.</p>
+    </div>
+    <div class="card-bottom">
+      <div class="what-covered">What you'll learn</div>
+      <ul class="topics-list">
+        <li>Powers, roots &amp; standard form</li>
+        <li>Recurring decimals &amp; fractions</li>
+        <li>Substituting into formulae</li>
+        <li>Solving linear equations</li>
+        <li>Direct &amp; inverse proportion</li>
+      </ul>
+      <button class="go-btn" onclick="event.preventDefault(); window.location='l2-number.html'"><span>Go to Number</span><span>→</span></button>
+    </div>
+  </a>
+
+  <a href="l2-money.html" class="topic-card money">
+    <div class="card-top">
+      <div class="card-icon-wrap">💷</div>
+      <div class="card-topic-label">Topic 2</div>
+      <div class="card-title">Money &amp; Finance</div>
+      <p class="card-desc">Handle complex financial calculations including compound interest, reverse percentages, tax bands and multi-step financial problems.</p>
+    </div>
+    <div class="card-bottom">
+      <div class="what-covered">What you'll learn</div>
+      <ul class="topics-list">
+        <li>Compound interest</li>
+        <li>Reverse percentages</li>
+        <li>Income tax &amp; tax bands</li>
+        <li>Loan repayments &amp; APR</li>
+        <li>Currency conversion</li>
+      </ul>
+      <button class="go-btn" onclick="event.preventDefault(); window.location='l2-money.html'"><span>Go to Money</span><span>→</span></button>
+    </div>
+  </a>
+
+  <a href="l2-measures.html" class="topic-card measures">
+    <div class="card-top">
+      <div class="card-icon-wrap">📐</div>
+      <div class="card-topic-label">Topic 3</div>
+      <div class="card-title">Measures, Shape &amp; Space</div>
+      <p class="card-desc">Calculate with circles, cylinders and complex compound shapes. Apply Pythagoras' theorem and work with bearings and vectors.</p>
+    </div>
+    <div class="card-bottom">
+      <div class="what-covered">What you'll learn</div>
+      <ul class="topics-list">
+        <li>Circumference &amp; area of circles</li>
+        <li>Volume of cylinders &amp; prisms</li>
+        <li>Pythagoras' theorem</li>
+        <li>Complex compound shapes</li>
+        <li>Density, pressure &amp; speed</li>
+      </ul>
+      <button class="go-btn" onclick="event.preventDefault(); window.location='l2-measures.html'"><span>Go to Measures</span><span>→</span></button>
+    </div>
+  </a>
+
+  <a href="l2-data.html" class="topic-card data">
+    <div class="card-top">
+      <div class="card-icon-wrap">📊</div>
+      <div class="card-topic-label">Topic 4</div>
+      <div class="card-title">Data &amp; Statistics</div>
+      <p class="card-desc">Analyse and interpret complex data sets, use grouped frequency tables, draw and interpret cumulative frequency graphs and histograms.</p>
+    </div>
+    <div class="card-bottom">
+      <div class="what-covered">What you'll learn</div>
+      <ul class="topics-list">
+        <li>Grouped frequency tables</li>
+        <li>Estimated mean &amp; median class</li>
+        <li>Scatter graphs &amp; correlation</li>
+        <li>Two-way tables</li>
+        <li>Combined probability</li>
+      </ul>
+      <button class="go-btn" onclick="event.preventDefault(); window.location='l2-data.html'"><span>Go to Data</span><span>→</span></button>
+    </div>
+  </a>
+
+</div>
+<footer style="background:#0d1b3e;color:white;margin-top:auto;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;max-width:600px;margin:0 auto;">
+    <a href="https://www.tutorwarren.com/" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">ℹ️ About</a>
+    <a href="https://www.tutorwarren.com/electrical" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">⚡ Electrical</a>
+    <a href="https://www.tutorwarren.com/english" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">📘 English</a>
+    <a href="index.html" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">➗ Maths Home</a>
+    <a href="https://www.tutorwarren.com/publications" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">📚 Publications</a>
+    <a href="https://www.tutorwarren.com/contact" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;padding:1.1rem;font-size:0.93rem;font-weight:700;color:white;text-decoration:none;border:1px solid rgba(255,255,255,0.08);">✉️ Contact</a>
+  </div>
+  <div style="text-align:center;padding:0.9rem;font-size:0.76rem;opacity:0.6;border-top:1px solid rgba(255,255,255,0.1);">tutorwarren.com &nbsp;·&nbsp; Interactive Learning Resources</div>
+</footer>
+</body>
+</html>
