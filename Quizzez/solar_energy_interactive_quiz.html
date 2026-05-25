@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solar Energy Interactive Quiz</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #dff6ff, #eefbff);
+      color: #123;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .quiz-box {
+      width: min(900px, 100%);
+      background: rgba(255,255,255,0.92);
+      border-radius: 22px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+      padding: 30px;
+      border: 2px solid #b9e8f7;
+    }
+    h1 { margin: 0 0 10px; color: #075b75; font-size: 2rem; }
+    .progress { font-weight: bold; color: #26677b; margin-bottom: 18px; }
+    .question { font-weight: 800; font-size: 1.35rem; line-height: 1.45; margin-bottom: 22px; }
+    .choices { display: grid; gap: 14px; }
+    .choice {
+      border: 2px solid transparent;
+      border-radius: 15px;
+      padding: 16px 18px;
+      font-size: 1.05rem;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.15s ease, border 0.15s ease, box-shadow 0.15s ease;
+    }
+    .choice:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+    .choice.A { background: #fff3cd; }
+    .choice.B { background: #d7f5df; }
+    .choice.C { background: #e7ddff; }
+    .choice.D { background: #ffddea; }
+    .choice.correct { border-color: #1c9c4a; box-shadow: 0 0 0 3px rgba(28,156,74,0.15); }
+    .choice.wrong { border-color: #cc2d2d; opacity: 0.75; }
+    .feedback { margin-top: 18px; font-size: 2.4rem; min-height: 54px; }
+    .explanation {
+      display: none;
+      margin-top: 16px;
+      background: #f1fbff;
+      border-left: 6px solid #1b8aad;
+      padding: 16px;
+      border-radius: 12px;
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+    .next-btn, .restart-btn {
+      margin-top: 22px;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 14px;
+      background: #0b7896;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      display: none;
+    }
+    .next-btn:hover, .restart-btn:hover { background: #075b75; }
+    .score-card { text-align: center; display: none; }
+    .score-number { font-size: 4rem; font-weight: 900; color: #075b75; margin: 20px 0; }
+    .small-note { color: #42606b; font-size: 0.95rem; margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <main class="quiz-box">
+    <section id="quiz-section">
+      <h1>Solar Energy Interactive Quiz</h1>
+      <div class="progress" id="progress"></div>
+      <div class="question" id="question"></div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="explanation" id="explanation"></div>
+      <button class="next-btn" id="nextBtn">Next Question</button>
+    </section>
+
+    <section class="score-card" id="score-section">
+      <h1>Quiz Completed</h1>
+      <p>Your first-attempt correctness score is:</p>
+      <div class="score-number" id="score"></div>
+      <p id="scoreText"></p>
+      <button class="restart-btn" id="restartBtn">Restart Quiz</button>
+      <p class="small-note">Score is based only on the first answer chosen for each question.</p>
+    </section>
+  </main>
+
+  <script>
+    const questions = [{"num": 1, "question": "Which description best explains how photovoltaic systems generate electricity?", "choices": {"A": "Heat from sunlight turns turbines directly", "B": "Photons cause electron movement within a semiconductor", "C": "Mirrors focus light to boil water", "D": "Solar collectors circulate heated water"}, "answer": "B", "explanation": "Photovoltaic systems use the photovoltaic effect: photons from sunlight transfer energy to electrons in a semiconductor, allowing an electric current to flow. They do not use heat to turn turbines directly."}, {"num": 2, "question": "What role does a semiconductor play in a solar cell?", "choices": {"A": "It absorbs heat from sunlight", "B": "It stores electrical energy", "C": "It controls the flow of electrons", "D": "It converts AC into DC"}, "answer": "C", "explanation": "A semiconductor is the active material in the solar cell. It allows controlled movement of electrons when light energy is absorbed, which is why it is central to producing electricity."}, {"num": 3, "question": "Why is an inverter essential in a photovoltaic solar system?", "choices": {"A": "It increases panel efficiency", "B": "It converts DC electricity into AC electricity", "C": "It stores electricity during cloudy periods", "D": "It regulates sunlight intensity"}, "answer": "B", "explanation": "Solar panels generate direct current (DC), but most buildings and the national grid use alternating current (AC). The inverter changes DC into usable AC electricity."}, {"num": 4, "question": "Which factor would most likely reduce the electrical output of a solar panel system?", "choices": {"A": "Increased sunlight intensity", "B": "Correct panel orientation", "C": "Heavy shading on panels", "D": "Grid connection"}, "answer": "C", "explanation": "Shading blocks sunlight from reaching the cells, so fewer photons are available to move electrons. Even partial shading can significantly reduce output."}, {"num": 5, "question": "Which solar technology primarily generates heat rather than electricity?", "choices": {"A": "Solar thermal collectors", "B": "Photovoltaic arrays", "C": "Solar inverters", "D": "Solar batteries"}, "answer": "A", "explanation": "Solar thermal collectors are designed to absorb sunlight as heat, usually to warm water or another fluid. Photovoltaic arrays mainly generate electricity."}, {"num": 6, "question": "Which component of a solar electricity system connects multiple photovoltaic cells together?", "choices": {"A": "Solar inverter", "B": "Solar panel", "C": "Battery bank", "D": "Transformer"}, "answer": "B", "explanation": "A solar panel is made by connecting many photovoltaic cells together. The panel increases the useful voltage and current available from the cells."}, {"num": 7, "question": "Why are solar panels typically installed facing the sun at a specific angle?", "choices": {"A": "To reduce wind resistance", "B": "To prevent overheating", "C": "To maximise exposure to sunlight", "D": "To reduce installation cost"}, "answer": "C", "explanation": "Correct angle and direction help the panels receive more direct sunlight for more of the day or year. More sunlight normally means more electrical output."}, {"num": 8, "question": "Which technology uses mirrors to concentrate sunlight and generate steam for turbines?", "choices": {"A": "Solar photovoltaic systems", "B": "Solar thermal heating", "C": "Concentrated solar power (CSP)", "D": "Passive solar heating"}, "answer": "C", "explanation": "Concentrated solar power uses mirrors or lenses to focus sunlight. The concentrated heat can make steam, which drives turbines to generate electricity."}, {"num": 9, "question": "What advantage does molten salt storage provide in some CSP plants?", "choices": {"A": "It cools solar mirrors", "B": "It increases solar panel efficiency", "C": "It allows electricity production after sunset", "D": "It reduces turbine speed"}, "answer": "C", "explanation": "Molten salt can store heat from the sun for later use. This allows a CSP plant to keep producing electricity after sunset or during short cloudy periods."}, {"num": 10, "question": "Which of the following best explains why AC electricity is required for the national grid?", "choices": {"A": "AC electricity is easier to store", "B": "AC electricity travels long distances more efficiently", "C": "AC electricity is produced directly by solar panels", "D": "AC electricity reduces panel temperature"}, "answer": "B", "explanation": "AC voltage can be stepped up or down efficiently using transformers. High-voltage AC transmission reduces current and therefore reduces power losses over long distances."}, {"num": 11, "question": "Which environmental benefit is associated with solar power generation?", "choices": {"A": "Production of renewable fossil fuels", "B": "Reduced greenhouse gas emissions during operation", "C": "Increased atmospheric carbon levels", "D": "Increased industrial pollution"}, "answer": "B", "explanation": "Solar power produces electricity without burning fuel during operation, so it can reduce greenhouse gas emissions compared with fossil-fuel generation."}, {"num": 12, "question": "Which of the following is NOT a key factor affecting solar panel efficiency?", "choices": {"A": "Temperature", "B": "Panel orientation", "C": "Sunlight intensity", "D": "Ocean tides"}, "answer": "D", "explanation": "Temperature, orientation and sunlight intensity all affect solar panel performance. Ocean tides affect tidal energy, not solar panel efficiency."}, {"num": 13, "question": "What is the primary function of a solar battery within a solar power system?", "choices": {"A": "Convert AC into DC", "B": "Store excess energy generated during the day", "C": "Increase solar radiation", "D": "Reduce inverter voltage"}, "answer": "B", "explanation": "A solar battery stores surplus electricity, often generated during sunny daytime periods. That stored energy can then be used later when generation is lower."}, {"num": 14, "question": "Why are photovoltaic systems considered environmentally friendly compared with fossil fuels?", "choices": {"A": "They produce no heat", "B": "They operate without burning fuel", "C": "They increase atmospheric oxygen", "D": "They require nuclear materials"}, "answer": "B", "explanation": "Photovoltaic systems do not burn coal, oil or gas while operating. This makes their operation cleaner than fossil-fuel generation."}, {"num": 15, "question": "Which component circulates heated fluid in a solar water heating system?", "choices": {"A": "Solar inverter", "B": "Circulating pump", "C": "Photovoltaic cell", "D": "Turbine"}, "answer": "B", "explanation": "In a solar water heating system, a circulating pump moves heated fluid around the circuit so heat can be transferred to the water supply or cylinder."}, {"num": 16, "question": "Which solar technology converts sunlight directly into electrical energy?", "choices": {"A": "Concentrated solar power", "B": "Solar thermal collectors", "C": "Photovoltaic panels", "D": "Heat exchangers"}, "answer": "C", "explanation": "Photovoltaic panels convert sunlight directly into electrical energy using semiconductor materials. Solar thermal systems mainly collect heat."}, {"num": 17, "question": "Which characteristic makes solar energy a scalable energy technology?", "choices": {"A": "It only works in deserts", "B": "Systems can range from small rooftop installations to large solar farms", "C": "It requires large water supplies", "D": "It must be installed offshore"}, "answer": "B", "explanation": "Solar technology can be installed at many sizes, from small roof systems to large solar farms. This flexibility makes it scalable."}, {"num": 18, "question": "Which issue is commonly associated with solar energy deployment?", "choices": {"A": "Extremely high operating costs", "B": "High greenhouse gas emissions", "C": "Dependence on fossil fuels", "D": "Large initial installation cost"}, "answer": "D", "explanation": "Although running costs can be low, buying and installing panels, inverters, mounting equipment and wiring can require a large upfront cost."}, {"num": 19, "question": "Which statement correctly describes photovoltaic electricity generation?", "choices": {"A": "Heat energy converts directly into electricity", "B": "Sunlight causes chemical reactions in water", "C": "Light energy moves electrons to create an electric current", "D": "Mirrors focus sunlight to power generators"}, "answer": "C", "explanation": "Photovoltaic generation works when light energy excites electrons and creates electric current. It is not mainly a heat, water-chemical or mirror-turbine process."}, {"num": 20, "question": "Which component transfers absorbed solar heat to water in a solar thermal system?", "choices": {"A": "Solar collector", "B": "Inverter", "C": "Battery", "D": "Generator"}, "answer": "A", "explanation": "The solar collector absorbs solar heat and transfers it to a working fluid or water. The inverter, battery and generator are not the heat-transfer collector in a solar thermal system."}, {"num": 21, "question": "Which factor explains why solar panels perform best in locations with clear skies?", "choices": {"A": "Reduced electrical resistance", "B": "Greater solar radiation reaching the panels", "C": "Increased wind speed", "D": "Higher atmospheric pressure"}, "answer": "B", "explanation": "Clear skies allow more solar radiation to reach the panel surface. More available sunlight normally increases the amount of electricity the panels can generate."}, {"num": 22, "question": "Which environmental concern is sometimes associated with solar panel production?", "choices": {"A": "Manufacturing requires energy and materials", "B": "Panels release carbon dioxide during operation", "C": "Solar farms produce radioactive waste", "D": "Solar collectors consume large amounts of water"}, "answer": "A", "explanation": "Solar panels are clean during operation, but manufacturing still needs energy, raw materials and processing. This is an environmental concern to consider across the whole life cycle."}, {"num": 23, "question": "What type of electricity is initially generated by photovoltaic panels?", "choices": {"A": "Alternating current (AC)", "B": "Direct current (DC)", "C": "Thermal energy", "D": "Mechanical energy"}, "answer": "B", "explanation": "Photovoltaic panels initially produce direct current because the current flows in one direction from the cells. An inverter is needed if AC is required."}, {"num": 24, "question": "Which system allows solar households to send excess electricity back to the grid?", "choices": {"A": "Smart metering", "B": "Battery transfer", "C": "Net metering", "D": "Thermal storage"}, "answer": "C", "explanation": "Net metering allows households to export surplus solar electricity to the grid and receive credit or payment depending on the scheme. Smart meters may measure energy flow, but net metering is the arrangement described."}, {"num": 25, "question": "Which statement best describes concentrated solar power systems?", "choices": {"A": "They convert sunlight directly into electricity using semiconductors", "B": "They use mirrors to concentrate sunlight and generate heat for turbines", "C": "They store solar energy in batteries only", "D": "They produce electricity only at night"}, "answer": "B", "explanation": "Concentrated solar power uses mirrors to focus sunlight and produce high-temperature heat. That heat can be used to generate steam and drive turbines."}];
+    let current = 0;
+    let firstAttemptCorrect = 0;
+    let attemptedThisQuestion = false;
+    let answeredCorrectly = false;
+
+    const progressEl = document.getElementById('progress');
+    const questionEl = document.getElementById('question');
+    const choicesEl = document.getElementById('choices');
+    const feedbackEl = document.getElementById('feedback');
+    const explanationEl = document.getElementById('explanation');
+    const nextBtn = document.getElementById('nextBtn');
+    const quizSection = document.getElementById('quiz-section');
+    const scoreSection = document.getElementById('score-section');
+    const scoreEl = document.getElementById('score');
+    const scoreText = document.getElementById('scoreText');
+    const restartBtn = document.getElementById('restartBtn');
+
+    function loadQuestion() {
+      const q = questions[current];
+      attemptedThisQuestion = false;
+      answeredCorrectly = false;
+      progressEl.textContent = `Question ${current + 1} of ${questions.length}`;
+      questionEl.textContent = q.question;
+      choicesEl.innerHTML = '';
+      feedbackEl.textContent = '';
+      explanationEl.style.display = 'none';
+      explanationEl.innerHTML = '';
+      nextBtn.style.display = 'none';
+
+      ['A','B','C','D'].forEach(letter => {
+        const btn = document.createElement('button');
+        btn.className = `choice ${letter}`;
+        btn.innerHTML = `<strong>${letter}.</strong> ${q.choices[letter]}`;
+        btn.onclick = () => chooseAnswer(letter, btn);
+        choicesEl.appendChild(btn);
+      });
+    }
+
+    function chooseAnswer(letter, button) {
+      if (answeredCorrectly) return;
+      const q = questions[current];
+      const isFirstTry = !attemptedThisQuestion;
+      attemptedThisQuestion = true;
+
+      if (letter === q.answer) {
+        answeredCorrectly = true;
+        if (isFirstTry) firstAttemptCorrect++;
+        button.classList.add('correct');
+        feedbackEl.textContent = '👍 Correct!';
+        explanationEl.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+        explanationEl.style.display = 'block';
+        nextBtn.style.display = 'inline-block';
+        document.querySelectorAll('.choice').forEach(btn => btn.disabled = true);
+      } else {
+        button.classList.add('wrong');
+        button.disabled = true;
+        feedbackEl.textContent = '👎 Try again';
+      }
+    }
+
+    nextBtn.addEventListener('click', () => {
+      current++;
+      if (current < questions.length) {
+        loadQuestion();
+      } else {
+        showScore();
+      }
+    });
+
+    function showScore() {
+      quizSection.style.display = 'none';
+      scoreSection.style.display = 'block';
+      restartBtn.style.display = 'inline-block';
+      const percentage = Math.round((firstAttemptCorrect / questions.length) * 100);
+      scoreEl.textContent = `${percentage}%`;
+      scoreText.textContent = `You answered ${firstAttemptCorrect} out of ${questions.length} questions correctly on the first attempt.`;
+    }
+
+    restartBtn.addEventListener('click', () => {
+      current = 0;
+      firstAttemptCorrect = 0;
+      quizSection.style.display = 'block';
+      scoreSection.style.display = 'none';
+      loadQuestion();
+    });
+
+    loadQuestion();
+  </script>
+</body>
+</html>

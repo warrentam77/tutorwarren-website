@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biomass Energy Interactive Quiz</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #dff5ff;
+        color: #183044;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+    .quiz-container {
+        width: 100%;
+        max-width: 900px;
+        background: rgba(255,255,255,0.92);
+        border-radius: 22px;
+        padding: 28px;
+        box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+        border: 2px solid #b9e9ff;
+    }
+    h1 {
+        text-align: center;
+        margin-top: 0;
+        color: #0b5c7a;
+        font-size: 2rem;
+    }
+    .progress {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #24566b;
+        margin-bottom: 18px;
+        text-align: center;
+    }
+    .question {
+        font-size: 1.35rem;
+        font-weight: bold;
+        line-height: 1.45;
+        margin: 20px 0;
+        background: #eefaff;
+        border-left: 7px solid #4db9e8;
+        padding: 16px 18px;
+        border-radius: 12px;
+    }
+    .choices {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin: 22px 0;
+    }
+    button.choice {
+        border: none;
+        border-radius: 14px;
+        padding: 16px;
+        font-size: 1.08rem;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: left;
+        color: #1b2f3f;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    }
+    button.choice:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(0,0,0,0.14);
+    }
+    .choice-a { background: #ffe0e6; }
+    .choice-b { background: #e3f6d8; }
+    .choice-c { background: #fff2c7; }
+    .choice-d { background: #e5e0ff; }
+    .choice.correct {
+        outline: 4px solid #25a244;
+        background: #caffd5 !important;
+    }
+    .choice.wrong {
+        outline: 4px solid #d62828;
+        background: #ffd1d1 !important;
+    }
+    .feedback {
+        min-height: 52px;
+        font-size: 2.2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 10px;
+    }
+    .feedback-text {
+        font-size: 1.1rem;
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .explanation {
+        display: none;
+        background: #f2fbff;
+        border: 2px solid #9eddf5;
+        border-radius: 14px;
+        padding: 16px;
+        line-height: 1.55;
+        font-size: 1.05rem;
+        margin-top: 14px;
+    }
+    .explanation strong {
+        color: #0a617f;
+    }
+    .next-btn, .restart-btn {
+        display: block;
+        margin: 24px auto 0;
+        background: #1386b8;
+        color: white;
+        border: none;
+        border-radius: 14px;
+        padding: 14px 26px;
+        font-size: 1.08rem;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 5px 12px rgba(0,0,0,0.16);
+    }
+    .next-btn:disabled {
+        background: #9bbdcc;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+    .result-box {
+        text-align: center;
+        background: #eefaff;
+        border-radius: 18px;
+        padding: 26px;
+        border: 2px solid #9eddf5;
+    }
+    .score {
+        font-size: 2.4rem;
+        color: #0b5c7a;
+        font-weight: bold;
+        margin: 18px 0;
+    }
+    .summary {
+        font-size: 1.12rem;
+        line-height: 1.6;
+    }
+</style>
+</head>
+<body>
+<div class="quiz-container">
+    <h1>Biomass Energy Interactive Quiz</h1>
+    <div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    "question": "What is biomass energy?",
+    "choices": {
+      "A": "Energy from fossil fuels",
+      "B": "Energy from nuclear reactions",
+      "C": "Energy from organic materials",
+      "D": "Energy from wind"
+    },
+    "answer": "C",
+    "explanation": "Biomass energy comes from organic materials such as plants, wood, food waste and agricultural residues. These materials contain stored chemical energy originally captured from sunlight by living organisms."
+  },
+  {
+    "question": "Biomass energy mainly comes from:",
+    "choices": {
+      "A": "Metals",
+      "B": "Organic matter",
+      "C": "Rocks",
+      "D": "Water"
+    },
+    "answer": "B",
+    "explanation": "Biomass mainly comes from organic matter. This means material from plants, animals or waste from living things, rather than metals, rocks or plain water."
+  },
+  {
+    "question": "What process stores energy in plants?",
+    "choices": {
+      "A": "Combustion",
+      "B": "Respiration",
+      "C": "Photosynthesis",
+      "D": "Digestion"
+    },
+    "answer": "C",
+    "explanation": "Photosynthesis is the process where plants use sunlight to make chemical energy in their tissues. That stored energy can later be released when biomass is burned or processed."
+  },
+  {
+    "question": "Biomass energy releases:",
+    "choices": {
+      "A": "Mechanical energy only",
+      "B": "Nuclear energy",
+      "C": "Magnetic energy",
+      "D": "Stored chemical energy"
+    },
+    "answer": "D",
+    "explanation": "Biomass contains stored chemical energy. When it is burned or converted into fuels such as biogas or biofuel, that chemical energy is released for heating, electricity or transport."
+  },
+  {
+    "question": "Biomass is considered renewable when:",
+    "choices": {
+      "A": "It is burned quickly",
+      "B": "It is stored underground",
+      "C": "It is transported efficiently",
+      "D": "It is replanted or managed sustainably"
+    },
+    "answer": "D",
+    "explanation": "Biomass is renewable only when it is replaced or managed sustainably. If trees, crops or organic materials are used faster than they are replaced, it is no longer truly sustainable."
+  },
+  {
+    "question": "Which process involves burning biomass?",
+    "choices": {
+      "A": "Combustion",
+      "B": "Digestion",
+      "C": "Gasification",
+      "D": "Fermentation"
+    },
+    "answer": "A",
+    "explanation": "Combustion means burning. In biomass combustion, wood, pellets or other organic materials are burned to release heat energy."
+  },
+  {
+    "question": "Anaerobic digestion produces:",
+    "choices": {
+      "A": "Electricity directly",
+      "B": "Biogas",
+      "C": "Coal",
+      "D": "Hydrogen"
+    },
+    "answer": "B",
+    "explanation": "Anaerobic digestion breaks down organic matter without oxygen. This produces biogas, mainly methane and carbon dioxide, which can be used for heat or electricity generation."
+  },
+  {
+    "question": "Gasification occurs with:",
+    "choices": {
+      "A": "No heat",
+      "B": "Excess oxygen",
+      "C": "Limited oxygen",
+      "D": "Water only"
+    },
+    "answer": "C",
+    "explanation": "Gasification heats biomass with a limited amount of oxygen. This does not fully burn the material but converts it into a useful gas fuel."
+  },
+  {
+    "question": "Biofuel production creates:",
+    "choices": {
+      "A": "Solid fuels",
+      "B": "Liquid fuels",
+      "C": "Wind energy",
+      "D": "Electricity only"
+    },
+    "answer": "B",
+    "explanation": "Biofuel production turns biomass into liquid fuels such as biodiesel or bioethanol. These can be used for transport or other energy applications."
+  },
+  {
+    "question": "Which is an example of woody biomass?",
+    "choices": {
+      "A": "Straw",
+      "B": "Food waste",
+      "C": "Wood chips",
+      "D": "Corn husks"
+    },
+    "answer": "C",
+    "explanation": "Wood chips are woody biomass because they come directly from wood. They can be burned or processed to release useful energy."
+  },
+  {
+    "question": "Which is an agricultural biomass source?",
+    "choices": {
+      "A": "Sawdust",
+      "B": "Rice husks",
+      "C": "Pellets",
+      "D": "Plastic waste"
+    },
+    "answer": "B",
+    "explanation": "Rice husks are agricultural residues left after crop processing. They are a biomass source because they come from plant material produced by farming."
+  },
+  {
+    "question": "Energy crops include:",
+    "choices": {
+      "A": "Coal plants",
+      "B": "Oil seeds",
+      "C": "Switchgrass",
+      "D": "Rocks"
+    },
+    "answer": "C",
+    "explanation": "Switchgrass is an energy crop grown specifically for fuel. It can be harvested and used as biomass for heat, power or biofuel production."
+  },
+  {
+    "question": "Organic waste includes:",
+    "choices": {
+      "A": "Steel",
+      "B": "Sand",
+      "C": "Oil",
+      "D": "Food waste"
+    },
+    "answer": "D",
+    "explanation": "Food waste is organic waste because it comes from living matter. It can be used in processes such as anaerobic digestion to produce biogas."
+  },
+  {
+    "question": "One advantage of biomass energy is:",
+    "choices": {
+      "A": "High emissions",
+      "B": "Renewable supply",
+      "C": "Expensive storage",
+      "D": "Limited availability"
+    },
+    "answer": "B",
+    "explanation": "A renewable supply is an advantage of biomass when the source is replanted or continuously replaced. This makes biomass different from fossil fuels, which take millions of years to form."
+  },
+  {
+    "question": "Biomass helps reduce:",
+    "choices": {
+      "A": "Water use",
+      "B": "Wind speed",
+      "C": "Landfill waste",
+      "D": "Solar radiation"
+    },
+    "answer": "C",
+    "explanation": "Biomass can help reduce landfill waste by using food waste, agricultural residues and other organic waste as energy resources instead of sending them to landfill."
+  },
+  {
+    "question": "A challenge of biomass is:",
+    "choices": {
+      "A": "No energy output",
+      "B": "Air emissions",
+      "C": "Unlimited cost",
+      "D": "No applications"
+    },
+    "answer": "B",
+    "explanation": "Air emissions are a challenge because burning biomass releases gases and particles. Although biomass can be renewable, it still needs good controls to reduce pollution."
+  },
+  {
+    "question": "Biomass contributes approximately what percentage of UK energy demand?",
+    "choices": {
+      "A": "1–2%",
+      "B": "5–7%",
+      "C": "10–12%",
+      "D": "20–25%"
+    },
+    "answer": "C",
+    "explanation": "The best answer is 10–12%. This shows biomass makes a noticeable contribution to UK energy demand, especially through heat, electricity and fuel uses."
+  },
+  {
+    "question": "One major UK biomass power station is:",
+    "choices": {
+      "A": "Hinkley Point",
+      "B": "Drax Power Station",
+      "C": "Sellafield",
+      "D": "Sizewell"
+    },
+    "answer": "B",
+    "explanation": "Drax Power Station is a major UK power station associated with biomass generation. It has used biomass pellets as part of its electricity production."
+  },
+  {
+    "question": "Biomass can be used for:",
+    "choices": {
+      "A": "Only heating",
+      "B": "Only electricity",
+      "C": "Only transport",
+      "D": "Electricity, heat, and fuels"
+    },
+    "answer": "D",
+    "explanation": "Biomass is versatile because it can provide electricity, heat and fuels. Different processes, such as combustion, digestion and fermentation, allow biomass to be used in different ways."
+  },
+  {
+    "question": "A key debate about biomass is:",
+    "choices": {
+      "A": "It produces no energy",
+      "B": "It cannot be stored",
+      "C": "It uses no resources",
+      "D": "CO₂ is released during burning"
+    },
+    "answer": "D",
+    "explanation": "A key debate is that carbon dioxide is released when biomass is burned. Supporters argue it can be balanced by regrowth, but critics question how sustainable and low-carbon it is in practice."
+  }
+];
+
+let currentQuestion = 0;
+let firstAttemptCorrect = 0;
+let hasAttemptedCurrent = false;
+let answeredCorrectly = false;
+
+const quizDiv = document.getElementById("quiz");
+
+function renderQuestion() {
+    const q = questions[currentQuestion];
+    hasAttemptedCurrent = false;
+    answeredCorrectly = false;
+
+    quizDiv.innerHTML = `
+        <div class="progress">Question ${currentQuestion + 1} of ${questions.length}</div>
+        <div class="question">${q.question}</div>
+        <div class="choices">
+            ${["A","B","C","D"].map(letter => `
+                <button class="choice choice-${letter.toLowerCase()}" onclick="checkAnswer('${letter}', this)">
+                    ${letter}. ${q.choices[letter]}
+                </button>
+            `).join("")}
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <div class="feedback-text" id="feedbackText"></div>
+        <div class="explanation" id="explanation"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()" disabled>
+            Next Question
+        </button>
+    `;
+}
+
+function checkAnswer(selected, button) {
+    if (answeredCorrectly) return;
+
+    const q = questions[currentQuestion];
+    const feedback = document.getElementById("feedback");
+    const feedbackText = document.getElementById("feedbackText");
+    const explanation = document.getElementById("explanation");
+    const nextBtn = document.getElementById("nextBtn");
+
+    if (selected === q.answer) {
+        button.classList.add("correct");
+        feedback.textContent = "👍";
+        feedbackText.textContent = "Correct!";
+        answeredCorrectly = true;
+
+        if (!hasAttemptedCurrent) {
+            firstAttemptCorrect++;
+        }
+
+        explanation.style.display = "block";
+        explanation.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+        nextBtn.disabled = false;
+
+        document.querySelectorAll(".choice").forEach(btn => btn.disabled = true);
+    } else {
+        button.classList.add("wrong");
+        feedback.textContent = "👎";
+        feedbackText.textContent = "Not correct. Try another answer.";
+        button.disabled = true;
+        hasAttemptedCurrent = true;
+    }
+}
+
+function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+        renderQuestion();
+    } else {
+        showResults();
+    }
+}
+
+function showResults() {
+    const percentage = Math.round((firstAttemptCorrect / questions.length) * 100);
+    quizDiv.innerHTML = `
+        <div class="result-box">
+            <h2>Quiz Completed!</h2>
+            <div class="score">${percentage}%</div>
+            <div class="summary">
+                You answered <strong>${firstAttemptCorrect}</strong> out of <strong>${questions.length}</strong>
+                questions correctly on your first attempt.
+                <br><br>
+                This percentage shows your first-attempt accuracy.
+            </div>
+            <button class="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+    `;
+}
+
+function restartQuiz() {
+    currentQuestion = 0;
+    firstAttemptCorrect = 0;
+    renderQuestion();
+}
+
+renderQuestion();
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wind Energy Interactive Quiz</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #dff5ff;
+    color: #1f2937;
+  }
+  .container {
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 24px;
+    background: #ffffffcc;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+  h1 { text-align: center; margin-top: 0; color: #075985; }
+  .progress { font-size: 1.1rem; font-weight: bold; margin-bottom: 18px; color: #0369a1; }
+  .question { font-size: 1.25rem; font-weight: bold; margin-bottom: 20px; line-height: 1.45; }
+  .choices { display: grid; gap: 12px; }
+  button.choice {
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform .08s, border-color .15s, opacity .15s;
+  }
+  button.choice:hover { transform: translateY(-1px); border-color: #0284c7; }
+  .choiceA { background: #fff7cc; }
+  .choiceB { background: #d9fbe5; }
+  .choiceC { background: #e7ddff; }
+  .choiceD { background: #ffdede; }
+  .choice.correct { outline: 4px solid #16a34a; }
+  .choice.wrong { outline: 4px solid #dc2626; opacity: 0.75; }
+  .feedback { margin-top: 18px; font-size: 2.4rem; min-height: 48px; }
+  .explanation {
+    display: none;
+    margin-top: 14px;
+    padding: 16px;
+    background: #eef8ff;
+    border-left: 6px solid #0284c7;
+    border-radius: 12px;
+    line-height: 1.55;
+  }
+  .next {
+    margin-top: 22px;
+    padding: 13px 22px;
+    border: 0;
+    border-radius: 12px;
+    background: #0284c7;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .next:disabled { background: #94a3b8; cursor: not-allowed; }
+  .result {
+    text-align: center;
+    font-size: 1.3rem;
+    line-height: 1.6;
+  }
+  .score { font-size: 2rem; font-weight: bold; color: #0369a1; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Wind Energy Interactive Quiz</h1>
+  <div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+  {q:"Which component converts the mechanical rotation of turbine blades into electricity?", choices:["Generator","Rotor hub","Gearbox","Tower"], answer:0, exp:"The generator converts mechanical rotational energy from the turbine shaft into electrical energy. The rotor hub and gearbox transfer or adjust rotation, while the tower only supports the turbine."},
+  {q:"The main aerodynamic force responsible for turning wind turbine blades is:", choices:["Drag","Lift","Gravity","Centrifugal force"], answer:1, exp:"Modern wind turbine blades are shaped like airfoils. Wind flowing over the blade creates lift, which produces the turning force needed to rotate the rotor."},
+  {q:"Why do horizontal-axis wind turbines require a yaw system?", choices:["To control tower vibrations","To adjust blade length","To face the rotor toward the wind","To regulate generator voltage"], answer:2, exp:"A yaw system turns the nacelle so the rotor faces the wind. This helps the turbine capture more wind energy and operate efficiently."},
+  {q:"Which turbine type can accept wind from any direction without needing to rotate?", choices:["Horizontal-axis turbine","Offshore monopile turbine","Vertical-axis turbine","Utility-scale turbine"], answer:2, exp:"Vertical-axis wind turbines can receive wind from different directions without yawing into the wind, which can be useful in turbulent or changing wind conditions."},
+  {q:"Why do offshore wind farms often produce more electricity than onshore farms?", choices:["Offshore winds are stronger and more consistent","Offshore turbines use larger generators","Offshore turbines operate at lower speeds","Offshore air density is higher"], answer:0, exp:"Offshore locations usually have stronger, smoother and more consistent winds, so turbines can generate electricity for more hours and at higher output."},
+  {q:"The gearbox in a wind turbine primarily:", choices:["Stores mechanical energy","Converts AC electricity into DC","Adjusts blade pitch","Increases rotational speed for the generator"], answer:3, exp:"The turbine rotor turns relatively slowly. The gearbox increases rotational speed so the generator can operate effectively."},
+  {q:"Which application uses wind energy without generating electricity?", choices:["Water pumping for agriculture","Offshore wind farm generation","Residential wind turbines","Utility-scale wind power"], answer:0, exp:"Traditional wind pumps use wind mechanically to pump water, so the energy is used directly as motion rather than being converted into electricity."},
+  {q:"Which major components are typically housed inside the nacelle?", choices:["Tower and foundation","Generator and gearbox","Transformer and cables","Rotor hub and blades"], answer:1, exp:"The nacelle is the housing at the top of the tower and commonly contains the gearbox, generator, brake and control systems."},
+  {q:"Which factor most strongly determines wind turbine power output?", choices:["Wind speed","Blade colour","Air humidity","Ground temperature"], answer:0, exp:"Wind speed has the greatest effect because available wind power increases dramatically as wind speed rises. Blade colour, humidity and ground temperature are much less important."},
+  {q:"Vertical-axis wind turbines are often suitable for urban environments because they:", choices:["Require stronger winds","Operate efficiently in turbulent airflow","Produce higher power output","Need taller towers"], answer:1, exp:"Urban wind is often turbulent and changes direction frequently. Vertical-axis turbines can cope better with changing wind direction than many horizontal-axis designs."},
+  {q:"Which environmental concern is commonly linked to wind turbines?", choices:["Soil contamination","Ocean pollution","Wildlife impacts on birds and bats","Nuclear waste"], answer:2, exp:"Wind turbines are low-carbon during operation, but they can create risks for birds and bats if badly sited or managed."},
+  {q:"In large wind farms, electricity from turbines is usually:", choices:["Stored inside nacelle batteries","Sent directly to houses","Transmitted through underground cables to transformers","Converted into mechanical pumping energy"], answer:2, exp:"Large wind farms collect electricity through cables, often underground, and send it to transformers before connection to the wider electricity network."},
+  {q:"Which offshore wind turbine design is best suited for deep ocean water?", choices:["Floating turbine platform","Fixed-bottom turbine","Vertical-axis turbine","Micro turbine"], answer:0, exp:"In deep water, fixed foundations become difficult and expensive. Floating platforms allow turbines to be installed where the seabed is too deep for fixed-bottom structures."},
+  {q:"Why can farmland often continue operating around wind turbines?", choices:["Turbines fertilise soil","Turbines require minimal land area","Turbines generate irrigation water","Turbines improve crop growth"], answer:1, exp:"The turbine tower and foundation occupy only a small part of the land, so crops or grazing can often continue around the installation."},
+  {q:"Small-scale wind turbines (<100 kW) are mainly used for:", choices:["National electricity supply","Local or off-grid electricity generation","Industrial power plants","Hydroelectric support"], answer:1, exp:"Small wind turbines are commonly used for farms, homes, remote sites or local systems where the power demand is much smaller than a national grid supply."},
+  {q:"Bladeless wind turbines aim to:", choices:["Replace generators entirely","Use magnets instead of wind","Generate power without rotating blades","Increase tower height"], answer:2, exp:"Bladeless designs aim to use vibration or oscillation caused by wind rather than traditional rotating blades."},
+  {q:"The phrase “a wind turbine works like a fan in reverse” means:", choices:["Electricity moves air to produce wind","Turbines cool electrical components","Wind moves blades to generate electricity","Blades store electrical energy"], answer:2, exp:"A fan uses electricity to move air. A wind turbine does the reverse: moving air turns the blades, and that motion is converted into electricity."},
+  {q:"One challenge of wind power integration into national grids is:", choices:["Excessive nuclear waste","Continuous mechanical failure","High carbon emissions","Variability in wind conditions"], answer:3, exp:"Wind speed changes over time, so electricity output can vary. Grid operators must balance this variability with storage, forecasting and other generation sources."},
+  {q:"Wind farms are commonly located in:", choices:["Dense urban areas","Underground structures","Plains, hills, and coastal regions","Desert interiors only"], answer:2, exp:"Wind farms are normally placed where wind resources are strong and accessible, such as open plains, hills, ridgelines and coastal areas."},
+  {q:"Which structure supports the rotor and nacelle above the ground?", choices:["Foundation","Generator","Tower","Gearbox"], answer:2, exp:"The tower raises the rotor and nacelle to a height where winds are usually stronger and less disturbed."},
+  {q:"Which renewable system is commonly combined with wind energy in hybrid systems?", choices:["Wind–solar hybrid systems","Wind–coal hybrid systems","Wind–diesel primary systems","Wind–nuclear hybrid plants"], answer:0, exp:"Wind and solar are commonly combined because their outputs can complement each other across different weather conditions and times of day."},
+  {q:"Wind energy converts which form of energy into electricity?", choices:["Thermal energy","Chemical energy","Kinetic energy of moving air","Nuclear energy"], answer:2, exp:"Wind is moving air, so it contains kinetic energy. The turbine captures this motion and converts it into mechanical rotation and then electricity."},
+  {q:"Why are horizontal-axis turbines generally more efficient?", choices:["They have heavier blades","They operate at lower speeds","They use vertical shafts","Their blades act like aerodynamic airfoils facing the wind"], answer:3, exp:"Horizontal-axis turbine blades are designed as aerodynamic airfoils and face the wind, allowing efficient lift-based energy capture."},
+  {q:"Which wind energy installation contributes most to national electricity production?", choices:["Residential wind turbines","Mechanical wind pumps","Utility-scale wind farms","Urban rooftop turbines"], answer:2, exp:"Utility-scale wind farms use many large turbines connected to the electricity network, so they contribute far more to national supply than small or mechanical systems."},
+  {q:"Which limitation of wind energy complicates electricity supply planning?", choices:["Constant wind speeds","Limited turbine lifespan","Dependence on fossil fuels","Wind speed variability"], answer:3, exp:"Wind output depends on wind speed, which varies. This makes planning and balancing electricity supply more complex than with fully controllable generators."}
+];
+
+let current = 0;
+let firstAttemptCorrect = 0;
+let attemptedThisQuestion = false;
+let answeredCorrectly = false;
+
+function renderQuestion() {
+  const item = questions[current];
+  attemptedThisQuestion = false;
+  answeredCorrectly = false;
+  document.getElementById('quiz').innerHTML = `
+    <div class="progress">Question ${current + 1} of ${questions.length}</div>
+    <div class="question">${item.q}</div>
+    <div class="choices">
+      ${item.choices.map((c,i)=>`<button class="choice choice${String.fromCharCode(65+i)}" onclick="checkAnswer(${i}, this)"><strong>${String.fromCharCode(65+i)}.</strong> ${c}</button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="explanation" id="explanation"><strong>Explanation:</strong> ${item.exp}</div>
+    <button class="next" id="nextBtn" onclick="nextQuestion()" disabled>Next Question</button>
+  `;
+}
+
+function checkAnswer(index, btn) {
+  if (answeredCorrectly) return;
+  const item = questions[current];
+  const feedback = document.getElementById('feedback');
+  if (index === item.answer) {
+    btn.classList.add('correct');
+    feedback.textContent = '👍';
+    if (!attemptedThisQuestion) firstAttemptCorrect++;
+    answeredCorrectly = true;
+    document.getElementById('explanation').style.display = 'block';
+    document.getElementById('nextBtn').disabled = false;
+  } else {
+    btn.classList.add('wrong');
+    feedback.textContent = '👎 Try again';
+    attemptedThisQuestion = true;
+  }
+}
+
+function nextQuestion() {
+  current++;
+  if (current < questions.length) {
+    renderQuestion();
+  } else {
+    const percentage = Math.round((firstAttemptCorrect / questions.length) * 100);
+    document.getElementById('quiz').innerHTML = `
+      <div class="result">
+        <h2>Quiz Completed</h2>
+        <p>You answered <strong>${firstAttemptCorrect}</strong> out of <strong>${questions.length}</strong> correctly on the first attempt.</p>
+        <p class="score">First-attempt score: ${percentage}%</p>
+      </div>
+    `;
+  }
+}
+
+renderQuestion();
+</script>
+</body>
+</html>

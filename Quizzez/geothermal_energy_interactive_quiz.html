@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geothermal Energy Interactive Quiz</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #dff4ff;
+        color: #1f2937;
+    }
+    .container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 24px;
+        background: #ffffffcc;
+        border-radius: 18px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    h1 { text-align: center; color: #075985; }
+    .progress {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 18px;
+        font-weight: bold;
+    }
+    .question {
+        font-size: 22px;
+        font-weight: bold;
+        margin: 20px 0;
+        line-height: 1.4;
+    }
+    .choice {
+        display: block;
+        width: 100%;
+        border: none;
+        border-radius: 14px;
+        padding: 16px;
+        margin: 12px 0;
+        font-size: 18px;
+        text-align: left;
+        cursor: pointer;
+        transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .choice:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.14); }
+    .choiceA { background: #ffe4e6; }
+    .choiceB { background: #dcfce7; }
+    .choiceC { background: #fef9c3; }
+    .choiceD { background: #ede9fe; }
+    .correct { outline: 4px solid #16a34a; }
+    .wrong { outline: 4px solid #dc2626; }
+    .feedback {
+        font-size: 46px;
+        text-align: center;
+        min-height: 60px;
+        margin-top: 12px;
+    }
+    .explanation {
+        display: none;
+        background: #e0f2fe;
+        border-left: 6px solid #0284c7;
+        padding: 16px;
+        border-radius: 12px;
+        margin-top: 16px;
+        font-size: 17px;
+        line-height: 1.5;
+    }
+    .next {
+        display: none;
+        margin: 24px auto 0;
+        padding: 14px 28px;
+        border: none;
+        border-radius: 12px;
+        background: #0284c7;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .next:hover { background: #0369a1; }
+    .result {
+        text-align: center;
+        font-size: 22px;
+        line-height: 1.6;
+    }
+    .restart {
+        padding: 14px 28px;
+        border: none;
+        border-radius: 12px;
+        background: #0891b2;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Geothermal Energy Interactive Quiz</h1>
+    <div id="quiz"></div>
+</div>
+<script>
+const questions = [{"q": "Why is geothermal energy classified as a baseload energy source?", "choices": ["It provides continuous and stable power output", "It depends on seasonal weather changes", "It only operates during the day", "It requires battery storage"], "answer": "A", "explanation": "Geothermal energy can provide a steady supply of heat from within the Earth. Unlike solar or wind, it is not strongly affected by daily weather or daylight, so it can operate continuously as a baseload source."}, {"q": "Which process is primarily responsible for generating geothermal heat within the Earth?", "choices": ["Solar radiation absorption", "Radioactive decay of isotopes", "Atmospheric pressure changes", "Ocean currents"], "answer": "B", "explanation": "Much of the Earth’s internal heat comes from the radioactive decay of isotopes inside the Earth. This heat is the main source used by geothermal systems."}, {"q": "Why are geothermal power plants commonly located near tectonic plate boundaries?", "choices": ["Higher rainfall improves efficiency", "Lower land costs", "The crust is thinner, allowing easier heat access", "Increased wind speeds"], "answer": "C", "explanation": "Near tectonic plate boundaries, heat from deep inside the Earth is often closer to the surface. This makes geothermal resources easier and more economical to access."}, {"q": "In a geothermal power system, why is water reinjected into the ground?", "choices": ["To cool surface equipment", "To increase steam temperature", "To reduce turbine wear", "To maintain reservoir pressure and sustainability"], "answer": "D", "explanation": "Reinjecting water helps maintain underground pressure and keeps the geothermal reservoir usable for longer. It also supports a more sustainable cycle of extraction and return."}, {"q": "Which factor most limits the global expansion of geothermal electricity generation?", "choices": ["Geological availability of suitable heat sources", "Low turbine efficiency", "Lack of sunlight", "Excessive electricity production"], "answer": "A", "explanation": "Geothermal electricity needs suitable underground heat, permeability and fluid conditions. These geological resources are not available everywhere, which limits expansion."}, {"q": "Why does the UK rely more on ground source heat pumps than geothermal power plants?", "choices": ["The UK has high volcanic activity", "Shallow ground temperatures are stable but deep heat is limited", "Heat pumps generate electricity", "The UK lacks heating demand"], "answer": "B", "explanation": "The UK generally has stable shallow ground temperatures suitable for heat pumps, but fewer high-temperature deep geothermal resources for large-scale power generation."}, {"q": "What is the key energy transformation in a geothermal power plant?", "choices": ["Chemical → Electrical", "Nuclear → Thermal", "Thermal → Mechanical → Electrical", "Electrical → Thermal"], "answer": "C", "explanation": "Heat from underground produces steam or heats a working fluid. This thermal energy turns a turbine, creating mechanical energy, which the generator converts into electrical energy."}, {"q": "Which geothermal system is most suitable for moderate-temperature resources?", "choices": ["Dry steam", "Flash steam", "Hydropower system", "Binary cycle"], "answer": "D", "explanation": "Binary cycle systems can use moderate-temperature geothermal resources by transferring heat to a secondary fluid with a lower boiling point. This makes them suitable where temperatures are not high enough for dry or flash steam."}, {"q": "Why is geothermal energy considered low-carbon?", "choices": ["It absorbs CO₂ from the atmosphere", "It stores carbon underground", "It produces minimal greenhouse gases during operation", "It eliminates all emissions completely"], "answer": "C", "explanation": "Geothermal plants usually produce very low greenhouse gas emissions during operation compared with fossil fuel plants. They are low-carbon, but not always completely emission-free."}, {"q": "Which of the following is a major economic challenge of geothermal energy?", "choices": ["Low energy demand", "High drilling and exploration costs", "Lack of renewable resources", "Low electricity output"], "answer": "B", "explanation": "Finding and reaching geothermal resources can require expensive surveys and deep drilling. These high early costs make geothermal projects financially challenging."}, {"q": "Why can geothermal systems potentially cause seismic activity?", "choices": ["Injection and extraction of fluids altering rock stress", "Wind pressure underground", "Solar heating effects", "Oceanic movement"], "answer": "A", "explanation": "Injecting or extracting fluids underground can change pressure and stress in rock formations. In some cases, this may trigger small earthquakes or induced seismicity."}, {"q": "Which country is a leading example of geothermal energy use due to volcanic activity?", "choices": ["United Kingdom", "Germany", "Iceland", "Canada"], "answer": "C", "explanation": "Iceland has strong volcanic and geothermal activity, giving it excellent access to underground heat. This makes it a leading example of geothermal energy use."}, {"q": "What does “MWe” specifically measure in geothermal systems?", "choices": ["Heat energy", "Water pressure", "Mechanical energy", "Electrical power output"], "answer": "D", "explanation": "MWe means megawatts electrical. It measures the electrical power output of a power plant, not the heat energy or pressure."}, {"q": "Which application uses geothermal energy directly without electricity generation?", "choices": ["National grid supply", "Battery storage", "District heating systems", "Wind energy systems"], "answer": "C", "explanation": "District heating can use geothermal heat directly to warm buildings and water. This does not require converting the heat into electricity first."}, {"q": "Why is geothermal energy more sustainable than fossil fuels?", "choices": ["It produces more electricity", "It relies on continuously generated internal Earth heat", "It requires less technology", "It has zero cost"], "answer": "B", "explanation": "Geothermal energy uses heat that is naturally and continuously produced inside the Earth. Fossil fuels are finite and release stored carbon when burned."}, {"q": "Which scenario would most improve the feasibility of geothermal energy in a new region?", "choices": ["Higher wind speeds", "Increased rainfall", "Lower population density", "Presence of shallow geothermal reservoirs"], "answer": "D", "explanation": "Shallow geothermal reservoirs reduce drilling depth and cost, making geothermal projects easier and more economical to develop."}, {"q": "What is a key environmental advantage of geothermal energy compared to solar farms?", "choices": ["Smaller land footprint", "Higher efficiency", "Lower cost", "Greater energy output"], "answer": "A", "explanation": "Geothermal plants usually need less surface land area than large solar farms. Much of the energy source is underground, so the visible land footprint can be smaller."}, {"q": "Why is geothermal energy considered location-dependent?", "choices": ["It requires sunlight", "It depends on underground geological conditions", "It needs rivers", "It requires altitude"], "answer": "B", "explanation": "Geothermal energy depends on the temperature, depth, permeability and fluid content of underground rocks. These geological conditions vary greatly from place to place."}, {"q": "Which of the following best explains why geothermal energy is not widely used worldwide?", "choices": ["It is unreliable", "It cannot generate electricity", "It produces too much energy", "Suitable geological conditions are rare"], "answer": "D", "explanation": "Geothermal electricity needs suitable high-temperature underground resources. These conditions are less common than sunlight or wind, so use is more limited globally."}, {"q": "Which combination correctly describes geothermal energy systems and UK usage?", "choices": ["Geothermal electricity dominates UK supply", "Deep volcanic plants are common in the UK", "Heat pumps are common due to stable shallow temperatures", "Geothermal is the UK’s primary renewable source"], "answer": "C", "explanation": "In the UK, ground source heat pumps are more common because shallow ground temperatures are stable and useful for heating. Large deep geothermal electricity plants are not common."}];
+let current = 0;
+let firstAttemptCorrect = 0;
+let attemptedThisQuestion = false;
+let answeredCorrectly = false;
+
+function renderQuestion() {
+    const q = questions[current];
+    attemptedThisQuestion = false;
+    answeredCorrectly = false;
+    const letters = ['A','B','C','D'];
+    document.getElementById('quiz').innerHTML = `
+        <div class="progress">Question ${current + 1} of ${questions.length}</div>
+        <div class="question">${q.q}</div>
+        ${q.choices.map((choice, index) => `
+            <button class="choice choice${letters[index]}" onclick="checkAnswer(this, '${letters[index]}')">
+                <strong>${letters[index]}.</strong> ${choice}
+            </button>
+        `).join('')}
+        <div id="feedback" class="feedback"></div>
+        <div id="explanation" class="explanation"><strong>Explanation:</strong> ${q.explanation}</div>
+        <button id="nextBtn" class="next" onclick="nextQuestion()">Next Question</button>
+    `;
+}
+
+function checkAnswer(button, selected) {
+    if (answeredCorrectly) return;
+    const q = questions[current];
+    if (!attemptedThisQuestion) {
+        attemptedThisQuestion = true;
+        if (selected === q.answer) firstAttemptCorrect++;
+    }
+    if (selected === q.answer) {
+        button.classList.add('correct');
+        document.getElementById('feedback').textContent = '👍';
+        document.getElementById('explanation').style.display = 'block';
+        document.getElementById('nextBtn').style.display = 'block';
+        answeredCorrectly = true;
+    } else {
+        button.classList.add('wrong');
+        document.getElementById('feedback').textContent = '👎';
+    }
+}
+
+function nextQuestion() {
+    current++;
+    if (current < questions.length) {
+        renderQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    const percent = Math.round((firstAttemptCorrect / questions.length) * 100);
+    document.getElementById('quiz').innerHTML = `
+        <div class="result">
+            <h2>Quiz Completed!</h2>
+            <p>You answered <strong>${firstAttemptCorrect}</strong> out of <strong>${questions.length}</strong> correctly on your first attempt.</p>
+            <p>Your first-attempt score is <strong>${percent}%</strong>.</p>
+            <button class="restart" onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+    `;
+}
+
+function restartQuiz() {
+    current = 0;
+    firstAttemptCorrect = 0;
+    renderQuestion();
+}
+
+renderQuestion();
+</script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heat Pump Energy Interactive Quiz</title>
+  <style>
+    :root {
+      --bg: #dff5ff;
+      --card: #ffffff;
+      --text: #16324f;
+      --muted: #536b7c;
+      --correct: #dcfce7;
+      --wrong: #fee2e2;
+      --border: #b9dbe8;
+      --blue: #2563eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .quiz-container {
+      width: min(900px, 100%);
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+      padding: 28px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    h1 {
+      font-size: 1.7rem;
+      margin: 0;
+      color: #0f4c81;
+    }
+    .counter {
+      font-weight: bold;
+      background: #e0f2fe;
+      color: #075985;
+      border: 1px solid #7dd3fc;
+      padding: 8px 12px;
+      border-radius: 999px;
+    }
+    .question {
+      font-size: 1.35rem;
+      line-height: 1.45;
+      font-weight: bold;
+      margin: 18px 0 20px;
+    }
+    .choices {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    button.choice {
+      border: 2px solid transparent;
+      border-radius: 14px;
+      padding: 15px 16px;
+      text-align: left;
+      font-size: 1.05rem;
+      cursor: pointer;
+      color: #102a43;
+      transition: transform .08s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    button.choice:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(0,0,0,0.08);
+      border-color: #60a5fa;
+    }
+    .choice .letter {
+      font-weight: bold;
+      margin-right: 8px;
+    }
+    .a { background: #fff2cc; }
+    .b { background: #d9ead3; }
+    .c { background: #d9eaf7; }
+    .d { background: #eadcf8; }
+    .choice.correct {
+      background: var(--correct) !important;
+      border-color: #22c55e;
+      font-weight: bold;
+    }
+    .choice.wrong {
+      background: var(--wrong) !important;
+      border-color: #ef4444;
+    }
+    .feedback {
+      min-height: 40px;
+      font-size: 1.15rem;
+      font-weight: bold;
+      margin: 8px 0;
+    }
+    .explanation {
+      display: none;
+      background: #f0f9ff;
+      border-left: 6px solid #38bdf8;
+      padding: 15px 16px;
+      border-radius: 12px;
+      line-height: 1.5;
+      margin: 12px 0 20px;
+    }
+    .explanation strong { color: #075985; }
+    .nav {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .next-btn, .restart-btn {
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+    }
+    .next-btn:hover, .restart-btn:hover { background: #1d4ed8; }
+    .result {
+      text-align: center;
+      padding: 20px;
+    }
+    .score {
+      font-size: 3rem;
+      color: #0f766e;
+      font-weight: bold;
+      margin: 20px 0 8px;
+    }
+    .small {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    @media (max-width: 600px) {
+      .quiz-container { padding: 20px; }
+      .question { font-size: 1.15rem; }
+      h1 { font-size: 1.35rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="quiz-container">
+    <div id="quiz"></div>
+  </main>
+
+  <script>
+    const questions = [
+  {
+    "q": "Why are heat pumps widely promoted?",
+    "options": {
+      "A": "They reduce carbon emissions from heating",
+      "B": "They generate electricity",
+      "C": "They are the cheapest systems",
+      "D": "They store energy"
+    },
+    "answer": "A",
+    "explanation": "Heat pumps are promoted because they can provide heating with much lower carbon emissions than systems that burn fossil fuels, especially as electricity generation becomes greener."
+  },
+  {
+    "q": "What is a major source of energy use in buildings?",
+    "options": {
+      "A": "Cooling",
+      "B": "Lighting",
+      "C": "Heating",
+      "D": "Appliances"
+    },
+    "answer": "C",
+    "explanation": "Heating is one of the biggest energy uses in buildings, so improving heating efficiency can significantly reduce energy consumption and emissions."
+  },
+  {
+    "q": "What do heat pumps use instead of burning fuel?",
+    "options": {
+      "A": "Oil",
+      "B": "Electricity and environmental heat",
+      "C": "Coal",
+      "D": "Steam"
+    },
+    "answer": "B",
+    "explanation": "Heat pumps do not burn gas, oil or coal at the property. They use electricity to move heat from the air, ground or water into the building."
+  },
+  {
+    "q": "Heat pumps extract heat from which sources?",
+    "options": {
+      "A": "Only air",
+      "B": "Only water",
+      "C": "Only ground",
+      "D": "Air, ground, and water"
+    },
+    "answer": "D",
+    "explanation": "Different heat pump systems can take heat from outdoor air, the ground, or a suitable water source, depending on the type installed."
+  },
+  {
+    "q": "In a heat pump with COP = 3, how many units of heat are delivered?",
+    "options": {
+      "A": "2",
+      "B": "4",
+      "C": "1",
+      "D": "3"
+    },
+    "answer": "D",
+    "explanation": "A COP of 3 means the heat pump delivers 3 units of useful heat for every 1 unit of electrical energy used."
+  },
+  {
+    "q": "Approximately how much heat from a heat pump is renewable at COP = 3?",
+    "options": {
+      "A": "Half",
+      "B": "One-third",
+      "C": "Two-thirds",
+      "D": "All"
+    },
+    "answer": "C",
+    "explanation": "At COP = 3, 1 unit comes from electricity and about 2 units come from environmental heat, so approximately two-thirds of the delivered heat is renewable."
+  },
+  {
+    "q": "What chemical reaction occurs in gas boilers?",
+    "options": {
+      "A": "CO₂ → C + O₂",
+      "B": "H₂ + O₂ → H₂O",
+      "C": "CH₄ + O₂ → CO₂ + H₂O",
+      "D": "CO + O₂ → CO₂"
+    },
+    "answer": "C",
+    "explanation": "Gas boilers burn methane in oxygen, producing carbon dioxide and water. This combustion process is why gas heating creates direct carbon emissions."
+  },
+  {
+    "q": "What do heat pumps NOT produce at the house?",
+    "options": {
+      "A": "Heat",
+      "B": "Noise",
+      "C": "Warm air",
+      "D": "Direct CO₂ emissions"
+    },
+    "answer": "D",
+    "explanation": "Heat pumps may produce heat, warm air and some noise, but they do not produce direct CO₂ emissions at the house because no fuel is burned on site."
+  },
+  {
+    "q": "Heat pumps become greener as:",
+    "options": {
+      "A": "Electricity becomes renewable",
+      "B": "Gas prices fall",
+      "C": "Houses get larger",
+      "D": "Temperature increases"
+    },
+    "answer": "A",
+    "explanation": "Heat pumps use electricity, so their carbon benefit increases as more electricity comes from renewable and low-carbon sources."
+  },
+  {
+    "q": "Typical efficiency of a heat pump is:",
+    "options": {
+      "A": "85–95%",
+      "B": "100%",
+      "C": "50–80%",
+      "D": "250–450%"
+    },
+    "answer": "D",
+    "explanation": "Heat pumps move heat rather than simply converting fuel into heat, so their effective efficiency can be far above 100%, commonly around 250–450%."
+  },
+  {
+    "q": "What does COP stand for?",
+    "options": {
+      "A": "Control of Pressure",
+      "B": "Cost of Power",
+      "C": "Coefficient of Performance",
+      "D": "Cycle of Power"
+    },
+    "answer": "C",
+    "explanation": "COP stands for Coefficient of Performance. It compares useful heat output with the electrical energy input."
+  },
+  {
+    "q": "A heat pump works like:",
+    "options": {
+      "A": "A generator",
+      "B": "A reversible air conditioner",
+      "C": "A battery",
+      "D": "A boiler"
+    },
+    "answer": "B",
+    "explanation": "A heat pump works like a reversible air conditioner: it transfers heat from one place to another and can be used for heating."
+  },
+  {
+    "q": "Which component increases refrigerant pressure?",
+    "options": {
+      "A": "Compressor",
+      "B": "Condenser",
+      "C": "Expansion valve",
+      "D": "Evaporator"
+    },
+    "answer": "A",
+    "explanation": "The compressor raises the pressure and temperature of the refrigerant so that heat can be released effectively inside the building."
+  },
+  {
+    "q": "Which component absorbs heat from outside?",
+    "options": {
+      "A": "Condenser",
+      "B": "Compressor",
+      "C": "Evaporator",
+      "D": "Valve"
+    },
+    "answer": "C",
+    "explanation": "The evaporator absorbs heat from the outside source into the refrigerant, even when the outside air or ground feels cold."
+  },
+  {
+    "q": "What is the main disadvantage of air source heat pumps?",
+    "options": {
+      "A": "High installation cost",
+      "B": "Needs drilling",
+      "C": "Requires water source",
+      "D": "Efficiency drops in cold weather"
+    },
+    "answer": "D",
+    "explanation": "Air source heat pumps depend on outdoor air temperature, so their efficiency usually drops when the weather becomes very cold."
+  },
+  {
+    "q": "Ground source heat pumps are known for:",
+    "options": {
+      "A": "Very high efficiency",
+      "B": "High noise",
+      "C": "Low lifespan",
+      "D": "Poor performance"
+    },
+    "answer": "A",
+    "explanation": "Ground source heat pumps use the relatively stable temperature underground, which often gives them very high efficiency."
+  },
+  {
+    "q": "What is required for water source heat pumps?",
+    "options": {
+      "A": "Solar panels",
+      "B": "Wind supply",
+      "C": "Suitable water source",
+      "D": "Gas connection"
+    },
+    "answer": "C",
+    "explanation": "A water source heat pump needs a suitable water source, such as a lake, river, pond or borehole arrangement, to extract heat from."
+  },
+  {
+    "q": "Hybrid heat pumps combine:",
+    "options": {
+      "A": "Solar and wind",
+      "B": "Heat pump and gas boiler",
+      "C": "Hydro and nuclear",
+      "D": "Biomass and solar"
+    },
+    "answer": "B",
+    "explanation": "A hybrid heat pump combines a heat pump with a gas boiler, allowing the system to switch or share heating duties depending on conditions."
+  },
+  {
+    "q": "What happens to COP in very cold weather?",
+    "options": {
+      "A": "Increases",
+      "B": "Becomes zero",
+      "C": "Drops",
+      "D": "Doubles"
+    },
+    "answer": "C",
+    "explanation": "In very cold weather the heat pump has to work harder to extract heat, so the COP usually drops."
+  },
+  {
+    "q": "Why might heat pumps not save money in the UK?",
+    "options": {
+      "A": "They don’t produce heat",
+      "B": "They require water",
+      "C": "Electricity is expensive",
+      "D": "They use coal"
+    },
+    "answer": "C",
+    "explanation": "Heat pumps may not always save money in the UK because electricity can be expensive compared with gas, even though heat pumps are more efficient."
+  }
+];
+
+    let current = 0;
+    let firstAttemptCorrect = 0;
+    let hasTriedCurrent = false;
+    let answeredCurrent = false;
+
+    const quiz = document.getElementById("quiz");
+
+    function renderQuestion() {
+      const item = questions[current];
+      hasTriedCurrent = false;
+      answeredCurrent = false;
+
+      quiz.innerHTML = `
+        <div class="header">
+          <h1>Heat Pump Energy Interactive Quiz</h1>
+          <div class="counter">Question ${current + 1} of ${questions.length}</div>
+        </div>
+        <div class="question">${escapeHtml(item.q)}</div>
+        <div class="choices">
+          ${["A","B","C","D"].map(letter => `
+            <button class="choice ${letter.toLowerCase()}" onclick="checkAnswer('${letter}', this)">
+              <span class="letter">${letter}.</span>${escapeHtml(item.options[letter])}
+            </button>
+          `).join("")}
+        </div>
+        <div id="feedback" class="feedback"></div>
+        <div id="explanation" class="explanation">
+          <strong>Explanation:</strong> ${escapeHtml(item.explanation)}
+        </div>
+        <div class="nav">
+          <button id="nextBtn" class="next-btn" onclick="nextQuestion()">
+            ${current === questions.length - 1 ? "See Final Score" : "Next Question"}
+          </button>
+        </div>
+      `;
+    }
+
+    function checkAnswer(letter, button) {
+      if (answeredCurrent) return;
+
+      const item = questions[current];
+      const feedback = document.getElementById("feedback");
+      const explanation = document.getElementById("explanation");
+      const nextBtn = document.getElementById("nextBtn");
+
+      if (letter === item.answer) {
+        button.classList.add("correct");
+        feedback.innerHTML = "👍 Correct!";
+        explanation.style.display = "block";
+        nextBtn.style.display = "inline-block";
+
+        if (!hasTriedCurrent) {
+          firstAttemptCorrect++;
+        }
+
+        answeredCurrent = true;
+        document.querySelectorAll(".choice").forEach(btn => btn.disabled = true);
+      } else {
+        button.classList.add("wrong");
+        button.disabled = true;
+        feedback.innerHTML = "👎 Not correct. Try another answer.";
+        hasTriedCurrent = true;
+      }
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        renderQuestion();
+      } else {
+        renderResult();
+      }
+    }
+
+    function renderResult() {
+      const percentage = Math.round((firstAttemptCorrect / questions.length) * 100);
+      quiz.innerHTML = `
+        <div class="result">
+          <h1>Quiz Completed</h1>
+          <p class="small">First-attempt score:</p>
+          <div class="score">${percentage}%</div>
+          <p class="small">
+            You answered <strong>${firstAttemptCorrect}</strong> out of <strong>${questions.length}</strong>
+            questions correctly on the first attempt.
+          </p>
+          <button class="restart-btn" style="display:inline-block" onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+      `;
+    }
+
+    function restartQuiz() {
+      current = 0;
+      firstAttemptCorrect = 0;
+      renderQuestion();
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    renderQuestion();
+  </script>
+</body>
+</html>
