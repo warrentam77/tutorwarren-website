@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Energy — Exam Revision App</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f0d;
+    --bg2: #101810;
+    --bg3: #141f16;
+    --card: #172118;
+    --border: #1f3022;
+    --accent: #4ade80;
+    --accent2: #22c55e;
+    --accent3: #86efac;
+    --solar: #fbbf24;
+    --wind: #60a5fa;
+    --hydro: #38bdf8;
+    --geo: #f87171;
+    --bio: #a78bfa;
+    --nuclear: #fb923c;
+    --heat: #34d399;
+    --text: #e8f0ea;
+    --muted: #6b8a6e;
+    --correct: #4ade80;
+    --wrong: #f87171;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, #1a3a1f, transparent),
+                linear-gradient(160deg, #0a0f0d 0%, #101f12 100%);
+    padding: 60px 24px 48px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 40px,
+      rgba(74,222,128,.02) 40px, rgba(74,222,128,.02) 41px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 40px,
+      rgba(74,222,128,.02) 40px, rgba(74,222,128,.02) 41px
+    );
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(74,222,128,.12);
+    border: 1px solid rgba(74,222,128,.3);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stat-lbl { font-size: .75rem; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-top: 2px; }
+  .tutor-credit {
+    margin-top: 28px;
+    font-size: .82rem;
+    color: var(--muted);
+    letter-spacing: .03em;
+  }
+  .tutor-credit strong {
+    color: var(--accent3);
+    font-weight: 600;
+  }
+
+  /* ── NAV ── */
+  .nav-wrapper {
+    background: rgba(10,15,13,.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-wrapper::-webkit-scrollbar { display: none; }
+  .nav-tabs {
+    display: flex;
+    padding: 0 16px;
+    gap: 2px;
+    min-width: max-content;
+  }
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 14px 18px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: .82rem;
+    font-weight: 500;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); }
+  .tab-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── SECTIONS ── */
+  .section { display: none; padding: 40px 24px 80px; max-width: 1100px; margin: 0 auto; }
+  .section.active { display: block; }
+  .section-header { margin-bottom: 36px; }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .section-header p { color: var(--muted); font-size: .92rem; line-height: 1.6; }
+  .section-label {
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  /* ── FLIP CARDS ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .flip-card {
+    height: 200px;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+  }
+  .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+  .flip-front, .flip-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+  .flip-front {
+    background: var(--card);
+    justify-content: space-between;
+  }
+  .flip-back {
+    background: linear-gradient(135deg, #1a2e1c, #142016);
+    transform: rotateY(180deg);
+    justify-content: center;
+    gap: 10px;
+    border-color: var(--accent2);
+  }
+  .card-icon { font-size: 1.6rem; }
+  .card-term {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .card-hint {
+    font-size: .72rem;
+    color: var(--muted);
+    text-align: right;
+  }
+  .card-def {
+    font-size: .85rem;
+    line-height: 1.65;
+    color: var(--accent3);
+  }
+  .card-tag {
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── MCQ ── */
+  .mcq-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: border-color .2s;
+  }
+  .mcq-block.answered { border-color: var(--accent2); }
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .q-num {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: rgba(74,222,128,.12);
+    color: var(--accent);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: .78rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .q-text {
+    font-size: .95rem;
+    font-weight: 500;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .options { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: .88rem;
+    color: var(--text);
+    transition: all .15s;
+  }
+  .option-btn:hover:not(:disabled) {
+    background: rgba(74,222,128,.07);
+    border-color: rgba(74,222,128,.3);
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct {
+    background: rgba(74,222,128,.12);
+    border-color: var(--correct);
+    color: var(--correct);
+  }
+  .option-btn.wrong {
+    background: rgba(248,113,113,.1);
+    border-color: var(--wrong);
+    color: var(--wrong);
+  }
+  .option-btn.reveal {
+    background: rgba(74,222,128,.07);
+    border-color: rgba(74,222,128,.4);
+    color: var(--accent3);
+  }
+  .option-letter {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    background: rgba(255,255,255,.06);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .72rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .option-btn.correct .option-letter { background: var(--correct); color: #0a0f0d; }
+  .option-btn.wrong .option-letter { background: var(--wrong); color: #fff; }
+  .option-btn.reveal .option-letter { background: rgba(74,222,128,.3); color: var(--accent); }
+
+  .explanation {
+    margin-top: 16px;
+    padding: 16px;
+    background: rgba(74,222,128,.05);
+    border: 1px solid rgba(74,222,128,.2);
+    border-radius: 10px;
+    font-size: .85rem;
+    line-height: 1.65;
+    color: var(--accent3);
+    display: none;
+  }
+  .explanation.show { display: block; }
+  .explanation strong { color: var(--accent); }
+  .explanation .exp-title {
+    font-family: 'Playfair Display', serif;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+  .score-bar-label { font-size: .8rem; color: var(--muted); white-space: nowrap; }
+  .score-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .score-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .4s; }
+  .score-val { font-family: 'Playfair Display', serif; font-size: .9rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+  /* ── KEY FACTS (overview) ── */
+  .facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .fact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: border-color .2s, transform .15s, background .2s;
+    position: relative;
+  }
+  .fact-card:hover {
+    border-color: var(--accent2);
+    background: #1e2e20;
+    transform: translateY(-2px);
+  }
+  .fact-card:hover .fact-label { color: var(--accent3); }
+  .fact-card-arrow {
+    position: absolute;
+    top: 14px; right: 14px;
+    font-size: .75rem;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity .2s, transform .2s;
+  }
+  .fact-card:hover .fact-card-arrow { opacity: 1; transform: translateX(3px); }
+  .fact-icon { font-size: 1.5rem; margin-bottom: 10px; }
+  .fact-label { font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .fact-val { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; line-height: 1.3; }
+
+  /* ── FORMULA BOX ── */
+  .formula-box {
+    background: linear-gradient(135deg, rgba(74,222,128,.06), rgba(74,222,128,.02));
+    border: 1px solid rgba(74,222,128,.25);
+    border-radius: 14px;
+    padding: 24px;
+    margin: 20px 0;
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+  }
+  .formula-box .formula-main { font-size: 1.6rem; font-weight: 700; color: var(--accent); margin: 10px 0; }
+  .formula-box p { font-size: .83rem; color: var(--muted); font-family: 'Instrument Sans', sans-serif; }
+
+  /* ── COMPARISON TABLE ── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  th {
+    background: rgba(74,222,128,.08);
+    color: var(--accent3);
+    font-family: 'Playfair Display', serif;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 12px 16px; border-bottom: 1px solid rgba(31,48,34,.6); color: var(--text); vertical-align: top; line-height: 1.5; }
+  tr:hover td { background: rgba(255,255,255,.02); }
+
+  /* ── PROGRESS TRACKER ── */
+  .progress-section { margin-bottom: 32px; }
+  .topic-progress { display: flex; flex-direction: column; gap: 10px; }
+  .tp-row { display: flex; align-items: center; gap: 14px; }
+  .tp-name { width: 140px; font-size: .82rem; color: var(--muted); flex-shrink: 0; }
+  .tp-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .tp-bar { height: 100%; border-radius: 4px; transition: width .5s; }
+  .tp-pct { width: 36px; font-size: .78rem; color: var(--muted); text-align: right; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); margin: 36px 0; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .hero { padding: 40px 16px 32px; }
+    .section { padding: 28px 16px 60px; }
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+    .flip-card { height: 180px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🌱 Final Exam Revision</div>
+  <h1>Green <span>Energy</span><br>Study Hub</h1>
+  <p>Master every section — from solar panels to nuclear reactors — with flip cards and self-testing MCQs.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">7</div><div class="stat-lbl">Topics</div></div>
+    <div class="stat"><div class="stat-num">60+</div><div class="stat-lbl">Flip Cards</div></div>
+    <div class="stat"><div class="stat-num">56</div><div class="stat-lbl">MCQs</div></div>
+  </div>
+  <div class="tutor-credit">Developed by tutor <strong>Warren Tam</strong></div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrapper">
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showSection('overview',this)"><span class="tab-dot" style="background:#4ade80"></span>Overview</button>
+    <button class="tab-btn" onclick="showSection('solar',this)"><span class="tab-dot" style="background:#fbbf24"></span>Solar</button>
+    <button class="tab-btn" onclick="showSection('wind',this)"><span class="tab-dot" style="background:#60a5fa"></span>Wind</button>
+    <button class="tab-btn" onclick="showSection('hydro',this)"><span class="tab-dot" style="background:#38bdf8"></span>Hydro</button>
+    <button class="tab-btn" onclick="showSection('geo',this)"><span class="tab-dot" style="background:#f87171"></span>Geothermal</button>
+    <button class="tab-btn" onclick="showSection('bio',this)"><span class="tab-dot" style="background:#a78bfa"></span>Biomass</button>
+    <button class="tab-btn" onclick="showSection('nuclear',this)"><span class="tab-dot" style="background:#fb923c"></span>Nuclear</button>
+    <button class="tab-btn" onclick="showSection('heat',this)"><span class="tab-dot" style="background:#34d399"></span>Heat Pumps</button>
+  </div>
+</div>
+
+<!-- ══════════════════ OVERVIEW ══════════════════ -->
+<div id="overview" class="section active">
+  <div class="section-header">
+    <div class="section-label" style="color:var(--accent)">Complete Guide</div>
+    <h2>What Is Green Energy?</h2>
+    <p>Energy sources that generate power with little or no environmental damage — especially low greenhouse gas emissions and minimal pollution.</p>
+  </div>
+  <div class="facts-grid">
+    <div class="fact-card" onclick="showSection('solar', document.querySelector('.tab-btn:nth-child(2)'))"><span class="fact-card-arrow">→</span><div class="fact-icon">☀️</div><div class="fact-label">Solar</div><div class="fact-val">Sunlight → Electricity / Heat</div></div>
+    <div class="fact-card" onclick="showSection('wind', document.querySelector('.tab-btn:nth-child(3)'))"><span class="fact-card-arrow">→</span><div class="fact-icon">💨</div><div class="fact-label">Wind</div><div class="fact-val">Kinetic air energy → Electricity</div></div>
+    <div class="fact-card" onclick="showSection('hydro', document.querySelector('.tab-btn:nth-child(4)'))"><span class="fact-card-arrow">→</span><div class="fact-icon">💧</div><div class="fact-label">Hydro</div><div class="fact-val">Moving water → Electricity (≥85% efficient)</div></div>
+    <div class="fact-card" onclick="showSection('geo', document.querySelector('.tab-btn:nth-child(5)'))"><span class="fact-card-arrow">→</span><div class="fact-icon">🌋</div><div class="fact-label">Geothermal</div><div class="fact-val">Earth's heat → Electricity / Heating</div></div>
+    <div class="fact-card" onclick="showSection('bio', document.querySelector('.tab-btn:nth-child(6)'))"><span class="fact-card-arrow">→</span><div class="fact-icon">🌿</div><div class="fact-label">Biomass</div><div class="fact-val">Organic matter → Heat / Power</div></div>
+    <div class="fact-card" onclick="showSection('nuclear', document.querySelector('.tab-btn:nth-child(7)'))"><span class="fact-card-arrow">→</span><div class="fact-icon">⚛️</div><div class="fact-label">Nuclear</div><div class="fact-val">~12 g CO₂/kWh (like wind)</div></div>
+    <div class="fact-card" onclick="showSection('heat', document.querySelector('.tab-btn:nth-child(8)'))"><span class="fact-card-arrow">→</span><div class="fact-icon">🏠</div><div class="fact-label">Heat Pumps</div><div class="fact-val">COP 2.5–4.5 × more efficient</div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="section-header">
+    <div class="section-label" style="color:var(--accent)">Overview MCQs</div>
+    <h2>Test Your Foundations</h2>
+  </div>
+  <div id="score-overview" class="score-bar"><span class="score-bar-label">Score</span><div class="score-track"><div class="score-fill" style="width:0%"></div></div><span class="score-val">0 / 8</span></div>
+  <div id="mcq-overview"></div>
+</div>
+
+<!-- ══════════════════ SOLAR ══════════════════ -->
+<div id="solar" class="section">
+  <div class="section-header">
+    <div class="section-label" style="color:var(--solar)">Section One</div>
+    <h2>☀️ Solar Energy</h2>
+    <p>Energy from sunlight converted into electricity (PV) or heat (solar thermal). Panels use the photoelectric effect to move electrons through silicon semiconductors.</p>
+  </div>
+
+  <div class="section-label" style="color:var(--solar); margin-bottom:12px;">Key Concepts — Click to Flip</div>
+  <div class="cards-grid">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🔆</div><div class="card-term">Photovoltaic (PV)</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Solar</div><div class="card-def">Converts sunlight directly into DC electricity when photons strike a semiconductor (usually silicon) and displace electrons, creating a current.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🔄</div><div class="card-term">Inverter</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Solar</div><div class="card-def">Converts DC electricity (from panels) into AC electricity required for household appliances and grid connection.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🪞</div><div class="card-term">CSP — Concentrated Solar Power</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Solar</div><div class="card-def">Uses mirrors (heliostats or parabolic troughs) to focus sunlight, producing heat (400–1000°C) to create steam and drive turbines.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🧂</div><div class="card-term">Molten Salt Storage</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">CSP</div><div class="card-def">CSP plants store thermal energy in hot molten salt tanks, enabling electricity generation hours after sunset — unlike PV panels.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">📡</div><div class="card-term">Net Metering</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Grid</div><div class="card-def">System by which households export surplus solar electricity back to the grid, receiving credit or payment in return.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">📊</div><div class="card-term">Typical Panel Efficiency</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Performance</div><div class="card-def">Residential solar panels convert about 15–23% of incident sunlight into electricity. High heat actually reduces efficiency.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label" style="color:var(--solar); margin-bottom:12px;">Solar MCQs</div>
+  <div id="score-solar" class="score-bar"><span class="score-bar-label">Score</span><div class="score-track"><div class="score-fill" style="width:0%"></div></div><span class="score-val">0 / 8</span></div>
+  <div id="mcq-solar"></div>
+</div>
+
+<!-- ══════════════════ WIND ══════════════════ -->
+<div id="wind" class="section">
+  <div class="section-header">
+    <div class="section-label" style="color:var(--wind)">Section Two</div>
+    <h2>💨 Wind Energy</h2>
+    <p>Converts kinetic energy of moving air into electricity via turbines. Think of a wind turbine as a fan in reverse — wind moves the blades to make electricity.</p>
+  </div>
+
+  <div class="section-label" style="color:var(--wind); margin-bottom:12px;">Key Concepts — Click to Flip</div>
+  <div class="cards-grid">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🌀</div><div class="card-term">HAWT</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Wind</div><div class="card-def">Horizontal-Axis Wind Turbine — blades spin around a horizontal axis, facing directly into the wind. Most efficient and common design worldwide. Requires yaw system to track wind direction.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">⬆️</div><div class="card-term">VAWT</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Wind</div><div class="card-def">Vertical-Axis Wind Turbine — rotor spins around a vertical shaft, accepting wind from any direction. Better for urban/turbulent conditions, easier maintenance.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🌊</div><div class="card-term">Offshore Wind</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Wind</div><div class="card-def">Turbines installed in seas/oceans. Stronger, more consistent winds than onshore. Types: fixed-bottom (shallow) and floating (deep water). Less visual conflict.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">⚙️</div><div class="card-term">Nacelle</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Wind</div><div class="card-def">Housing at the top of a wind turbine tower containing the generator and gearbox — the main mechanical and electrical components that convert rotational energy to electricity.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">💧</div><div class="card-term">Wind Pumping</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Applications</div><div class="card-def">Mechanical use of wind energy to pump water for agriculture and irrigation. Traditional windmills use this principle. Can lift hundreds of litres per hour.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🔀</div><div class="card-term">Wind-Solar Hybrid</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Emerging</div><div class="card-def">Combined wind and solar farms increase overall energy efficiency and reliability, as wind is often stronger at night/winter when solar is weak.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label" style="color:var(--wind); margin-bottom:12px;">Wind MCQs</div>
+  <div id="score-wind" class="score-bar"><span class="score-bar-label">Score</span><div class="score-track"><div class="score-fill" style="width:0%"></div></div><span class="score-val">0 / 8</span></div>
+  <div id="mcq-wind"></div>
+</div>
+
+<!-- ══════════════════ HYDRO ══════════════════ -->
+<div id="hydro" class="section">
+  <div class="section-header">
+    <div class="section-label" style="color:var(--hydro)">Section Three</div>
+    <h2>💧 Hydropower</h2>
+    <p>Electricity from moving water. Water at height has potential energy; as it flows downward it becomes kinetic energy, spinning turbines. Often above 85% efficient.</p>
+  </div>
+
+  <div class="formula-box">
+    <p>Hydropower Formula</p>
+    <div class="formula-main">P = ρ g h Q</div>
+    <p>P = Power (W) &nbsp;|&nbsp; ρ = Water density (1000 kg/m³) &nbsp;|&nbsp; g = 9.81 m/s² &nbsp;|&nbsp; h = Head height (m) &nbsp;|&nbsp; Q = Flow rate (m³/s)</p>
+  </div>
+
+  <div class="section-label" style="color:var(--hydro); margin-bottom:12px;">Key Concepts — Click to Flip</div>
+  <div class="cards-grid">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🏗️</div><div class="card-term">Reservoir (Dam) Hydropower</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Hydro</div><div class="card-def">Water stored behind a dam is released in a controlled way to spin turbines. Uses gravitational potential energy P=ρghQ. Reliable and can meet peak demand.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🏞️</div><div class="card-term">Run-of-River</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Hydro</div><div class="card-def">Uses natural river flow with minimal storage. Lower head height so depends on flow rate. Smaller environmental impact but output varies with seasons and rainfall.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🔋</div><div class="card-term">Pumped Storage</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Hydro</div><div class="card-def">Two reservoirs at different heights. Excess grid electricity pumps water uphill. Water released later generates electricity. Mainly energy storage, not a primary source.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🌊</div><div class="card-term">Tidal Hydropower</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Hydro</div><div class="card-def">Driven by gravitational forces of Moon and Sun. Types: Tidal barrage (dam across estuary) and tidal stream (underwater turbines). Extremely predictable output.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🏡</div><div class="card-term">Micro/Pico Hydro</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Hydro</div><div class="card-def">Small-scale: micro up to 100 kW, pico under 5 kW. Used for remote homes and off-grid communities. Minimal environmental footprint.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">⬆️</div><div class="card-term">Head Height (h)</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Physics</div><div class="card-def">Vertical distance between reservoir surface and turbine. Higher head → more potential energy E=mgh → more power. Taller dams produce significantly more power.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label" style="color:var(--hydro); margin-bottom:12px;">Hydro MCQs</div>
+  <div id="score-hydro" class="score-bar"><span class="score-bar-label">Score</span><div class="score-track"><div class="score-fill" style="width:0%"></div></div><span class="score-val">0 / 8</span></div>
+  <div id="mcq-hydro"></div>
+</div>
+
+<!-- ══════════════════ GEOTHERMAL ══════════════════ -->
+<div id="geo" class="section">
+  <div class="section-header">
+    <div class="section-label" style="color:var(--geo)">Section Four</div>
+    <h2>🌋 Geothermal Energy</h2>
+    <p>Heat from inside the Earth — from radioactive decay, magma movement, and leftover planetary heat. Works 24/7, unlike solar or wind.</p>
+  </div>
+
+  <div class="section-label" style="color:var(--geo); margin-bottom:12px;">Key Concepts — Click to Flip</div>
+  <div class="cards-grid">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">💨</div><div class="card-term">Dry Steam System</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Geothermal</div><div class="card-def">Steam from underground reservoir is piped directly to drive turbines. Simplest and oldest type of geothermal system. Requires high-temperature steam reservoirs.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">💦</div><div class="card-term">Flash Steam System</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Geothermal</div><div class="card-def">High-pressure hot water is brought to the surface and allowed to "flash" (rapidly vaporize) into steam to drive turbines. Most common geothermal power plant type.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🔁</div><div class="card-term">Binary Cycle System</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Geothermal</div><div class="card-def">Moderately hot water heats a secondary fluid with a lower boiling point (binary fluid) that vaporizes to drive the turbine. Works at lower temperatures.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🗺️</div><div class="card-term">Ring of Fire</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Geography</div><div class="card-def">Pacific tectonic plate boundary where volcanic/seismic activity brings heat close to surface. Countries: USA, Indonesia, Philippines, New Zealand, Japan use geothermal heavily.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🇮🇸</div><div class="card-term">Iceland</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Geography</div><div class="card-def">Geothermal heat supplies heating to almost 90% of Iceland's homes due to abundant volcanic activity. Exemplary model of geothermal utilisation.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🇬🇧</div><div class="card-term">UK Geothermal</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">UK Context</div><div class="card-def">UK has limited geothermal electricity (far from plate boundaries). Instead, ground source heat pumps are common as shallow ground stays at stable temperature year-round.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label" style="color:var(--geo); margin-bottom:12px;">Geothermal MCQs</div>
+  <div id="score-geo" class="score-bar"><span class="score-bar-label">Score</span><div class="score-track"><div class="score-fill" style="width:0%"></div></div><span class="score-val">0 / 8</span></div>
+  <div id="mcq-geo"></div>
+</div>
+
+<!-- ══════════════════ BIOMASS ══════════════════ -->
+<div id="bio" class="section">
+  <div class="section-header">
+    <div class="section-label" style="color:var(--bio)">Section Five</div>
+    <h2>🌿 Biomass Energy</h2>
+    <p>Energy from organic materials — plants, wood, agricultural waste, food scraps. Plants store solar energy via photosynthesis; biomass releases it.</p>
+  </div>
+
+  <div class="section-label" style="color:var(--bio); margin-bottom:12px;">Key Concepts — Click to Flip</div>
+  <div class="cards-grid">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🔥</div><div class="card-term">Combustion</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Biomass Process</div><div class="card-def">Biomass (wood chips, pellets) burned to produce heat → steam → turbines → electricity. Most common method. Used in district heating and power plants like Drax.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🦠</div><div class="card-term">Anaerobic Digestion</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Biomass Process</div><div class="card-def">Microorganisms break down organic waste without oxygen, producing biogas (mostly methane). Used on farms and wastewater plants. Methane can be burned for energy.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🌫️</div><div class="card-term">Gasification</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Biomass Process</div><div class="card-def">Biomass is heated with limited oxygen to produce "syngas" (synthetic gas) that can power engines or turbines. More efficient than simple combustion.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🏭</div><div class="card-term">Drax Power Station</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">UK</div><div class="card-def">North Yorkshire — largest biomass plant in the UK. Originally a coal plant, converted to burn wood pellets. Generates a significant portion of UK biomass electricity.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">📈</div><div class="card-term">UK Biomass Share</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">UK Stats</div><div class="card-def">Biomass provides about 10–12% of UK total energy demand and ~14% of electricity generation. Second-largest renewable electricity source after wind in the UK.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🌾</div><div class="card-term">Energy Crops</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Biomass Source</div><div class="card-def">Fast-growing plants like switchgrass or willow grown specifically for biomass energy. Considered renewable if replanted sustainably and part of the carbon cycle.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label" style="color:var(--bio); margin-bottom:12px;">Biomass MCQs</div>
+  <div id="score-bio" class="score-bar"><span class="score-bar-label">Score</span><div class="score-track"><div class="score-fill" style="width:0%"></div></div><span class="score-val">0 / 8</span></div>
+  <div id="mcq-bio"></div>
+</div>
+
+<!-- ══════════════════ NUCLEAR ══════════════════ -->
+<div id="nuclear" class="section">
+  <div class="section-header">
+    <div class="section-label" style="color:var(--nuclear)">Section Six</div>
+    <h2>⚛️ Nuclear Energy</h2>
+    <p>Energy released by splitting heavy atomic nuclei (fission). ~12 g CO₂/kWh life-cycle — similar to wind — making it a low-carbon energy source.</p>
+  </div>
+
+  <div class="formula-box" style="border-color: rgba(251,146,60,.3); background: linear-gradient(135deg, rgba(251,146,60,.06), rgba(251,146,60,.02))">
+    <p>Einstein's Mass-Energy Equivalence</p>
+    <div class="formula-main" style="color:var(--nuclear)">E = mc²</div>
+    <p>Tiny mass converts into enormous energy during nuclear fission</p>
+  </div>
+
+  <div class="section-label" style="color:var(--nuclear); margin-bottom:12px;">Key Concepts — Click to Flip</div>
+  <div class="cards-grid">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">💥</div><div class="card-term">Nuclear Fission</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Nuclear</div><div class="card-def">Splitting of a heavy nucleus (Uranium-235) when struck by a neutron. Produces energy, fission fragments (Barium, Krypton), and 2–3 new neutrons that continue the chain reaction.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🕹️</div><div class="card-term">Control Rods</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Nuclear</div><div class="card-def">Made of boron/cadmium — absorb neutrons to control the chain reaction rate. Inserting rods slows reaction; withdrawing increases it. SCRAM = rapid full insertion for emergency shutdown.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🌊</div><div class="card-term">Moderator</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Nuclear</div><div class="card-def">Substance (water, heavy water, graphite) that slows fast neutrons to "thermal" speeds so they can be absorbed by Uranium-235. Also a safety feature — if water turns to steam, reaction slows (negative void coefficient).</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🏗️</div><div class="card-term">SMR</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Nuclear Types</div><div class="card-def">Small Modular Reactor: 50–300+ MW, factory-built modules aiming for faster, cheaper, repeatable builds. Part of UK's Advanced Nuclear Framework alongside AMRs and MMRs (micro-nuclear).</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🇬🇧</div><div class="card-term">UK Nuclear Fleet</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">UK</div><div class="card-def">As of 2026: 5 operating sites with 9 reactors (8 AGR + 1 PWR at Sizewell B) = ~5.9 GW total capacity. Hinkley Point C (new PWR) under construction, expected ~2030.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">⚡</div><div class="card-term">PWR vs AGR</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Reactor Types</div><div class="card-def">PWR (Pressurised Water Reactor): most common globally, high-pressure water coolant. AGR (Advanced Gas-cooled Reactor): historic UK specialty, uses gas cooling and graphite moderation.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label" style="color:var(--nuclear); margin-bottom:12px;">Nuclear MCQs</div>
+  <div id="score-nuclear" class="score-bar"><span class="score-bar-label">Score</span><div class="score-track"><div class="score-fill" style="width:0%"></div></div><span class="score-val">0 / 8</span></div>
+  <div id="mcq-nuclear"></div>
+</div>
+
+<!-- ══════════════════ HEAT PUMPS ══════════════════ -->
+<div id="heat" class="section">
+  <div class="section-header">
+    <div class="section-label" style="color:var(--heat)">Section Seven</div>
+    <h2>🏠 Heat Pumps</h2>
+    <p>A device that transfers heat from one place to another using electricity and a refrigeration cycle. Think of it as a reversible air conditioner.</p>
+  </div>
+
+  <div class="formula-box" style="border-color: rgba(52,211,153,.3); background: linear-gradient(135deg, rgba(52,211,153,.06), rgba(52,211,153,.02))">
+    <p>Coefficient of Performance</p>
+    <div class="formula-main" style="color:var(--heat)">COP = Heat Output ÷ Electrical Input</div>
+    <p>Typical COP: 2.5–4.5 &nbsp;|&nbsp; Gas boiler equivalent: ~0.9 &nbsp;|&nbsp; Electric heater: 1.0</p>
+  </div>
+
+  <div class="section-label" style="color:var(--heat); margin-bottom:12px;">Key Concepts — Click to Flip</div>
+  <div class="cards-grid">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">💨</div><div class="card-term">ASHP — Air Source</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Heat Pump</div><div class="card-def">Extracts heat from outdoor air (even when cold). Subtypes: air-to-air (warm air) and air-to-water (radiators/underfloor). Lower installation cost, good for UK climate. Efficiency drops in very cold weather.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🌍</div><div class="card-term">GSHP — Ground Source</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Heat Pump</div><div class="card-def">Extracts heat from stable ground temperature year-round via horizontal loops or vertical boreholes. Very high efficiency and consistent performance. Higher installation cost, needs land or drilling.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🔄</div><div class="card-term">The Refrigeration Cycle</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Physics</div><div class="card-def">1. Evaporation — refrigerant absorbs heat → gas. 2. Compression — pressure/temp rises. 3. Condensation — heat released indoors → liquid. 4. Expansion — pressure drops, cools. Repeat.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">📉</div><div class="card-term">Why UK Bills Can Rise</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Economics</div><div class="card-def">UK electricity costs ~27p/kWh vs gas ~7p/kWh. Even at COP 3, heat cost = 9p/kWh vs gas boiler ~7.8p/kWh. Poor insulation/small radiators can drop COP to 2 → 13.5p/kWh heat.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🌡️</div><div class="card-term">COP Changes with Temperature</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Performance</div><div class="card-def">COP is not fixed. 10°C outside → COP ≈ 4. –5°C outside → COP ≈ 2.5. Best at mild outdoor temperatures with underfloor heating (low flow temp 35–45°C) in well-insulated homes.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="card-icon">🔀</div><div class="card-term">Hybrid Heat Pump</div><div class="card-hint">tap to reveal →</div></div>
+        <div class="flip-back"><div class="card-tag">Heat Pump</div><div class="card-def">Combines a heat pump with a gas boiler. Heat pump runs most of the time; boiler kicks in during extreme cold. Easier fossil fuel transition but still relies partly on gas.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label" style="color:var(--heat); margin-bottom:12px;">Heat Pump MCQs</div>
+  <div id="score-heat" class="score-bar"><span class="score-bar-label">Score</span><div class="score-track"><div class="score-fill" style="width:0%"></div></div><span class="score-val">0 / 8</span></div>
+  <div id="mcq-heat"></div>
+</div>
+
+<script>
+// ── TAB NAVIGATION ──
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── MCQ DATA ──
+const mcqData = {
+  overview: [
+    { q: "Which of the following is NOT one of the three core principles of green energy?",
+      opts: ["Low carbon emissions","Renewable sources","Maximum energy density","Reduced environmental impact"],
+      ans: 2,
+      exp: "<strong>Maximum energy density</strong> is not a core principle of green energy. The three core principles are: <strong>(1)</strong> Low carbon emissions — producing little or no CO₂ during operation; <strong>(2)</strong> Renewable sources — energy naturally replaced by Earth's systems; <strong>(3)</strong> Reduced environmental impact — less air pollution and ecological harm. Fossil fuels can have high energy density, so density is irrelevant to the green definition." },
+    { q: "What distinguishes green energy from fossil fuels fundamentally?",
+      opts: ["Green energy is always cheaper","Green energy does not rely on burning carbon-based fuels","Green energy produces no waste products at all","Green energy only works in sunny countries"],
+      ans: 1,
+      exp: "The fundamental distinction is that <strong>green energy does not rely on burning carbon-based fuels</strong>. Fossil fuels (coal, oil, gas) release stored carbon as CO₂ when burned. Green/renewable sources harness natural processes (sunlight, wind, water flow, Earth's heat) without combustion of carbon compounds. Green energy is not always cheaper and it does produce some waste (e.g., panel manufacturing, nuclear waste)." },
+    { q: "Which energy source provides the most reliable 24/7 baseload output from this list?",
+      opts: ["Solar PV","Offshore wind","Geothermal","Run-of-river hydro"],
+      ans: 2,
+      exp: "<strong>Geothermal</strong> provides reliable 24/7 baseload power because the Earth continuously produces internal heat, regardless of weather, time of day, or season. Solar PV stops at night. Wind varies with weather. Run-of-river hydro varies with rainfall and seasons. Geothermal is described in the study guide as working '24/7' — a unique advantage." },
+    { q: "Which statement about nuclear energy's carbon footprint is most accurate?",
+      opts: ["Nuclear emits ~800 g CO₂/kWh — similar to coal","Nuclear emits ~12 g CO₂/kWh life-cycle — similar to wind","Nuclear emits zero carbon at every stage","Nuclear emits ~40 g CO₂/kWh — similar to solar"],
+      ans: 1,
+      exp: "The IPCC reports a median life-cycle figure of <strong>~12 g CO₂/kWh for nuclear</strong> — similar to wind (~11 g CO₂/kWh). This includes mining, construction, operation, and decommissioning. It is NOT zero (mining and construction have carbon costs) but is far below coal (800–1000 g CO₂/kWh) and solar (~40 g CO₂/kWh). This is why nuclear is widely treated as a low-carbon electricity source." },
+    { q: "What energy conversion sequence occurs in a hydroelectric dam?",
+      opts: ["Kinetic → Potential → Mechanical → Electrical","Potential → Kinetic → Mechanical → Electrical","Thermal → Kinetic → Mechanical → Electrical","Chemical → Thermal → Mechanical → Electrical"],
+      ans: 1,
+      exp: "The correct sequence for hydropower is <strong>Potential → Kinetic → Mechanical → Electrical</strong>. Water stored behind a dam at height has <em>gravitational potential energy</em>. As it flows downward it converts to <em>kinetic energy</em>. This kinetic energy rotates the turbine blades (<em>mechanical energy</em>). The generator converts mechanical rotation into <em>electrical energy</em>." },
+    { q: "Biomass is considered renewable because:",
+      opts: ["It never releases any CO₂","New plants absorb CO₂ as part of the carbon cycle","It is made from petroleum-based materials","It can only be used once"],
+      ans: 1,
+      exp: "Biomass is considered renewable because <strong>new plants absorb CO₂ during growth</strong>, replacing the CO₂ released when biomass is burned. This is the <em>carbon cycle</em> principle. However, this only holds true if biomass is sustainably managed — if forests are cleared faster than they regrow, it is no longer carbon-neutral. Biomass does release CO₂ when burned; it is the regrowth that balances it." },
+    { q: "Biomass is considered part of the carbon cycle rather than simply a carbon emitter?",
+      opts: ["Because biomass does not release any CO₂ when burned","Because new plants grown to replace harvested biomass absorb CO₂ during photosynthesis, potentially balancing emissions","Because biomass is stored underground like coal","Because burning biomass only releases water vapour"],
+      ans: 1,
+      exp: "Biomass is considered carbon-cycle neutral because <strong>new plants grown to replace the harvested biomass absorb CO₂ from the atmosphere during photosynthesis</strong>, potentially balancing the CO₂ released during combustion. Plants store solar energy in chemical bonds; burning releases it. If sustainably managed (replanting keeps pace with harvesting), the net atmospheric CO₂ change is near zero. However, if forests are cleared faster than replanted, this balance breaks." },
+    { q: "Which green energy technology is best described as 'energy storage' rather than a primary energy source?",
+      opts: ["Offshore wind farms","Pumped storage hydropower","Solar photovoltaic panels","Biomass combustion plants"],
+      ans: 1,
+      exp: "<strong>Pumped storage hydropower is primarily an energy storage mechanism</strong>, not a primary energy generator. It uses surplus electricity (e.g. off-peak wind power at night) to pump water to an upper reservoir; the water is released later to generate electricity during peak demand. While it does generate electricity, the net energy output is negative — it consumes more than it produces — making it a grid balancing/storage tool, not a primary renewable source." },
+  ],
+  solar: [
+    { q: "What does a photovoltaic (PV) cell do?",
+      opts: ["Heats water using sunlight","Converts sunlight directly into electrical energy","Focuses sunlight to produce steam","Stores solar energy as heat in salt tanks"],
+      ans: 1,
+      exp: "<strong>Photovoltaic (PV) cells convert sunlight directly into electrical energy</strong>. When photons (light particles) strike the semiconductor material (usually silicon), they displace electrons, creating an electric current — this is the photoelectric effect. Solar thermal panels heat water; CSP systems focus sunlight to make steam; molten salt stores thermal energy in CSP plants. PV is unique in its direct light-to-electricity conversion." },
+    { q: "Why does an inverter form an essential part of a solar power system?",
+      opts: ["It increases the voltage of direct current","It converts DC electricity to AC electricity for household use and grid connection","It stores electricity for use at night","It focuses sunlight onto the solar cells"],
+      ans: 1,
+      exp: "An inverter is essential because <strong>it converts DC (direct current) electricity — produced by solar panels — into AC (alternating current)</strong>, which is required by household appliances and the national grid. Power stations and most appliances operate on AC. DC cannot be directly fed into the grid. Without an inverter, solar-generated electricity cannot be used in standard circuits." },
+    { q: "What is the key advantage of Concentrated Solar Power (CSP) over standard PV panels?",
+      opts: ["CSP is cheaper to install","CSP can produce electricity from visible light only","CSP can store thermal energy (e.g. in molten salt) to generate electricity after sunset","CSP panels are more efficient at converting sunlight to electricity"],
+      ans: 2,
+      exp: "The key advantage of CSP over PV is <strong>thermal energy storage</strong>. CSP plants (especially power towers) use molten salt tanks to store heat for hours after the sun sets, allowing continuous electricity generation at night. PV panels stop producing immediately when sunlight is gone. This storage capability makes CSP more suitable for providing steady, dispatchable power rather than just daytime generation." },
+    { q: "Which factor REDUCES solar panel efficiency?",
+      opts: ["High sunlight intensity","Optimal panel angle toward the sun","Very high temperatures","Low humidity"],
+      ans: 2,
+      exp: "Counterintuitively, <strong>very high temperatures reduce solar panel efficiency</strong>. While solar panels need sunlight, excessive heat causes increased electrical resistance in semiconductor materials, reducing electron mobility and lowering the voltage generated. This is why solar panels often perform better on bright, cool days than on extremely hot summer days. The other factors listed (high sunlight, correct angle, low humidity) generally improve or maintain performance." },
+    { q: "In a parabolic trough CSP system, what is the role of the curved mirrors?",
+      opts: ["To reflect sunlight away from residential areas","To focus sunlight onto a receiver tube containing heat-transfer fluid","To generate electricity directly using the photoelectric effect","To cool the solar panels to improve efficiency"],
+      ans: 1,
+      exp: "In parabolic trough CSP, the <strong>curved mirrors focus sunlight onto a receiver tube</strong> running along their focal line. A heat-transfer fluid inside the tube absorbs the concentrated heat and carries it to a heat exchanger where steam is produced to drive turbines. This is one of the oldest and most widely deployed CSP technologies. The mirrors concentrate solar radiation to achieve temperatures that make electricity generation viable." },
+    { q: "What is 'net metering' in the context of solar energy?",
+      opts: ["Measuring the efficiency of a solar panel over its lifetime","Calculating the net carbon reduction from solar installation","Exporting surplus solar electricity to the grid for credit","The process of converting AC back to DC for storage"],
+      ans: 2,
+      exp: "<strong>Net metering</strong> is a billing/grid arrangement where a solar panel owner who generates more electricity than they use can <strong>export the surplus back to the grid</strong>, receiving a credit or payment in return. The 'net' refers to the difference between electricity generated and electricity consumed. This is a key grid integration concept that improves the economics of residential solar installations." },
+    { q: "A solar panel produces DC electricity. Why must this be converted before powering most home appliances?",
+      opts: ["DC electricity is too slow to power fast appliances","Home appliances and the national grid operate on AC (alternating current), which changes direction many times per second","DC electricity is more expensive to transmit","Solar panels cannot produce enough DC voltage for household use"],
+      ans: 1,
+      exp: "Solar panels generate <strong>DC (direct current)</strong> — electrons flow in one direction only. However, <strong>the national grid and almost all household appliances are designed for AC (alternating current)</strong>, which reverses direction 50 times per second (50 Hz in the UK). AC travels more efficiently over long distances and is the universal standard for grid electricity. This is why every grid-connected solar installation requires an inverter to convert DC → AC before use." },
+    { q: "In a solar power tower (heliostat CSP system), what is the role of the heliostats?",
+      opts: ["They store heat energy in molten salt tanks","They are thousands of flat mirrors that track the sun and reflect sunlight onto a central receiver at the top of a tower","They generate electricity directly from sunlight using PV cells","They pump heat-transfer fluid between the collector and the turbine"],
+      ans: 1,
+      exp: "In a solar power tower, <strong>heliostats are thousands of individually-tracked flat mirrors</strong> that follow the sun's movement throughout the day and precisely reflect concentrated sunlight onto a central receiver mounted at the top of a tall tower. The intense concentrated heat at the receiver (often using molten salt) produces steam to drive a turbine. This design differs from parabolic troughs, where curved mirrors focus light onto a pipe running along their focal line." },
+  ],
+  wind: [
+    { q: "A wind turbine is described as 'a fan running in reverse'. What does this mean?",
+      opts: ["The turbine spins backwards compared to a fan","Wind moves the blades to generate electricity, whereas a fan uses electricity to move air","The turbine cools the air rather than heating it","The turbine uses AC power to generate wind"],
+      ans: 1,
+      exp: "The analogy means that <strong>wind turbines do the reverse of what a fan does</strong>: a fan uses electrical energy to spin blades and create airflow, while a wind turbine lets the wind move the blades and generates electrical energy from that rotation. Both convert between kinetic energy and electrical energy, just in opposite directions. This helps conceptualise the energy conversion process." },
+    { q: "Which type of wind turbine is most commonly used in large wind farms?",
+      opts: ["Vertical-Axis Wind Turbine (VAWT)","Horizontal-Axis Wind Turbine (HAWT)","Bladeless turbine","Tidal stream turbine"],
+      ans: 1,
+      exp: "<strong>Horizontal-Axis Wind Turbines (HAWTs)</strong> are the most common design worldwide for large wind farms. Their rotor blades face directly into the wind and spin around a horizontal axis, delivering high efficiency and large electricity output. HAWTs require a yaw system to track wind direction. VAWTs are better for urban/turbulent conditions but are less efficient and less common at utility scale." },
+    { q: "What is a key advantage of VAWT (Vertical-Axis Wind Turbines) over HAWTs?",
+      opts: ["Much higher efficiency at all wind speeds","Greater maximum power output","Can accept wind from any direction — useful in turbulent urban conditions","Suitable only for offshore deployment"],
+      ans: 2,
+      exp: "A key advantage of VAWTs is that their rotor <strong>spins around a vertical shaft and can accept wind from any direction</strong>, making them well-suited for urban rooftops and turbulent wind environments where wind direction frequently changes. They also have the generator placed near the ground, simplifying maintenance. However, they are generally less efficient than HAWTs and are mostly used at smaller scales." },
+    { q: "What is the nacelle of a wind turbine?",
+      opts: ["The concrete foundation at the base","The large rotor blades","The housing at the top of the tower containing the generator and gearbox","The yaw system that rotates the turbine to face the wind"],
+      ans: 2,
+      exp: "The <strong>nacelle is the housing at the top of the wind turbine tower</strong> that contains the main mechanical and electrical components — particularly the <em>generator</em> and <em>gearbox</em>. The gearbox increases the rotational speed from the slow-moving blades to a speed suitable for the generator. The nacelle protects these critical components from weather and is where the mechanical rotation is converted into electrical power." },
+    { q: "Why is offshore wind generally preferred over onshore for large national energy projects?",
+      opts: ["Offshore turbines are significantly cheaper to build and maintain","Offshore wind is illegal in most countries","Offshore sites have stronger, more consistent wind speeds and less visual/land conflict","Offshore turbines use a completely different technology to onshore ones"],
+      ans: 2,
+      exp: "Offshore wind is favoured for large projects primarily because <strong>wind speeds are stronger and more consistent at sea</strong>, leading to higher power output and better capacity factors. There is also <em>less visual impact and land-use conflict</em> compared to onshore farms. However, offshore turbines are more expensive to build and maintain due to marine conditions. Fixed-bottom turbines suit shallow water; floating systems work in deeper water." },
+    { q: "Wind energy can be used for non-electrical mechanical applications. Which is a traditional example?",
+      opts: ["Running electric vehicles","Pumping water for agriculture and grinding grain","Producing hydrogen gas directly","Desalinating seawater using UV light"],
+      ans: 1,
+      exp: "Traditional mechanical applications of wind energy include <strong>pumping water for agriculture and grinding grain in windmills</strong>. These are non-electrical uses where wind directly performs mechanical work — lifting water for irrigation or turning mill stones. Wind pumps can lift hundreds of litres of water per hour for farms. This pre-dates electricity generation and remains a practical application in rural areas." },
+    { q: "What does a 'yaw system' do on a horizontal-axis wind turbine (HAWT)?",
+      opts: ["It controls how fast the blades spin in strong winds","It rotates the entire nacelle and rotor to face into the wind as wind direction changes","It lubricates the gearbox to reduce friction","It measures wind speed to determine when to start and stop the turbine"],
+      ans: 1,
+      exp: "A <strong>yaw system rotates the nacelle (and rotor) around the top of the tower to keep the rotor blades facing directly into the wind</strong> as wind direction changes. HAWT blades must face the wind to operate efficiently — if the rotor is angled sideways to the wind, energy capture drops dramatically. The yaw drive uses sensors and motors to continuously track wind direction. This is one reason VAWTs (which accept wind from any direction) don't need a yaw system." },
+    { q: "How can wind energy farms coexist with agricultural land use?",
+      opts: ["Wind turbines require all vegetation to be removed from the surrounding area","The land beneath and between onshore wind turbines can still be used for farming — e.g. grazing animals or growing crops","Wind farms must be surrounded by a 2 km exclusion zone","Wind turbines need to be built on dedicated non-agricultural sites only"],
+      ans: 1,
+      exp: "One important advantage of onshore wind farms is that <strong>the land beneath and between turbines can continue to be used for agriculture</strong> — farmers can graze livestock or cultivate crops right up to the turbine bases. Only the small concrete foundation footprint and access roads occupy the land permanently. This dual land use is a key economic and social advantage, allowing landowners to receive lease income from turbines while maintaining agricultural productivity." },
+  ],
+  hydro: [
+    { q: "Using the formula P=ρghQ, what is the theoretical power output if h=50m, Q=20 m³/s, ρ=1000 kg/m³?",
+      opts: ["1,000 W","98,100 W","9,810,000 W (≈9.8 MW)","490,500 W"],
+      ans: 2,
+      exp: "Applying <strong>P = ρ × g × h × Q</strong>:<br>P = 1000 × 9.81 × 50 × 20<br>P = 1000 × 9.81 × 1000<br>P = <strong>9,810,000 W ≈ 9.8 MW</strong><br>This is the <em>theoretical maximum</em> — real plants are less efficient due to turbine friction, generator losses, turbulence, and pipe resistance. The formula shows that doubling either head height or flow rate doubles the theoretical power output." },
+    { q: "What is pumped storage hydropower primarily used for?",
+      opts: ["Generating the cheapest electricity around the clock","Storing energy by pumping water uphill when electricity is cheap, releasing it when demand peaks","Providing a continuous primary energy supply to remote areas","Cooling nuclear reactors"],
+      ans: 1,
+      exp: "<strong>Pumped storage is primarily an energy storage system, not a primary energy source.</strong> When excess electricity is available (e.g. off-peak at night), surplus power pumps water from a lower reservoir to an upper reservoir. During peak demand, the water is released to generate electricity. This provides grid balancing and helps manage variable renewables like wind and solar. It is the world's largest form of grid-scale energy storage." },
+    { q: "What is the main physical reason tidal hydropower is described as 'extremely predictable'?",
+      opts: ["Tidal turbines use advanced computer control to maintain output","Tidal movements are driven by gravitational forces of the Moon and Sun, which follow precise astronomical cycles","Seawater has higher energy density than freshwater","Tidal barrages store large amounts of water like dams"],
+      ans: 1,
+      exp: "Tidal energy is extremely predictable because <strong>tides are driven by the gravitational forces of the Moon and Sun</strong>, which operate on precise, well-understood astronomical cycles. Unlike wind or solar (which depend on weather), tidal patterns can be predicted decades in advance. This is a major advantage for grid planning. Tidal barrages (dams across estuaries) or tidal stream turbines (underwater turbines) both harness this predictable energy." },
+    { q: "In the formula P=ρghQ, what does increasing 'h' (head height) represent physically?",
+      opts: ["Faster water flow through the turbine","Greater water stored in the reservoir","More gravitational potential energy available — the water falls a greater vertical distance","Higher water temperature increasing pressure"],
+      ans: 2,
+      exp: "<strong>Head height (h) is the vertical distance between the reservoir water surface and the turbine</strong>. A greater head means the water falls a longer distance under gravity, converting more gravitational potential energy (E = mgh) into kinetic energy before reaching the turbine. This is why taller dams produce more power — the water gains more kinetic energy during its longer fall, resulting in greater mechanical work on the turbine blades." },
+    { q: "What is the main disadvantage of run-of-river hydropower compared to reservoir dams?",
+      opts: ["It requires a very tall dam structure","Power output varies significantly with rainfall and seasons","It cannot connect to the national grid","It produces greenhouse gas emissions"],
+      ans: 1,
+      exp: "The main disadvantage of run-of-river hydropower is that <strong>power output varies with the natural flow of the river</strong>, which changes with rainfall and seasons. In dry periods or droughts, output can drop significantly. In contrast, reservoir dams store large volumes of water and can release it in a controlled way regardless of current rainfall, providing reliable and controllable output. Run-of-river does have advantages: smaller environmental impact and lower cost." },
+    { q: "Why is hydroelectric power considered highly efficient compared to other renewable technologies?",
+      opts: ["It uses fusion rather than fission","It directly converts chemical energy to electricity","It converts water's potential and kinetic energy to electricity with efficiency often above 85%","It operates at higher temperatures than solar thermal"],
+      ans: 2,
+      exp: "Hydroelectric power is highly efficient because <strong>it directly converts the mechanical energy of moving water into electricity with minimal energy losses — typically above 85% efficiency</strong>. Most energy losses occur from turbine friction and electrical resistance. Compare this with solar PV (15–23% efficiency) which must convert light photons, or coal plants (~35–40%). The direct mechanical-to-electrical conversion in hydropower avoids the major losses associated with thermal cycles." },
+    { q: "A hydroelectric plant has h=80m, Q=30 m³/s, ρ=1000 kg/m³. What is the theoretical power?",
+      opts: ["2,400,000 W (2.4 MW)","23,544,000 W (≈23.5 MW)","800,000 W (0.8 MW)","9,810,000 W (9.8 MW)"],
+      ans: 1,
+      exp: "Applying <strong>P = ρ × g × h × Q</strong>:<br>P = 1000 × 9.81 × 80 × 30<br>P = 1000 × 9.81 × 2400<br>P = <strong>23,544,000 W ≈ 23.5 MW</strong><br>Notice how increasing both head (80m vs 50m) and flow rate (30 vs 20 m³/s) significantly increases power compared to the 9.8 MW example. Real output would be lower due to turbine and generator losses. Always apply the formula systematically: ρ=1000, g=9.81, then multiply h×Q first." },
+    { q: "What is the primary environmental concern with large dam-based hydropower?",
+      opts: ["Large dams release significant greenhouse gases during operation","Building dams floods upstream habitats and farmland, affects fish migration, and changes river ecosystems downstream","Dam turbines are too noisy for nearby communities","Dams require very large amounts of imported fuel to operate"],
+      ans: 1,
+      exp: "The primary environmental concern with large dam hydropower is <strong>flooding and ecological disruption</strong>. Building a dam creates a reservoir that floods upstream land — potentially habitats, farmland, forests, and even communities. Downstream, altered water flow affects fish migration routes (salmon, for example, cannot pass most dams without fish ladders), changes sediment patterns, and disrupts river ecosystems. These impacts are permanent. Despite being 'clean' during operation, dams have significant construction-phase environmental footprints." },
+  ],
+  geo: [
+    { q: "Where does geothermal energy ultimately come from?",
+      opts: ["Solar radiation absorbed by the Earth's crust","Radioactive decay, magma movement, and leftover planetary heat from Earth's formation","Chemical reactions between groundwater and minerals","Pressure from tectonic plate movement only"],
+      ans: 1,
+      exp: "Geothermal energy originates from <strong>three sources within the Earth: radioactive decay of elements in the mantle and crust, movement of magma (molten rock), and residual heat from Earth's formation</strong> (leftover 'planetary heat' from when the planet coalesced from gas and dust). This combination means the Earth continuously generates heat, making geothermal energy available 24/7 — unlike solar or wind which depend on surface conditions." },
+    { q: "Why does the UK rely on ground source heat pumps rather than geothermal power plants?",
+      opts: ["UK law prohibits geothermal drilling","The UK has no underground heat whatsoever","The UK is far from active tectonic plate boundaries, so deep geothermal heat is not accessible at economic depths","Ground source pumps are banned in volcanic regions"],
+      ans: 2,
+      exp: "The UK has <strong>limited geothermal electricity potential because it is far from active tectonic plate boundaries and volcanic regions</strong> — where heat is closest to the surface. Without tectonic activity, you need to drill very deep (and expensively) to reach economically useful temperatures. However, shallow ground temperatures (a few metres down) remain stable year-round (~10–12°C in the UK), which ground source heat pumps exploit efficiently without needing deep drilling." },
+    { q: "In a binary cycle geothermal system, why is a secondary fluid used?",
+      opts: ["To avoid the need for turbines entirely","Because the geothermal water is at moderate temperatures, insufficient to flash into steam directly — a secondary fluid with a lower boiling point vaporises instead","To increase the temperature of the geothermal water","Because water is too expensive to extract from the ground"],
+      ans: 1,
+      exp: "Binary cycle systems are used for <strong>moderate-temperature geothermal resources</strong> (typically 100–200°C) that cannot flash directly into steam. The geothermal water heats a <em>secondary fluid</em> (e.g. isobutane or pentane) with a much lower boiling point. This secondary fluid vaporises and drives the turbine, while the geothermal water — never exposed to the atmosphere — is reinjected underground. This expands geothermal use to lower-temperature sites." },
+    { q: "Why are geothermal power plants mostly located on or near tectonic plate boundaries?",
+      opts: ["Because tectonic plates are made of uranium","Volcanic and seismic activity brings hot rock and magma closer to the Earth's surface, making heat extraction economically feasible","There is more water available at plate boundaries","Governments only permit geothermal plants near coastlines"],
+      ans: 1,
+      exp: "At tectonic plate boundaries, <strong>volcanic and seismic activity brings hot rock, steam, and magma much closer to the surface</strong>. This means wells don't need to be drilled as deeply to reach economically useful temperatures. The Pacific 'Ring of Fire' (Indonesia, Philippines, Japan, New Zealand, western Americas) and rift zones (Kenya, Iceland) are prime examples. Iceland's proximity to the Mid-Atlantic Ridge makes geothermal so abundant it heats ~90% of homes." },
+    { q: "What is the unit 'MWe' used to measure in geothermal contexts?",
+      opts: ["Megawatts of heat produced","Megawatts of electrical power output from a plant","Megawatts of equivalent solar radiation","Milliwatts of energy per square metre"],
+      ans: 1,
+      exp: "<strong>MWe stands for Megawatts electrical</strong> — it specifically refers to the amount of <em>electrical</em> power a plant can produce, as opposed to MWt (thermal). This distinction matters because geothermal systems also produce heat (MWt), but MWe tells you the useful electricity output. For example, a plant rated at 50 MWe can supply electricity to tens of thousands of homes. Using MWe avoids confusion between heat produced and electricity generated." },
+    { q: "Which statement best describes Enhanced Geothermal Systems (EGS)?",
+      opts: ["Natural geothermal steam is extracted without any human modification","EGS artificially creates or enhances underground reservoirs by injecting water into hot dry rock","EGS only works in areas with existing hot springs","EGS uses solar panels to heat underground water"],
+      ans: 1,
+      exp: "<strong>EGS (Enhanced Geothermal Systems) artificially create or enhance underground heat reservoirs</strong> by injecting water at high pressure into hot dry rock (HDR), fracturing it to create a permeable reservoir. The water heats up as it flows through the cracks, is pumped to the surface, and used to generate electricity. EGS dramatically expands geothermal potential to areas without natural hydrothermal resources, though it carries potential seismic risks from hydraulic fracturing." },
+    { q: "After hot water or steam is extracted from a geothermal reservoir, what typically happens to the fluid?",
+      opts: ["It is discharged into nearby rivers","It is reinjected back underground to maintain reservoir pressure and sustainability","It is stored in surface tanks for later use","It is treated and supplied as drinking water"],
+      ans: 1,
+      exp: "In most geothermal systems, the extracted fluid (water or steam condensate) is <strong>reinjected back into the underground reservoir</strong> after its heat has been extracted. This serves two purposes: (1) it maintains reservoir pressure, preventing the resource from depleting; (2) it prevents surface disposal of potentially mineral-rich or slightly contaminated geothermal water. Reinjection is a key sustainability practice that allows geothermal plants to operate for decades. It is a fundamental part of responsible geothermal resource management." },
+    { q: "What distinguishes a geothermal power plant from a ground source heat pump in terms of application?",
+      opts: ["Heat pumps can generate electricity; power plants can only produce heat","Geothermal power plants generate electricity or district heat using deep high-temperature reservoirs; heat pumps use shallow stable ground temperatures mainly for building heating/cooling","Both systems work on exactly the same principle and depth","Geothermal power plants are used only in the UK; heat pumps are used internationally"],
+      ans: 1,
+      exp: "The key distinction is <strong>depth, temperature, and application</strong>: Geothermal <em>power plants</em> drill deep into volcanic/tectonic regions to access high-temperature steam/water (150°C+) and generate electricity or district heat at scale — limited to specific geological locations. Ground source <em>heat pumps</em> use shallow loops (1–2m) or boreholes (50–200m) where temperatures are only ~10–12°C — not hot enough for electricity, but sufficient for building heating/cooling using the refrigeration cycle. Heat pumps work almost anywhere; power plants need active geology." },
+  ],
+  bio: [
+    { q: "Why is biomass considered part of the carbon cycle rather than simply a carbon emitter?",
+      opts: ["Because biomass does not release any CO₂ when burned","Because new plants grown to replace harvested biomass absorb CO₂ during photosynthesis, potentially balancing emissions","Because biomass is stored underground like coal","Because burning biomass only releases water vapour"],
+      ans: 1,
+      exp: "Biomass is considered carbon-cycle neutral because <strong>new plants grown to replace the harvested biomass absorb CO₂ from the atmosphere during photosynthesis</strong>, potentially balancing the CO₂ released during combustion. Plants store solar energy in chemical bonds; burning releases it. If sustainably managed (replanting keeps pace with harvesting), the net atmospheric CO₂ change is near zero. However, if forests are cleared faster than replanted, this balance breaks and biomass becomes a net emitter." },
+    { q: "What distinguishes anaerobic digestion from combustion as a biomass energy process?",
+      opts: ["Anaerobic digestion burns biomass in the presence of oxygen","Anaerobic digestion uses microorganisms to break down organic waste without oxygen, producing biogas (methane)","Anaerobic digestion produces liquid fuels only","Anaerobic digestion requires very high temperatures"],
+      ans: 1,
+      exp: "In <strong>anaerobic digestion, microorganisms break down organic matter in the absence of oxygen</strong>, producing biogas — mainly methane (CH₄) — and digestate. This differs from combustion (which burns biomass directly with oxygen to produce heat). Anaerobic digestion is used on farms and wastewater plants; the methane can be burned to generate heat and electricity, or upgraded to biomethane for grid injection. It's particularly valuable for wet organic waste." },
+    { q: "What makes Drax Power Station significant in the UK energy context?",
+      opts: ["It is the UK's largest nuclear power station","It is the largest biomass power plant in the UK, converted from a former coal plant in North Yorkshire","It is an offshore wind farm in the North Sea","It is the UK's only geothermal power facility"],
+      ans: 1,
+      exp: "<strong>Drax Power Station in North Yorkshire is the largest biomass plant in the UK and one of the largest in the world</strong>. Originally built as a coal power station, it has been substantially converted to burn wood pellets (imported from North America and elsewhere). This conversion allowed Drax to continue generating large amounts of electricity while dramatically reducing its direct coal emissions, though the sustainability of wood pellet imports remains debated." },
+    { q: "According to the study guide, what approximate share of UK electricity generation does biomass contribute?",
+      opts: ["Less than 1%","About 14% including all bioenergy sources","Exactly 50%","Over 30%"],
+      ans: 1,
+      exp: "Biomass produces <strong>around 14% of the UK's electricity generation when including all bioenergy sources</strong>. It also provides about 10–12% of total UK energy demand. This makes biomass the <em>second-largest renewable electricity source in the UK after wind</em>. Large plants like Drax Power Station dominate the sector. In some years, direct biomass plants contribute around 6–8% of the electricity mix, with the remainder from other bioenergy sources." },
+    { q: "Which is NOT a primary biomass conversion process?",
+      opts: ["Combustion","Anaerobic digestion","Electrolysis","Gasification"],
+      ans: 2,
+      exp: "<strong>Electrolysis is not a biomass conversion process</strong> — it is a method of splitting water (H₂O) into hydrogen and oxygen using electricity. The four main biomass conversion processes are: (1) <em>Combustion</em> — burning to produce heat; (2) <em>Anaerobic digestion</em> — microorganisms produce biogas; (3) <em>Gasification</em> — heating with limited oxygen to produce syngas; (4) <em>Biofuel production</em> — converting to liquid fuels like ethanol or biodiesel." },
+    { q: "Why are large UK biomass plants often located near ports or former coal stations?",
+      opts: ["Ports have the cheapest land in the UK","Ports allow easy import of biomass fuel; former coal sites have existing power infrastructure","Biomass burns better near the sea due to humidity","Planning permission is automatically granted at these sites"],
+      ans: 1,
+      exp: "UK biomass plants are strategically located <strong>near ports to allow efficient import of wood pellets</strong> (e.g. Tilbury, Teesside) and <strong>at former coal power station sites</strong> (e.g. Drax, Lynemouth) to take advantage of existing electricity generation infrastructure — turbines, generators, grid connections, and transmission lines. This 'brownfield' approach reduces conversion costs significantly and allows rapid deployment of biomass capacity." },
+    { q: "Why is transporting biomass fuel considered a challenge compared to other renewable energy sources?",
+      opts: ["Biomass is radioactive and requires special vehicles","Biomass is bulky and has low energy density per unit volume, making transportation expensive compared to compact fuels like gas or oil","Biomass can only be transported by sea","Biomass degrades instantly if not used within hours of harvesting"],
+      ans: 1,
+      exp: "Biomass fuel is <strong>bulky with relatively low energy density</strong> — a large volume of wood chips or straw contains far less energy than an equivalent volume of coal, oil, or gas. This makes transport expensive, as large trucks, ships, or rail cars are needed to move meaningful quantities of fuel. For example, Drax Power Station imports large volumes of wood pellets from North America — a logistics and sustainability challenge. This contrasts with wind or solar, which generate electricity on-site with no fuel transport needed." },
+    { q: "What ongoing environmental debate surrounds large-scale biomass power in the UK, such as at Drax?",
+      opts: ["Biomass plants emit more radiation than nuclear plants","Burning wood releases CO₂ immediately while trees take years to regrow, and some imported biomass has questionable sustainability credentials","Biomass plants require more land than solar farms","Biomass energy cannot be connected to the national grid"],
+      ans: 1,
+      exp: "The key debate centres on <strong>carbon accounting and import sustainability</strong>: When wood pellets are burned at Drax, CO₂ is released immediately. The carbon cycle argument assumes this will be re-absorbed as replacement forests grow — but this can take <em>decades to centuries</em>, creating a 'carbon debt'. Additionally, much of Drax's wood is <em>imported from North America</em>, raising concerns about supply chain emissions and whether source forests are being managed sustainably. Government subsidies for biomass have also been controversial, with critics arguing resources would be better directed at wind or solar." },
+  ],
+  nuclear: [
+    { q: "In nuclear fission, a neutron strikes Uranium-235. What is the immediate result?",
+      opts: ["The uranium nucleus emits a photon and becomes stable","The nucleus absorbs the neutron, becomes unstable (U-236), then splits into fission fragments and releases 2–3 neutrons plus energy","The uranium nucleus splits immediately without absorption","The neutron bounces off the nucleus without interaction"],
+      ans: 1,
+      exp: "When a neutron strikes U-235: <strong>(1)</strong> The nucleus <em>absorbs</em> the neutron, briefly forming the unstable U-236. <strong>(2)</strong> The U-236 rapidly splits (fissions) into two fission fragments (e.g. Barium and Krypton). <strong>(3)</strong> This releases a large amount of energy (kinetic energy + gamma radiation) via E=mc². <strong>(4)</strong> Crucially, <em>2–3 new neutrons</em> are released, which can trigger further fissions — sustaining the chain reaction." },
+    { q: "What is the function of control rods in a nuclear reactor?",
+      opts: ["They slow down neutrons to thermal speeds so they can cause fission","They absorb neutrons to control the rate of the chain reaction — inserted to slow it, withdrawn to increase power","They contain the uranium fuel pellets","They cool the reactor core by conducting heat away"],
+      ans: 1,
+      exp: "Control rods (made of boron, cadmium, or other neutron-absorbing materials) <strong>absorb neutrons to regulate the chain reaction</strong>: <em>inserting</em> rods absorbs more neutrons → fewer fissions → reduced power; <em>withdrawing</em> rods leaves more neutrons free → more fissions → increased power. A 'SCRAM' is the emergency rapid insertion of all control rods, which smothers the reaction almost instantly. A critical reactor has exactly one neutron from each fission triggering another." },
+    { q: "Why do nuclear reactors use a moderator, and what does it do?",
+      opts: ["The moderator heats the coolant to produce steam directly","The moderator slows fast neutrons to thermal speeds, making them far more likely to be absorbed by U-235 and sustain the chain reaction","The moderator provides structural support for the fuel rods","The moderator absorbs excess gamma radiation to protect workers"],
+      ans: 1,
+      exp: "Neutrons born during fission travel very fast — too fast to be efficiently captured by U-235 nuclei. The <strong>moderator slows these fast neutrons to 'thermal' speeds</strong> by having neutrons collide repeatedly with moderator atoms (like billiard balls). Slow ('thermal') neutrons are far more likely to be captured by U-235, sustaining the chain reaction. Common moderators: water, heavy water, graphite. This also provides a safety feature: if water (moderator) turns to steam, it slows fewer neutrons → reaction naturally reduces (negative void coefficient)." },
+    { q: "What is 'negative void coefficient' and why is it a safety feature?",
+      opts: ["The reactor produces negative energy if overfilled with water","If the reactor overheats, the water moderator turns to steam (less dense), slowing fewer neutrons, which naturally reduces the fission rate — a self-correcting mechanism","Control rods have a negative charge that repels neutrons","The void refers to the empty space in the containment building"],
+      ans: 1,
+      exp: "<strong>Negative void coefficient</strong> is an inherent safety mechanism in light water reactors (including most UK and global reactors). If the reactor gets too hot, the water moderator boils or expands, becoming less dense. Fewer moderator atoms means neutrons aren't slowed as effectively — they remain 'fast' and are less likely to be captured by U-235. The fission rate therefore <em>naturally decreases</em> when the reactor overheats, without any operator action. This is a passive safety feature." },
+    { q: "What is a Small Modular Reactor (SMR) and what is its key advantage?",
+      opts: ["A reactor that uses less uranium than conventional designs","A 50–300+ MW factory-built nuclear module designed for faster, cheaper, and more repeatable deployment than large custom-built plants","A micro-reactor used exclusively for military applications","An experimental fusion reactor currently being tested in the UK"],
+      ans: 1,
+      exp: "<strong>SMRs are nuclear reactors with electrical output typically between 50–300+ MW</strong> that are designed to be factory-built in standardised modules. The key advantages are: (1) <em>Factory construction</em> — quality-controlled, potentially faster and cheaper than bespoke large plants; (2) <em>Repeatability</em> — the same design built multiple times benefits from learning effects; (3) <em>Scalability</em> — smaller capital outlay per unit. They are part of the UK's Advanced Nuclear Framework alongside AMRs and MMRs (micro-nuclear)." },
+    { q: "Which reactor type makes up most of the UK's current operating nuclear fleet (as of early 2026)?",
+      opts: ["Pressurised Water Reactors (PWR)","Boiling Water Reactors (BWR)","Advanced Gas-cooled Reactors (AGR)","Small Modular Reactors (SMR)"],
+      ans: 2,
+      exp: "As of early 2026, the UK's operating fleet consists of <strong>9 reactors: 8 AGRs (Advanced Gas-cooled Reactors) and 1 PWR</strong> (Sizewell B in Suffolk) across 5 sites, totalling ~5.9 GW. AGRs are a historic British design using gas cooling and graphite moderation. The single PWR (Pressurised Water Reactor) at Sizewell B is of the globally most common design. Hinkley Point C (a new PWR) is under construction, expected around 2030." },
+    { q: "Why does a nuclear power station require electricians as essential staff, not just nuclear physicists?",
+      opts: ["Electricians are needed only during construction, not ongoing operation","A nuclear plant is fundamentally a large electrical power plant with thousands of motors, switchboards, backup generators, safety systems, and control circuits that must be installed, maintained, and tested","Electricians manage the nuclear fuel loading process","Only electricians are allowed in radiation zones"],
+      ans: 1,
+      exp: "Beyond the reactor itself, <strong>a nuclear power station is a massive electrical distribution facility</strong>. It contains thousands of motors, pumps, switchboards, sensors, cables, backup generators (emergency diesels), battery banks, uninterruptible power supplies, and complex control systems. Without electricity: no cooling pumps, no monitoring, no safety redundancy. Electricians install, maintain, and test all these systems — including during planned outages when intensive maintenance occurs. They also support grid synchronisation and connection. Their work is critical to both power delivery and nuclear safety." },
+    { q: "What is a 'SCRAM' in nuclear reactor terminology?",
+      opts: ["A scheduled maintenance shutdown planned months in advance","The emergency rapid insertion of all control rods into the reactor core to immediately halt the chain reaction","A type of nuclear fuel assembly used in AGR reactors","The process of transferring spent fuel to cooling pools"],
+      ans: 1,
+      exp: "A <strong>SCRAM is an emergency shutdown procedure</strong> where all control rods are rapidly and automatically inserted into the reactor core simultaneously. This floods the core with neutron-absorbing material (boron, cadmium, etc.), absorbing so many neutrons that the chain reaction stops almost instantly. SCRAMs are triggered automatically by safety systems when sensors detect dangerous conditions (temperature, pressure, or flow anomalies). The term is said to originate from the first nuclear reactor at Chicago Pile-1 in 1942." },
+  ],
+  heat: [
+    { q: "A heat pump has a COP of 3.5. What does this mean?",
+      opts: ["It produces 3.5 units of electricity from 1 unit of heat","For every 1 kWh of electricity consumed, it delivers 3.5 kWh of heat to the building","It is 350% more expensive than a gas boiler","It can only run for 3.5 hours before needing a rest"],
+      ans: 1,
+      exp: "COP (Coefficient of Performance) = Heat Output ÷ Electrical Input. A <strong>COP of 3.5 means that for every 1 kWh of electricity the heat pump consumes, it delivers 3.5 kWh of heat</strong>. This is possible because the heat pump doesn't generate heat — it moves existing heat from outside (air, ground, or water) into the building. About two-thirds of the delivered heat comes free from the environment; you only pay for the electricity to run the compressor." },
+    { q: "Why can heat pumps have a COP greater than 1, unlike electric heaters?",
+      opts: ["Heat pumps use fusion reactions to amplify energy","Heat pumps move existing heat from the environment rather than generating heat from scratch — they act as heat transfer devices","Heat pumps use a special catalyst that multiplies electrical energy","COP cannot exceed 1; this is a trick question"],
+      ans: 1,
+      exp: "An electric heater converts 1 kWh electricity into exactly 1 kWh heat (COP = 1). A heat pump achieves COP > 1 because <strong>it doesn't create heat — it moves it</strong>. Using a refrigeration cycle (evaporator, compressor, condenser, expansion valve), it extracts thermal energy from a cold source (outdoor air, ground, or water) and pumps it into the building. The electricity only powers the compressor; the rest of the heat comes free from the environment." },
+    { q: "In the UK, some households report higher energy bills after switching from gas to a heat pump. What is the primary reason?",
+      opts: ["Heat pumps don't actually work in cold UK weather","Heat pumps use more energy than gas boilers to produce the same amount of heat","UK electricity costs approximately 3–4 times more per kWh than gas, so even a COP of 3 may not beat cheap gas on cost per kWh of heat","Heat pumps require constant professional maintenance"],
+      ans: 2,
+      exp: "This is a crucial economic reality: <strong>UK electricity costs ~27p/kWh vs gas ~7p/kWh</strong>. Even at COP 3 (excellent performance), the heat cost = 27÷3 = 9p/kWh, compared to a 90% efficient gas boiler at 7÷0.9 ≈ 7.8p/kWh. So gas can still be cheaper per unit of heat. If a poorly designed system reduces COP to 2 (e.g. wrong radiators, poor insulation), cost = 27÷2 = 13.5p/kWh — significantly more expensive. Energy efficiency ≠ energy cost." },
+    { q: "Which heat pump type offers the best year-round efficiency in the UK and why?",
+      opts: ["Air source, because air is cheapest to access","Ground source, because shallow ground temperature remains stable throughout the year regardless of weather","Water source, because rivers are always at room temperature","Hybrid, because the gas boiler compensates in winter"],
+      ans: 1,
+      exp: "<strong>Ground source heat pumps (GSHPs) offer the best year-round efficiency</strong> because the ground at depths of 1–2 metres (horizontal loops) or deeper (vertical boreholes) maintains a relatively constant temperature of around 10–12°C in the UK throughout the year. This stable source means COP doesn't fluctuate as dramatically as air source (which loses efficiency on cold days). Air source efficiency drops significantly below 0°C outdoor air temperature." },
+    { q: "What happens at the 'evaporator' stage of a heat pump cycle?",
+      opts: ["High-pressure refrigerant releases heat into the building and condenses into liquid","Low-pressure refrigerant absorbs heat from the outdoor source and vaporises into a gas","The compressor pressurises the refrigerant to raise its temperature","The expansion valve lowers the refrigerant pressure and temperature"],
+      ans: 1,
+      exp: "At the <strong>evaporator</strong>: low-pressure refrigerant at a very low temperature comes into contact with the heat source (outdoor air, ground, or water). Even in cold conditions, the heat source is warmer than the refrigerant, so <strong>heat flows from the source into the refrigerant</strong>. This absorbed heat causes the refrigerant to <em>evaporate</em> (change from liquid to gas). This is the 'input' stage of the heat pump cycle where environmental energy is captured. Latent heat during phase change is why heat pumps are so efficient." },
+    { q: "What does COP depend on, and when is it highest for an air source heat pump?",
+      opts: ["COP is a fixed property of the heat pump model and never changes","COP is highest in very cold weather when the pump works hardest","COP is highest in mild outdoor temperatures with low-temperature output systems (e.g. underfloor heating at 35–45°C) in well-insulated homes","COP only depends on the brand of refrigerant used"],
+      ans: 2,
+      exp: "COP is <strong>not fixed — it varies with operating conditions</strong>. For an air source heat pump, COP is highest when: (1) <em>Mild outdoor temperatures</em> — the smaller the temperature difference between outside and inside, the less work the compressor needs to do; (2) <em>Low flow temperature</em> — underfloor heating at 35–45°C vs radiators at 55–65°C; (3) <em>Well-insulated home</em> — less heat demand means the pump runs more efficiently. Example: COP ≈ 4 at 10°C outside, COP ≈ 2.5 at −5°C." },
+    { q: "A homeowner has a heat pump running at COP 2.0 with electricity at 28p/kWh. What is their effective heat cost per kWh?",
+      opts: ["14p per kWh of heat","28p per kWh of heat","56p per kWh of heat","7p per kWh of heat"],
+      ans: 0,
+      exp: "Effective heat cost = Electricity price ÷ COP = <strong>28p ÷ 2.0 = 14p per kWh of heat</strong>. This is significantly more expensive than a gas boiler at 90% efficiency with gas at 7p/kWh (7÷0.9 ≈ 7.8p/kWh). This illustrates why poor system design — wrong radiators, inadequate insulation — that reduces COP from an ideal 3.5–4 down to 2.0 results in much higher running costs than gas. Energy efficiency does not equal lower energy cost when electricity is priced 3–4× higher than gas." },
+    { q: "What is 'latent heat' and why is it important to heat pump efficiency?",
+      opts: ["Heat that is wasted as noise during compression","The energy absorbed or released during a phase change (e.g. liquid → gas) without a temperature change — heat pumps exploit this to transfer large amounts of energy efficiently","The heat produced directly by the electric motor in the compressor","Heat stored in the ground that remains constant year-round"],
+      ans: 1,
+      exp: "<strong>Latent heat is the energy absorbed or released when a substance changes phase</strong> (e.g. liquid refrigerant evaporating to gas) without any change in temperature. This is a very large energy transfer — far greater than simply heating the same substance by a few degrees. Heat pumps deliberately exploit latent heat: refrigerant <em>evaporates</em> in the outdoor unit (absorbing large amounts of environmental heat) and <em>condenses</em> indoors (releasing that heat into the building). This is why COP can be 3–4× — most of the energy transferred comes from phase change, not from the compressor's electricity." },
+  ],
+};
+
+// ── SCORE STATE ──
+const scores = {};
+Object.keys(mcqData).forEach(k => scores[k] = { correct: 0, total: 0 });
+
+// ── RENDER MCQs ──
+function renderMCQs(sectionId) {
+  const questions = mcqData[sectionId];
+  const container = document.getElementById('mcq-' + sectionId);
+  if (!container || container.childElementCount > 0) return;
+  scores[sectionId].total = questions.length;
+
+  questions.forEach((qObj, qi) => {
+    const letters = ['A','B','C','D'];
+    const block = document.createElement('div');
+    block.className = 'mcq-block';
+    block.id = `block-${sectionId}-${qi}`;
+
+    const opts = qObj.opts.map((opt, i) => `
+      <button class="option-btn" onclick="checkAnswer('${sectionId}',${qi},${i})" id="opt-${sectionId}-${qi}-${i}">
+        <span class="option-letter">${letters[i]}</span>${opt}
+      </button>`).join('');
+
+    block.innerHTML = `
+      <div class="q-meta">
+        <div class="q-num">${qi+1}</div>
+        <div class="q-text">${qObj.q}</div>
+      </div>
+      <div class="options">${opts}</div>
+      <div class="explanation" id="exp-${sectionId}-${qi}">
+        <div class="exp-title">📚 Explanation</div>
+        ${qObj.exp}
+      </div>`;
+    container.appendChild(block);
+  });
+}
+
+function checkAnswer(section, qi, chosen) {
+  const qObj = mcqData[section][qi];
+  const block = document.getElementById(`block-${section}-${qi}`);
+  if (block.classList.contains('answered')) return;
+  block.classList.add('answered');
+
+  const buttons = block.querySelectorAll('.option-btn');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === qObj.ans) {
+      btn.classList.add(chosen === qObj.ans ? 'correct' : 'reveal');
+    }
+    if (i === chosen && chosen !== qObj.ans) {
+      btn.classList.add('wrong');
+    }
+  });
+
+  const exp = document.getElementById(`exp-${section}-${qi}`);
+  exp.classList.add('show');
+
+  if (chosen === qObj.ans) {
+    scores[section].correct++;
+  }
+  updateScore(section);
+}
+
+function updateScore(section) {
+  const bar = document.getElementById('score-' + section);
+  if (!bar) return;
+  const { correct, total } = scores[section];
+  const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+  bar.querySelector('.score-fill').style.width = pct + '%';
+  bar.querySelector('.score-val').textContent = `${correct} / ${total}`;
+}
+
+// ── INIT ALL ──
+Object.keys(mcqData).forEach(id => {
+  renderMCQs(id);
+  updateScore(id);
+});
+</script>
+</body>
+</html>
