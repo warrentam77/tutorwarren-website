@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TutorWarren.com | Interactive Learning Resources</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#dff4ff,#eefaff);color:#061846;line-height:1.55}
+.wrapper{max-width:1180px;margin:0 auto;padding:18px 14px 40px}.site{background:rgba(255,255,255,.72);border-radius:28px;overflow:hidden;box-shadow:0 22px 60px rgba(7,29,73,.16)}
+.hero{display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;align-items:center;padding:28px 34px;background:linear-gradient(135deg,#dff4ff 0%,#cdeeff 48%,#bde8ff 100%);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;right:0;top:0;width:42%;height:100%;background:linear-gradient(135deg,rgba(255,255,255,.25),rgba(8,122,204,.18));clip-path:polygon(28% 0,100% 0,100% 100%,0 100%);pointer-events:none}.logo-box{position:relative;z-index:1;background:rgba(255,255,255,.35);border-radius:20px;padding:10px;border:3px solid rgba(255,255,255,.9);box-shadow:0 12px 30px rgba(7,29,73,.13)}.logo-box img{width:100%;display:block;border-radius:14px}.hero-info{position:relative;z-index:1;padding:8px 0}.hero-info p{font-size:1.22rem;line-height:1.75;color:#061846;font-weight:600;max-width:620px;margin-bottom:24px}.hero-info strong{font-weight:900}.hero-buttons{display:flex;gap:16px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;border-radius:999px;text-decoration:none;font-weight:900;box-shadow:0 8px 20px rgba(7,29,73,.14)}.btn-primary{background:#075bd8;color:#fff}.btn-secondary{background:#fff;color:#061846;border:1px solid rgba(7,29,73,.15)}
+.nav{display:grid;grid-template-columns:repeat(6,1fr);background:#061846}.nav a{color:#fff;text-decoration:none;text-align:center;padding:16px 8px;font-weight:900;border-right:1px solid rgba(255,255,255,.15)}.nav a:last-child{border-right:0}.content{padding:28px 24px 30px}.intro{text-align:center;max-width:900px;margin:0 auto 24px}.intro h1{font-size:2.35rem;color:#061846;margin-bottom:8px}.intro p{font-size:1.05rem;color:#244866}
+.subject{display:grid;grid-template-columns:280px 1fr;gap:18px;margin:14px 0;padding:22px;border-radius:18px;border:1px solid rgba(7,29,73,.08)}.green{background:linear-gradient(135deg,#eefbea,#f8fff6)}.english{background:linear-gradient(135deg,#eaf7ff,#f7fcff)}.maths{background:linear-gradient(135deg,#f4eeff,#fbf8ff)}.publications{background:linear-gradient(135deg,#fff7df,#fffdf5)}.contact{background:linear-gradient(135deg,#fff0ff,#fff9ff)}.subject-left h2{font-size:1.85rem;line-height:1.05;margin:8px 0;color:#073f91}.green .subject-left h2{color:#087216}.maths .subject-left h2{color:#5422b8}.subject-left p{font-size:1.02rem;color:#18365a}.subject-icon{font-size:2.8rem}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:rgba(255,255,255,.88);border:1px solid rgba(7,29,73,.09);border-radius:16px;padding:18px;box-shadow:0 8px 20px rgba(7,29,73,.07)}.card h3{font-size:1.1rem;margin-bottom:10px;color:#043da0}.green .card h3{color:#087216}.card ul{margin-left:18px;line-height:1.85;color:#061846}.card a{color:inherit;text-decoration:none}.card a:hover{text-decoration:underline}.open-course{margin-top:18px;background:#0b8b11;color:#fff;padding:12px 22px;border-radius:999px;display:inline-flex;font-weight:900;text-decoration:none}.green-note{font-weight:900;color:#087216;margin-top:10px}.mini-img{width:100%;max-height:110px;object-fit:cover;border-radius:12px;margin-top:8px}.publication-grid{display:grid;grid-template-columns:1fr 1.05fr 1fr 1.05fr;gap:18px;align-items:center}.book-cover{width:100%;border-radius:14px;box-shadow:0 14px 34px rgba(0,0,0,.24);display:block}.pub-info h3{font-size:1.28rem;color:#073f91;margin-bottom:12px}.pub-info.green-title h3{color:#087216}.pub-info p{font-size:1rem;color:#061846;margin-bottom:14px}.badge{display:inline-block;padding:10px 16px;border-radius:999px;font-weight:900;text-transform:uppercase;font-size:.82rem}.badge-yellow{background:#ffcb2f;color:#3b2500}.badge-green{background:#0b8b11;color:white}.date{font-size:1.2rem;font-weight:900;color:#087216;margin-top:12px}.contact .cards{grid-template-columns:1fr 1fr}.footer-spacer{height:0}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.nav{grid-template-columns:repeat(3,1fr)}.subject{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.publication-grid{grid-template-columns:1fr}.book-cover{max-width:340px;margin:0 auto}.hero:after{display:none}}@media(max-width:600px){.wrapper{padding:8px}.site{border-radius:20px}.content{padding:18px 12px}.nav{grid-template-columns:repeat(2,1fr)}.intro h1{font-size:1.8rem}.hero{padding:20px}.hero-info p{font-size:1rem}.subject-left h2{font-size:1.55rem}}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<main class="site">
+<section class="hero">
+  <div class="logo-box"><img src="images/logo.png" alt="TutorWarren.com logo"></div>
+  <div class="hero-info">
+    <p>Professional, interactive learning resources for <strong>Electrical, English, Maths and Green Technologies</strong> — designed for college learners, apprentices and adult learners.</p>
+    <div class="hero-buttons"><a class="btn btn-primary" href="#green">📘 Explore Subjects</a><a class="btn btn-secondary" href="#publications">📚 View Publications</a></div>
+  </div>
+</section>
+<nav class="nav">
+  <a href="#about">🏠 About</a><a href="#electrical">⚡ Electrical</a><a href="#english">📘 English</a><a href="#maths">➕ Maths</a><a href="#publications">📚 Publications</a><a href="#contact">✉️ Contact</a>
+</nav>
+<section class="content">
+  <section id="about" class="intro">
+    <h1>About TutorWarren.com</h1>
+    <p>TutorWarren.com provides professional interactive learning resources in Electrical, English, Maths and Green Technologies, helping learners study practical subjects and succeed through modern digital learning.</p>
+  </section>
+
+  <section id="green" class="subject green">
+    <div class="subject-left"><div class="subject-icon">🍃</div><h2>Green Technologies & Applications</h2><h3>Interactive Course</h3><p>Explore sustainable energy solutions and the technologies shaping a greener future.</p><a class="open-course" href="Green Technology Lessons/index.html">Open Course →</a></div>
+    <div class="cards">
+      <div class="card"><h3>📖 Course Chapters</h3><ul><li>Solar Energy</li><li>Wind Energy</li><li>Hydropower</li><li>Nuclear Energy</li></ul></div>
+      <div class="card"><h3>🌿 More Topics</h3><ul><li>Geothermal Energy</li><li>Biomass Energy</li><li>Heat Pumps</li><li>Final Revision</li></ul><div class="green-note">Flash Cards & MCQs</div></div>
+      <div class="card"><h3>🛡️ Course Features</h3><ul><li>Clear explanations</li><li>Video lessons</li><li>Interactive quizzes</li><li>Real-world applications</li><li>Final revision section</li></ul></div>
+    </div>
+  </section>
+
+  <section id="english" class="subject english">
+    <div class="subject-left"><div class="subject-icon">📘</div><h2>English Learning Resources</h2><p>Interactive learning resources for Functional Skills, GCSE and ESOL support.</p></div>
+    <div class="cards">
+      <div class="card"><h3><a href="english/functional-skills-platform.html">Functional Skills English</a></h3><ul><li><a href="english/functional-skills-platform.html">Entry Level 1</a></li><li><a href="english/functional-skills-platform.html">Entry Level 2</a></li><li><a href="english/functional-skills-platform.html">Entry Level 3</a></li><li><a href="english/functional-skills-platform.html">Reading & Writing Practice</a></li><li><a href="english/functional-skills-platform.html">Mock Tests</a></li></ul></div>
+      <div class="card"><h3><a href="english/index.html">GCSE English Language</a></h3><ul><li><a href="english/gcse-english-intro-paper1.html">Paper 1 Support</a></li><li><a href="english/gcse-english-paper2.html">Paper 2 Support</a></li><li><a href="english/gcse-english-intro-paper1.html">Reading Practice</a></li><li><a href="english/gcse-english-paper2.html">Writing Skills</a></li><li><a href="english/gcse-english-intro-paper1.html">Language Analysis</a></li></ul></div>
+      <div class="card"><h3><a href="english/esol-listen-and-answer.html">ESOL & Interactive Practice</a></h3><ul><li><a href="english/esol-listen-and-answer.html">Listen & Answers</a></li><li><a href="english/esol-listen-and-answer.html">Vocabulary Support</a></li><li><a href="english/esol-listen-and-answer.html">Pronunciation Practice</a></li><li><a href="english/esol-listen-and-answer.html">Practical Tasks</a></li></ul></div>
+    </div>
+  </section>
+
+  <section id="maths" class="subject maths">
+    <div class="subject-left"><div class="subject-icon">➗</div><h2>Maths Learning Resources</h2><p>Interactive learning resources for Functional Skills and GCSE Maths support.</p></div>
+    <div class="cards">
+      <div class="card"><h3>Functional Skills Maths</h3><ul><li><a href="maths/entry.html">Entry Level</a></li><li><a href="maths/level1.html">Level 1</a></li><li><a href="maths/level2.html">Level 2</a></li></ul></div>
+      <div class="card"><h3>Maths Topics</h3><ul><li><a href="maths/l1-number.html">Number</a></li><li><a href="maths/l1-money.html">Money</a></li><li><a href="maths/l1-measures.html">Measures</a></li><li><a href="maths/l1-data.html">Data</a></li></ul></div>
+      <div class="card"><h3>Practice & Assessment</h3><ul><li><a href="maths/entry.html">Entry Level Practice</a></li><li><a href="maths/level1.html">Level 1 Practice</a></li><li><a href="maths/level2.html">Level 2 Practice</a></li></ul></div>
+    </div>
+  </section>
+
+  <section id="publications" class="subject publications">
+    <div class="subject-left"><div class="subject-icon">📚</div><h2>Publications</h2><p>Future books and learning guides by Tutor Warren.</p></div>
+    <div class="publication-grid">
+      <img class="book-cover" src="images/electrical-book-front-cover.png" alt="A Comprehensive Guide to Electrical Science and Principles">
+      <div class="pub-info"><h3>A Comprehensive Guide to Electrical Science & Principles</h3><p>The complete study resource for Electrical learners, covering theory, principles and practical applications.</p><span class="badge badge-yellow">Available soon</span></div>
+      <img class="book-cover" src="images/green-technologies-front-cover.png" alt="Green Technologies and Applications Interactive Course">
+      <div class="pub-info green-title"><h3>Green Technologies & Applications Interactive Course</h3><p>A complete interactive course covering renewable energy technologies and sustainable solutions.</p><span class="badge badge-green">Published</span><div class="date">May 2026</div></div>
+    </div>
+  </section>
+
+  <section id="contact" class="subject contact">
+    <div class="subject-left"><div class="subject-icon">✉️</div><h2>Contact</h2><p>Contact and enquiries.</p></div>
+    <div class="cards"><div class="card"><h3>Contact Tutor Warren</h3><ul><li>For enquiries</li><li>For collaborations</li></ul></div></div>
+  </section>
+</section>
+</main>
+</div>
+</body>
+</html>
