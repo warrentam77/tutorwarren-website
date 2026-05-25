@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TutorWarren.com | Interactive Learning Resources</title>
+<meta name="description" content="TutorWarren.com provides interactive learning resources for Electrical, English, Maths and Green Technologies.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(135deg,#dff4ff,#effaff);
+  color:#071d49;
+  line-height:1.55;
+}
+.wrapper{max-width:1220px;margin:0 auto;padding:22px 14px 46px}
+.site{
+  background:rgba(255,255,255,.76);
+  border-radius:26px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(7,29,73,.15);
+}
+.hero{
+  display:grid;
+  grid-template-columns:430px 1fr;
+  gap:34px;
+  align-items:center;
+  padding:24px 34px 22px;
+  background:
+    linear-gradient(90deg,rgba(223,244,255,.96),rgba(206,239,255,.78)),
+    radial-gradient(circle at 88% 28%,rgba(255,255,255,.95),transparent 24%);
+}
+.logo-card{
+  background:rgba(255,255,255,.48);
+  border:3px solid rgba(255,255,255,.9);
+  border-radius:18px;
+  padding:10px;
+  box-shadow:0 16px 30px rgba(7,29,73,.12);
+}
+.logo-card img{width:100%;display:block;border-radius:12px}
+.hero-text{max-width:650px}
+.hero-text p{
+  font-size:1.18rem;
+  color:#071d49;
+  font-weight:650;
+  margin-bottom:22px;
+}
+.hero-text strong{font-weight:900}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border-radius:999px;
+  padding:13px 22px;
+  text-decoration:none;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(7,29,73,.16);
+  transition:.18s ease;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-blue{background:#0758d8;color:#fff}
+.btn-white{background:#fff;color:#071d49;border:1px solid rgba(7,29,73,.15)}
+.btn-green{background:#168400;color:#fff}
+.btn-yellow{background:#ffcb3d;color:#3b2500;padding:10px 16px;font-size:.82rem;text-transform:uppercase}
+.btn-published{background:#139b32;color:#fff;padding:10px 16px;font-size:.85rem;text-transform:uppercase}
+.nav{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  background:#061f55;
+}
+.nav a{
+  color:#fff;
+  text-decoration:none;
+  text-align:center;
+  padding:15px 10px;
+  font-weight:900;
+  border-right:1px solid rgba(255,255,255,.14);
+}
+.nav a:last-child{border-right:0}
+.nav a:hover{background:#0b3c8e}
+.content{padding:28px 28px 34px}
+.intro{
+  text-align:center;
+  max-width:900px;
+  margin:0 auto 24px;
+  padding-bottom:22px;
+  border-bottom:1px solid rgba(7,29,73,.16);
+}
+.intro h1{
+  font-size:clamp(2rem,3vw,2.9rem);
+  line-height:1.1;
+  margin-bottom:10px;
+}
+.intro p{color:#274866;font-size:1.05rem}
+.subject{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:22px;
+  padding:24px;
+  margin-bottom:16px;
+  border-radius:22px;
+  border:1px solid rgba(7,29,73,.10);
+}
+.subject-green{background:linear-gradient(135deg,#f1fff0,#f8fff3)}
+.subject-blue{background:linear-gradient(135deg,#eef9ff,#f7fcff)}
+.subject-purple{background:linear-gradient(135deg,#f8f2ff,#fbf8ff)}
+.subject-cream{background:linear-gradient(135deg,#fff8db,#fffdf2)}
+.subject-pink{background:linear-gradient(135deg,#fff4ff,#fff9ff)}
+.subject-left h2{
+  color:#073fd1;
+  font-size:1.65rem;
+  line-height:1.1;
+  margin:7px 0 10px;
+}
+.subject-left .green-title{color:#08721b}
+.subject-left p{color:#244866}
+.subject-icon{font-size:2.8rem}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.card{
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(7,29,73,.10);
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 10px 24px rgba(7,29,73,.08);
+}
+.card h3,.card h4{margin-bottom:10px;color:#073fd1}
+.card.green h3,.card.green h4{color:#08721b}
+.card ul{margin-left:18px;color:#173455;line-height:1.75}
+.card a{color:inherit;text-decoration:none}
+.card a:hover{text-decoration:underline;color:#073fd1}
+.publications-grid{
+  display:grid;
+  grid-template-columns:170px 240px 1fr 240px 1fr;
+  gap:18px;
+  align-items:center;
+}
+.book-cover{
+  width:100%;
+  border-radius:12px;
+  display:block;
+  box-shadow:0 14px 28px rgba(7,29,73,.22);
+  background:#fff;
+}
+.pub-text h3{
+  color:#073f91;
+  font-size:1.35rem;
+  line-height:1.2;
+  margin-bottom:10px;
+}
+.pub-text.green h3{color:#08721b}
+.pub-text p{font-size:.98rem;color:#182f49;margin-bottom:12px}
+.contact-grid{display:grid;grid-template-columns:230px 1fr;gap:20px;align-items:start}
+.contact-card{max-width:330px}
+footer{display:none}
+@media(max-width:950px){
+  .hero{grid-template-columns:1fr;padding:22px}
+  .logo-card{max-width:430px}
+  .subject{grid-template-columns:1fr;padding:20px}
+  .cards{grid-template-columns:1fr}
+  .publications-grid{grid-template-columns:1fr}
+  .book-cover{max-width:260px}
+  .contact-grid{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .wrapper{padding:10px}
+  .nav{grid-template-columns:repeat(2,1fr)}
+  .content{padding:18px 14px}
+  .hero-text p{font-size:1rem}
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<main class="site">
+
+  <section class="hero">
+    <div class="logo-card">
+      <img src="images/logo.png" alt="TutorWarren.com logo">
+    </div>
+    <div class="hero-text">
+      <p>Professional, interactive learning resources for <strong>Electrical, English, Maths and Green Technologies</strong> — designed for college learners, apprentices and adult learners.</p>
+      <div class="hero-actions">
+        <a class="btn btn-blue" href="#green">🎓 Explore Subjects</a>
+        <a class="btn btn-white" href="#publications">📖 View Publications</a>
+      </div>
+    </div>
+  </section>
+
+  <nav class="nav">
+    <a href="#about">🏠 About</a>
+    <a href="#electrical">⚡ Electrical</a>
+    <a href="#english">📘 English</a>
+    <a href="#maths">➕ Maths</a>
+    <a href="#publications">📚 Publications</a>
+    <a href="#contact">✉️ Contact</a>
+  </nav>
+
+  <div class="content">
+    <section id="about" class="intro">
+      <h1>About TutorWarren.com</h1>
+      <p>TutorWarren.com provides professional interactive learning resources in Electrical, English, Maths and Green Technologies, helping learners study practical subjects and succeed through modern digital learning.</p>
+    </section>
+
+    <section id="green" class="subject subject-green">
+      <div class="subject-left">
+        <div class="subject-icon">🌿</div>
+        <h2 class="green-title">Green Technologies<br>&amp; Applications</h2>
+        <h3>Interactive Course</h3>
+        <p>Explore sustainable energy solutions and the technologies shaping a greener future.</p>
+        <br>
+        <a class="btn btn-green" href="Green Technology Lessons/index.html">Open Course →</a>
+      </div>
+      <div class="cards">
+        <div class="card green">
+          <h3>📖 Course Chapters</h3>
+          <ul>
+            <li><a href="Green Technology Lessons/solar.html">Solar Energy</a></li>
+            <li><a href="Green Technology Lessons/wind.html">Wind Energy</a></li>
+            <li><a href="Green Technology Lessons/hydropower.html">Hydropower</a></li>
+            <li><a href="Green Technology Lessons/nuclear.html">Nuclear Energy</a></li>
+          </ul>
+        </div>
+        <div class="card green">
+          <h3>🌱 More Topics</h3>
+          <ul>
+            <li><a href="Green Technology Lessons/geothermal.html">Geothermal Energy</a></li>
+            <li><a href="Green Technology Lessons/biomass.html">Biomass Energy</a></li>
+            <li><a href="Green Technology Lessons/heat-pumps.html">Heat Pumps</a></li>
+            <li><a href="Green Technology Lessons/final-revision.html">Final Revision</a></li>
+          </ul>
+          <h4>Flash Cards &amp; MCQs</h4>
+        </div>
+        <div class="card green">
+          <h3>🛡 Course Features</h3>
+          <ul>
+            <li>Clear explanations</li>
+            <li>Video lessons</li>
+            <li>Interactive quizzes</li>
+            <li>Real-world applications</li>
+            <li>Final revision section</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="english" class="subject subject-blue">
+      <div class="subject-left">
+        <div class="subject-icon">📘</div>
+        <h2>English Learning<br>Resources</h2>
+        <p>Interactive learning resources for Functional Skills, GCSE and ESOL support.</p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h4><a href="english/functional-skills-platform.html">Functional Skills English</a></h4>
+          <ul>
+            <li><a href="english/functional-skills-platform.html">Entry Level 1</a></li>
+            <li><a href="english/functional-skills-platform.html">Entry Level 2</a></li>
+            <li><a href="english/functional-skills-platform.html">Entry Level 3</a></li>
+            <li><a href="english/functional-skills-platform.html">Reading &amp; Writing Practice</a></li>
+            <li><a href="english/functional-skills-platform.html">Mock Tests</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><a href="english/index.html">GCSE English Language</a></h4>
+          <ul>
+            <li><a href="english/gcse-english-intro-paper1.html">Paper 1 Support</a></li>
+            <li><a href="english/gcse-english-paper2.html">Paper 2 Support</a></li>
+            <li><a href="english/gcse-english-intro-paper1.html">Reading Practice</a></li>
+            <li><a href="english/gcse-english-paper2.html">Writing Skills</a></li>
+            <li><a href="english/gcse-english-intro-paper1.html">Language Analysis</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4><a href="english/esol-listen-and-answer.html">ESOL &amp; Interactive Practice</a></h4>
+          <ul>
+            <li><a href="english/esol-listen-and-answer.html">Listen &amp; Answer</a></li>
+            <li><a href="english/esol-listen-and-answer.html">Vocabulary Support</a></li>
+            <li><a href="english/esol-listen-and-answer.html">Pronunciation Practice</a></li>
+            <li><a href="english/esol-listen-and-answer.html">Practical Tasks</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="maths" class="subject subject-purple">
+      <div class="subject-left">
+        <div class="subject-icon">➗</div>
+        <h2>Maths Learning<br>Resources</h2>
+        <p>Interactive learning resources for Functional Skills and GCSE Maths support.</p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h4>Functional Skills Maths</h4>
+          <ul>
+            <li><a href="maths/entry.html">Entry Level</a></li>
+            <li><a href="maths/level1.html">Level 1</a></li>
+            <li><a href="maths/level2.html">Level 2</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Maths Topics</h4>
+          <ul>
+            <li><a href="maths/l1-number.html">Number</a></li>
+            <li><a href="maths/l1-money.html">Money</a></li>
+            <li><a href="maths/l1-measures.html">Measures</a></li>
+            <li><a href="maths/l1-data.html">Data</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Practice &amp; Assessment</h4>
+          <ul>
+            <li><a href="maths/entry.html">Entry Level Practice</a></li>
+            <li><a href="maths/level1.html">Level 1 Practice</a></li>
+            <li><a href="maths/level2.html">Level 2 Practice</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="publications" class="subject subject-cream">
+      <div class="subject-left">
+        <div class="subject-icon">📚</div>
+        <h2>Publications</h2>
+        <p>Future books and learning guides by Tutor Warren.</p>
+      </div>
+      <div class="publications-grid">
+        <img class="book-cover" src="images/electrical-book-front-cover.png" alt="A Comprehensive Guide to Electrical Science and Principles book cover">
+        <div class="pub-text">
+          <h3>A Comprehensive Guide to Electrical Science &amp; Principles</h3>
+          <p>The complete study resource for Electrical learners, covering theory, principles and practical applications.</p>
+          <span class="btn btn-yellow">Available soon</span>
+        </div>
+        <img class="book-cover" src="images/green-technologies-front-cover.png" alt="Green Technologies and Applications Interactive Course front cover">
+        <div class="pub-text green">
+          <h3>Green Technologies &amp; Applications Interactive Course</h3>
+          <p>A complete interactive course covering renewable energy technologies and sustainable solutions.</p>
+          <span class="btn btn-published">✅ Published</span>
+          <p style="color:#08721b;font-weight:900;margin-top:10px;">May 2026</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="subject subject-pink">
+      <div class="subject-left">
+        <div class="subject-icon">✉️</div>
+        <h2>Contact</h2>
+        <p>Contact and enquiries.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="card contact-card">
+          <h4>Contact Tutor Warren</h4>
+          <ul>
+            <li>For enquiries</li>
+            <li>For collaborations</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+</div>
+</body>
+</html>
