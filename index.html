@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Green Technologies and Applications Interactive Course</title>
+<style>
+:root{--green:#11834a;--dark:#062f20;--gold:#ffd75e;--ink:#10231a}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eaf7ff,#effff4);color:var(--ink);user-select:none;-webkit-user-select:none}
+@media print{body{display:none!important}}
+header{background:linear-gradient(135deg,#06351f,#13824b);color:white;text-align:center;padding:30px 16px}
+header h1{margin:0 0 8px;font-size:2.5rem;font-weight:900} header p{margin:0;font-size:1.1rem}
+nav{position:sticky;top:0;z-index:999;background:#052c1d;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding:14px 10px;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+nav a{color:white;text-decoration:none;background:#159957;border:2px solid rgba(255,255,255,.35);border-radius:14px;padding:15px 18px;font-weight:900;font-size:1.05rem;min-width:122px;text-align:center}
+nav a:hover{background:var(--gold);color:#10231a}
+main{max-width:1180px;margin:auto;padding:26px 16px 90px} section{scroll-margin-top:125px}
+.cover{background:white;border-radius:24px;box-shadow:0 10px 28px rgba(0,0,0,.14);overflow:hidden;margin-bottom:24px}
+.cover img{width:100%;display:block} .intro{padding:24px;text-align:center} .intro h2{color:var(--dark);font-size:2rem;margin:0 0 10px}
+.note{background:#fff9d8;border-left:8px solid #f2be22;border-radius:14px;padding:16px;margin:18px 0;line-height:1.5;text-align:left}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.card{background:white;border-radius:22px;padding:22px;box-shadow:0 8px 22px rgba(0,0,0,.11);border-top:8px solid var(--green)}
+.card h2{margin:0 0 10px;color:var(--dark);font-size:1.55rem} .card p{line-height:1.5}
+.label{color:#0b6b3a;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.video-box{position:relative;width:100%;padding-top:56.25%;background:#0b1b14;border-radius:16px;overflow:hidden;margin:14px 0}
+.video-box iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.btn{display:inline-block;text-decoration:none;color:white;border-radius:12px;padding:13px 15px;font-weight:900}
+.pdf{background:#127943} .video{background:#c06a00} .quiz{background:#166bb7} .final{background:#7c3aed}
+.watermark{position:fixed;left:0;right:0;bottom:10px;text-align:center;color:rgba(0,0,0,.35);font-weight:800;pointer-events:none;z-index:1000}
+footer{text-align:center;background:#052c1d;color:white;padding:20px;font-weight:800}
+</style>
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+document.addEventListener('keydown',function(e){
+ const k=e.key.toLowerCase();
+ if((e.ctrlKey&&['s','p','u','c','x','a'].includes(k))||e.key==='F12'||(e.ctrlKey&&e.shiftKey&&['i','j','c'].includes(k))){
+  e.preventDefault(); alert('This resource is protected by tutorwarren.com.');
+ }
+});
+</script>
+</head>
+<body>
+<header id="home">
+<h1>Green Technologies and Applications Interactive Course</h1>
+<p>PDF study materials, embedded video lessons, interactive quizzes and final revision</p>
+</header>
+<nav><a href="#home">Home</a><a href="#intro">Introduction</a><a href="#solar">Solar Energy</a><a href="#wind">Wind Energy</a><a href="#hydro">Hydropower</a><a href="#geothermal">Geothermal Energy</a><a href="#biomass">Biomass Energy</a><a href="#nuclear">Nuclear Energy</a><a href="#heatpumps">Heat Pumps</a><a href="#final-revision">Final Revision</a></nav>
+<main>
+<section class="cover">
+<img src="Green%20Technologies%20cover.png" alt="Green Technologies and Applications cover">
+<div class="intro">
+<h2>Course Index</h2>
+<p>Use the top control bar to jump directly to the introduction, a chapter, or the final revision.</p>
+<div class="note"><strong>Website structure:</strong> Keep this <strong>index.html</strong> at the same level as <strong>Study Materials</strong>, <strong>Quizzez</strong>, and <strong>Green Energy Final Revision</strong>. Video lessons are embedded from YouTube, so no MP4 folder is needed.</div>
+</div>
+</section>
+<div class="grid">
+<section id="intro" class="card">
+  <div class="label">Introduction</div>
+  <h2>Introduction / Preface</h2>
+  <p>Course welcome, green energy overview, and purpose of the online learning resource.</p>
+  
+  <div class="btnrow">
+    <a class="btn pdf" href="Study%20Materials/Introduction.pdf" target="_blank">📘 Open PDF Study Material</a>
+    
+    
+  </div>
+</section>
+
+<section id="solar" class="card">
+  <div class="label">Chapter 1</div>
+  <h2>Solar Energy</h2>
+  <p>PV panels, solar thermal, CSP, inverters, batteries and grid connection.</p>
+  <div class="video-box"><iframe src="https://www.youtube.com/embed/PQov8_DqI9Q" title="Solar Energy video lesson" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+  <div class="btnrow">
+    <a class="btn pdf" href="Study%20Materials/Chapter%201%20-%20Solar%20Energy.pdf" target="_blank">📘 Open PDF Study Material</a>
+    <a class="btn video" href="https://youtu.be/PQov8_DqI9Q" target="_blank">▶ Open Video on YouTube</a>
+    <a class="btn quiz" href="Quizzez/Solar%20Energy%20Quiz.html" target="_blank">📝 Start Interactive Quiz</a>
+  </div>
+</section>
+
+<section id="wind" class="card">
+  <div class="label">Chapter 2</div>
+  <h2>Wind Energy</h2>
+  <p>Wind turbines, HAWT, VAWT, onshore/offshore wind, and hybrid systems.</p>
+  <div class="video-box"><iframe src="https://www.youtube.com/embed/uk4Qh9np9ZQ" title="Wind Energy video lesson" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+  <div class="btnrow">
+    <a class="btn pdf" href="Study%20Materials/Chapter%202%20-%20Wind%20Energy.pdf" target="_blank">📘 Open PDF Study Material</a>
+    <a class="btn video" href="https://youtu.be/uk4Qh9np9ZQ" target="_blank">▶ Open Video on YouTube</a>
+    <a class="btn quiz" href="Quizzez/Wind%20Energy%20Quiz.html" target="_blank">📝 Start Interactive Quiz</a>
+  </div>
+</section>
+
+<section id="hydro" class="card">
+  <div class="label">Chapter 3</div>
+  <h2>Hydropower</h2>
+  <p>Reservoir hydropower, run-of-river, pumped storage, tidal systems and micro hydro.</p>
+  <div class="video-box"><iframe src="https://www.youtube.com/embed/8bMc3EtefOU" title="Hydropower video lesson" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+  <div class="btnrow">
+    <a class="btn pdf" href="Study%20Materials/Chapter%203%20-%20Hydropower.pdf" target="_blank">📘 Open PDF Study Material</a>
+    <a class="btn video" href="https://youtu.be/8bMc3EtefOU" target="_blank">▶ Open Video on YouTube</a>
+    <a class="btn quiz" href="Quizzez/Hydropower%20Quiz.html" target="_blank">📝 Start Interactive Quiz</a>
+  </div>
+</section>
+
+<section id="geothermal" class="card">
+  <div class="label">Chapter 4</div>
+  <h2>Geothermal Energy</h2>
+  <p>Earth heat, geothermal power systems, heating applications and UK limitations.</p>
+  <div class="video-box"><iframe src="https://www.youtube.com/embed/z4PMZZJ6EjA" title="Geothermal Energy video lesson" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+  <div class="btnrow">
+    <a class="btn pdf" href="Study%20Materials/Chapter%204%20-%20Geothermal%20Energy.pdf" target="_blank">📘 Open PDF Study Material</a>
+    <a class="btn video" href="https://youtu.be/z4PMZZJ6EjA" target="_blank">▶ Open Video on YouTube</a>
+    <a class="btn quiz" href="Quizzez/Geothermal%20Energy%20Quiz.html" target="_blank">📝 Start Interactive Quiz</a>
+  </div>
+</section>
+
+<section id="biomass" class="card">
+  <div class="label">Chapter 5</div>
+  <h2>Biomass Energy</h2>
+  <p>Organic fuels, combustion, anaerobic digestion, gasification, biofuels and CHP.</p>
+  <div class="video-box"><iframe src="https://www.youtube.com/embed/op5mzfMS0qc" title="Biomass Energy video lesson" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+  <div class="btnrow">
+    <a class="btn pdf" href="Study%20Materials/Chapter%205%20-%20Biomass%20Energy.pdf" target="_blank">📘 Open PDF Study Material</a>
+    <a class="btn video" href="https://youtu.be/op5mzfMS0qc" target="_blank">▶ Open Video on YouTube</a>
+    <a class="btn quiz" href="Quizzez/Biomass%20Energy%20Quiz.html" target="_blank">📝 Start Interactive Quiz</a>
+  </div>
+</section>
+
+<section id="nuclear" class="card">
+  <div class="label">Chapter 6</div>
+  <h2>Nuclear Energy</h2>
+  <p>Nuclear fission, low-carbon generation, reactors, safety, waste and UK applications.</p>
+  <div class="video-box"><iframe src="https://www.youtube.com/embed/lj3ur1Ltqjk" title="Nuclear Energy video lesson" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+  <div class="btnrow">
+    <a class="btn pdf" href="Study%20Materials/Chapter%206%20-%20Nuclear%20Energy.pdf" target="_blank">📘 Open PDF Study Material</a>
+    <a class="btn video" href="https://youtu.be/lj3ur1Ltqjk" target="_blank">▶ Open Video on YouTube</a>
+    <a class="btn quiz" href="Quizzez/Nuclear%20Energy%20Quiz.html" target="_blank">📝 Start Interactive Quiz</a>
+  </div>
+</section>
+
+<section id="heatpumps" class="card">
+  <div class="label">Chapter 7</div>
+  <h2>Heat Pumps</h2>
+  <p>Air source, ground source, water source and hybrid heat pumps, COP and efficiency.</p>
+  <div class="video-box"><iframe src="https://www.youtube.com/embed/KwEDS2ZBWkU" title="Heat Pumps video lesson" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+  <div class="btnrow">
+    <a class="btn pdf" href="Study%20Materials/Chapter%207%20-%20Heat%20Pumps.pdf" target="_blank">📘 Open PDF Study Material</a>
+    <a class="btn video" href="https://youtu.be/KwEDS2ZBWkU" target="_blank">▶ Open Video on YouTube</a>
+    <a class="btn quiz" href="Quizzez/Heat%20Pumps%20Quiz.html" target="_blank">📝 Start Interactive Quiz</a>
+  </div>
+</section>
+</div>
+<section id="final-revision" class="card" style="margin-top:22px">
+<div class="label">Final Section</div>
+<h2>Green Energy Final Revision</h2>
+<p>Flash cards and final MCQs covering all seven green energy chapters.</p>
+<div class="btnrow"><a class="btn final" href="Green%20Energy%20Final%20Revision/index.html" target="_blank">Open Final Revision</a></div>
+</section>
+</main>
+<div class="watermark">@tutorwarren.com, All Rights Reserved</div>
+<footer>@tutorwarren.com, All Rights Reserved</footer>
+</body>
+</html>
