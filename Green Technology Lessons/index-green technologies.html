@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Green Technologies and Applications | tutorwarren.com</title>
+  <style>
+    :root{
+      --green:#157347;
+      --green-dark:#0b5131;
+      --blue:#eaf7ff;
+      --card:#ffffff;
+      --gold:#ffd45a;
+      --text:#123;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:linear-gradient(135deg,#eaf7ff 0%,#effff4 100%);
+      color:var(--text);
+      user-select:none;
+      -webkit-user-select:none;
+    }
+    @media print{body{display:none!important}}
+    header{
+      background:linear-gradient(135deg,var(--green-dark),var(--green));
+      color:white;
+      padding:34px 20px 28px;
+      text-align:center;
+      position:relative;
+    }
+    header h1{font-size:2.4rem;margin:0 0 10px;font-weight:800}
+    header p{font-size:1.1rem;margin:0;opacity:.95}
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:999;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+      padding:14px 12px;
+      background:#083b27;
+      box-shadow:0 4px 14px rgba(0,0,0,.2);
+    }
+    .topbar a{
+      color:white;
+      text-decoration:none;
+      font-weight:800;
+      font-size:1rem;
+      padding:14px 18px;
+      border-radius:12px;
+      background:#159957;
+      border:2px solid rgba(255,255,255,.35);
+      min-width:116px;
+      text-align:center;
+      transition:.2s;
+    }
+    .topbar a:hover{background:var(--gold);color:#102b1f;transform:translateY(-2px)}
+    main{max-width:1180px;margin:auto;padding:28px 18px 90px}
+    section{scroll-margin-top:115px}
+    .hero{
+      background:white;
+      border-radius:24px;
+      padding:26px;
+      box-shadow:0 10px 26px rgba(0,0,0,.12);
+      text-align:center;
+      margin-bottom:28px;
+    }
+    .hero h2{font-size:2rem;color:var(--green-dark);margin:0 0 12px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(245px,1fr));
+      gap:18px;
+      margin-top:18px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:20px;
+      padding:22px;
+      box-shadow:0 8px 22px rgba(0,0,0,.1);
+      border-top:8px solid var(--green);
+      min-height:210px;
+    }
+    .card h3{margin:0 0 10px;color:var(--green-dark);font-size:1.35rem}
+    .card p{line-height:1.45}
+    .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .btn{
+      display:inline-block;
+      text-decoration:none;
+      background:var(--green);
+      color:white;
+      padding:12px 14px;
+      border-radius:12px;
+      font-weight:800;
+      border:0;
+    }
+    .btn.secondary{background:#166bb7}
+    .btn.final{background:#8b5cf6}
+    .note{
+      background:#fff9d8;
+      border-left:8px solid #f2be22;
+      padding:18px;
+      border-radius:14px;
+      margin:20px 0;
+      line-height:1.5;
+    }
+    .watermark{
+      position:fixed;
+      bottom:10px;
+      left:0;
+      right:0;
+      text-align:center;
+      color:rgba(0,0,0,.35);
+      font-weight:700;
+      pointer-events:none;
+      z-index:1000;
+      font-size:.95rem;
+    }
+    footer{
+      text-align:center;
+      background:#083b27;
+      color:white;
+      padding:22px;
+      font-weight:700;
+    }
+  </style>
+  <script>
+    // Basic deterrents only. No website can fully prevent code viewing or copying.
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('cut', e => e.preventDefault());
+    document.addEventListener('keydown', function(e){
+      const k = e.key.toLowerCase();
+      if ((e.ctrlKey && ['s','p','u','c','x','a'].includes(k)) || e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['i','j','c'].includes(k))) {
+        e.preventDefault();
+        alert('This resource is protected by tutorwarren.com.');
+      }
+    });
+  </script>
+</head>
+<body>
+  <header id="home">
+    <h1>Green Technologies and Applications</h1>
+    <p>Interactive online book with study materials, video lessons, quizzes and final revision</p>
+  </header>
+
+  <nav class="topbar" aria-label="Book navigation">
+    <a href="#home">Home</a>
+    <a href="#solar">Solar</a>
+    <a href="#wind">Wind</a>
+    <a href="#hydro">Hydropower</a>
+    <a href="#geothermal">Geothermal</a>
+    <a href="#biomass">Biomass</a>
+    <a href="#nuclear">Nuclear</a>
+    <a href="#heatpumps">Heat Pumps</a>
+    <a href="#final-revision">Final Revision</a>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <h2>Course Index</h2>
+      <p>Use the chapter buttons above to jump directly to a topic. Each chapter card below can link to its study lesson and quiz files in your folders.</p>
+      <div class="note">
+        Folder structure expected beside this file:<br>
+        <strong>Green Technology Lessons</strong> / <strong>Quizzez</strong> / <strong>Green Energy Final Revision</strong><br>
+        Keep this <strong>index.html</strong> in the same location as those three folders.
+      </div>
+    </section>
+
+    <section id="solar" class="card">
+      <h3>Chapter 1: Solar Energy</h3>
+      <p>Photovoltaic systems, solar thermal systems, CSP, inverters, batteries, grid connection and environmental impact.</p>
+      <div class="btnrow">
+        <a class="btn" href="Green%20Technology%20Lessons/Solar%20Energy.html">Study Lesson</a>
+        <a class="btn secondary" href="Quizzez/Solar%20Energy%20Quiz.html">Interactive Quiz</a>
+      </div>
+    </section>
+
+    <section id="wind" class="card">
+      <h3>Chapter 2: Wind Energy</h3>
+      <p>Wind turbines, HAWT, VAWT, onshore and offshore wind, small-scale systems, hybrid systems and limitations.</p>
+      <div class="btnrow">
+        <a class="btn" href="Green%20Technology%20Lessons/Wind%20Energy.html">Study Lesson</a>
+        <a class="btn secondary" href="Quizzez/Wind%20Energy%20Quiz.html">Interactive Quiz</a>
+      </div>
+    </section>
+
+    <section id="hydro" class="card">
+      <h3>Chapter 3: Hydropower</h3>
+      <p>Reservoir hydropower, run-of-river, pumped storage, tidal systems, micro/pico hydro and power calculations.</p>
+      <div class="btnrow">
+        <a class="btn" href="Green%20Technology%20Lessons/Hydropower.html">Study Lesson</a>
+        <a class="btn secondary" href="Quizzez/Hydropower%20Quiz.html">Interactive Quiz</a>
+      </div>
+    </section>
+
+    <section id="geothermal" class="card">
+      <h3>Chapter 4: Geothermal Energy</h3>
+      <p>Earth heat, deep wells, geothermal facilities, power generation, heating applications and UK limitations.</p>
+      <div class="btnrow">
+        <a class="btn" href="Green%20Technology%20Lessons/Geothermal%20Energy.html">Study Lesson</a>
+        <a class="btn secondary" href="Quizzez/Geothermal%20Energy%20Quiz.html">Interactive Quiz</a>
+      </div>
+    </section>
+
+    <section id="biomass" class="card">
+      <h3>Chapter 5: Biomass Energy</h3>
+      <p>Organic fuels, combustion, anaerobic digestion, biofuels, CHP and sustainability considerations.</p>
+      <div class="btnrow">
+        <a class="btn" href="Green%20Technology%20Lessons/Biomass%20Energy.html">Study Lesson</a>
+        <a class="btn secondary" href="Quizzez/Biomass%20Energy%20Quiz.html">Interactive Quiz</a>
+      </div>
+    </section>
+
+    <section id="nuclear" class="card">
+      <h3>Chapter 6: Nuclear Energy</h3>
+      <p>Nuclear fission, power stations, baseload generation, safety, waste, small modular reactors and UK applications.</p>
+      <div class="btnrow">
+        <a class="btn" href="Green%20Technology%20Lessons/Nuclear%20Energy.html">Study Lesson</a>
+        <a class="btn secondary" href="Quizzez/Nuclear%20Energy%20Quiz.html">Interactive Quiz</a>
+      </div>
+    </section>
+
+    <section id="heatpumps" class="card">
+      <h3>Chapter 7: Heat Pumps</h3>
+      <p>Air source, ground source, water source and hybrid heat pumps, COP, efficiency, heating applications and limitations.</p>
+      <div class="btnrow">
+        <a class="btn" href="Green%20Technology%20Lessons/Heat%20Pumps.html">Study Lesson</a>
+        <a class="btn secondary" href="Quizzez/Heat%20Pumps%20Quiz.html">Interactive Quiz</a>
+      </div>
+    </section>
+
+    <section id="final-revision" class="card">
+      <h3>Green Energy Final Revision</h3>
+      <p>Flash cards and final MCQs for reviewing all seven chapters before assessment.</p>
+      <div class="btnrow">
+        <a class="btn final" href="Green%20Energy%20Final%20Revision/index.html">Open Final Revision</a>
+        <a class="btn final" href="Green%20Energy%20Final%20Revision/Green%20Energy%20Final%20Revision.html">Alternative Final Revision Link</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="watermark">@tutorwarren.com, All Rights Reserved</div>
+  <footer>@tutorwarren.com, All Rights Reserved</footer>
+</body>
+</html>
