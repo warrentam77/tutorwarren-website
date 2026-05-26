@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number & Calculation — Level 1 — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf2ec;
+    --card: #ffffff;
+    --text: #2a1200;
+    --muted: #7a4a28;
+    --accent: #b84400;
+    --accent-mid: #d45a10;
+    --accent-light: #fdf0e8;
+    --accent-border: #f0b890;
+    --green: #1a7a3a;
+    --shadow: 0 3px 18px rgba(42,18,0,0.09);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 10% 20%, rgba(184,68,0,0.05) 0%, transparent 50%); pointer-events: none; }
+  nav { background: white; border-bottom: 2px solid var(--accent-border); padding: 0.85rem 2rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .back-btn { display: flex; align-items: center; gap: 0.4rem; font-size: 0.83rem; font-weight: 700; color: var(--accent); text-decoration: none; padding: 0.3rem 0.7rem; border-radius: 6px; transition: background 0.15s; }
+  .back-btn:hover { background: var(--accent-light); }
+  .nav-sep { color: var(--accent-border); }
+  .nav-crumb { font-size: 0.83rem; font-weight: 700; color: var(--muted); text-decoration: none; }
+  .nav-crumb:hover { color: var(--accent); }
+  .nav-current { font-size: 0.83rem; font-weight: 800; color: var(--text); }
+  .topic-header { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); padding: 2.5rem 2rem 2rem; color: white; position: relative; overflow: hidden; }
+  .topic-header::after { content: '🔢'; position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); font-size: 6rem; opacity: 0.15; pointer-events: none; }
+  .topic-tag { display: inline-block; background: rgba(255,255,255,0.2); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 3px; margin-bottom: 0.8rem; }
+  .topic-header h1 { font-family: 'Fraunces', serif; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 900; line-height: 1.1; margin-bottom: 0.6rem; }
+  .topic-header p { font-size: 0.95rem; opacity: 0.88; max-width: 500px; line-height: 1.6; }
+  .tab-bar { background: white; border-bottom: 2px solid var(--accent-border); display: flex; overflow-x: auto; }
+  .tab-btn { padding: 0.9rem 1.5rem; border: none; background: transparent; font-family: 'Nunito',sans-serif; font-size: 0.85rem; font-weight: 800; color: var(--muted); cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: color 0.15s; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+  .section { display: none; }
+  .section.visible { display: block; }
+  .intro-box { background: white; border-radius: 12px; border-left: 5px solid var(--accent); padding: 1.6rem; margin-bottom: 1.4rem; box-shadow: var(--shadow); }
+  .intro-box h2 { font-family: 'Fraunces',serif; font-size: 1.3rem; font-weight: 900; margin-bottom: 0.7rem; color: var(--accent); }
+  .intro-box p { font-size: 0.9rem; line-height: 1.75; color: var(--muted); margin-bottom: 0.7rem; }
+  .intro-box p:last-child { margin-bottom: 0; }
+  .intro-box strong { color: var(--text); }
+  .key-facts { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: 0.7rem; margin: 1rem 0; }
+  .fact-chip { background: var(--accent-light); border: 1.5px solid var(--accent-border); border-radius: 8px; padding: 0.8rem; text-align: center; }
+  .fact-val { font-family: 'Fraunces',serif; font-size: 1.05rem; font-weight: 900; color: var(--accent); line-height: 1.2; }
+  .fact-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-top: 0.3rem; }
+  .tip-box { background: #fff8e0; border: 1.5px solid #f0d870; border-radius: 8px; padding: 0.9rem 1.1rem; font-size: 0.88rem; line-height: 1.6; margin-top: 1rem; }
+  .tip-box strong { color: #8a6a00; }
+  .formula-box { background: var(--accent-light); border: 2px solid var(--accent-border); border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0; font-family: monospace; font-size: 0.95rem; color: var(--accent); font-weight: 700; line-height: 1.8; }
+  .example-card { background: white; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 1.2rem; overflow: hidden; border: 1.5px solid #f0f0f0; }
+  .ex-header { padding: 0.9rem 1.3rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; border-bottom: 1.5px solid #f0f0f0; transition: background 0.15s; }
+  .ex-header:hover { background: var(--accent-light); }
+  .ex-title { font-weight: 800; font-size: 0.93rem; display: flex; align-items: center; gap: 0.6rem; }
+  .ex-num { background: var(--accent); color: white; font-size: 0.7rem; font-weight: 900; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .chevron { color: var(--muted); transition: transform 0.25s; font-size: 0.85rem; }
+  .example-card.open .chevron { transform: rotate(180deg); }
+  .ex-body { display: none; padding: 1.3rem; }
+  .example-card.open .ex-body { display: block; }
+  .q-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.85rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.93rem; line-height: 1.6; margin-bottom: 1.1rem; font-weight: 700; }
+  .steps { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+  .step { display: flex; gap: 0.9rem; align-items: flex-start; }
+  .snum { background: var(--accent-light); color: var(--accent); font-weight: 900; font-size: 0.78rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; border: 2px solid var(--accent-border); }
+  .stxt { font-size: 0.9rem; line-height: 1.65; }
+  .calc { font-family: monospace; background: #f5ede0; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.88rem; color: var(--accent); font-weight: 700; }
+  .ans-box { margin-top: 0.9rem; padding: 0.75rem 1rem; background: #edf7ea; border: 1.5px solid #b8ddb0; border-radius: 8px; font-size: 0.9rem; color: #1a5a22; font-weight: 700; }
+  .pq-card { background: white; border-radius: 12px; box-shadow: var(--shadow); padding: 1.4rem; margin-bottom: 1.1rem; border: 1.5px solid #f0f0f0; }
+  .pq-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+  .pq-text { font-size: 0.95rem; line-height: 1.65; font-weight: 700; margin-bottom: 1.1rem; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; margin-bottom: 0.6rem; }
+  .opt { padding: 0.65rem 0.9rem; border-radius: 8px; border: 2px solid #e8e8e8; background: #fafafa; font-family: 'Nunito',sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; text-align: left; transition: all 0.15s; }
+  .opt:hover:not(:disabled) { border-color: var(--accent-border); background: var(--accent-light); }
+  .opt.correct { border-color: #78c878; background: #edf7ea; color: #1a5a1a; }
+  .opt.wrong { border-color: #e89090; background: #fdf0f0; color: #8a1a1a; }
+  .opt:disabled { cursor: default; }
+  .fb { font-size: 0.85rem; padding: 0.65rem 0.9rem; border-radius: 7px; line-height: 1.5; display: none; margin-top: 0.3rem; }
+  .fb.correct { display: block; background: #edf7ea; border: 1.5px solid #b8ddb0; color: #1a5a1a; }
+  .fb.wrong { display: block; background: #fdf0f0; border: 1.5px solid #f0b8b8; color: #7a1a1a; }
+  .quiz-container { max-width: 640px; }
+  .qprog { display: flex; gap: 0.35rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .qdot { height: 6px; flex: 1; min-width: 20px; max-width: 36px; border-radius: 3px; background: #e0e0e0; transition: background 0.3s; }
+  .qdot.done { background: var(--accent); }
+  .qdot.current { background: var(--accent-mid); }
+  .qcard { background: white; border-radius: 12px; box-shadow: var(--shadow); padding: 1.8rem; border: 1.5px solid #f0f0f0; }
+  .qmeta { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.9rem; }
+  .qq { font-size: 1.02rem; line-height: 1.65; font-weight: 700; margin-bottom: 1.4rem; }
+  .qopts { display: flex; flex-direction: column; gap: 0.55rem; }
+  .qopt { padding: 0.8rem 1.1rem; border-radius: 8px; border: 2px solid #e8e8e8; background: #fafafa; font-family: 'Nunito',sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer; text-align: left; transition: all 0.15s; }
+  .qopt:hover:not(:disabled) { border-color: var(--accent-border); background: var(--accent-light); }
+  .qopt.correct { border-color: #78c878; background: #edf7ea; color: #1a5a1a; }
+  .qopt.wrong { border-color: #e89090; background: #fdf0f0; color: #8a1a1a; }
+  .qopt:disabled { cursor: default; }
+  .qfb { margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.88rem; line-height: 1.55; display: none; }
+  .qfb.correct { display: block; background: #edf7ea; border: 1.5px solid #b8ddb0; color: #1a5a1a; }
+  .qfb.wrong { display: block; background: #fdf0f0; border: 1.5px solid #f0b8b8; color: #7a1a1a; }
+  .next-btn { margin-top: 1.1rem; padding: 0.7rem 1.6rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-family: 'Nunito',sans-serif; font-size: 0.9rem; font-weight: 800; cursor: pointer; display: none; transition: filter 0.15s; }
+  .next-btn:hover { filter: brightness(0.92); }
+  .next-btn.show { display: inline-block; }
+  .score-screen { display: none; text-align: center; padding: 3rem 1rem; }
+  .score-screen.show { display: block; }
+  .score-big { font-family: 'Fraunces',serif; font-size: 5rem; font-weight: 900; color: var(--accent); line-height: 1; }
+  .score-grade { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-top: 0.4rem; }
+  .score-msg { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-top: 1rem; max-width: 440px; margin-left: auto; margin-right: auto; }
+  .retry-btn { margin-top: 1.5rem; padding: 0.75rem 2rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-family: 'Nunito',sans-serif; font-size: 0.95rem; font-weight: 800; cursor: pointer; }
+  .next-topic-btn { padding: 0.75rem 2rem; background: var(--green); color: white; border: none; border-radius: 8px; font-family: 'Nunito',sans-serif; font-size: 0.95rem; font-weight: 800; cursor: pointer; text-decoration: none; display: inline-block; margin-left: 0.5rem; }
+  @media(max-width:500px){ main{padding:1.2rem;} .opts-grid{grid-template-columns:1fr;} .topic-header::after{display:none;} }
+</style>
+</head>
+<body>
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="level1.html" class="nav-crumb">Level 1</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Number &amp; Calculation</span>
+</nav>
+<div class="topic-header">
+  <div class="topic-tag">Level 1 · Topic 1</div>
+  <h1>Number &amp; Calculation</h1>
+  <p>Multiples, factors, percentages, ratio, proportion and order of operations</p>
+</div>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">🔢 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+<main>
+
+<!-- INTRO -->
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>Multiples, factors and primes</h2>
+    <p><strong>Multiples</strong> of a number are its times table results. Multiples of 6: 6, 12, 18, 24…</p>
+    <p><strong>Factors</strong> of a number are whole numbers that divide into it exactly. Factors of 12: 1, 2, 3, 4, 6, 12.</p>
+    <p><strong>Prime numbers</strong> have exactly two factors — 1 and themselves: 2, 3, 5, 7, 11, 13, 17, 19…</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">LCM</div><div class="fact-label">Lowest Common Multiple</div></div>
+      <div class="fact-chip"><div class="fact-val">HCF</div><div class="fact-label">Highest Common Factor</div></div>
+      <div class="fact-chip"><div class="fact-val">Prime</div><div class="fact-label">Only factors: 1 &amp; itself</div></div>
+      <div class="fact-chip"><div class="fact-val">Square</div><div class="fact-label">n × n (e.g. 4² = 16)</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Is 1 prime?</strong> No — 1 has only one factor (itself), and primes need exactly two. The smallest prime is 2.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Percentages — increase and decrease</h2>
+    <p>At Level 1 you need to calculate percentage increases and decreases, not just find a percentage of an amount.</p>
+    <div class="formula-box">
+      Percentage increase: Original + (% × Original)<br>
+      Percentage decrease: Original − (% × Original)<br>
+      Percentage change: (Change ÷ Original) × 100
+    </div>
+    <div class="tip-box"><strong>💡 Multiplier method:</strong> A 20% increase = multiply by 1.20. A 15% decrease = multiply by 0.85. Faster for calculator questions.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Ratio and proportion</h2>
+    <p>A <strong>ratio</strong> compares two or more quantities. The ratio 3:2 means for every 3 of one thing, there are 2 of another.</p>
+    <p>To <strong>divide in a ratio</strong>: add the parts, divide the total by the sum, then multiply each part.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">3:2</div><div class="fact-label">3 parts to 2 parts (5 total)</div></div>
+      <div class="fact-chip"><div class="fact-val">Simplify</div><div class="fact-label">Divide both by HCF</div></div>
+      <div class="fact-chip"><div class="fact-val">Unitary</div><div class="fact-label">Find 1 part first</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Unitary method:</strong> "3 items cost £7.50. Find 1 item first: £7.50 ÷ 3 = £2.50. Then × however many you need."</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Order of operations (BODMAS)</h2>
+    <p>When a calculation has multiple operations, you must follow the correct order:</p>
+    <div class="formula-box">
+      B — Brackets first<br>
+      O — Orders (powers and roots)<br>
+      D — Division<br>
+      M — Multiplication<br>
+      A — Addition<br>
+      S — Subtraction
+    </div>
+    <p>So <strong>3 + 4 × 2 = 11</strong> (not 14) because multiplication comes before addition.</p>
+    <div class="tip-box"><strong>💡 Remember:</strong> Division and multiplication have equal priority — work left to right. Same for addition and subtraction.</div>
+  </div>
+
+</div>
+
+<!-- EXAMPLES -->
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')">
+      <div class="ex-title"><span class="ex-num">1</span>Finding the HCF and LCM</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">Find the Highest Common Factor (HCF) and Lowest Common Multiple (LCM) of 12 and 18.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Factors of 12: <span class="calc">1, 2, 3, 4, 6, 12</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Factors of 18: <span class="calc">1, 2, 3, 6, 9, 18</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Common factors: 1, 2, 3, 6. Highest is <span class="calc">6</span>. So HCF = 6.</span></li>
+        <li class="step"><span class="snum">4</span><span class="stxt">Multiples of 12: 12, 24, <span class="calc">36</span>… Multiples of 18: 18, <span class="calc">36</span>… First match is 36. So LCM = 36.</span></li>
+      </ol>
+      <div class="ans-box">✅ HCF = 6 &nbsp;|&nbsp; LCM = 36</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')">
+      <div class="ex-title"><span class="ex-num">2</span>Percentage increase</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A TV costs £320. The price increases by 15%. What is the new price?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Find 15% of £320: <span class="calc">10% = £32, 5% = £16, so 15% = £48</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Add to original: <span class="calc">£320 + £48 = £368</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Multiplier method check: <span class="calc">£320 × 1.15 = £368 ✓</span></span></li>
+      </ol>
+      <div class="ans-box">✅ New price = £368</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')">
+      <div class="ex-title"><span class="ex-num">3</span>Percentage decrease</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A jacket costs £85. It is reduced by 20% in a sale. What is the sale price?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Find 20% of £85: <span class="calc">10% = £8.50, 20% = £17</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Subtract: <span class="calc">£85 − £17 = £68</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Multiplier: <span class="calc">£85 × 0.80 = £68 ✓</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Sale price = £68</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')">
+      <div class="ex-title"><span class="ex-num">4</span>Dividing in a ratio</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">Two friends share £240 in the ratio 3:5. How much does each person get?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Total parts: <span class="calc">3 + 5 = 8 parts</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Value of 1 part: <span class="calc">£240 ÷ 8 = £30</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Person 1: <span class="calc">3 × £30 = £90</span></span></li>
+        <li class="step"><span class="snum">4</span><span class="stxt">Person 2: <span class="calc">5 × £30 = £150</span></span></li>
+        <li class="step"><span class="snum">5</span><span class="stxt">Check: <span class="calc">£90 + £150 = £240 ✓</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Person 1 gets £90, Person 2 gets £150.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')">
+      <div class="ex-title"><span class="ex-num">5</span>Unitary method (proportion)</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">5 pens cost £3.75. How much would 8 pens cost?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Find the cost of 1 pen: <span class="calc">£3.75 ÷ 5 = £0.75</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Multiply by 8: <span class="calc">£0.75 × 8 = £6.00</span></span></li>
+      </ol>
+      <div class="ans-box">✅ 8 pens cost £6.00.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')">
+      <div class="ex-title"><span class="ex-num">6</span>Order of operations (BODMAS)</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">Calculate: 5 + 3 × (8 − 2) ÷ 2</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt"><strong>Brackets first:</strong> <span class="calc">(8 − 2) = 6</span> → expression becomes <span class="calc">5 + 3 × 6 ÷ 2</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><strong>Multiply &amp; divide left to right:</strong> <span class="calc">3 × 6 = 18</span>, then <span class="calc">18 ÷ 2 = 9</span> → expression becomes <span class="calc">5 + 9</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt"><strong>Addition:</strong> <span class="calc">5 + 9 = 14</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer = 14</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRACTICE -->
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">Which of the following is a prime number?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','15 = 3 × 5, so it has more than two factors.')">15</button>
+      <button class="opt" onclick="checkP(this,'wrong','21 = 3 × 7, so it is not prime.')">21</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 23 has only two factors: 1 and 23.')">23</button>
+      <button class="opt" onclick="checkP(this,'wrong','27 = 3 × 9 = 3³, so it is not prime.')">27</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">A salary of £24,000 increases by 5%. What is the new salary?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£24,500 is only £500 more — that would be about 2%, not 5%.')">£24,500</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 5% of £24,000 = £1,200. £24,000 + £1,200 = £25,200.')">£25,200</button>
+      <button class="opt" onclick="checkP(this,'wrong','£25,500 is too high. 5% of £24,000 = £1,200, not £1,500.')">£25,500</button>
+      <button class="opt" onclick="checkP(this,'wrong','£26,400 would be a 10% increase, not 5%.')">£26,400</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">Share £350 in the ratio 2:5. What is the larger share?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£100 = 2 parts. Total parts = 7. £350 ÷ 7 = £50 per part. 5 parts = £250.')">£100</button>
+      <button class="opt" onclick="checkP(this,'wrong','£175 would be half of £350 — that is a 1:1 ratio.')">£175</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 2+5=7 parts. £350÷7=£50 per part. 5×£50=£250.')">£250</button>
+      <button class="opt" onclick="checkP(this,'wrong','£280 is too high. 5 parts × £50 = £250.')">£280</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">Calculate: 4 + 2² × 3</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','18 would come from doing (4+2)²×3÷... Use BODMAS: Orders first, then multiply, then add.')">18</button>
+      <button class="opt" onclick="checkP(this,'wrong','24 comes from left-to-right without BODMAS. Do 2²=4 first, then 4×3=12, then 4+12=16.')">24</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 2²=4. Then 4×3=12. Then 4+12=16.')">16</button>
+      <button class="opt" onclick="checkP(this,'wrong','36 is not correct. Follow BODMAS: 2²=4, ×3=12, +4=16.')">36</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">4 litres of paint costs £18.80. How much would 7 litres cost?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£30.00 is too low. 1 litre = £4.70, so 7 litres = £32.90.')">£30.00</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £18.80 ÷ 4 = £4.70 per litre. £4.70 × 7 = £32.90.')">£32.90</button>
+      <button class="opt" onclick="checkP(this,'wrong','£35.60 is too high. Divide £18.80 by 4 first to get the price per litre.')">£35.60</button>
+      <button class="opt" onclick="checkP(this,'wrong','£28.20 would be 6 litres (£4.70 × 6). You need 7.')">£28.20</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">A price of £56 is reduced by 35%. What is the new price?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£19.60 is the amount of discount, not the new price. Subtract from £56.')">£19.60</button>
+      <button class="opt" onclick="checkP(this,'wrong','£39.20 is not correct. 35% of £56 = £19.60. £56 − £19.60 = £36.40.')">£39.20</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 35% of £56 = £19.60. £56 − £19.60 = £36.40.')">£36.40</button>
+      <button class="opt" onclick="checkP(this,'wrong','£33.60 is not correct. 35% of £56: 10%=£5.60, 30%=£16.80, 5%=£2.80, 35%=£19.60. £56−£19.60=£36.40.')">£33.60</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 7</div>
+    <div class="pq-text">Find the HCF of 24 and 36.</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','6 is a common factor but not the highest. Factors of 24: 1,2,3,4,6,8,12,24. Factors of 36: 1,2,3,4,6,9,12,18,36. HCF=12.')">6</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 12 divides into both 24 (×2) and 36 (×3), and is the largest such number.')">12</button>
+      <button class="opt" onclick="checkP(this,'wrong','24 does not divide into 36 exactly, so it cannot be a common factor.')">24</button>
+      <button class="opt" onclick="checkP(this,'wrong','4 is a common factor but not the highest.')">4</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 8</div>
+    <div class="pq-text">Concrete mix uses cement and sand in the ratio 1:4. How much sand is needed for 15 kg of cement?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','15 kg would be a 1:1 ratio. For 1:4, multiply cement by 4.')">15 kg</button>
+      <button class="opt" onclick="checkP(this,'wrong','19 kg is not correct. 15 × 4 = 60 kg of sand.')">19 kg</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 1 part cement : 4 parts sand. 15 × 4 = 60 kg sand.')">60 kg</button>
+      <button class="opt" onclick="checkP(this,'wrong','75 kg would be the total mix (15+60), not just the sand.')">75 kg</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="l1-money.html" class="next-topic-btn">Next: Money →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+<script>
+function showTab(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));document.getElementById(id).classList.add('visible');document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(id==='quiz'&&!quizStarted)startQuiz();}
+function toggleEx(id){document.getElementById(id).classList.toggle('open');}
+function checkP(btn,result,msg){const card=btn.closest('.pq-card');card.querySelectorAll('.opt').forEach(b=>b.disabled=true);btn.classList.add(result);const fb=card.querySelector('.fb');fb.textContent=(result==='correct'?'✅ ':'❌ ')+msg;fb.className='fb '+result;}
+const quizData=[
+  {q:'What is the Lowest Common Multiple (LCM) of 4 and 6?',opts:['8','12','16','24'],correct:1,explanation:'Multiples of 4: 4,8,12… Multiples of 6: 6,12… First match is 12.'},
+  {q:'A laptop costs £480. It increases in price by 12.5%. What is the new price?',opts:['£492','£520','£540','£600'],correct:2,explanation:'12.5% of £480 = £60. £480 + £60 = £540.'},
+  {q:'A coat priced at £120 is reduced by 30%. What is the sale price?',opts:['£36','£80','£84','£90'],correct:2,explanation:'30% of £120 = £36. £120 − £36 = £84.'},
+  {q:'Divide £360 in the ratio 1:3. What is the smaller share?',opts:['£60','£80','£90','£120'],correct:2,explanation:'1+3=4 parts. £360÷4=£90 per part. Smaller share (1 part) = £90.'},
+  {q:'Calculate: 3 × (2 + 5) − 4²',opts:['1','5','7','21'],correct:1,explanation:'Brackets: (2+5)=7. Powers: 4²=16. Multiply: 3×7=21. Subtract: 21−16=5.'},
+  {q:'6 items cost £22.50. How much do 10 items cost?',opts:['£30.00','£33.50','£37.50','£45.00'],correct:2,explanation:'£22.50÷6=£3.75 each. £3.75×10=£37.50.'},
+  {q:'Which number is NOT a factor of 48?',opts:['6','8','14','16'],correct:2,explanation:'48÷14=3.43… not a whole number. 14 is not a factor of 48.'},
+  {q:'Orange and apple juice are mixed in the ratio 2:3. How much apple juice is needed for 500 ml total?',opts:['150 ml','200 ml','300 ml','350 ml'],correct:2,explanation:'2+3=5 parts. 500÷5=100ml per part. Apple = 3×100=300ml.'},
+  {q:'A price rises from £40 to £46. What is the percentage increase?',opts:['6%','12%','15%','16%'],correct:2,explanation:'Change=£6. (6÷40)×100=15%.'},
+  {q:'Find the HCF of 30 and 45.',opts:['5','10','15','9'],correct:2,explanation:'Factors of 30: 1,2,3,5,6,10,15,30. Factors of 45: 1,3,5,9,15,45. HCF=15.'},
+  {q:'Calculate: 20 − 3² + (4 × 2)',opts:['11','15','19','3'],correct:1,explanation:'Powers: 3²=9. Brackets: 4×2=8. Then left to right: 20−9+8=19. Wait: 20−9=11, 11+8=19.'},
+  {q:'A recipe for 4 people needs 300g flour. How much for 7 people?',opts:['450g','490g','525g','600g'],correct:2,explanation:'300÷4=75g per person. 75×7=525g.'},
+];
+// fix q11
+quizData[10]={q:'Calculate: 20 − 3² + (4 × 2)',opts:['11','15','19','21'],correct:2,explanation:'Powers: 3²=9. Brackets: 4×2=8. 20−9+8=19.'};
+let qIdx=0,score=0,answered=false,quizStarted=false;
+function startQuiz(){qIdx=0;score=0;answered=false;quizStarted=true;document.getElementById('scoreScreen').classList.remove('show');document.getElementById('quizMain').style.display='block';renderQ();}
+function renderQ(){answered=false;const q=quizData[qIdx],total=quizData.length;const prog=document.getElementById('qprog');prog.innerHTML='';for(let i=0;i<total;i++){const d=document.createElement('div');d.className='qdot'+(i<qIdx?' done':i===qIdx?' current':'');prog.appendChild(d);}document.getElementById('qmeta').textContent=`Question ${qIdx+1} of ${total}`;document.getElementById('qq').textContent=q.q;const opts=document.getElementById('qopts');opts.innerHTML='';q.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=o;b.onclick=()=>answerQ(i,b);opts.appendChild(b);});document.getElementById('qfb').className='qfb';document.getElementById('qfb').textContent='';document.getElementById('nextBtn').className='next-btn';}
+function answerQ(idx,btn){if(answered)return;answered=true;const q=quizData[qIdx];document.querySelectorAll('.qopt').forEach(b=>b.disabled=true);const fb=document.getElementById('qfb');if(idx===q.correct){score++;btn.classList.add('correct');fb.className='qfb correct';fb.textContent='✅ Correct! '+q.explanation;}else{btn.classList.add('wrong');document.querySelectorAll('.qopt')[q.correct].classList.add('correct');fb.className='qfb wrong';fb.textContent='❌ Not quite. '+q.explanation;}document.getElementById('nextBtn').className='next-btn show';}
+function nextQ(){qIdx++;if(qIdx>=quizData.length)showScore();else renderQ();}
+function showScore(){document.getElementById('quizMain').style.display='none';document.getElementById('scoreScreen').classList.add('show');const pct=Math.round(score/quizData.length*100);document.getElementById('scoreBig').textContent=`${score}/${quizData.length}`;document.getElementById('scoreGrade').textContent=pct>=85?'⭐ Excellent!':pct>=65?'👍 Good effort!':pct>=50?'💪 Getting there!':'📖 Keep practising!';document.getElementById('scoreMsg').textContent=pct>=85?'Outstanding work on Level 1 Number! Move on to Money & Finance when you\'re ready.':pct>=65?'Good effort! Review the Worked Examples for any tricky areas, then try again.':'Keep going — revisit the Introduction and Examples, then have another try at the quiz.';}
+</script>
+</body>
+</html>

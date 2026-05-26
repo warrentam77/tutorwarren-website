@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number — Entry Level — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf4ef;
+    --card: #ffffff;
+    --text: #2a1a0e;
+    --muted: #7a5a48;
+    --accent: #c8440c;
+    --accent-mid: #e05a18;
+    --accent-light: #fdf0ea;
+    --accent-border: #f0c0a0;
+    --green: #2d7a22;
+    --shadow: 0 3px 18px rgba(42,26,14,0.09);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+
+  /* NAV */
+  nav {
+    background: white; border-bottom: 2px solid var(--accent-border);
+    padding: 0.85rem 2rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+  }
+  .back-btn {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.83rem; font-weight: 700; color: var(--accent);
+    text-decoration: none; padding: 0.3rem 0.7rem; border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .back-btn:hover { background: var(--accent-light); }
+  .nav-sep { color: var(--accent-border); }
+  .nav-crumb { font-size: 0.83rem; font-weight: 700; color: var(--muted); text-decoration: none; }
+  .nav-crumb:hover { color: var(--accent); }
+  .nav-current { font-size: 0.83rem; font-weight: 800; color: var(--text); }
+
+  /* HEADER */
+  .topic-header {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+    padding: 2.5rem 2rem 2rem;
+    color: white;
+    position: relative; overflow: hidden;
+  }
+  .topic-header::after {
+    content: '🔢';
+    position: absolute; right: 2rem; top: 50%; transform: translateY(-50%);
+    font-size: 6rem; opacity: 0.15; pointer-events: none;
+  }
+  .topic-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    font-size: 0.68rem; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.3rem 0.8rem; border-radius: 3px; margin-bottom: 0.8rem;
+  }
+  .topic-header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900; line-height: 1.1; margin-bottom: 0.6rem;
+  }
+  .topic-header p { font-size: 0.95rem; opacity: 0.88; max-width: 500px; line-height: 1.6; }
+
+  /* SECTION TABS */
+  .tab-bar {
+    background: white; border-bottom: 2px solid var(--accent-border);
+    display: flex; overflow-x: auto; gap: 0;
+  }
+  .tab-btn {
+    padding: 0.9rem 1.5rem; border: none; background: transparent;
+    font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 800;
+    color: var(--muted); cursor: pointer; white-space: nowrap;
+    border-bottom: 3px solid transparent; margin-bottom: -2px;
+    transition: color 0.15s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* MAIN */
+  main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+  .section { display: none; }
+  .section.visible { display: block; }
+
+  /* INTRO */
+  .intro-box {
+    background: white; border-radius: 12px; border-left: 5px solid var(--accent);
+    padding: 1.6rem; margin-bottom: 1.4rem; box-shadow: var(--shadow);
+  }
+  .intro-box h2 {
+    font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 900;
+    margin-bottom: 0.7rem; color: var(--accent);
+  }
+  .intro-box p { font-size: 0.9rem; line-height: 1.75; color: var(--muted); margin-bottom: 0.7rem; }
+  .intro-box p:last-child { margin-bottom: 0; }
+  .intro-box strong { color: var(--text); }
+
+  .key-facts {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.7rem; margin: 1rem 0;
+  }
+  .fact-chip {
+    background: var(--accent-light); border: 1.5px solid var(--accent-border);
+    border-radius: 8px; padding: 0.7rem; text-align: center;
+  }
+  .fact-val { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 900; color: var(--accent); }
+  .fact-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-top: 0.2rem; }
+
+  .tip-box {
+    background: #fff8e0; border: 1.5px solid #f0d870;
+    border-radius: 8px; padding: 0.9rem 1.1rem;
+    font-size: 0.88rem; line-height: 1.6; margin-top: 1rem;
+  }
+  .tip-box strong { color: #8a6a00; }
+
+  /* EXAMPLES */
+  .example-card {
+    background: white; border-radius: 12px; box-shadow: var(--shadow);
+    margin-bottom: 1.2rem; overflow: hidden; border: 1.5px solid #f0f0f0;
+  }
+  .ex-header {
+    padding: 0.9rem 1.3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; user-select: none; border-bottom: 1.5px solid #f0f0f0;
+    transition: background 0.15s;
+  }
+  .ex-header:hover { background: var(--accent-light); }
+  .ex-title { font-weight: 800; font-size: 0.93rem; display: flex; align-items: center; gap: 0.6rem; }
+  .ex-num {
+    background: var(--accent); color: white;
+    font-size: 0.7rem; font-weight: 900;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .chevron { color: var(--muted); transition: transform 0.25s; font-size: 0.85rem; }
+  .example-card.open .chevron { transform: rotate(180deg); }
+  .ex-body { display: none; padding: 1.3rem; }
+  .example-card.open .ex-body { display: block; }
+
+  .q-box {
+    background: var(--accent-light); border-left: 4px solid var(--accent);
+    padding: 0.85rem 1rem; border-radius: 0 8px 8px 0;
+    font-size: 0.93rem; line-height: 1.6; margin-bottom: 1.1rem;
+    font-weight: 700;
+  }
+  .steps { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+  .step { display: flex; gap: 0.9rem; align-items: flex-start; }
+  .snum {
+    background: var(--accent-light); color: var(--accent);
+    font-weight: 900; font-size: 0.78rem;
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px; border: 2px solid var(--accent-border);
+  }
+  .stxt { font-size: 0.9rem; line-height: 1.65; }
+  .calc { font-family: monospace; background: #f5f0ea; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.88rem; color: var(--accent); font-weight: 700; }
+  .ans-box {
+    margin-top: 0.9rem; padding: 0.75rem 1rem;
+    background: #edf7ea; border: 1.5px solid #b8ddb0;
+    border-radius: 8px; font-size: 0.9rem; color: #2d5a22; font-weight: 700;
+  }
+
+  /* PRACTICE */
+  .pq-card {
+    background: white; border-radius: 12px; box-shadow: var(--shadow);
+    padding: 1.4rem; margin-bottom: 1.1rem; border: 1.5px solid #f0f0f0;
+  }
+  .pq-label {
+    font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem;
+  }
+  .pq-text { font-size: 0.95rem; line-height: 1.65; font-weight: 700; margin-bottom: 1.1rem; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; margin-bottom: 0.6rem; }
+  .opt {
+    padding: 0.65rem 0.9rem; border-radius: 8px;
+    border: 2px solid #e8e8e8; background: #fafafa;
+    font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 700;
+    cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--accent-border); background: var(--accent-light); }
+  .opt.correct { border-color: #78c878; background: #edf7ea; color: #1a5a1a; }
+  .opt.wrong { border-color: #e89090; background: #fdf0f0; color: #8a1a1a; }
+  .opt:disabled { cursor: default; }
+  .fb {
+    font-size: 0.85rem; padding: 0.65rem 0.9rem; border-radius: 7px;
+    line-height: 1.5; display: none; margin-top: 0.3rem;
+  }
+  .fb.correct { display: block; background: #edf7ea; border: 1.5px solid #b8ddb0; color: #1a5a1a; }
+  .fb.wrong { display: block; background: #fdf0f0; border: 1.5px solid #f0b8b8; color: #7a1a1a; }
+
+  /* QUIZ */
+  .quiz-container { max-width: 640px; }
+  .qprog { display: flex; gap: 0.35rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .qdot {
+    height: 6px; flex: 1; min-width: 20px; max-width: 36px;
+    border-radius: 3px; background: #e0e0e0; transition: background 0.3s;
+  }
+  .qdot.done { background: var(--accent); }
+  .qdot.current { background: var(--accent-mid); }
+
+  .qcard {
+    background: white; border-radius: 12px; box-shadow: var(--shadow);
+    padding: 1.8rem; border: 1.5px solid #f0f0f0;
+  }
+  .qmeta {
+    font-size: 0.72rem; font-weight: 800;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 0.9rem;
+  }
+  .qq { font-size: 1.02rem; line-height: 1.65; font-weight: 700; margin-bottom: 1.4rem; }
+  .qopts { display: flex; flex-direction: column; gap: 0.55rem; }
+  .qopt {
+    padding: 0.8rem 1.1rem; border-radius: 8px;
+    border: 2px solid #e8e8e8; background: #fafafa;
+    font-family: 'Nunito', sans-serif; font-size: 0.92rem; font-weight: 700;
+    cursor: pointer; text-align: left; transition: all 0.15s;
+  }
+  .qopt:hover:not(:disabled) { border-color: var(--accent-border); background: var(--accent-light); }
+  .qopt.correct { border-color: #78c878; background: #edf7ea; color: #1a5a1a; }
+  .qopt.wrong { border-color: #e89090; background: #fdf0f0; color: #8a1a1a; }
+  .qopt:disabled { cursor: default; }
+  .qfb {
+    margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 8px;
+    font-size: 0.88rem; line-height: 1.55; display: none;
+  }
+  .qfb.correct { display: block; background: #edf7ea; border: 1.5px solid #b8ddb0; color: #1a5a1a; }
+  .qfb.wrong { display: block; background: #fdf0f0; border: 1.5px solid #f0b8b8; color: #7a1a1a; }
+  .next-btn {
+    margin-top: 1.1rem; padding: 0.7rem 1.6rem;
+    background: var(--accent); color: white; border: none;
+    border-radius: 8px; font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem; font-weight: 800; cursor: pointer;
+    display: none; transition: filter 0.15s;
+  }
+  .next-btn:hover { filter: brightness(0.92); }
+  .next-btn.show { display: inline-block; }
+
+  /* SCORE */
+  .score-screen { display: none; text-align: center; padding: 3rem 1rem; }
+  .score-screen.show { display: block; }
+  .score-big {
+    font-family: 'Fraunces', serif; font-size: 5rem;
+    font-weight: 900; color: var(--accent); line-height: 1;
+  }
+  .score-grade { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-top: 0.4rem; }
+  .score-msg { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-top: 1rem; max-width: 440px; margin-left: auto; margin-right: auto; }
+  .retry-btn {
+    margin-top: 1.5rem; padding: 0.75rem 2rem;
+    background: var(--accent); color: white; border: none;
+    border-radius: 8px; font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem; font-weight: 800; cursor: pointer;
+    transition: filter 0.15s;
+  }
+  .retry-btn:hover { filter: brightness(0.92); }
+  .next-topic-btn {
+    margin-top: 0.8rem; display: block;
+    padding: 0.75rem 2rem; background: var(--green);
+    color: white; border: none; border-radius: 8px;
+    font-family: 'Nunito', sans-serif; font-size: 0.95rem;
+    font-weight: 800; cursor: pointer; text-decoration: none;
+    display: inline-block; margin-left: 0.5rem;
+    transition: filter 0.15s;
+  }
+  .next-topic-btn:hover { filter: brightness(0.92); }
+
+  .hidden { display: none !important; }
+  @media (max-width: 500px) {
+    main { padding: 1.2rem; }
+    .opts-grid { grid-template-columns: 1fr; }
+    .topic-header { padding: 1.8rem 1.2rem 1.5rem; }
+    .topic-header::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="entry.html" class="nav-crumb">Entry Level</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Number</span>
+</nav>
+
+<div class="topic-header">
+  <div class="topic-tag">Entry Level · Topic 1</div>
+  <h1>Number</h1>
+  <p>Fractions, decimals, percentages and rounding — using numbers in everyday life</p>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">🔢 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+
+<main>
+
+<!-- INTRO -->
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>What are fractions?</h2>
+    <p>A fraction shows a <strong>part of a whole</strong>. When you cut a pizza into 4 equal slices and eat 1, you've eaten <strong>one quarter (¼)</strong> of it.</p>
+    <p>The <strong>bottom number</strong> (denominator) tells you how many equal parts the whole is split into. The <strong>top number</strong> (numerator) tells you how many parts you have.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">½</div><div class="fact-label">One Half</div></div>
+      <div class="fact-chip"><div class="fact-val">¼</div><div class="fact-label">One Quarter</div></div>
+      <div class="fact-chip"><div class="fact-val">¾</div><div class="fact-label">Three Quarters</div></div>
+      <div class="fact-chip"><div class="fact-val">⅓</div><div class="fact-label">One Third</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Tip:</strong> To find ½ of something, divide by 2. To find ¼, divide by 4. To find ¾, divide by 4 then multiply by 3.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>What are decimals?</h2>
+    <p>Decimals are another way of writing parts of a whole — you see them every day with <strong>money</strong> (£3.49) and <strong>measurements</strong> (1.5 kg).</p>
+    <p>The digits after the decimal point represent tenths, hundredths, and so on. For example, 0.5 means five tenths — which is the same as ½.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">0.5</div><div class="fact-label">= ½</div></div>
+      <div class="fact-chip"><div class="fact-val">0.25</div><div class="fact-label">= ¼</div></div>
+      <div class="fact-chip"><div class="fact-val">0.75</div><div class="fact-label">= ¾</div></div>
+      <div class="fact-chip"><div class="fact-val">0.1</div><div class="fact-label">= 1/10</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Ordering decimals:</strong> Line them up and compare digit by digit. 0.6 is bigger than 0.59 — always compare the tenths column first.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>What are percentages?</h2>
+    <p>A percentage means "out of 100". So 50% means 50 out of every 100 — which is the same as ½. You'll see percentages in sales, interest rates and statistics.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">50%</div><div class="fact-label">= ½ = 0.5</div></div>
+      <div class="fact-chip"><div class="fact-val">25%</div><div class="fact-label">= ¼ = 0.25</div></div>
+      <div class="fact-chip"><div class="fact-val">10%</div><div class="fact-label">= 1/10 = 0.1</div></div>
+      <div class="fact-chip"><div class="fact-val">75%</div><div class="fact-label">= ¾ = 0.75</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Key rule:</strong> To find 10% of any number, divide by 10. To find 50%, divide by 2. To find 25%, divide by 4.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Rounding numbers</h2>
+    <p>Rounding makes numbers simpler and easier to work with. To round a decimal to the nearest whole number:</p>
+    <p>Look at the digit <strong>after the decimal point</strong>. If it is <strong>5 or more</strong>, round up. If it is <strong>less than 5</strong>, round down.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">3.7</div><div class="fact-label">→ rounds to 4</div></div>
+      <div class="fact-chip"><div class="fact-val">3.2</div><div class="fact-label">→ rounds to 3</div></div>
+      <div class="fact-chip"><div class="fact-val">5.5</div><div class="fact-label">→ rounds to 6</div></div>
+      <div class="fact-chip"><div class="fact-val">9.1</div><div class="fact-label">→ rounds to 9</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- EXAMPLES -->
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')">
+      <div class="ex-title"><span class="ex-num">1</span>Finding half of an amount</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A cinema ticket costs £14. Children get half price. How much is a child's ticket?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Finding <span class="calc">½</span> of something means <strong>dividing by 2</strong>.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">£14 ÷ 2 = £7</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: A child's ticket costs £7.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')">
+      <div class="ex-title"><span class="ex-num">2</span>Finding a quarter of an amount</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A bag of rice weighs 800 g. You use a quarter of it. How much do you use?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Finding <span class="calc">¼</span> means <strong>dividing by 4</strong>.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">800 ÷ 4 = 200</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: You use 200 g of rice.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')">
+      <div class="ex-title"><span class="ex-num">3</span>Finding 10% of an amount</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A jacket costs £60. There is a 10% discount. How much do you save?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">10% means "10 out of every 100". To find 10%, <strong>divide by 10</strong>.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">£60 ÷ 10 = £6</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: You save £6. The jacket costs £54 in the sale.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')">
+      <div class="ex-title"><span class="ex-num">4</span>Understanding fractions of a group</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">There are 20 students in a class. 5 of them are absent. What fraction are absent?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Write the fraction: <span class="calc">5/20</span> (5 absent out of 20 total).</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Simplify: both 5 and 20 divide by 5. <span class="calc">5÷5 = 1, 20÷5 = 4</span>, so the fraction is <span class="calc">1/4</span>.</span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: ¼ of the students are absent.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')">
+      <div class="ex-title"><span class="ex-num">5</span>Ordering decimals</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">Put these prices in order from cheapest to most expensive: £2.50, £2.05, £2.55, £2.15</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">The pounds (£2) are all the same, so compare the pence: <span class="calc">.50, .05, .55, .15</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">In order: <span class="calc">5p, 15p, 50p, 55p</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">So the prices in order are: <span class="calc">£2.05, £2.15, £2.50, £2.55</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: £2.05, £2.15, £2.50, £2.55</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')">
+      <div class="ex-title"><span class="ex-num">6</span>Rounding decimals</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A piece of wood measures 4.7 metres. Round this to the nearest whole metre.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Look at the digit after the decimal point: <span class="calc">4.<strong>7</strong></span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">7 is <strong>5 or more</strong>, so we <strong>round up</strong>.</span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt"><span class="calc">4.7 → 5</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: 5 metres.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRACTICE -->
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">A bag of apples costs £3.20. It is half price in a sale. What is the sale price?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','Half means divide by 2. £3.20 ÷ 2 = £1.60, not £1.00.')">£1.00</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £3.20 ÷ 2 = £1.60.')">£1.60</button>
+      <button class="opt" onclick="checkP(this,'wrong','£2.40 is too high. Half price means divide by 2.')">£2.40</button>
+      <button class="opt" onclick="checkP(this,'wrong','£0.80 would be a quarter of the price, not half.')">£0.80</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">What is 10% of £90?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£1 would be about 1% of £90. To find 10%, divide by 10.')">£1</button>
+      <button class="opt" onclick="checkP(this,'wrong','£18 would be 20%. For 10%, divide £90 by 10.')">£18</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 10% of £90 = £90 ÷ 10 = £9.')">£9</button>
+      <button class="opt" onclick="checkP(this,'wrong','£45 is 50% (half). For 10%, divide by 10.')">£45</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">A pizza is cut into 8 slices. You eat 3 slices. What fraction did you eat?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','3/8 means 3 slices out of 8 total — that is the right fraction.')">3/5</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 3 slices out of 8 = 3/8.')">3/8</button>
+      <button class="opt" onclick="checkP(this,'wrong','1/3 would mean eating about 2.67 slices, not a whole number.')">1/3</button>
+      <button class="opt" onclick="checkP(this,'wrong','5/8 would mean you ate 5 slices, not 3.')">5/8</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">Which of these decimals is the largest?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','0.4 = 0.400. Compare: 0.400 vs 0.45 = 0.450. So 0.45 is bigger.')">0.4</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.04 is only 4 hundredths — much smaller than the others.')">0.04</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 0.45 = 0.450, which is bigger than 0.4 = 0.400 and 0.04.')">0.45</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.405 = 0.405, which is less than 0.450.')">0.405</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">Round 7.3 to the nearest whole number.</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'correct','Correct! 7.3 — the .3 is less than .5, so we round down to 7.')">7</button>
+      <button class="opt" onclick="checkP(this,'wrong','7.3 rounds to 7, not 8. The .3 is less than .5.')">8</button>
+      <button class="opt" onclick="checkP(this,'wrong','7.5 is not a whole number. We need to round to the nearest whole.')">7.5</button>
+      <button class="opt" onclick="checkP(this,'wrong','10 is too high. 7.3 rounds to either 7 or 8, not 10.')">10</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">A recipe needs 200 ml of milk. You want to make ¾ of the recipe. How much milk do you need?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','50 ml would be ¼ of 200 ml. For ¾, find ¼ then multiply by 3.')">50 ml</button>
+      <button class="opt" onclick="checkP(this,'wrong','100 ml is ½ of 200 ml. For ¾, divide by 4 then multiply by 3.')">100 ml</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 200 ÷ 4 = 50. 50 × 3 = 150 ml.')">150 ml</button>
+      <button class="opt" onclick="checkP(this,'wrong','175 ml is too much. Divide 200 by 4 to get ¼ = 50, then × 3 = 150.')">175 ml</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 7</div>
+    <div class="pq-text">Which of the following is the same as 50%?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','¼ = 25%, not 50%.')">¼</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 50% = 50/100 = ½.')">½</button>
+      <button class="opt" onclick="checkP(this,'wrong','¾ = 75%, not 50%.')">¾</button>
+      <button class="opt" onclick="checkP(this,'wrong','1/5 = 20%, not 50%.')">1/5</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 8</div>
+    <div class="pq-text">There are 30 people at a party. 6 of them are children. What fraction are children?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','6/30 simplifies to 1/5, not 1/4. Both 6 and 30 divide by 6.')">1/4</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 6/30 — both divide by 6. 6÷6=1, 30÷6=5. Answer: 1/5.')">1/5</button>
+      <button class="opt" onclick="checkP(this,'wrong','6/30 is correct to start, but simplify it: divide both by 6 to get 1/5.')">6/30</button>
+      <button class="opt" onclick="checkP(this,'wrong','1/6 would mean 5 children, not 6. 6 out of 30 = 1/5.')">1/6</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="entry-money.html" class="next-topic-btn">Next Topic: Money →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.getElementById(id).classList.add('visible');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (id === 'quiz' && !quizStarted) startQuiz();
+}
+
+function toggleEx(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function checkP(btn, result, msg) {
+  const card = btn.closest('.pq-card');
+  card.querySelectorAll('.opt').forEach(b => b.disabled = true);
+  btn.classList.add(result);
+  const fb = card.querySelector('.fb');
+  fb.textContent = (result === 'correct' ? '✅ ' : '❌ ') + msg;
+  fb.className = 'fb ' + result;
+}
+
+// QUIZ
+const quizData = [
+  { q: 'What is ½ of 40?', opts: ['10','15','20','25'], correct: 2, explanation: '½ of 40 = 40 ÷ 2 = 20.' },
+  { q: 'Which fraction is the same as 25%?', opts: ['½','1/3','¼','1/5'], correct: 2, explanation: '25% = 25 out of 100 = ¼.' },
+  { q: 'A bottle holds 600 ml. You drink ¼ of it. How much do you drink?', opts: ['100 ml','150 ml','200 ml','300 ml'], correct: 1, explanation: '¼ of 600 = 600 ÷ 4 = 150 ml.' },
+  { q: 'What is 10% of £70?', opts: ['£3.50','£7','£14','£35'], correct: 1, explanation: '10% = divide by 10. £70 ÷ 10 = £7.' },
+  { q: 'Round 8.6 to the nearest whole number.', opts: ['8','8.5','9','10'], correct: 2, explanation: '8.6 — the .6 is 5 or more, so we round up to 9.' },
+  { q: 'Which decimal is the same as ¾?', opts: ['0.34','0.7','0.75','0.8'], correct: 2, explanation: '¾ = 3 ÷ 4 = 0.75.' },
+  { q: 'A bag of sweets has 24 sweets. You give away ⅓ of them. How many do you give away?', opts: ['4','6','8','12'], correct: 2, explanation: '⅓ of 24 = 24 ÷ 3 = 8.' },
+  { q: 'Which of these is in order from smallest to largest?', opts: ['0.5, 0.52, 0.49','0.49, 0.5, 0.52','0.52, 0.5, 0.49','0.5, 0.49, 0.52'], correct: 1, explanation: '0.49 < 0.50 < 0.52. So the correct order is 0.49, 0.5, 0.52.' },
+  { q: 'A class of 30 pupils has 12 girls. What fraction are girls?', opts: ['12/30','2/5','½','1/3'], correct: 1, explanation: '12/30 — both divide by 6 — gives 2/5.' },
+  { q: 'Round 12.5 to the nearest whole number.', opts: ['12','12.5','13','15'], correct: 2, explanation: '12.5 — the .5 is exactly half, so we round up to 13.' },
+  { q: 'What is 50% of £36?', opts: ['£8','£12','£18','£24'], correct: 2, explanation: '50% = half. £36 ÷ 2 = £18.' },
+  { q: 'A box has 20 biscuits. You eat 5. What fraction is left?', opts: ['1/4','3/4','1/5','4/5'], correct: 1, explanation: '5 eaten, so 15 left. 15/20 = ¾.' },
+];
+
+let qIdx = 0, score = 0, answered = false, quizStarted = false;
+
+function startQuiz() {
+  qIdx = 0; score = 0; answered = false; quizStarted = true;
+  document.getElementById('scoreScreen').classList.remove('show');
+  document.getElementById('quizMain').style.display = 'block';
+  renderQ();
+}
+
+function renderQ() {
+  answered = false;
+  const q = quizData[qIdx], total = quizData.length;
+  const prog = document.getElementById('qprog');
+  prog.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'qdot' + (i < qIdx ? ' done' : i === qIdx ? ' current' : '');
+    prog.appendChild(d);
+  }
+  document.getElementById('qmeta').textContent = `Question ${qIdx + 1} of ${total}`;
+  document.getElementById('qq').textContent = q.q;
+  const opts = document.getElementById('qopts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'qopt'; b.textContent = o;
+    b.onclick = () => answerQ(i, b);
+    opts.appendChild(b);
+  });
+  document.getElementById('qfb').className = 'qfb';
+  document.getElementById('qfb').textContent = '';
+  document.getElementById('nextBtn').className = 'next-btn';
+}
+
+function answerQ(idx, btn) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[qIdx];
+  document.querySelectorAll('.qopt').forEach(b => b.disabled = true);
+  const fb = document.getElementById('qfb');
+  if (idx === q.correct) {
+    score++; btn.classList.add('correct');
+    fb.className = 'qfb correct'; fb.textContent = '✅ Correct! ' + q.explanation;
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.qopt')[q.correct].classList.add('correct');
+    fb.className = 'qfb wrong'; fb.textContent = '❌ Not quite. ' + q.explanation;
+  }
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+
+function nextQ() {
+  qIdx++;
+  if (qIdx >= quizData.length) showScore();
+  else renderQ();
+}
+
+function showScore() {
+  document.getElementById('quizMain').style.display = 'none';
+  const sc = document.getElementById('scoreScreen');
+  sc.classList.add('show');
+  const pct = Math.round(score / quizData.length * 100);
+  document.getElementById('scoreBig').textContent = `${score}/${quizData.length}`;
+  document.getElementById('scoreGrade').textContent = pct >= 85 ? '⭐ Excellent!' : pct >= 65 ? '👍 Good effort!' : pct >= 50 ? '💪 Getting there!' : '📖 Keep practising!';
+  document.getElementById('scoreMsg').textContent = pct >= 85
+    ? 'Brilliant work — you have a strong understanding of fractions, decimals and percentages at Entry Level. Move on to the next topic when you are ready!'
+    : pct >= 65 ? 'Well done! Review any questions you found tricky in the Worked Examples, then try again.'
+    : 'Keep going — revisit the Introduction and Worked Examples sections, then try the quiz again.';
+}
+</script>
+</body>
+</html>

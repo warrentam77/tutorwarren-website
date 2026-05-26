@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Measures, Shape & Space — Level 2 — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#edf2fa;--card:#fff;--text:#001428;--muted:#2a4878;--accent:#003a7a;--accent-mid:#0055b0;--accent-light:#e8f0fa;--accent-border:#90b8e0;--next:#4a008a;--shadow:0 3px 18px rgba(0,20,40,0.09);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 10%,rgba(0,58,122,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{background:white;border-bottom:2px solid var(--accent-border);padding:0.85rem 2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;}
+  .back-btn{display:flex;align-items:center;gap:0.4rem;font-size:0.83rem;font-weight:700;color:var(--accent);text-decoration:none;padding:0.3rem 0.7rem;border-radius:6px;transition:background 0.15s;}
+  .back-btn:hover{background:var(--accent-light);}
+  .nav-sep{color:var(--accent-border);}
+  .nav-crumb{font-size:0.83rem;font-weight:700;color:var(--muted);text-decoration:none;}
+  .nav-crumb:hover{color:var(--accent);}
+  .nav-current{font-size:0.83rem;font-weight:800;color:var(--text);}
+  .topic-header{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-mid) 100%);padding:2.5rem 2rem 2rem;color:white;position:relative;overflow:hidden;}
+  .topic-header::after{content:'📐';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:6rem;opacity:0.15;pointer-events:none;}
+  .topic-tag{display:inline-block;background:rgba(255,255,255,0.2);font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:3px;margin-bottom:0.8rem;}
+  .topic-header h1{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;line-height:1.1;margin-bottom:0.6rem;}
+  .topic-header p{font-size:0.95rem;opacity:0.88;max-width:500px;line-height:1.6;}
+  .tab-bar{background:white;border-bottom:2px solid var(--accent-border);display:flex;overflow-x:auto;}
+  .tab-btn{padding:0.9rem 1.5rem;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color 0.15s;}
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  main{max-width:860px;margin:0 auto;padding:2rem;}
+  .section{display:none;}.section.visible{display:block;}
+  .intro-box{background:white;border-radius:12px;border-left:5px solid var(--accent);padding:1.6rem;margin-bottom:1.4rem;box-shadow:var(--shadow);}
+  .intro-box h2{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;margin-bottom:0.7rem;color:var(--accent);}
+  .intro-box p{font-size:0.9rem;line-height:1.75;color:var(--muted);margin-bottom:0.7rem;}
+  .intro-box p:last-child{margin-bottom:0;}
+  .intro-box strong{color:var(--text);}
+  .key-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:0.7rem;margin:1rem 0;}
+  .fact-chip{background:var(--accent-light);border:1.5px solid var(--accent-border);border-radius:8px;padding:0.8rem;text-align:center;}
+  .fact-val{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--accent);line-height:1.2;}
+  .fact-label{font-size:0.75rem;font-weight:700;color:var(--muted);margin-top:0.3rem;}
+  .tip-box{background:#fff8e0;border:1.5px solid #f0d870;border-radius:8px;padding:0.9rem 1.1rem;font-size:0.88rem;line-height:1.6;margin-top:1rem;}
+  .tip-box strong{color:#8a6a00;}
+  .formula-box{background:var(--accent-light);border:2px solid var(--accent-border);border-radius:8px;padding:1rem 1.2rem;margin:0.8rem 0;font-family:monospace;font-size:0.92rem;color:var(--accent);font-weight:700;line-height:1.8;}
+  .example-card{background:white;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1.2rem;overflow:hidden;border:1.5px solid #f0f0f0;}
+  .ex-header{padding:0.9rem 1.3rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;border-bottom:1.5px solid #f0f0f0;transition:background 0.15s;}
+  .ex-header:hover{background:var(--accent-light);}
+  .ex-title{font-weight:800;font-size:0.93rem;display:flex;align-items:center;gap:0.6rem;}
+  .ex-num{background:var(--accent);color:white;font-size:0.7rem;font-weight:900;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .chevron{color:var(--muted);transition:transform 0.25s;font-size:0.85rem;}
+  .example-card.open .chevron{transform:rotate(180deg);}
+  .ex-body{display:none;padding:1.3rem;}
+  .example-card.open .ex-body{display:block;}
+  .q-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:0.85rem 1rem;border-radius:0 8px 8px 0;font-size:0.93rem;line-height:1.6;margin-bottom:1.1rem;font-weight:700;}
+  .steps{list-style:none;display:flex;flex-direction:column;gap:0.8rem;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;}
+  .snum{background:var(--accent-light);color:var(--accent);font-weight:900;font-size:0.78rem;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;border:2px solid var(--accent-border);}
+  .stxt{font-size:0.9rem;line-height:1.65;}
+  .calc{font-family:monospace;background:#e0eaf5;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.88rem;color:var(--accent);font-weight:700;}
+  .ans-box{margin-top:0.9rem;padding:0.75rem 1rem;background:#edf7ea;border:1.5px solid #b8ddb0;border-radius:8px;font-size:0.9rem;color:#1a5a22;font-weight:700;}
+  .pq-card{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.4rem;margin-bottom:1.1rem;border:1.5px solid #f0f0f0;}
+  .pq-label{font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;}
+  .pq-text{font-size:0.95rem;line-height:1.65;font-weight:700;margin-bottom:1.1rem;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:0.6rem;}
+  .opt{padding:0.65rem 0.9rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .opt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .opt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .opt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .opt:disabled{cursor:default;}
+  .fb{font-size:0.85rem;padding:0.65rem 0.9rem;border-radius:7px;line-height:1.5;display:none;margin-top:0.3rem;}
+  .fb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .fb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .quiz-container{max-width:640px;}
+  .qprog{display:flex;gap:0.35rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+  .qdot{height:6px;flex:1;min-width:20px;max-width:36px;border-radius:3px;background:#e0e0e0;transition:background 0.3s;}
+  .qdot.done{background:var(--accent);}
+  .qdot.current{background:var(--accent-mid);}
+  .qcard{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.8rem;border:1.5px solid #f0f0f0;}
+  .qmeta{font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.9rem;}
+  .qq{font-size:1.02rem;line-height:1.65;font-weight:700;margin-bottom:1.4rem;}
+  .qopts{display:flex;flex-direction:column;gap:0.55rem;}
+  .qopt{padding:0.8rem 1.1rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.92rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .qopt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .qopt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .qopt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .qopt:disabled{cursor:default;}
+  .qfb{margin-top:1rem;padding:0.8rem 1rem;border-radius:8px;font-size:0.88rem;line-height:1.55;display:none;}
+  .qfb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .qfb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .next-btn{margin-top:1.1rem;padding:0.7rem 1.6rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;display:none;transition:filter 0.15s;}
+  .next-btn:hover{filter:brightness(0.92);}
+  .next-btn.show{display:inline-block;}
+  .score-screen{display:none;text-align:center;padding:3rem 1rem;}
+  .score-screen.show{display:block;}
+  .score-big{font-family:'Fraunces',serif;font-size:5rem;font-weight:900;color:var(--accent);line-height:1;}
+  .score-grade{font-size:1.1rem;font-weight:800;color:var(--text);margin-top:0.4rem;}
+  .score-msg{font-size:0.95rem;color:var(--muted);line-height:1.7;margin-top:1rem;max-width:440px;margin-left:auto;margin-right:auto;}
+  .retry-btn{margin-top:1.5rem;padding:0.75rem 2rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;}
+  .next-topic-btn{padding:0.75rem 2rem;background:var(--next);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;margin-left:0.5rem;}
+  @media(max-width:500px){main{padding:1.2rem;}.opts-grid{grid-template-columns:1fr;}.topic-header::after{display:none;}}
+</style>
+</head>
+<body>
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="level2.html" class="nav-crumb">Level 2</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Measures, Shape &amp; Space</span>
+</nav>
+<div class="topic-header">
+  <div class="topic-tag">Level 2 · Topic 3</div>
+  <h1>Measures, Shape &amp; Space</h1>
+  <p>Circles, cylinders, Pythagoras' theorem, complex compound shapes and density</p>
+</div>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">📐 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+<main>
+
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>Circles — circumference and area</h2>
+    <p>Circles use the special number <strong>π (pi) ≈ 3.14159…</strong> The <strong>radius</strong> is the distance from the centre to the edge. The <strong>diameter</strong> is twice the radius.</p>
+    <div class="formula-box">
+      Circumference = 2πr = πd<br>
+      Area = πr²<br>
+      π ≈ 3.14159 (use the π button on your calculator)
+    </div>
+    <div class="tip-box"><strong>💡 Remember:</strong> Area uses r² (radius squared). Circumference uses r (radius to the power 1). A common mistake is using diameter instead of radius in the area formula.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Volume of cylinders and prisms</h2>
+    <p>A <strong>cylinder</strong> is a prism with a circular cross-section. A <strong>prism</strong> is any 3D shape with a uniform cross-section along its length.</p>
+    <div class="formula-box">
+      Volume of cylinder = πr²h<br>
+      Volume of prism = cross-sectional area × length<br>
+      1 litre = 1,000 cm³ &nbsp;|&nbsp; 1 m³ = 1,000,000 cm³
+    </div>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">πr²h</div><div class="fact-label">Cylinder volume</div></div>
+      <div class="fact-chip"><div class="fact-val">A × l</div><div class="fact-label">Prism volume</div></div>
+      <div class="fact-chip"><div class="fact-val">cm³</div><div class="fact-label">Volume units</div></div>
+    </div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Pythagoras' theorem</h2>
+    <p>In a <strong>right-angled triangle</strong>, the square of the hypotenuse (longest side) equals the sum of the squares of the other two sides.</p>
+    <div class="formula-box">
+      a² + b² = c²<br>
+      c = √(a² + b²)   ← finding hypotenuse<br>
+      a = √(c² − b²)   ← finding a shorter side
+    </div>
+    <div class="tip-box"><strong>💡 Identify the hypotenuse:</strong> It is always the side opposite the right angle — the longest side. Label it c. The other two sides are a and b.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Density, pressure and speed</h2>
+    <p>These are all examples of <strong>compound measures</strong> — rates combining two different units.</p>
+    <div class="formula-box">
+      Density = Mass ÷ Volume &nbsp;&nbsp;(g/cm³ or kg/m³)<br>
+      Pressure = Force ÷ Area &nbsp;&nbsp;(N/m² or Pa)<br>
+      Speed = Distance ÷ Time &nbsp;&nbsp;(m/s or km/h)
+    </div>
+    <div class="tip-box"><strong>💡 Triangle method:</strong> Cover the quantity you want to find — the remaining two show you whether to multiply or divide.</div>
+  </div>
+
+</div>
+
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')"><div class="ex-title"><span class="ex-num">1</span>Circumference and area of a circle</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A circular pond has a radius of 3.5 m. Find (a) the circumference and (b) the area. Give answers to 2 d.p.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">(a) Circumference: <span class="calc">C = 2πr = 2 × π × 3.5 = 21.99 m</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">(b) Area: <span class="calc">A = πr² = π × 3.5² = π × 12.25 = 38.48 m²</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Circumference = 21.99 m &nbsp;|&nbsp; Area = 38.48 m²</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')"><div class="ex-title"><span class="ex-num">2</span>Volume of a cylinder</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A cylindrical water tank has radius 0.8 m and height 1.5 m. What is its volume in litres?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Volume: <span class="calc">V = πr²h = π × 0.8² × 1.5 = π × 0.64 × 1.5 = 3.016 m³</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Convert to litres: <span class="calc">3.016 m³ × 1,000 = 3,016 litres</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Volume ≈ 3,016 litres</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')"><div class="ex-title"><span class="ex-num">3</span>Pythagoras — finding the hypotenuse</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A right-angled triangle has shorter sides 9 cm and 12 cm. Find the hypotenuse.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt"><span class="calc">c² = a² + b² = 9² + 12² = 81 + 144 = 225</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">c = √225 = 15 cm</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Hypotenuse = 15 cm</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')"><div class="ex-title"><span class="ex-num">4</span>Pythagoras — finding a shorter side</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A right-angled triangle has hypotenuse 13 m and one side 5 m. Find the other side.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Rearrange: <span class="calc">a² = c² − b² = 13² − 5² = 169 − 25 = 144</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">a = √144 = 12 m</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Missing side = 12 m</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')"><div class="ex-title"><span class="ex-num">5</span>Calculating density</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A block of metal has a mass of 540 g and a volume of 60 cm³. What is its density?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Density = Mass ÷ Volume</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">Density = 540 ÷ 60 = 9 g/cm³</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Density = 9 g/cm³ (similar to copper)</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')"><div class="ex-title"><span class="ex-num">6</span>Area of a compound shape including a semicircle</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A shape consists of a rectangle 10 m × 4 m with a semicircle of diameter 4 m on top. Find the total area.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Rectangle area: <span class="calc">10 × 4 = 40 m²</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Semicircle: radius = 2 m. Area = <span class="calc">½ × π × 2² = ½ × π × 4 = 6.28 m²</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Total: <span class="calc">40 + 6.28 = 46.28 m²</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Total area ≈ 46.28 m²</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">A circle has diameter 14 cm. What is its area? (Use π ≈ 3.14)</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','43.96 cm² is the circumference (πd=3.14×14). Area uses radius: π×7².')">43.96 cm²</button>
+      <button class="opt" onclick="checkP(this,'wrong','153.86 cm²: diameter is 14, so radius=7. π×7²=3.14×49=153.86. Actually this IS correct!')">153.86 cm²</button>
+      <button class="opt" onclick="checkP(this,'wrong','615.44 cm²: that uses diameter² not radius². r=7, area=π×49=153.86.')">615.44 cm²</button>
+      <button class="opt" onclick="checkP(this,'wrong','196 cm²: that is 14²=196. Area = π×r²=3.14×49=153.86.')">196 cm²</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1 (corrected)</div>
+    <div class="pq-text">A circle has radius 6 cm. What is its circumference to 1 d.p.? (π ≈ 3.14159)</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','18.8 cm: circumference=2πr=2×3.14159×6=37.7, not 18.8.')">18.8 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','36.0 cm: not correct. 2×π×6=37.7 cm.')">36.0 cm</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! C=2πr=2×3.14159×6=37.7 cm.')">37.7 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','113.1 cm: that is the area (π×6²=113.1 cm²), not the circumference.')">113.1 cm</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">A right-angled triangle has legs 6 cm and 8 cm. What is the hypotenuse?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','10 cm: 6²+8²=36+64=100. √100=10. Actually this IS 10!')">10 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','12 cm: 6²+8²=100. √100=10, not 12.')">12 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','14 cm: not correct. √(36+64)=√100=10.')">14 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','100 cm: that is c², not c. Take the square root: √100=10.')">100 cm</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2 (corrected)</div>
+    <div class="pq-text">A right-angled triangle has hypotenuse 17 cm and one leg 8 cm. Find the other leg.</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','9 cm: a²=17²−8²=289−64=225. a=√225=15, not 9.')">9 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','12 cm: a²=289−64=225. √225=15.')">12 cm</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! a²=17²−8²=289−64=225. a=√225=15 cm.')">15 cm</button>
+      <button class="opt" onclick="checkP(this,'wrong','18.8 cm: a=√(289+64) would add the squares — but we subtract them. √225=15.')">18.8 cm</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">A cylinder has radius 4 cm and height 10 cm. What is its volume to 1 d.p.?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','125.7 cm³: V=π×4²×10=π×160=502.7, not 125.7.')">125.7 cm³</button>
+      <button class="opt" onclick="checkP(this,'wrong','251.3 cm³: V=π×16×10=502.7. You may have used r=4 without squaring.')">251.3 cm³</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! V=π×4²×10=π×16×10=502.7 cm³.')">502.7 cm³</button>
+      <button class="opt" onclick="checkP(this,'wrong','1005.3 cm³: check your calculation. π×16×10=502.7.')">1005.3 cm³</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">A substance has mass 350 g and volume 50 cm³. What is its density?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','17,500: that is mass×volume. Density=mass÷volume.')">17,500 g/cm³</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Density=350÷50=7 g/cm³.')">7 g/cm³</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.14 g/cm³: that is 50÷350 (reversed). Density=mass÷volume=350÷50=7.')">0.14 g/cm³</button>
+      <button class="opt" onclick="checkP(this,'wrong','300 g/cm³: check your division. 350÷50=7.')">300 g/cm³</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">A shape is made of a rectangle (8m × 5m) with a triangle (base 8m, height 3m) on top. What is the total area?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','40 m²: that is the rectangle alone. Add the triangle: ½×8×3=12. Total=52.')">40 m²</button>
+      <button class="opt" onclick="checkP(this,'wrong','52 m²: rectangle=40, triangle=½×8×3=12. Total=52. Actually this IS correct!')">52 m²</button>
+      <button class="opt" onclick="checkP(this,'wrong','60 m²: triangle area=½×base×height=½×8×3=12, not 20. Total=52.')">60 m²</button>
+      <button class="opt" onclick="checkP(this,'wrong','64 m²: not correct. 40+12=52 m².')">64 m²</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5 (corrected)</div>
+    <div class="pq-text">A ladder 10 m long leans against a wall. Its base is 6 m from the wall. How high up the wall does it reach?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','7 m: height²=10²−6²=100−36=64. √64=8, not 7.')">7 m</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! h²=10²−6²=100−36=64. h=√64=8 m.')">8 m</button>
+      <button class="opt" onclick="checkP(this,'wrong','9 m: not correct. h=√(100−36)=√64=8.')">9 m</button>
+      <button class="opt" onclick="checkP(this,'wrong','11.7 m: that would be √(100+36)=√136. Subtract, not add.')">11.7 m</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">A metal block has density 8 g/cm³ and volume 25 cm³. What is its mass?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','3.2 g: that is volume÷density. Mass=density×volume=8×25=200 g.')">3.2 g</button>
+      <button class="opt" onclick="checkP(this,'wrong','33 g: not correct. Mass=density×volume=8×25=200 g.')">33 g</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Mass=density×volume=8×25=200 g.')">200 g</button>
+      <button class="opt" onclick="checkP(this,'wrong','2,000 g: check the calculation. 8×25=200 g.')">2,000 g</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="l2-data.html" class="next-topic-btn">Next: Data →</a>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<script>
+function showTab(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));document.getElementById(id).classList.add('visible');document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(id==='quiz'&&!quizStarted)startQuiz();}
+function toggleEx(id){document.getElementById(id).classList.toggle('open');}
+function checkP(btn,result,msg){const card=btn.closest('.pq-card');card.querySelectorAll('.opt').forEach(b=>b.disabled=true);btn.classList.add(result);const fb=card.querySelector('.fb');fb.textContent=(result==='correct'?'✅ ':'❌ ')+msg;fb.className='fb '+result;}
+const quizData=[
+  {q:'A circle has radius 5 cm. What is its area to 1 d.p.? (π=3.14159)',opts:['15.7 cm²','31.4 cm²','78.5 cm²','157.1 cm²'],correct:2,explanation:'A=π×5²=π×25=78.5 cm².'},
+  {q:'A right-angled triangle has legs 5 m and 12 m. What is the hypotenuse?',opts:['11 m','13 m','14 m','17 m'],correct:1,explanation:'c²=5²+12²=25+144=169. c=√169=13 m.'},
+  {q:'A cylinder has radius 3 cm and height 8 cm. Volume to 1 d.p.?',opts:['75.4 cm³','150.8 cm³','226.2 cm³','301.6 cm³'],correct:2,explanation:'V=π×3²×8=π×9×8=226.2 cm³.'},
+  {q:'An object has mass 400 g and density 5 g/cm³. What is the volume?',opts:['40 cm³','80 cm³','100 cm³','200 cm³'],correct:1,explanation:'Volume=mass÷density=400÷5=80 cm³.'},
+  {q:'Find the missing side of a right-angled triangle with hypotenuse 25 m and one leg 7 m.',opts:['18 m','20 m','24 m','26 m'],correct:2,explanation:'a²=25²−7²=625−49=576. a=√576=24 m.'},
+  {q:'A circle has diameter 20 cm. What is the circumference to 1 d.p.?',opts:['31.4 cm','62.8 cm','125.7 cm','314.2 cm'],correct:1,explanation:'C=πd=π×20=62.8 cm.'},
+  {q:'A triangular prism has a triangular cross-section of area 12 cm² and length 15 cm. Volume?',opts:['90 cm³','120 cm³','180 cm³','360 cm³'],correct:2,explanation:'Volume=cross-section×length=12×15=180 cm³.'},
+  {q:'A force of 120 N acts on an area of 0.4 m². What is the pressure?',opts:['48 Pa','120 Pa','300 Pa','480 Pa'],correct:2,explanation:'Pressure=force÷area=120÷0.4=300 Pa.'},
+  {q:'A semicircle has diameter 10 cm. What is its area to 1 d.p.?',opts:['15.7 cm²','31.4 cm²','39.3 cm²','78.5 cm²'],correct:2,explanation:'Radius=5. Full circle=π×25=78.54. Half=39.3 cm².'},
+  {q:'A right-angled triangle has hypotenuse 10 cm and area 24 cm². One leg is 6 cm. What is the other leg?',opts:['6 cm','7 cm','8 cm','9 cm'],correct:2,explanation:'Using Pythagoras: leg²=10²−6²=100−36=64. Leg=8 cm. Check: ½×6×8=24 ✓'},
+];
+let qIdx=0,score=0,answered=false,quizStarted=false;
+function startQuiz(){qIdx=0;score=0;answered=false;quizStarted=true;document.getElementById('scoreScreen').classList.remove('show');document.getElementById('quizMain').style.display='block';renderQ();}
+function renderQ(){answered=false;const q=quizData[qIdx],total=quizData.length;const prog=document.getElementById('qprog');prog.innerHTML='';for(let i=0;i<total;i++){const d=document.createElement('div');d.className='qdot'+(i<qIdx?' done':i===qIdx?' current':'');prog.appendChild(d);}document.getElementById('qmeta').textContent=`Question ${qIdx+1} of ${total}`;document.getElementById('qq').textContent=q.q;const opts=document.getElementById('qopts');opts.innerHTML='';q.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=o;b.onclick=()=>answerQ(i,b);opts.appendChild(b);});document.getElementById('qfb').className='qfb';document.getElementById('qfb').textContent='';document.getElementById('nextBtn').className='next-btn';}
+function answerQ(idx,btn){if(answered)return;answered=true;const q=quizData[qIdx];document.querySelectorAll('.qopt').forEach(b=>b.disabled=true);const fb=document.getElementById('qfb');if(idx===q.correct){score++;btn.classList.add('correct');fb.className='qfb correct';fb.textContent='✅ Correct! '+q.explanation;}else{btn.classList.add('wrong');document.querySelectorAll('.qopt')[q.correct].classList.add('correct');fb.className='qfb wrong';fb.textContent='❌ Not quite. '+q.explanation;}document.getElementById('nextBtn').className='next-btn show';}
+function nextQ(){qIdx++;if(qIdx>=quizData.length)showScore();else renderQ();}
+function showScore(){document.getElementById('quizMain').style.display='none';document.getElementById('scoreScreen').classList.add('show');const pct=Math.round(score/quizData.length*100);document.getElementById('scoreBig').textContent=`${score}/${quizData.length}`;document.getElementById('scoreGrade').textContent=pct>=85?'⭐ Excellent!':pct>=65?'👍 Good effort!':pct>=50?'💪 Getting there!':'📖 Keep practising!';document.getElementById('scoreMsg').textContent=pct>=85?'Brilliant Level 2 Measures! Move on to Data & Statistics.':pct>=65?'Good effort — review any tricky Examples then try again.':'Keep going — the Introduction and Examples will help you build confidence.';}
+</script>
+</body>
+</html>

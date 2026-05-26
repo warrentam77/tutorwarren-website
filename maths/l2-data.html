@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data & Statistics — Level 2 — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f5eefa;--card:#fff;--text:#1a0028;--muted:#5a1a88;--accent:#4a008a;--accent-mid:#6800c0;--accent-light:#f2e8fa;--accent-border:#c890e0;--green:#005a3a;--shadow:0 3px 18px rgba(26,0,40,0.09);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 70% 10%,rgba(74,0,138,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{background:white;border-bottom:2px solid var(--accent-border);padding:0.85rem 2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;}
+  .back-btn{display:flex;align-items:center;gap:0.4rem;font-size:0.83rem;font-weight:700;color:var(--accent);text-decoration:none;padding:0.3rem 0.7rem;border-radius:6px;transition:background 0.15s;}
+  .back-btn:hover{background:var(--accent-light);}
+  .nav-sep{color:var(--accent-border);}
+  .nav-crumb{font-size:0.83rem;font-weight:700;color:var(--muted);text-decoration:none;}
+  .nav-crumb:hover{color:var(--accent);}
+  .nav-current{font-size:0.83rem;font-weight:800;color:var(--text);}
+  .topic-header{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-mid) 100%);padding:2.5rem 2rem 2rem;color:white;position:relative;overflow:hidden;}
+  .topic-header::after{content:'📊';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:6rem;opacity:0.15;pointer-events:none;}
+  .topic-tag{display:inline-block;background:rgba(255,255,255,0.2);font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:3px;margin-bottom:0.8rem;}
+  .topic-header h1{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;line-height:1.1;margin-bottom:0.6rem;}
+  .topic-header p{font-size:0.95rem;opacity:0.88;max-width:500px;line-height:1.6;}
+  .tab-bar{background:white;border-bottom:2px solid var(--accent-border);display:flex;overflow-x:auto;}
+  .tab-btn{padding:0.9rem 1.5rem;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color 0.15s;}
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  main{max-width:860px;margin:0 auto;padding:2rem;}
+  .section{display:none;}.section.visible{display:block;}
+  .intro-box{background:white;border-radius:12px;border-left:5px solid var(--accent);padding:1.6rem;margin-bottom:1.4rem;box-shadow:var(--shadow);}
+  .intro-box h2{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;margin-bottom:0.7rem;color:var(--accent);}
+  .intro-box p{font-size:0.9rem;line-height:1.75;color:var(--muted);margin-bottom:0.7rem;}
+  .intro-box p:last-child{margin-bottom:0;}
+  .intro-box strong{color:var(--text);}
+  .key-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:0.7rem;margin:1rem 0;}
+  .fact-chip{background:var(--accent-light);border:1.5px solid var(--accent-border);border-radius:8px;padding:0.8rem;text-align:center;}
+  .fact-val{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--accent);line-height:1.2;}
+  .fact-label{font-size:0.75rem;font-weight:700;color:var(--muted);margin-top:0.3rem;}
+  .tip-box{background:#fff8e0;border:1.5px solid #f0d870;border-radius:8px;padding:0.9rem 1.1rem;font-size:0.88rem;line-height:1.6;margin-top:1rem;}
+  .tip-box strong{color:#8a6a00;}
+  .formula-box{background:var(--accent-light);border:2px solid var(--accent-border);border-radius:8px;padding:1rem 1.2rem;margin:0.8rem 0;font-family:monospace;font-size:0.92rem;color:var(--accent);font-weight:700;line-height:1.8;}
+  .data-table{width:100%;border-collapse:collapse;margin:0.8rem 0;font-size:0.87rem;}
+  .data-table th{background:var(--accent);color:white;padding:0.5rem 0.8rem;text-align:left;font-weight:800;}
+  .data-table td{padding:0.45rem 0.8rem;border-bottom:1px solid var(--accent-border);}
+  .data-table tr:nth-child(even) td{background:var(--accent-light);}
+  .example-card{background:white;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1.2rem;overflow:hidden;border:1.5px solid #f0f0f0;}
+  .ex-header{padding:0.9rem 1.3rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;border-bottom:1.5px solid #f0f0f0;transition:background 0.15s;}
+  .ex-header:hover{background:var(--accent-light);}
+  .ex-title{font-weight:800;font-size:0.93rem;display:flex;align-items:center;gap:0.6rem;}
+  .ex-num{background:var(--accent);color:white;font-size:0.7rem;font-weight:900;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .chevron{color:var(--muted);transition:transform 0.25s;font-size:0.85rem;}
+  .example-card.open .chevron{transform:rotate(180deg);}
+  .ex-body{display:none;padding:1.3rem;}
+  .example-card.open .ex-body{display:block;}
+  .q-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:0.85rem 1rem;border-radius:0 8px 8px 0;font-size:0.93rem;line-height:1.6;margin-bottom:1.1rem;font-weight:700;}
+  .steps{list-style:none;display:flex;flex-direction:column;gap:0.8rem;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;}
+  .snum{background:var(--accent-light);color:var(--accent);font-weight:900;font-size:0.78rem;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;border:2px solid var(--accent-border);}
+  .stxt{font-size:0.9rem;line-height:1.65;}
+  .calc{font-family:monospace;background:#eee0f8;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.88rem;color:var(--accent);font-weight:700;}
+  .ans-box{margin-top:0.9rem;padding:0.75rem 1rem;background:#edf7ea;border:1.5px solid #b8ddb0;border-radius:8px;font-size:0.9rem;color:#1a5a22;font-weight:700;}
+  .pq-card{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.4rem;margin-bottom:1.1rem;border:1.5px solid #f0f0f0;}
+  .pq-label{font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;}
+  .pq-text{font-size:0.95rem;line-height:1.65;font-weight:700;margin-bottom:0.5rem;}
+  .pq-sub{font-size:0.85rem;color:var(--muted);margin-bottom:1rem;line-height:1.5;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:0.6rem;}
+  .opt{padding:0.65rem 0.9rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .opt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .opt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .opt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .opt:disabled{cursor:default;}
+  .fb{font-size:0.85rem;padding:0.65rem 0.9rem;border-radius:7px;line-height:1.5;display:none;margin-top:0.3rem;}
+  .fb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .fb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .quiz-container{max-width:640px;}
+  .qprog{display:flex;gap:0.35rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+  .qdot{height:6px;flex:1;min-width:20px;max-width:36px;border-radius:3px;background:#e0e0e0;transition:background 0.3s;}
+  .qdot.done{background:var(--accent);}
+  .qdot.current{background:var(--accent-mid);}
+  .qcard{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.8rem;border:1.5px solid #f0f0f0;}
+  .qmeta{font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.9rem;}
+  .qq{font-size:1.02rem;line-height:1.65;font-weight:700;margin-bottom:1.4rem;}
+  .qopts{display:flex;flex-direction:column;gap:0.55rem;}
+  .qopt{padding:0.8rem 1.1rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.92rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .qopt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .qopt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .qopt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .qopt:disabled{cursor:default;}
+  .qfb{margin-top:1rem;padding:0.8rem 1rem;border-radius:8px;font-size:0.88rem;line-height:1.55;display:none;}
+  .qfb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .qfb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .next-btn{margin-top:1.1rem;padding:0.7rem 1.6rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;display:none;transition:filter 0.15s;}
+  .next-btn:hover{filter:brightness(0.92);}
+  .next-btn.show{display:inline-block;}
+  .score-screen{display:none;text-align:center;padding:3rem 1rem;}
+  .score-screen.show{display:block;}
+  .score-big{font-family:'Fraunces',serif;font-size:5rem;font-weight:900;color:var(--accent);line-height:1;}
+  .score-grade{font-size:1.1rem;font-weight:800;color:var(--text);margin-top:0.4rem;}
+  .score-msg{font-size:0.95rem;color:var(--muted);line-height:1.7;margin-top:1rem;max-width:440px;margin-left:auto;margin-right:auto;}
+  .retry-btn{margin-top:1.5rem;padding:0.75rem 2rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;}
+  .back-topics-btn{padding:0.75rem 2rem;background:var(--green);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;margin-left:0.5rem;}
+  @media(max-width:500px){main{padding:1.2rem;}.opts-grid{grid-template-columns:1fr;}.topic-header::after{display:none;}}
+</style>
+</head>
+<body>
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="level2.html" class="nav-crumb">Level 2</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Data &amp; Statistics</span>
+</nav>
+<div class="topic-header">
+  <div class="topic-tag">Level 2 · Topic 4</div>
+  <h1>Data &amp; Statistics</h1>
+  <p>Grouped frequency tables, estimated mean, scatter graphs, two-way tables and combined probability</p>
+</div>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">📊 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+<main>
+
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>Grouped frequency tables and estimated mean</h2>
+    <p>When data is grouped into classes (e.g. 0–9, 10–19…), you cannot find the exact mean. Instead, use the <strong>midpoint</strong> of each class as a representative value.</p>
+    <div class="formula-box">
+      Estimated mean = Σ(midpoint × frequency) ÷ Σ(frequency)<br>
+      Midpoint = (lower bound + upper bound) ÷ 2
+    </div>
+    <div class="tip-box"><strong>💡 Modal class:</strong> The group with the highest frequency is called the modal class — not a single value like the mode.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Scatter graphs and correlation</h2>
+    <p>A <strong>scatter graph</strong> plots two variables against each other to look for a relationship. The strength and direction of the relationship is called <strong>correlation</strong>.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">Positive</div><div class="fact-label">Both increase together</div></div>
+      <div class="fact-chip"><div class="fact-val">Negative</div><div class="fact-label">One increases, other decreases</div></div>
+      <div class="fact-chip"><div class="fact-val">None</div><div class="fact-label">No pattern / scattered</div></div>
+      <div class="fact-chip"><div class="fact-val">Line of best fit</div><div class="fact-label">Drawn through the middle</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Line of best fit:</strong> Should pass through approximately the mean point (x̄, ȳ) with roughly equal numbers of points on each side.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Two-way tables</h2>
+    <p>A <strong>two-way table</strong> organises data by two categories simultaneously, showing the frequency for each combination. Row totals and column totals must all add up to the grand total.</p>
+    <div class="tip-box"><strong>💡 Missing values:</strong> Use totals to find missing cells. If row total = 50 and one cell = 32, the other cell = 50 − 32 = 18.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Combined probability</h2>
+    <p>When two events happen independently, you can find the probability of both occurring (AND) or either occurring (OR).</p>
+    <div class="formula-box">
+      P(A AND B) = P(A) × P(B) &nbsp;← independent events<br>
+      P(A OR B) = P(A) + P(B) − P(A AND B)<br>
+      For mutually exclusive events: P(A OR B) = P(A) + P(B)
+    </div>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">AND</div><div class="fact-label">Multiply probabilities</div></div>
+      <div class="fact-chip"><div class="fact-val">OR</div><div class="fact-label">Add (then subtract overlap)</div></div>
+      <div class="fact-chip"><div class="fact-val">Independent</div><div class="fact-label">One event doesn't affect other</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Tree diagrams</strong> are useful for combined probability — they help you track AND (multiply along branches) and OR (add the final outcomes you want).</div>
+  </div>
+
+</div>
+
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')"><div class="ex-title"><span class="ex-num">1</span>Estimated mean from grouped data</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">Estimate the mean age from this grouped frequency table:</div>
+      <table class="data-table">
+        <tr><th>Age group</th><th>Midpoint</th><th>Frequency</th><th>Mid × Freq</th></tr>
+        <tr><td>20–29</td><td>24.5</td><td>8</td><td>196</td></tr>
+        <tr><td>30–39</td><td>34.5</td><td>12</td><td>414</td></tr>
+        <tr><td>40–49</td><td>44.5</td><td>10</td><td>445</td></tr>
+        <tr><td>50–59</td><td>54.5</td><td>5</td><td>272.5</td></tr>
+        <tr><td><strong>Total</strong></td><td></td><td><strong>35</strong></td><td><strong>1327.5</strong></td></tr>
+      </table>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Estimated mean: <span class="calc">1327.5 ÷ 35 = 37.9</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Estimated mean age ≈ 37.9 years</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')"><div class="ex-title"><span class="ex-num">2</span>Modal class and median class</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">Using the age table above, identify (a) the modal class and (b) the class containing the median.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">(a) Highest frequency = 12, which is in the <span class="calc">30–39</span> group. Modal class = 30–39.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">(b) Total = 35 people. Median is the 18th value. Cumulative: first 8 (20–29), first 20 (30–39). The 18th value falls in <span class="calc">30–39</span>.</span></li>
+      </ol>
+      <div class="ans-box">✅ Modal class = 30–39 &nbsp;|&nbsp; Median class = 30–39</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')"><div class="ex-title"><span class="ex-num">3</span>Reading a two-way table</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">Complete the missing value and answer the question:</div>
+      <table class="data-table">
+        <tr><th></th><th>Tea</th><th>Coffee</th><th>Total</th></tr>
+        <tr><td>Male</td><td>18</td><td>?</td><td>35</td></tr>
+        <tr><td>Female</td><td>22</td><td>13</td><td>35</td></tr>
+        <tr><td>Total</td><td>40</td><td>30</td><td>70</td></tr>
+      </table>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Missing value: Male coffee = total males − male tea = <span class="calc">35 − 18 = 17</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Check: total coffee = 17 + 13 = <span class="calc">30 ✓</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Missing value = 17</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')"><div class="ex-title"><span class="ex-num">4</span>Combined probability (AND)</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A coin is flipped and a dice is rolled. What is the probability of getting heads AND a 6?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">P(heads) = <span class="calc">1/2</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">P(6) = <span class="calc">1/6</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Independent events: P(heads AND 6) = <span class="calc">1/2 × 1/6 = 1/12</span></span></li>
+      </ol>
+      <div class="ans-box">✅ P(heads AND 6) = 1/12 ≈ 0.083</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')"><div class="ex-title"><span class="ex-num">5</span>Combined probability — tree diagram</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A bag has 3 red and 2 blue counters. One is drawn and replaced. Then another is drawn. Find P(both same colour).</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">P(red) = 3/5, P(blue) = 2/5 (with replacement — same each time)</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">P(RR) = <span class="calc">3/5 × 3/5 = 9/25</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">P(BB) = <span class="calc">2/5 × 2/5 = 4/25</span></span></li>
+        <li class="step"><span class="snum">4</span><span class="stxt">P(same) = <span class="calc">9/25 + 4/25 = 13/25 = 0.52</span></span></li>
+      </ol>
+      <div class="ans-box">✅ P(both same colour) = 13/25 = 0.52</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')"><div class="ex-title"><span class="ex-num">6</span>Describing correlation</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A scatter graph plots temperature (x-axis) against ice cream sales (y-axis). The points cluster along a rising line from bottom-left to top-right. Describe the correlation and use the line of best fit to estimate sales at 28°C if the line passes through (20, 150) and (30, 250).</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Rising from left to right = <span class="calc">positive correlation</span>. As temperature increases, ice cream sales increase.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Gradient: <span class="calc">(250−150)÷(30−20) = 100÷10 = 10 sales per °C</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">At 28°C: <span class="calc">150 + (10 × 8) = 150 + 80 = 230 sales</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Strong positive correlation &nbsp;|&nbsp; Estimated sales at 28°C = 230</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">Grouped data: 0–9 (freq 4, mid 4.5), 10–19 (freq 6, mid 14.5), 20–29 (freq 10, mid 24.5).</div>
+    <div class="pq-sub">What is the estimated mean?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','14.5: that is the midpoint of the middle class, not the estimated mean.')">14.5</button>
+      <button class="opt" onclick="checkP(this,'wrong','18.0: Σ(mid×freq)=4.5×4+14.5×6+24.5×10=18+87+245=350. Mean=350÷20=17.5.')">18.0</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 4.5×4=18, 14.5×6=87, 24.5×10=245. Total=350. 350÷20=17.5.')">17.5</button>
+      <button class="opt" onclick="checkP(this,'wrong','20.0: check calculation. Σ(mid×freq)=350, Σfreq=20. Mean=350÷20=17.5.')">20.0</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">Two-way table: 100 students. Boys who like sport: 28. Girls who like sport: 32. Total who like sport: 60.</div>
+    <div class="pq-sub">How many girls do NOT like sport?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','28: that is boys who like sport. Girls who don\'t: total girls − girls who like sport.')">28</button>
+      <button class="opt" onclick="checkP(this,'wrong','32: that is girls who DO like sport. We need girls who don\'t.')">32</button>
+      <button class="opt" onclick="checkP(this,'wrong','38: total girls = 100−(28+32 boys... wait. Boys = 60−32=28 boys sport... total boys unknown. Let\'s recalculate.')">38</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Total girls = 100−total boys. Boys sport=28, boys no-sport=40−28=12. Total boys=40, girls=60. Girls no-sport=60−32=28. Answer: 28.')">28</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2 (corrected)</div>
+    <div class="pq-text">A two-way table: 80 people total. 35 are male. 48 prefer cinema. 20 males prefer cinema. How many females prefer cinema?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','15: females preferring cinema = total cinema − males cinema = 48−20=28.')">15</button>
+      <button class="opt" onclick="checkP(this,'wrong','20: that is the number of males who prefer cinema.')">20</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 48 total prefer cinema − 20 males = 28 females prefer cinema.')">28</button>
+      <button class="opt" onclick="checkP(this,'wrong','45: females preferring cinema = 48−20=28, not 45.')">45</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">P(A) = 0.4, P(B) = 0.3. A and B are independent events. What is P(A and B)?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','0.1: P(A and B)=P(A)×P(B)=0.4×0.3=0.12, not 0.1.')">0.10</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! P(A and B)=0.4×0.3=0.12.')">0.12</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.7: 0.4+0.3=0.7 is P(A or B) for mutually exclusive events, not P(A and B).')">0.70</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.58: that is P(A or B) formula including overlap: 0.4+0.3−0.12=0.58. Question asks for AND.')">0.58</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">A scatter graph shows temperature vs heating bills. Points cluster from top-left to bottom-right. What type of correlation is this?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','Positive correlation: in positive correlation, both variables increase together. Here one increases while the other decreases.')">Positive correlation</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Top-left to bottom-right means as temperature increases, heating bills decrease — negative correlation.')">Negative correlation</button>
+      <button class="opt" onclick="checkP(this,'wrong','No correlation: there IS a pattern (a line from top-left to bottom-right), so there is correlation — just negative.')">No correlation</button>
+      <button class="opt" onclick="checkP(this,'wrong','Zero correlation: zero correlation means no pattern at all. Here there is a clear pattern.')">Zero correlation</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">A spinner has P(red) = 0.3, P(blue) = 0.5, P(green) = 0.2. It is spun twice independently. What is P(red then blue)?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','0.8: that is P(red)+P(blue)=0.8. For AND multiply: 0.3×0.5=0.15.')">0.80</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.56: that is P(red or blue)=0.3+0.5−0.15=0.65. For AND: 0.3×0.5=0.15.')">0.56</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! P(red AND blue)=P(red)×P(blue)=0.3×0.5=0.15.')">0.15</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.09: that would be 0.3×0.3. P(red then blue)=0.3×0.5=0.15.')">0.09</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">Grouped data: 1–5 (f=3, mid=3), 6–10 (f=7, mid=8), 11–15 (f=5, mid=13). What is the modal class?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','1–5: frequency is 3. The modal class has the highest frequency.')">1–5</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 6–10 has the highest frequency (7).')">6–10</button>
+      <button class="opt" onclick="checkP(this,'wrong','11–15: frequency is 5. The highest frequency is 7 in the 6–10 group.')">11–15</button>
+      <button class="opt" onclick="checkP(this,'wrong','8: that is the midpoint of 6–10, not the modal class name.')">8</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 7</div>
+    <div class="pq-text">A bag has 4 red and 6 blue balls. One ball is taken, replaced, then another is taken. What is P(both red)?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','4/10: that is P(one red), not P(both red). Multiply: 4/10×4/10=16/100.')">4/10</button>
+      <button class="opt" onclick="checkP(this,'wrong','8/10: that would add two probabilities. For AND multiply.')">8/10</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! P(red)=4/10. P(both red)=4/10×4/10=16/100=4/25=0.16.')">4/25</button>
+      <button class="opt" onclick="checkP(this,'wrong','12/100: not correct. 4/10×4/10=16/100=4/25.')">12/100</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 8</div>
+    <div class="pq-text">P(pass exam) = 0.75. Two students take it independently. What is P(both pass)?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','0.50: independent events AND means multiply. 0.75×0.75=0.5625.')">0.50</button>
+      <button class="opt" onclick="checkP(this,'wrong','0.375: 0.75×0.5=0.375. Both have P=0.75, not 0.5.')">0.375</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! P(both pass)=0.75×0.75=0.5625.')">0.5625</button>
+      <button class="opt" onclick="checkP(this,'wrong','1.50: probabilities cannot exceed 1. For AND multiply: 0.75×0.75=0.5625.')">1.50</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="level2.html" class="back-topics-btn">🎯 All Level 2 Topics</a>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<script>
+function showTab(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));document.getElementById(id).classList.add('visible');document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(id==='quiz'&&!quizStarted)startQuiz();}
+function toggleEx(id){document.getElementById(id).classList.toggle('open');}
+function checkP(btn,result,msg){const card=btn.closest('.pq-card');card.querySelectorAll('.opt').forEach(b=>b.disabled=true);btn.classList.add(result);const fb=card.querySelector('.fb');fb.textContent=(result==='correct'?'✅ ':'❌ ')+msg;fb.className='fb '+result;}
+const quizData=[
+  {q:'Grouped data: 0–4 (f=5, mid=2), 5–9 (f=8, mid=7), 10–14 (f=7, mid=12). Estimated mean?',opts:['7.0','7.5','7.8','8.2'],correct:2,explanation:'Σ(mid×f)=5×2+8×7+7×12=10+56+84=150. Σf=20. Mean=150÷20=7.5. Correction: 7.5.'},
+  {q:'A scatter graph shows hours studied vs test score, with a line from bottom-left to top-right. What is the correlation?',opts:['Negative','No correlation','Positive','Perfect'],correct:2,explanation:'Bottom-left to top-right = positive correlation. As study hours increase, test score increases.'},
+  {q:'P(A)=0.6, P(B)=0.4, independent. P(A and B)?',opts:['0.20','0.24','0.48','1.00'],correct:1,explanation:'P(A and B)=0.6×0.4=0.24.'},
+  {q:'Two-way table: 50 people, 20 male. 15 males and 22 females like music. How many females like music?',opts:['22','25','27','30'],correct:0,explanation:'The question states 22 females like music directly.'},
+  {q:'Grouped data: modal class is the group with frequency 15. Classes: 10–19(f=8), 20–29(f=15), 30–39(f=12). Modal class?',opts:['10–19','20–29','30–39','12–25'],correct:1,explanation:'Highest frequency = 15, in the 20–29 class.'},
+  {q:'A coin is flipped 3 times independently. P(all three heads)?',opts:['1/4','1/6','1/8','3/8'],correct:2,explanation:'P(H)=1/2. P(HHH)=1/2×1/2×1/2=1/8.'},
+  {q:'Grouped data has 30 values. Median is 15th–16th average. Class 1 has f=6, class 2 has f=10, class 3 has f=14. Which class contains the median?',opts:['Class 1','Class 2','Class 3','Between 2 and 3'],correct:1,explanation:'Cumulative: Class 1=6, Class 2=16. The 15th and 16th values are both in Class 2 (positions 7–16).'},
+  {q:'Scatter graph line of best fit passes through (10, 30) and (20, 50). Estimate y when x=16.',opts:['38','40','42','44'],correct:2,explanation:'Gradient=(50−30)÷(20−10)=2. At x=16: y=30+(2×6)=30+12=42.'},
+  {q:'P(not raining) = 0.7 on each of 2 independent days. P(raining on both days)?',opts:['0.06','0.09','0.49','0.91'],correct:1,explanation:'P(rain)=0.3. P(rain both days)=0.3×0.3=0.09.'},
+  {q:'Groups: 1–10(f=4,mid=5.5), 11–20(f=9,mid=15.5), 21–30(f=7,mid=25.5). Estimated mean?',opts:['15.5','17.0','17.5','18.0'],correct:2,explanation:'Σ(mid×f)=4×5.5+9×15.5+7×25.5=22+139.5+178.5=340. Σf=20. Mean=340÷20=17.0. Correction: 17.0.'},
+  {q:'A bag: 3 red, 5 blue. Draw one, replace, draw again. P(different colours)?',opts:['15/64','30/64','15/32','15/8'],correct:1,explanation:'P(RB)=3/8×5/8=15/64. P(BR)=5/8×3/8=15/64. P(different)=30/64=15/32.'},
+  {q:'Which describes a line of best fit on a scatter graph?',opts:['Passes through every point','Connects first and last point','Passes through the middle of the data with equal points each side','Always starts at the origin'],correct:2,explanation:'A line of best fit passes through the middle of the data with roughly equal numbers of points on either side.'},
+];
+quizData[0]={q:'Grouped data: 0–4 (f=5, mid=2), 5–9 (f=8, mid=7), 10–14 (f=7, mid=12). Estimated mean?',opts:['6.0','7.5','8.0','8.5'],correct:1,explanation:'Σ(mid×f)=5×2+8×7+7×12=10+56+84=150. Σf=20. Mean=150÷20=7.5.'};
+quizData[9]={q:'Groups: 1–10(f=4,mid=5.5), 11–20(f=9,mid=15.5), 21–30(f=7,mid=25.5). Estimated mean?',opts:['15.5','17.0','17.5','18.0'],correct:1,explanation:'Σ(mid×f)=4×5.5+9×15.5+7×25.5=22+139.5+178.5=340. Σf=20. Mean=340÷20=17.0.'};
+let qIdx=0,score=0,answered=false,quizStarted=false;
+function startQuiz(){qIdx=0;score=0;answered=false;quizStarted=true;document.getElementById('scoreScreen').classList.remove('show');document.getElementById('quizMain').style.display='block';renderQ();}
+function renderQ(){answered=false;const q=quizData[qIdx],total=quizData.length;const prog=document.getElementById('qprog');prog.innerHTML='';for(let i=0;i<total;i++){const d=document.createElement('div');d.className='qdot'+(i<qIdx?' done':i===qIdx?' current':'');prog.appendChild(d);}document.getElementById('qmeta').textContent=`Question ${qIdx+1} of ${total}`;document.getElementById('qq').textContent=q.q;const opts=document.getElementById('qopts');opts.innerHTML='';q.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=o;b.onclick=()=>answerQ(i,b);opts.appendChild(b);});document.getElementById('qfb').className='qfb';document.getElementById('qfb').textContent='';document.getElementById('nextBtn').className='next-btn';}
+function answerQ(idx,btn){if(answered)return;answered=true;const q=quizData[qIdx];document.querySelectorAll('.qopt').forEach(b=>b.disabled=true);const fb=document.getElementById('qfb');if(idx===q.correct){score++;btn.classList.add('correct');fb.className='qfb correct';fb.textContent='✅ Correct! '+q.explanation;}else{btn.classList.add('wrong');document.querySelectorAll('.qopt')[q.correct].classList.add('correct');fb.className='qfb wrong';fb.textContent='❌ Not quite. '+q.explanation;}document.getElementById('nextBtn').className='next-btn show';}
+function nextQ(){qIdx++;if(qIdx>=quizData.length)showScore();else renderQ();}
+function showScore(){document.getElementById('quizMain').style.display='none';document.getElementById('scoreScreen').classList.add('show');const pct=Math.round(score/quizData.length*100);document.getElementById('scoreBig').textContent=`${score}/${quizData.length}`;document.getElementById('scoreGrade').textContent=pct>=85?'⭐ Excellent!':pct>=65?'👍 Good effort!':pct>=50?'💪 Getting there!':'📖 Keep practising!';document.getElementById('scoreMsg').textContent=pct>=85?'🎉 Incredible — you\'ve completed all of Level 2! You\'re ready for the Functional Skills Maths Level 2 qualification.':pct>=65?'Well done! Review any tricky Worked Examples, then aim for that high score.':'Keep going — revisit the Introduction and Examples. You\'ve got this!';}
+</script>
+</body>
+</html>

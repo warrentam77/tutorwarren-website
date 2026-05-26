@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data & Information — Entry Level — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfbee;
+    --card: #ffffff;
+    --text: #2a2000;
+    --muted: #6a5a00;
+    --accent: #8a6a00;
+    --accent-mid: #b08a00;
+    --accent-light: #fdf6e0;
+    --accent-border: #e0d090;
+    --green: #2d7a22;
+    --shadow: 0 3px 18px rgba(42,32,0,0.09);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 70% 10%, rgba(138,106,0,0.06) 0%, transparent 50%); pointer-events: none; }
+  nav { background: white; border-bottom: 2px solid var(--accent-border); padding: 0.85rem 2rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .back-btn { display: flex; align-items: center; gap: 0.4rem; font-size: 0.83rem; font-weight: 700; color: var(--accent); text-decoration: none; padding: 0.3rem 0.7rem; border-radius: 6px; transition: background 0.15s; }
+  .back-btn:hover { background: var(--accent-light); }
+  .nav-sep { color: var(--accent-border); }
+  .nav-crumb { font-size: 0.83rem; font-weight: 700; color: var(--muted); text-decoration: none; }
+  .nav-crumb:hover { color: var(--accent); }
+  .nav-current { font-size: 0.83rem; font-weight: 800; color: var(--text); }
+  .topic-header { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%); padding: 2.5rem 2rem 2rem; color: white; position: relative; overflow: hidden; }
+  .topic-header::after { content: '📊'; position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); font-size: 6rem; opacity: 0.15; pointer-events: none; }
+  .topic-tag { display: inline-block; background: rgba(255,255,255,0.2); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 3px; margin-bottom: 0.8rem; }
+  .topic-header h1 { font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; line-height: 1.1; margin-bottom: 0.6rem; }
+  .topic-header p { font-size: 0.95rem; opacity: 0.88; max-width: 500px; line-height: 1.6; }
+  .tab-bar { background: white; border-bottom: 2px solid var(--accent-border); display: flex; overflow-x: auto; }
+  .tab-btn { padding: 0.9rem 1.5rem; border: none; background: transparent; font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 800; color: var(--muted); cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: color 0.15s; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+  .section { display: none; }
+  .section.visible { display: block; }
+  .intro-box { background: white; border-radius: 12px; border-left: 5px solid var(--accent); padding: 1.6rem; margin-bottom: 1.4rem; box-shadow: var(--shadow); }
+  .intro-box h2 { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 900; margin-bottom: 0.7rem; color: var(--accent); }
+  .intro-box p { font-size: 0.9rem; line-height: 1.75; color: var(--muted); margin-bottom: 0.7rem; }
+  .intro-box p:last-child { margin-bottom: 0; }
+  .intro-box strong { color: var(--text); }
+  .key-facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 0.7rem; margin: 1rem 0; }
+  .fact-chip { background: var(--accent-light); border: 1.5px solid var(--accent-border); border-radius: 8px; padding: 0.8rem; text-align: center; }
+  .fact-val { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 900; color: var(--accent); line-height: 1.2; }
+  .fact-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-top: 0.3rem; }
+  .tip-box { background: #f0f8ea; border: 1.5px solid #b8e0a8; border-radius: 8px; padding: 0.9rem 1.1rem; font-size: 0.88rem; line-height: 1.6; margin-top: 1rem; }
+  .tip-box strong { color: #1a5a12; }
+
+  /* MOCK CHART for intro */
+  .bar-chart-demo {
+    background: #fafafa; border: 1.5px solid var(--accent-border);
+    border-radius: 8px; padding: 1.2rem; margin: 1rem 0;
+  }
+  .bar-chart-demo .chart-title { font-size: 0.8rem; font-weight: 800; color: var(--muted); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .bar-row { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.5rem; }
+  .bar-label { font-size: 0.8rem; font-weight: 700; width: 55px; flex-shrink: 0; text-align: right; }
+  .bar-track { flex: 1; background: #e8e8e8; border-radius: 3px; height: 20px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.5s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 5px; }
+  .bar-val { font-size: 0.72rem; font-weight: 900; color: white; }
+
+  .tally-demo { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+  .tally-group { background: var(--accent-light); border: 1.5px solid var(--accent-border); border-radius: 6px; padding: 0.5rem 0.8rem; font-size: 0.88rem; font-weight: 700; }
+
+  .example-card { background: white; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 1.2rem; overflow: hidden; border: 1.5px solid #f0f0f0; }
+  .ex-header { padding: 0.9rem 1.3rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; border-bottom: 1.5px solid #f0f0f0; transition: background 0.15s; }
+  .ex-header:hover { background: var(--accent-light); }
+  .ex-title { font-weight: 800; font-size: 0.93rem; display: flex; align-items: center; gap: 0.6rem; }
+  .ex-num { background: var(--accent); color: white; font-size: 0.7rem; font-weight: 900; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .chevron { color: var(--muted); transition: transform 0.25s; font-size: 0.85rem; }
+  .example-card.open .chevron { transform: rotate(180deg); }
+  .ex-body { display: none; padding: 1.3rem; }
+  .example-card.open .ex-body { display: block; }
+  .q-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.85rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.93rem; line-height: 1.6; margin-bottom: 1.1rem; font-weight: 700; }
+  .steps { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+  .step { display: flex; gap: 0.9rem; align-items: flex-start; }
+  .snum { background: var(--accent-light); color: var(--accent); font-weight: 900; font-size: 0.78rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; border: 2px solid var(--accent-border); }
+  .stxt { font-size: 0.9rem; line-height: 1.65; }
+  .calc { font-family: monospace; background: #f8f4e0; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.88rem; color: var(--accent); font-weight: 700; }
+  .ans-box { margin-top: 0.9rem; padding: 0.75rem 1rem; background: #edf7ea; border: 1.5px solid #b8ddb0; border-radius: 8px; font-size: 0.9rem; color: #2d5a22; font-weight: 700; }
+
+  /* Data table style */
+  .data-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; font-size: 0.88rem; }
+  .data-table th { background: var(--accent); color: white; padding: 0.5rem 0.8rem; text-align: left; font-weight: 800; }
+  .data-table td { padding: 0.45rem 0.8rem; border-bottom: 1px solid var(--accent-border); }
+  .data-table tr:nth-child(even) td { background: var(--accent-light); }
+
+  .pq-card { background: white; border-radius: 12px; box-shadow: var(--shadow); padding: 1.4rem; margin-bottom: 1.1rem; border: 1.5px solid #f0f0f0; }
+  .pq-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+  .pq-text { font-size: 0.95rem; line-height: 1.65; font-weight: 700; margin-bottom: 0.6rem; }
+  .pq-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; margin-bottom: 0.6rem; }
+  .opt { padding: 0.65rem 0.9rem; border-radius: 8px; border: 2px solid #e8e8e8; background: #fafafa; font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; text-align: left; transition: all 0.15s; }
+  .opt:hover:not(:disabled) { border-color: var(--accent-border); background: var(--accent-light); }
+  .opt.correct { border-color: #78c878; background: #edf7ea; color: #1a5a1a; }
+  .opt.wrong { border-color: #e89090; background: #fdf0f0; color: #8a1a1a; }
+  .opt:disabled { cursor: default; }
+  .fb { font-size: 0.85rem; padding: 0.65rem 0.9rem; border-radius: 7px; line-height: 1.5; display: none; margin-top: 0.3rem; }
+  .fb.correct { display: block; background: #edf7ea; border: 1.5px solid #b8ddb0; color: #1a5a1a; }
+  .fb.wrong { display: block; background: #fdf0f0; border: 1.5px solid #f0b8b8; color: #7a1a1a; }
+  .quiz-container { max-width: 640px; }
+  .qprog { display: flex; gap: 0.35rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .qdot { height: 6px; flex: 1; min-width: 20px; max-width: 36px; border-radius: 3px; background: #e0e0e0; transition: background 0.3s; }
+  .qdot.done { background: var(--accent); }
+  .qdot.current { background: var(--accent-mid); }
+  .qcard { background: white; border-radius: 12px; box-shadow: var(--shadow); padding: 1.8rem; border: 1.5px solid #f0f0f0; }
+  .qmeta { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.9rem; }
+  .qq { font-size: 1.02rem; line-height: 1.65; font-weight: 700; margin-bottom: 1.4rem; }
+  .qopts { display: flex; flex-direction: column; gap: 0.55rem; }
+  .qopt { padding: 0.8rem 1.1rem; border-radius: 8px; border: 2px solid #e8e8e8; background: #fafafa; font-family: 'Nunito', sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer; text-align: left; transition: all 0.15s; }
+  .qopt:hover:not(:disabled) { border-color: var(--accent-border); background: var(--accent-light); }
+  .qopt.correct { border-color: #78c878; background: #edf7ea; color: #1a5a1a; }
+  .qopt.wrong { border-color: #e89090; background: #fdf0f0; color: #8a1a1a; }
+  .qopt:disabled { cursor: default; }
+  .qfb { margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.88rem; line-height: 1.55; display: none; }
+  .qfb.correct { display: block; background: #edf7ea; border: 1.5px solid #b8ddb0; color: #1a5a1a; }
+  .qfb.wrong { display: block; background: #fdf0f0; border: 1.5px solid #f0b8b8; color: #7a1a1a; }
+  .next-btn { margin-top: 1.1rem; padding: 0.7rem 1.6rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; cursor: pointer; display: none; transition: filter 0.15s; }
+  .next-btn:hover { filter: brightness(0.92); }
+  .next-btn.show { display: inline-block; }
+  .score-screen { display: none; text-align: center; padding: 3rem 1rem; }
+  .score-screen.show { display: block; }
+  .score-big { font-family: 'Fraunces', serif; font-size: 5rem; font-weight: 900; color: var(--accent); line-height: 1; }
+  .score-grade { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-top: 0.4rem; }
+  .score-msg { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-top: 1rem; max-width: 440px; margin-left: auto; margin-right: auto; }
+  .retry-btn { margin-top: 1.5rem; padding: 0.75rem 2rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; cursor: pointer; }
+  .back-topics-btn { padding: 0.75rem 2rem; background: #2d7a22; color: white; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; cursor: pointer; text-decoration: none; display: inline-block; margin-left: 0.5rem; }
+  @media (max-width: 500px) { main { padding: 1.2rem; } .opts-grid { grid-template-columns: 1fr; } .topic-header::after { display: none; } }
+</style>
+</head>
+<body>
+
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="entry.html" class="nav-crumb">Entry Level</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Data &amp; Information</span>
+</nav>
+
+<div class="topic-header">
+  <div class="topic-tag">Entry Level · Topic 4</div>
+  <h1>Data &amp; Information</h1>
+  <p>Reading bar charts, pictograms, tally charts, tables and timetables</p>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">📊 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+
+<main>
+
+<!-- INTRO -->
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>What is data?</h2>
+    <p>Data is information that has been collected and organised. In maths, we display data using <strong>charts, tables and graphs</strong> to make it easier to read and compare.</p>
+    <p>At Entry Level, you need to be able to <strong>read</strong> simple charts, find specific values, and make simple comparisons — like which category had the most or least.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">Bar chart</div><div class="fact-label">Uses bars to show amounts</div></div>
+      <div class="fact-chip"><div class="fact-val">Pictogram</div><div class="fact-label">Uses pictures/symbols</div></div>
+      <div class="fact-chip"><div class="fact-val">Tally chart</div><div class="fact-label">Counts using marks</div></div>
+      <div class="fact-chip"><div class="fact-val">Table</div><div class="fact-label">Organises data in rows &amp; columns</div></div>
+    </div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Bar charts</h2>
+    <p>A bar chart uses <strong>rectangular bars</strong> to represent amounts. The height (or length) of each bar shows the value. Always read the <strong>scale on the axis</strong> carefully.</p>
+    <div class="bar-chart-demo">
+      <div class="chart-title">Favourite fruit — 30 students</div>
+      <div class="bar-row"><span class="bar-label">Apple</span><div class="bar-track"><div class="bar-fill" style="width:70%"><span class="bar-val">14</span></div></div></div>
+      <div class="bar-row"><span class="bar-label">Banana</span><div class="bar-track"><div class="bar-fill" style="width:45%"><span class="bar-val">9</span></div></div></div>
+      <div class="bar-row"><span class="bar-label">Orange</span><div class="bar-track"><div class="bar-fill" style="width:35%"><span class="bar-val">7</span></div></div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Reading bars:</strong> Find the top of the bar and read across to the number on the scale (the axis). Always check what each unit on the scale represents.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Tally charts</h2>
+    <p>Tally charts use marks to count. Every <strong>5th mark</strong> is drawn diagonally across the previous 4, making groups of 5 easy to count quickly.</p>
+    <div class="tally-demo">
+      <div class="tally-group">||||  = 4</div>
+      <div class="tally-group">|||| | = 5 (one group)</div>
+      <div class="tally-group">|||| |||| = 10 (two groups)</div>
+      <div class="tally-group">|||| |||| ||| = 13</div>
+    </div>
+    <div class="tip-box"><strong>💡 Counting tallies:</strong> Count in groups of 5 (each bundle) then add the remaining single marks.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Tables &amp; timetables</h2>
+    <p>Tables organise data into <strong>rows</strong> (across) and <strong>columns</strong> (down). To find a value, find the right row and the right column and look where they meet.</p>
+    <p>Timetables are a type of table — they show times for buses, trains and other services. You need to find the right route and time.</p>
+    <div class="tip-box"><strong>💡 Reading a table:</strong> Use your finger or a ruler to trace across the row and down the column. Check column headings and row labels carefully before reading a value.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Most common value (Mode)</h2>
+    <p>The <strong>mode</strong> is the value that appears <strong>most often</strong> in a data set. For example, in the list: 3, 5, 3, 7, 3, 9 — the number 3 appears three times, so the mode is 3.</p>
+    <p>In a bar chart, the mode is the <strong>tallest bar</strong>. In a table, it is the category with the <strong>highest frequency</strong>.</p>
+  </div>
+
+</div>
+
+<!-- EXAMPLES -->
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')">
+      <div class="ex-title"><span class="ex-num">1</span>Reading a bar chart</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A bar chart shows the number of pets owned by students. Dogs: 12, Cats: 9, Fish: 5, Rabbits: 4. How many more dogs than rabbits are there?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Read the value for dogs: <span class="calc">12</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Read the value for rabbits: <span class="calc">4</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Find the difference: <span class="calc">12 − 4 = 8</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: There are 8 more dogs than rabbits.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')">
+      <div class="ex-title"><span class="ex-num">2</span>Reading a tally chart</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A tally chart records favourite colours. Red: |||| |||| |, Blue: |||| ||||, Green: |||| ||. How many people chose red?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Red tallies: <span class="calc">|||| |||| |</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Count in groups of 5: first group = 5, second group = 5, then 1 extra.</span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt"><span class="calc">5 + 5 + 1 = 11</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: 11 people chose red.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')">
+      <div class="ex-title"><span class="ex-num">3</span>Reading a table</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">Use the table to answer: How many people visited the library on Wednesday?</div>
+      <table class="data-table">
+        <tr><th>Day</th><th>Visitors</th></tr>
+        <tr><td>Monday</td><td>45</td></tr>
+        <tr><td>Tuesday</td><td>38</td></tr>
+        <tr><td>Wednesday</td><td>62</td></tr>
+        <tr><td>Thursday</td><td>51</td></tr>
+        <tr><td>Friday</td><td>70</td></tr>
+      </table>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Find the row for <span class="calc">Wednesday</span>.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Read across to the Visitors column: <span class="calc">62</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: 62 people visited on Wednesday.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')">
+      <div class="ex-title"><span class="ex-num">4</span>Finding the total from a table</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">Using the library table above, what is the total number of visitors from Monday to Friday?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">List all values: <span class="calc">45, 38, 62, 51, 70</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Add them up: <span class="calc">45 + 38 = 83</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt"><span class="calc">83 + 62 = 145</span></span></li>
+        <li class="step"><span class="snum">4</span><span class="stxt"><span class="calc">145 + 51 = 196</span></span></li>
+        <li class="step"><span class="snum">5</span><span class="stxt"><span class="calc">196 + 70 = 266</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: 266 visitors in total.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')">
+      <div class="ex-title"><span class="ex-num">5</span>Finding the mode</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A class records the number of siblings each student has: 1, 2, 0, 1, 3, 1, 2, 1, 0, 2. What is the mode?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Count how many times each number appears:<br>0 appears: 2 times · 1 appears: <span class="calc">4 times</span> · 2 appears: 3 times · 3 appears: 1 time</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">The most frequent value is <span class="calc">1</span>.</span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: The mode is 1.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')">
+      <div class="ex-title"><span class="ex-num">6</span>Reading a timetable</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A bus timetable shows: Stop A: 08:00, 08:30, 09:00. Stop B: 08:15, 08:45, 09:15. If you need to be at Stop B by 08:50, which bus should you catch at Stop A?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">You need to arrive at Stop B by 08:50.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Check Stop B times: 08:15 ✓, 08:45 ✓, 09:15 ✗ (too late)</span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">The 08:45 arrival is within time. This bus leaves Stop A at <span class="calc">08:30</span>.</span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: Catch the 08:30 bus from Stop A — it arrives at Stop B at 08:45.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRACTICE -->
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">A bar chart shows sales of sandwiches: Cheese 15, Tuna 20, Egg 8, Ham 12.</div>
+    <div class="pq-sub">Which filling was most popular?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','Cheese sold 15 — not the highest. Tuna sold 20, which is higher.')">Cheese</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Tuna sold 20 — the highest number.')">Tuna</button>
+      <button class="opt" onclick="checkP(this,'wrong','Egg sold only 8 — the lowest of all fillings.')">Egg</button>
+      <button class="opt" onclick="checkP(this,'wrong','Ham sold 12 — not the highest. Tuna at 20 is the most popular.')">Ham</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">Sandwiches sold: Cheese 15, Tuna 20, Egg 8, Ham 12.</div>
+    <div class="pq-sub">How many sandwiches were sold in total?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','45 is not correct. 15+20+8+12=55.')">45</button>
+      <button class="opt" onclick="checkP(this,'wrong','50 is not correct. Add carefully: 15+20=35, 35+8=43, 43+12=55.')">50</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 15+20+8+12 = 55.')">55</button>
+      <button class="opt" onclick="checkP(this,'wrong','60 is too high. 15+20+8+12=55.')">60</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">A tally shows: ☑️ Monday: |||| || &nbsp; Tuesday: |||| |||| &nbsp; Wednesday: ||||</div>
+    <div class="pq-sub">How many were recorded on Tuesday?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','7 is Monday\'s count (5+2=7). Tuesday shows two full groups of 5.')">7</button>
+      <button class="opt" onclick="checkP(this,'wrong','5 is only one group. Tuesday has two groups: |||| |||| = 10.')">5</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! |||| |||| = two groups of 5 = 10.')">10</button>
+      <button class="opt" onclick="checkP(this,'wrong','4 is Wednesday\'s count. Tuesday has two groups of 5.')">4</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">A table shows test scores: Ali 72, Beth 85, Carlos 68, Dana 85, Eve 91.</div>
+    <div class="pq-sub">What is the mode (most common score)?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','72 appears only once. Look for the score that appears more than once.')">72</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 85 appears twice (Beth and Dana) — more than any other score.')">85</button>
+      <button class="opt" onclick="checkP(this,'wrong','91 appears only once — Eve\'s score.')">91</button>
+      <button class="opt" onclick="checkP(this,'wrong','68 appears only once — Carlos\'s score.')">68</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">A bus timetable: Town centre departs 10:00, 10:30, 11:00. Hospital arrives 10:20, 10:50, 11:20.</div>
+    <div class="pq-sub">You need to be at the hospital by 11:00. Which bus should you catch?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'correct','Correct! The 10:30 bus arrives at 10:50, which is before 11:00.')">10:30 bus</button>
+      <button class="opt" onclick="checkP(this,'wrong','The 11:00 bus arrives at 11:20, which is after your deadline.')">11:00 bus</button>
+      <button class="opt" onclick="checkP(this,'wrong','The 10:00 bus also works (arrives 10:20), but 10:30 is the latest you could take.')">Either 10:00 or 10:30</button>
+      <button class="opt" onclick="checkP(this,'wrong','Any of the three buses: the 11:00 bus arrives at 11:20, which is too late.')">Any of the three</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">A bar chart shows monthly rainfall (mm): Jan 80, Feb 65, Mar 50, Apr 40, May 30.</div>
+    <div class="pq-sub">How much more rain fell in January than in May?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','40 mm is the difference between Jan (80) and Apr (40). For Jan vs May: 80−30=50.')">40 mm</button>
+      <button class="opt" onclick="checkP(this,'wrong','30 mm is May\'s rainfall, not the difference. 80−30=50 mm.')">30 mm</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 80 − 30 = 50 mm more in January.')">50 mm</button>
+      <button class="opt" onclick="checkP(this,'wrong','110 mm is Jan + May added together, not the difference.')">110 mm</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 7</div>
+    <div class="pq-text">A pictogram uses 🙂 to represent 4 people. A row shows 🙂🙂🙂 and a half symbol.</div>
+    <div class="pq-sub">How many people does the row represent?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','3 symbols = 12 people, plus a half symbol = 2 more. Total = 14.')">12</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 3 full symbols = 3×4=12. Half symbol = 2. Total = 14.')">14</button>
+      <button class="opt" onclick="checkP(this,'wrong','3.5 is the number of symbols, not the number of people.')">3.5</button>
+      <button class="opt" onclick="checkP(this,'wrong','16 would be 4 full symbols. There are 3.5 symbols here: 3.5×4=14.')">16</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 8</div>
+    <div class="pq-text">Weekly gym attendance: Mon 24, Tue 18, Wed 30, Thu 22, Fri 26.</div>
+    <div class="pq-sub">On which day was attendance lowest?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','Monday had 24 visits — not the lowest. Tuesday had 18.')">Monday</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Tuesday had 18 visits — the lowest of the week.')">Tuesday</button>
+      <button class="opt" onclick="checkP(this,'wrong','Wednesday had 30 — the highest, not the lowest.')">Wednesday</button>
+      <button class="opt" onclick="checkP(this,'wrong','Thursday had 22 visits — more than Tuesday\'s 18.')">Thursday</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="entry.html" class="back-topics-btn">🌱 All Entry Topics</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.getElementById(id).classList.add('visible');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (id === 'quiz' && !quizStarted) startQuiz();
+}
+function toggleEx(id) { document.getElementById(id).classList.toggle('open'); }
+function checkP(btn, result, msg) {
+  const card = btn.closest('.pq-card');
+  card.querySelectorAll('.opt').forEach(b => b.disabled = true);
+  btn.classList.add(result);
+  const fb = card.querySelector('.fb');
+  fb.textContent = (result === 'correct' ? '✅ ' : '❌ ') + msg;
+  fb.className = 'fb ' + result;
+}
+const quizData = [
+  { q: 'A bar chart shows books read: Fiction 18, Non-fiction 12, Comics 6. How many more fiction books were read than comics?', opts: ['6','8','12','18'], correct: 2, explanation: '18 − 6 = 12.' },
+  { q: 'A tally shows: |||| |||| ||| How many does this represent?', opts: ['10','12','13','15'], correct: 2, explanation: 'Two groups of 5 = 10, plus 3 more = 13.' },
+  { q: 'A table shows weekly sales: Mon 34, Tue 28, Wed 45, Thu 38, Fri 55. What was the total for the week?', opts: ['180','190','200','210'], correct: 2, explanation: '34+28+45+38+55 = 200.' },
+  { q: 'Test scores: 7, 8, 7, 9, 7, 8, 6. What is the mode?', opts: ['6','7','8','9'], correct: 1, explanation: '7 appears 3 times — more than any other value.' },
+  { q: 'A pictogram uses ⭐ to represent 5 items. A row shows 4 full stars. How many items?', opts: ['4','10','15','20'], correct: 3, explanation: '4 × 5 = 20 items.' },
+  { q: 'Bar chart — rainfall: Spring 120mm, Summer 40mm, Autumn 90mm, Winter 150mm. Which season had the least rain?', opts: ['Spring','Summer','Autumn','Winter'], correct: 1, explanation: 'Summer had 40mm — the lowest value.' },
+  { q: 'A train timetable: London 09:00, 09:30, 10:00. Brighton 10:15, 10:45, 11:15. You need to reach Brighton by 10:50. Which train?', opts: ['09:00','09:30','10:00','Any of them'], correct: 1, explanation: 'The 09:30 arrives at 10:45 which is before 10:50. The 10:00 train arrives at 11:15 — too late.' },
+  { q: 'Monthly temperatures: Jan 3°C, Feb 4°C, Mar 7°C, Apr 11°C, May 15°C. What is the difference between May and January?', opts: ['8°C','10°C','11°C','12°C'], correct: 3, explanation: '15 − 3 = 12°C.' },
+  { q: 'A table shows: Mon 15 visitors, Tue 22, Wed 18, Thu 22, Fri 30. What is the mode?', opts: ['15','18','22','30'], correct: 2, explanation: '22 appears twice (Tuesday and Thursday) — more than any other value.' },
+  { q: 'Bar chart shows fruit sold: Apples 35, Bananas 20, Pears 15, Grapes 30. What fraction of total sales were pears?', opts: ['1/4','1/6','1/8','3/20'], correct: 1, explanation: 'Total = 35+20+15+30 = 100. Pears = 15/100 = 3/20. Wait — 15/100 = 3/20, but that\'s not the same as 1/6. The answer 3/20 is correct.' },
+];
+// Fix quiz q10
+quizData[9] = { q: 'Bar chart shows fruit sold: Apples 35, Bananas 20, Pears 15, Grapes 30. How many more apples than pears were sold?', opts: ['10','15','20','25'], correct: 2, explanation: '35 − 15 = 20 more apples.' };
+
+let qIdx = 0, score = 0, answered = false, quizStarted = false;
+function startQuiz() {
+  qIdx = 0; score = 0; answered = false; quizStarted = true;
+  document.getElementById('scoreScreen').classList.remove('show');
+  document.getElementById('quizMain').style.display = 'block';
+  renderQ();
+}
+function renderQ() {
+  answered = false;
+  const q = quizData[qIdx], total = quizData.length;
+  const prog = document.getElementById('qprog');
+  prog.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'qdot' + (i < qIdx ? ' done' : i === qIdx ? ' current' : '');
+    prog.appendChild(d);
+  }
+  document.getElementById('qmeta').textContent = `Question ${qIdx + 1} of ${total}`;
+  document.getElementById('qq').textContent = q.q;
+  const opts = document.getElementById('qopts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'qopt'; b.textContent = o;
+    b.onclick = () => answerQ(i, b);
+    opts.appendChild(b);
+  });
+  document.getElementById('qfb').className = 'qfb';
+  document.getElementById('qfb').textContent = '';
+  document.getElementById('nextBtn').className = 'next-btn';
+}
+function answerQ(idx, btn) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[qIdx];
+  document.querySelectorAll('.qopt').forEach(b => b.disabled = true);
+  const fb = document.getElementById('qfb');
+  if (idx === q.correct) {
+    score++; btn.classList.add('correct');
+    fb.className = 'qfb correct'; fb.textContent = '✅ Correct! ' + q.explanation;
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.qopt')[q.correct].classList.add('correct');
+    fb.className = 'qfb wrong'; fb.textContent = '❌ Not quite. ' + q.explanation;
+  }
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+function nextQ() {
+  qIdx++;
+  if (qIdx >= quizData.length) showScore();
+  else renderQ();
+}
+function showScore() {
+  document.getElementById('quizMain').style.display = 'none';
+  document.getElementById('scoreScreen').classList.add('show');
+  const pct = Math.round(score / quizData.length * 100);
+  document.getElementById('scoreBig').textContent = `${score}/${quizData.length}`;
+  document.getElementById('scoreGrade').textContent = pct >= 85 ? '⭐ Excellent!' : pct >= 65 ? '👍 Good effort!' : pct >= 50 ? '💪 Getting there!' : '📖 Keep practising!';
+  document.getElementById('scoreMsg').textContent = pct >= 85
+    ? 'Amazing — you have completed all four Entry Level topics! Head back to try any topic again, or check back soon for Level 1.'
+    : pct >= 65 ? 'Good work! Revisit any Worked Examples you found tricky, then try the quiz again.'
+    : 'Keep at it — review the Introduction and Examples, then give the quiz another go. You can do it!';
+}
+</script>
+</body>
+</html>

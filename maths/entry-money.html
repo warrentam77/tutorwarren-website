@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money & Finance — Entry Level — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eef5fa;
+    --card: #ffffff;
+    --text: #0e1e2a;
+    --muted: #4a6278;
+    --accent: #1a5f8a;
+    --accent-mid: #2481bb;
+    --accent-light: #e0edf5;
+    --accent-border: #9ec8e0;
+    --green: #2d7a22;
+    --shadow: 0 3px 18px rgba(14,30,42,0.09);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 10% 20%, rgba(26,95,138,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  nav {
+    background: white; border-bottom: 2px solid var(--accent-border);
+    padding: 0.85rem 2rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+  }
+  .back-btn { display: flex; align-items: center; gap: 0.4rem; font-size: 0.83rem; font-weight: 700; color: var(--accent); text-decoration: none; padding: 0.3rem 0.7rem; border-radius: 6px; transition: background 0.15s; }
+  .back-btn:hover { background: var(--accent-light); }
+  .nav-sep { color: var(--accent-border); }
+  .nav-crumb { font-size: 0.83rem; font-weight: 700; color: var(--muted); text-decoration: none; }
+  .nav-crumb:hover { color: var(--accent); }
+  .nav-current { font-size: 0.83rem; font-weight: 800; color: var(--text); }
+
+  .topic-header {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+    padding: 2.5rem 2rem 2rem; color: white; position: relative; overflow: hidden;
+  }
+  .topic-header::after { content: '💷'; position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); font-size: 6rem; opacity: 0.15; pointer-events: none; }
+  .topic-tag { display: inline-block; background: rgba(255,255,255,0.2); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 3px; margin-bottom: 0.8rem; }
+  .topic-header h1 { font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; line-height: 1.1; margin-bottom: 0.6rem; }
+  .topic-header p { font-size: 0.95rem; opacity: 0.88; max-width: 500px; line-height: 1.6; }
+
+  .tab-bar { background: white; border-bottom: 2px solid var(--accent-border); display: flex; overflow-x: auto; }
+  .tab-btn { padding: 0.9rem 1.5rem; border: none; background: transparent; font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 800; color: var(--muted); cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: color 0.15s; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 2rem; }
+  .section { display: none; }
+  .section.visible { display: block; }
+
+  .intro-box { background: white; border-radius: 12px; border-left: 5px solid var(--accent); padding: 1.6rem; margin-bottom: 1.4rem; box-shadow: var(--shadow); }
+  .intro-box h2 { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 900; margin-bottom: 0.7rem; color: var(--accent); }
+  .intro-box p { font-size: 0.9rem; line-height: 1.75; color: var(--muted); margin-bottom: 0.7rem; }
+  .intro-box p:last-child { margin-bottom: 0; }
+  .intro-box strong { color: var(--text); }
+  .key-facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 0.7rem; margin: 1rem 0; }
+  .fact-chip { background: var(--accent-light); border: 1.5px solid var(--accent-border); border-radius: 8px; padding: 0.8rem; text-align: center; }
+  .fact-val { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 900; color: var(--accent); }
+  .fact-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-top: 0.2rem; }
+  .tip-box { background: #fff8e0; border: 1.5px solid #f0d870; border-radius: 8px; padding: 0.9rem 1.1rem; font-size: 0.88rem; line-height: 1.6; margin-top: 1rem; }
+  .tip-box strong { color: #8a6a00; }
+
+  .example-card { background: white; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 1.2rem; overflow: hidden; border: 1.5px solid #f0f0f0; }
+  .ex-header { padding: 0.9rem 1.3rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; border-bottom: 1.5px solid #f0f0f0; transition: background 0.15s; }
+  .ex-header:hover { background: var(--accent-light); }
+  .ex-title { font-weight: 800; font-size: 0.93rem; display: flex; align-items: center; gap: 0.6rem; }
+  .ex-num { background: var(--accent); color: white; font-size: 0.7rem; font-weight: 900; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .chevron { color: var(--muted); transition: transform 0.25s; font-size: 0.85rem; }
+  .example-card.open .chevron { transform: rotate(180deg); }
+  .ex-body { display: none; padding: 1.3rem; }
+  .example-card.open .ex-body { display: block; }
+  .q-box { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 0.85rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.93rem; line-height: 1.6; margin-bottom: 1.1rem; font-weight: 700; }
+  .steps { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+  .step { display: flex; gap: 0.9rem; align-items: flex-start; }
+  .snum { background: var(--accent-light); color: var(--accent); font-weight: 900; font-size: 0.78rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; border: 2px solid var(--accent-border); }
+  .stxt { font-size: 0.9rem; line-height: 1.65; }
+  .calc { font-family: monospace; background: #e8f2f8; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.88rem; color: var(--accent); font-weight: 700; }
+  .ans-box { margin-top: 0.9rem; padding: 0.75rem 1rem; background: #edf7ea; border: 1.5px solid #b8ddb0; border-radius: 8px; font-size: 0.9rem; color: #2d5a22; font-weight: 700; }
+
+  .pq-card { background: white; border-radius: 12px; box-shadow: var(--shadow); padding: 1.4rem; margin-bottom: 1.1rem; border: 1.5px solid #f0f0f0; }
+  .pq-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+  .pq-text { font-size: 0.95rem; line-height: 1.65; font-weight: 700; margin-bottom: 1.1rem; }
+  .opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; margin-bottom: 0.6rem; }
+  .opt { padding: 0.65rem 0.9rem; border-radius: 8px; border: 2px solid #e8e8e8; background: #fafafa; font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; text-align: left; transition: all 0.15s; }
+  .opt:hover:not(:disabled) { border-color: var(--accent-border); background: var(--accent-light); }
+  .opt.correct { border-color: #78c878; background: #edf7ea; color: #1a5a1a; }
+  .opt.wrong { border-color: #e89090; background: #fdf0f0; color: #8a1a1a; }
+  .opt:disabled { cursor: default; }
+  .fb { font-size: 0.85rem; padding: 0.65rem 0.9rem; border-radius: 7px; line-height: 1.5; display: none; margin-top: 0.3rem; }
+  .fb.correct { display: block; background: #edf7ea; border: 1.5px solid #b8ddb0; color: #1a5a1a; }
+  .fb.wrong { display: block; background: #fdf0f0; border: 1.5px solid #f0b8b8; color: #7a1a1a; }
+
+  .quiz-container { max-width: 640px; }
+  .qprog { display: flex; gap: 0.35rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .qdot { height: 6px; flex: 1; min-width: 20px; max-width: 36px; border-radius: 3px; background: #e0e0e0; transition: background 0.3s; }
+  .qdot.done { background: var(--accent); }
+  .qdot.current { background: var(--accent-mid); }
+  .qcard { background: white; border-radius: 12px; box-shadow: var(--shadow); padding: 1.8rem; border: 1.5px solid #f0f0f0; }
+  .qmeta { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.9rem; }
+  .qq { font-size: 1.02rem; line-height: 1.65; font-weight: 700; margin-bottom: 1.4rem; }
+  .qopts { display: flex; flex-direction: column; gap: 0.55rem; }
+  .qopt { padding: 0.8rem 1.1rem; border-radius: 8px; border: 2px solid #e8e8e8; background: #fafafa; font-family: 'Nunito', sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer; text-align: left; transition: all 0.15s; }
+  .qopt:hover:not(:disabled) { border-color: var(--accent-border); background: var(--accent-light); }
+  .qopt.correct { border-color: #78c878; background: #edf7ea; color: #1a5a1a; }
+  .qopt.wrong { border-color: #e89090; background: #fdf0f0; color: #8a1a1a; }
+  .qopt:disabled { cursor: default; }
+  .qfb { margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.88rem; line-height: 1.55; display: none; }
+  .qfb.correct { display: block; background: #edf7ea; border: 1.5px solid #b8ddb0; color: #1a5a1a; }
+  .qfb.wrong { display: block; background: #fdf0f0; border: 1.5px solid #f0b8b8; color: #7a1a1a; }
+  .next-btn { margin-top: 1.1rem; padding: 0.7rem 1.6rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 800; cursor: pointer; display: none; transition: filter 0.15s; }
+  .next-btn:hover { filter: brightness(0.92); }
+  .next-btn.show { display: inline-block; }
+  .score-screen { display: none; text-align: center; padding: 3rem 1rem; }
+  .score-screen.show { display: block; }
+  .score-big { font-family: 'Fraunces', serif; font-size: 5rem; font-weight: 900; color: var(--accent); line-height: 1; }
+  .score-grade { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-top: 0.4rem; }
+  .score-msg { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-top: 1rem; max-width: 440px; margin-left: auto; margin-right: auto; }
+  .retry-btn { margin-top: 1.5rem; padding: 0.75rem 2rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; cursor: pointer; }
+  .next-topic-btn { margin-top: 0.8rem; padding: 0.75rem 2rem; background: #7a2d7a; color: white; border: none; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; cursor: pointer; text-decoration: none; display: inline-block; margin-left: 0.5rem; }
+  @media (max-width: 500px) { main { padding: 1.2rem; } .opts-grid { grid-template-columns: 1fr; } .topic-header::after { display: none; } }
+</style>
+</head>
+<body>
+
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="entry.html" class="nav-crumb">Entry Level</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Money &amp; Finance</span>
+</nav>
+
+<div class="topic-header">
+  <div class="topic-tag">Entry Level · Topic 2</div>
+  <h1>Money &amp; Finance</h1>
+  <p>Counting money, calculating change, comparing prices and simple budgeting</p>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">💷 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+
+<main>
+
+<!-- INTRO -->
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>Counting &amp; comparing money</h2>
+    <p>In the UK we use <strong>pounds (£)</strong> and <strong>pence (p)</strong>. There are 100 pence in £1. When writing amounts, the decimal point separates pounds from pence — so <strong>£2.35</strong> means 2 pounds and 35 pence.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">£1.00</div><div class="fact-label">= 100p</div></div>
+      <div class="fact-chip"><div class="fact-val">£0.50</div><div class="fact-label">= 50p = ½ of £1</div></div>
+      <div class="fact-chip"><div class="fact-val">£0.25</div><div class="fact-label">= 25p = ¼ of £1</div></div>
+      <div class="fact-chip"><div class="fact-val">£0.10</div><div class="fact-label">= 10p = 10% of £1</div></div>
+    </div>
+    <div class="tip-box"><strong>💡 Tip:</strong> Always line up decimal points when adding or comparing money amounts. £1.5 and £1.50 are the same — always write two decimal places with money.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Calculating change</h2>
+    <p>Change is the money you get back when you pay more than something costs. To work out change, <strong>subtract the price from the amount paid</strong>.</p>
+    <p>You can also use the <strong>"counting on"</strong> method — start at the price and count up to what you paid.</p>
+    <div class="tip-box"><strong>💡 Example:</strong> You buy something for £2.60 and pay with £5.00. Change = £5.00 − £2.60 = £2.40.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Simple budgeting</h2>
+    <p>A <strong>budget</strong> is a plan for spending money. You add up what you need to spend and check whether you have enough. If you spend less than you have, you have money <strong>left over</strong>. If you spend more, you have a <strong>shortfall</strong>.</p>
+    <div class="key-facts">
+      <div class="fact-chip"><div class="fact-val">Total spent</div><div class="fact-label">Add up all items</div></div>
+      <div class="fact-chip"><div class="fact-val">Budget left</div><div class="fact-label">Budget − spent</div></div>
+      <div class="fact-chip"><div class="fact-val">Best value</div><div class="fact-label">Cost ÷ quantity</div></div>
+    </div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Reading receipts &amp; bills</h2>
+    <p>Receipts list items and their prices. Bills show how much you owe. You should be able to <strong>add up prices</strong>, check the total, and spot mistakes.</p>
+    <div class="tip-box"><strong>💡 Always check:</strong> Add up each item yourself and compare to the total shown. Look for any items you didn't order or any wrong prices.</div>
+  </div>
+
+</div>
+
+<!-- EXAMPLES -->
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')">
+      <div class="ex-title"><span class="ex-num">1</span>Calculating change</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">You buy a sandwich for £3.45 and a drink for £1.20. You pay with a £10 note. How much change do you get?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Add the items: <span class="calc">£3.45 + £1.20 = £4.65</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Subtract from amount paid: <span class="calc">£10.00 − £4.65 = £5.35</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: You get £5.35 change.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')">
+      <div class="ex-title"><span class="ex-num">2</span>Finding the best value</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">Orange juice: small bottle 500 ml for £1.20, or large bottle 1500 ml for £3.30. Which is better value?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Find the cost per 100 ml for each. Small: <span class="calc">£1.20 ÷ 5 = 24p per 100 ml</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Large: <span class="calc">£3.30 ÷ 15 = 22p per 100 ml</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">22p &lt; 24p, so the large bottle is better value.</span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: The large bottle is better value at 22p per 100 ml.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')">
+      <div class="ex-title"><span class="ex-num">3</span>Simple budgeting</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">Kezia has £25 to spend on groceries. She buys bread (£1.20), milk (£1.10), pasta (£0.85) and chicken (£4.50). How much does she spend and how much is left?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Add up items: <span class="calc">£1.20 + £1.10 + £0.85 + £4.50 = £7.65</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Money left: <span class="calc">£25.00 − £7.65 = £17.35</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: She spends £7.65 and has £17.35 left.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')">
+      <div class="ex-title"><span class="ex-num">4</span>Reading a receipt</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">A receipt shows: Coffee £2.40, Cake £1.85, Toast £1.30. The receipt total shows £5.65. Is this correct?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Add the items yourself: <span class="calc">£2.40 + £1.85 + £1.30</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">£2.40 + £1.85 = £4.25</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt"><span class="calc">£4.25 + £1.30 = £5.55</span></span></li>
+        <li class="step"><span class="snum">4</span><span class="stxt">The receipt shows £5.65 but the correct total is £5.55 — there is an error of 10p.</span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: No — the correct total is £5.55, not £5.65. The receipt is wrong.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')">
+      <div class="ex-title"><span class="ex-num">5</span>Comparing prices</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">Three shops sell the same book: Shop A £8.99, Shop B £7.50, Shop C £9.20. Which is cheapest? How much cheaper than Shop C?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Compare prices: <span class="calc">£8.99, £7.50, £9.20</span>. The smallest is <span class="calc">£7.50</span> — Shop B.</span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Difference: <span class="calc">£9.20 − £7.50 = £1.70</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: Shop B is cheapest at £7.50, which is £1.70 less than Shop C.</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')">
+      <div class="ex-title"><span class="ex-num">6</span>Splitting a bill equally</div>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="ex-body">
+      <div class="q-box">Four friends share a meal. The total bill is £36.80. How much does each person pay?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Divide the total by the number of people: <span class="calc">£36.80 ÷ 4</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">£36.80 ÷ 4 = £9.20</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Answer: Each person pays £9.20.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRACTICE -->
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">You buy a magazine for £2.80 and pay with a £5 note. How much change do you get?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£2.80 is the price, not the change. Change = £5.00 − £2.80.')">£2.80</button>
+      <button class="opt" onclick="checkP(this,'wrong','£2.00 is too little. £5.00 − £2.80 = £2.20.')">£2.00</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £5.00 − £2.80 = £2.20.')">£2.20</button>
+      <button class="opt" onclick="checkP(this,'wrong','£3.20 is too much. Check: £2.80 + £2.20 = £5.00 ✓')">£3.20</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">Jamie has £15. He buys items costing £4.50, £3.20 and £2.10. How much does he have left?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','Add first: £4.50+£3.20+£2.10=£9.80. Then £15−£9.80=£5.20.')">£4.80</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £4.50+£3.20+£2.10=£9.80. £15.00−£9.80=£5.20.')">£5.20</button>
+      <button class="opt" onclick="checkP(this,'wrong','Check your addition: £4.50+£3.20+£2.10=£9.80, not £10.20.')">£4.80</button>
+      <button class="opt" onclick="checkP(this,'wrong','£9.80 is how much he spent, not how much is left.')">£9.80</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">Two bags of flour: 500g for 80p, or 1.5kg for £2.10. Which is better value?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'correct','Correct! Small: 80p÷5=16p per 100g. Large: 210p÷15=14p per 100g. Large is cheaper per 100g.')">1.5 kg bag</button>
+      <button class="opt" onclick="checkP(this,'wrong','Compare per 100g: small=16p, large=14p. The large bag is better value.')">500 g bag</button>
+      <button class="opt" onclick="checkP(this,'wrong','They are not the same value — divide cost by amount to compare.')">They are the same</button>
+      <button class="opt" onclick="checkP(this,'wrong','You need to compare cost per 100g to decide which is better value.')">Cannot tell</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">A receipt shows: Tea £1.60, Biscuits £0.90, Juice £1.75. What should the total be?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','Check: £1.60+£0.90=£2.50, then £2.50+£1.75=£4.25.')">£3.95</button>
+      <button class="opt" onclick="checkP(this,'wrong','£4.15 is too low. £1.60+£0.90+£1.75=£4.25.')">£4.15</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £1.60+£0.90=£2.50. £2.50+£1.75=£4.25.')">£4.25</button>
+      <button class="opt" onclick="checkP(this,'wrong','£4.35 is too high. Add carefully: £1.60+£0.90+£1.75=£4.25.')">£4.35</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">5 friends share a taxi fare of £22.50 equally. How much does each person pay?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£3.50 × 5 = £17.50, not £22.50. Divide £22.50 by 5.')">£3.50</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £22.50 ÷ 5 = £4.50.')">£4.50</button>
+      <button class="opt" onclick="checkP(this,'wrong','£5.00 × 5 = £25, not £22.50.')">£5.00</button>
+      <button class="opt" onclick="checkP(this,'wrong','£5.50 × 5 = £27.50, not £22.50.')">£5.50</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">Leila earns £420 per week. She spends £180 on rent, £60 on food and £45 on travel. How much does she have left?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','Add spending: £180+£60+£45=£285. £420−£285=£135.')">£115</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £180+£60+£45=£285. £420−£285=£135.')">£135</button>
+      <button class="opt" onclick="checkP(this,'wrong','£285 is how much she spent, not what is left.')">£285</button>
+      <button class="opt" onclick="checkP(this,'wrong','Check your subtraction: £420−£285=£135, not £145.')">£145</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 7</div>
+    <div class="pq-text">A coat costs £48. It is reduced by £12 in a sale. What percentage discount is this?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','20%: £12÷£48=0.25=25%. Not 20%.')">20%</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £12÷£48=0.25=25%. A quarter of the price off.')">25%</button>
+      <button class="opt" onclick="checkP(this,'wrong','30%: 30% of £48=£14.40, not £12.')">30%</button>
+      <button class="opt" onclick="checkP(this,'wrong','12%: 12% of £48=£5.76, not £12.')">12%</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 8</div>
+    <div class="pq-text">You have £30. You want to buy 3 items at £8.99 each. Do you have enough?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','3 × £8.99 = £26.97, which is less than £30, so you do have enough.')">No — not enough</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 3 × £8.99 = £26.97. £30 − £26.97 = £3.03 left over.')">Yes — £3.03 left over</button>
+      <button class="opt" onclick="checkP(this,'wrong','3 × £8.99 = £26.97, not £27.97. You have £3.03 left, not £2.03.')">Yes — £2.03 left over</button>
+      <button class="opt" onclick="checkP(this,'wrong','3 × £9 = £27, so approximately yes, and exactly £26.97. You have enough.')">Exactly enough</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="entry-measures.html" class="next-topic-btn">Next Topic: Measures →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.getElementById(id).classList.add('visible');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (id === 'quiz' && !quizStarted) startQuiz();
+}
+function toggleEx(id) { document.getElementById(id).classList.toggle('open'); }
+function checkP(btn, result, msg) {
+  const card = btn.closest('.pq-card');
+  card.querySelectorAll('.opt').forEach(b => b.disabled = true);
+  btn.classList.add(result);
+  const fb = card.querySelector('.fb');
+  fb.textContent = (result === 'correct' ? '✅ ' : '❌ ') + msg;
+  fb.className = 'fb ' + result;
+}
+
+const quizData = [
+  { q: 'You buy a coffee for £2.35 and pay with £5. What change do you get?', opts: ['£2.35','£2.55','£2.65','£3.00'], correct: 2, explanation: '£5.00 − £2.35 = £2.65.' },
+  { q: 'Four friends share a pizza costing £18.40 equally. How much each?', opts: ['£4.10','£4.60','£4.70','£5.00'], correct: 1, explanation: '£18.40 ÷ 4 = £4.60.' },
+  { q: 'A coat is £65. It is reduced by £15 in a sale. What is the sale price?', opts: ['£40','£45','£50','£55'], correct: 2, explanation: '£65 − £15 = £50.' },
+  { q: 'Which is the cheapest? A) £3.99  B) £4.10  C) £3.90  D) £4.01', opts: ['£3.99','£4.10','£3.90','£4.01'], correct: 2, explanation: '£3.90 is the smallest amount.' },
+  { q: 'You spend £12.40, £5.60 and £3.00. What is the total?', opts: ['£19.00','£20.00','£21.00','£22.00'], correct: 2, explanation: '£12.40 + £5.60 = £18.00. £18.00 + £3.00 = £21.00.' },
+  { q: 'A phone bill is £34.00 per month. How much is that per year?', opts: ['£340','£380','£400','£408'], correct: 3, explanation: '£34 × 12 = £408.' },
+  { q: 'Sam has £50. He buys items costing £8.99 and £14.50. How much is left?', opts: ['£23.41','£25.61','£26.51','£28.51'], correct: 2, explanation: '£8.99 + £14.50 = £23.49. £50 − £23.49 = £26.51.' },
+  { q: 'A receipt shows items of £2.50, £1.80, £3.20 and £0.95. What should the total be?', opts: ['£8.25','£8.35','£8.45','£8.55'], correct: 2, explanation: '£2.50+£1.80=£4.30. £4.30+£3.20=£7.50. £7.50+£0.95=£8.45.' },
+  { q: 'Which is better value: 400ml for £1.60, or 1 litre for £3.60?', opts: ['400 ml bottle','1 litre bottle','They are equal','Cannot tell'], correct: 0, explanation: '400ml: 40p per 100ml. 1L: 36p per 100ml. Actually the 1L is better — 36p vs 40p per 100ml.' },
+  { q: 'You earn £520 a week. Your total expenses are £390. How much do you save?', opts: ['£100','£110','£120','£130'], correct: 3, explanation: '£520 − £390 = £130.' },
+];
+
+let qIdx = 0, score = 0, answered = false, quizStarted = false;
+function startQuiz() {
+  qIdx = 0; score = 0; answered = false; quizStarted = true;
+  document.getElementById('scoreScreen').classList.remove('show');
+  document.getElementById('quizMain').style.display = 'block';
+  renderQ();
+}
+function renderQ() {
+  answered = false;
+  const q = quizData[qIdx], total = quizData.length;
+  const prog = document.getElementById('qprog');
+  prog.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'qdot' + (i < qIdx ? ' done' : i === qIdx ? ' current' : '');
+    prog.appendChild(d);
+  }
+  document.getElementById('qmeta').textContent = `Question ${qIdx + 1} of ${total}`;
+  document.getElementById('qq').textContent = q.q;
+  const opts = document.getElementById('qopts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'qopt'; b.textContent = o;
+    b.onclick = () => answerQ(i, b);
+    opts.appendChild(b);
+  });
+  document.getElementById('qfb').className = 'qfb';
+  document.getElementById('qfb').textContent = '';
+  document.getElementById('nextBtn').className = 'next-btn';
+}
+function answerQ(idx, btn) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[qIdx];
+  document.querySelectorAll('.qopt').forEach(b => b.disabled = true);
+  const fb = document.getElementById('qfb');
+  if (idx === q.correct) {
+    score++; btn.classList.add('correct');
+    fb.className = 'qfb correct'; fb.textContent = '✅ Correct! ' + q.explanation;
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.qopt')[q.correct].classList.add('correct');
+    fb.className = 'qfb wrong'; fb.textContent = '❌ Not quite. ' + q.explanation;
+  }
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+function nextQ() {
+  qIdx++;
+  if (qIdx >= quizData.length) showScore();
+  else renderQ();
+}
+function showScore() {
+  document.getElementById('quizMain').style.display = 'none';
+  document.getElementById('scoreScreen').classList.add('show');
+  const pct = Math.round(score / quizData.length * 100);
+  document.getElementById('scoreBig').textContent = `${score}/${quizData.length}`;
+  document.getElementById('scoreGrade').textContent = pct >= 85 ? '⭐ Excellent!' : pct >= 65 ? '👍 Good effort!' : pct >= 50 ? '💪 Getting there!' : '📖 Keep practising!';
+  document.getElementById('scoreMsg').textContent = pct >= 85
+    ? 'Great work with money and finance! You can confidently handle everyday money calculations. Move on to Measures when ready.'
+    : pct >= 65 ? 'Good effort! Revisit the Worked Examples for any questions you found tricky, then try again.'
+    : 'Keep going — work through the Introduction and Examples again, then give the quiz another go.';
+}
+</script>
+</body>
+</html>

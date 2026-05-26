@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money & Finance — Level 2 — Functional Skills Maths</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#edf8f4;--card:#fff;--text:#002a1a;--muted:#2a6048;--accent:#005a3a;--accent-mid:#007a50;--accent-light:#e8f5f0;--accent-border:#80c8a8;--next:#003a7a;--shadow:0 3px 18px rgba(0,42,26,0.09);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(0,90,58,0.06) 0%,transparent 50%);pointer-events:none;}
+  nav{background:white;border-bottom:2px solid var(--accent-border);padding:0.85rem 2rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;}
+  .back-btn{display:flex;align-items:center;gap:0.4rem;font-size:0.83rem;font-weight:700;color:var(--accent);text-decoration:none;padding:0.3rem 0.7rem;border-radius:6px;transition:background 0.15s;}
+  .back-btn:hover{background:var(--accent-light);}
+  .nav-sep{color:var(--accent-border);}
+  .nav-crumb{font-size:0.83rem;font-weight:700;color:var(--muted);text-decoration:none;}
+  .nav-crumb:hover{color:var(--accent);}
+  .nav-current{font-size:0.83rem;font-weight:800;color:var(--text);}
+  .topic-header{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-mid) 100%);padding:2.5rem 2rem 2rem;color:white;position:relative;overflow:hidden;}
+  .topic-header::after{content:'💷';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:6rem;opacity:0.15;pointer-events:none;}
+  .topic-tag{display:inline-block;background:rgba(255,255,255,0.2);font-size:0.68rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:3px;margin-bottom:0.8rem;}
+  .topic-header h1{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;line-height:1.1;margin-bottom:0.6rem;}
+  .topic-header p{font-size:0.95rem;opacity:0.88;max-width:500px;line-height:1.6;}
+  .tab-bar{background:white;border-bottom:2px solid var(--accent-border);display:flex;overflow-x:auto;}
+  .tab-btn{padding:0.9rem 1.5rem;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:800;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color 0.15s;}
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  main{max-width:860px;margin:0 auto;padding:2rem;}
+  .section{display:none;}.section.visible{display:block;}
+  .intro-box{background:white;border-radius:12px;border-left:5px solid var(--accent);padding:1.6rem;margin-bottom:1.4rem;box-shadow:var(--shadow);}
+  .intro-box h2{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;margin-bottom:0.7rem;color:var(--accent);}
+  .intro-box p{font-size:0.9rem;line-height:1.75;color:var(--muted);margin-bottom:0.7rem;}
+  .intro-box p:last-child{margin-bottom:0;}
+  .intro-box strong{color:var(--text);}
+  .key-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:0.7rem;margin:1rem 0;}
+  .fact-chip{background:var(--accent-light);border:1.5px solid var(--accent-border);border-radius:8px;padding:0.8rem;text-align:center;}
+  .fact-val{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--accent);line-height:1.2;}
+  .fact-label{font-size:0.75rem;font-weight:700;color:var(--muted);margin-top:0.3rem;}
+  .tip-box{background:#fff8e0;border:1.5px solid #f0d870;border-radius:8px;padding:0.9rem 1.1rem;font-size:0.88rem;line-height:1.6;margin-top:1rem;}
+  .tip-box strong{color:#8a6a00;}
+  .formula-box{background:var(--accent-light);border:2px solid var(--accent-border);border-radius:8px;padding:1rem 1.2rem;margin:0.8rem 0;font-family:monospace;font-size:0.92rem;color:var(--accent);font-weight:700;line-height:1.8;}
+  .tax-table{width:100%;border-collapse:collapse;margin:0.8rem 0;font-size:0.87rem;}
+  .tax-table th{background:var(--accent);color:white;padding:0.5rem 0.8rem;text-align:left;font-weight:800;}
+  .tax-table td{padding:0.45rem 0.8rem;border-bottom:1px solid var(--accent-border);}
+  .tax-table tr:nth-child(even) td{background:var(--accent-light);}
+  .example-card{background:white;border-radius:12px;box-shadow:var(--shadow);margin-bottom:1.2rem;overflow:hidden;border:1.5px solid #f0f0f0;}
+  .ex-header{padding:0.9rem 1.3rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;border-bottom:1.5px solid #f0f0f0;transition:background 0.15s;}
+  .ex-header:hover{background:var(--accent-light);}
+  .ex-title{font-weight:800;font-size:0.93rem;display:flex;align-items:center;gap:0.6rem;}
+  .ex-num{background:var(--accent);color:white;font-size:0.7rem;font-weight:900;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .chevron{color:var(--muted);transition:transform 0.25s;font-size:0.85rem;}
+  .example-card.open .chevron{transform:rotate(180deg);}
+  .ex-body{display:none;padding:1.3rem;}
+  .example-card.open .ex-body{display:block;}
+  .q-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:0.85rem 1rem;border-radius:0 8px 8px 0;font-size:0.93rem;line-height:1.6;margin-bottom:1.1rem;font-weight:700;}
+  .steps{list-style:none;display:flex;flex-direction:column;gap:0.8rem;}
+  .step{display:flex;gap:0.9rem;align-items:flex-start;}
+  .snum{background:var(--accent-light);color:var(--accent);font-weight:900;font-size:0.78rem;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;border:2px solid var(--accent-border);}
+  .stxt{font-size:0.9rem;line-height:1.65;}
+  .calc{font-family:monospace;background:#e0f2ea;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.88rem;color:var(--accent);font-weight:700;}
+  .ans-box{margin-top:0.9rem;padding:0.75rem 1rem;background:#edf7ea;border:1.5px solid #b8ddb0;border-radius:8px;font-size:0.9rem;color:#1a5a22;font-weight:700;}
+  .pq-card{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.4rem;margin-bottom:1.1rem;border:1.5px solid #f0f0f0;}
+  .pq-label{font-size:0.68rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;}
+  .pq-text{font-size:0.95rem;line-height:1.65;font-weight:700;margin-bottom:1.1rem;}
+  .opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:0.6rem;}
+  .opt{padding:0.65rem 0.9rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .opt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .opt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .opt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .opt:disabled{cursor:default;}
+  .fb{font-size:0.85rem;padding:0.65rem 0.9rem;border-radius:7px;line-height:1.5;display:none;margin-top:0.3rem;}
+  .fb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .fb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .quiz-container{max-width:640px;}
+  .qprog{display:flex;gap:0.35rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+  .qdot{height:6px;flex:1;min-width:20px;max-width:36px;border-radius:3px;background:#e0e0e0;transition:background 0.3s;}
+  .qdot.done{background:var(--accent);}
+  .qdot.current{background:var(--accent-mid);}
+  .qcard{background:white;border-radius:12px;box-shadow:var(--shadow);padding:1.8rem;border:1.5px solid #f0f0f0;}
+  .qmeta{font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.9rem;}
+  .qq{font-size:1.02rem;line-height:1.65;font-weight:700;margin-bottom:1.4rem;}
+  .qopts{display:flex;flex-direction:column;gap:0.55rem;}
+  .qopt{padding:0.8rem 1.1rem;border-radius:8px;border:2px solid #e8e8e8;background:#fafafa;font-family:'Nunito',sans-serif;font-size:0.92rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.15s;}
+  .qopt:hover:not(:disabled){border-color:var(--accent-border);background:var(--accent-light);}
+  .qopt.correct{border-color:#78c878;background:#edf7ea;color:#1a5a1a;}
+  .qopt.wrong{border-color:#e89090;background:#fdf0f0;color:#8a1a1a;}
+  .qopt:disabled{cursor:default;}
+  .qfb{margin-top:1rem;padding:0.8rem 1rem;border-radius:8px;font-size:0.88rem;line-height:1.55;display:none;}
+  .qfb.correct{display:block;background:#edf7ea;border:1.5px solid #b8ddb0;color:#1a5a1a;}
+  .qfb.wrong{display:block;background:#fdf0f0;border:1.5px solid #f0b8b8;color:#7a1a1a;}
+  .next-btn{margin-top:1.1rem;padding:0.7rem 1.6rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:800;cursor:pointer;display:none;transition:filter 0.15s;}
+  .next-btn:hover{filter:brightness(0.92);}
+  .next-btn.show{display:inline-block;}
+  .score-screen{display:none;text-align:center;padding:3rem 1rem;}
+  .score-screen.show{display:block;}
+  .score-big{font-family:'Fraunces',serif;font-size:5rem;font-weight:900;color:var(--accent);line-height:1;}
+  .score-grade{font-size:1.1rem;font-weight:800;color:var(--text);margin-top:0.4rem;}
+  .score-msg{font-size:0.95rem;color:var(--muted);line-height:1.7;margin-top:1rem;max-width:440px;margin-left:auto;margin-right:auto;}
+  .retry-btn{margin-top:1.5rem;padding:0.75rem 2rem;background:var(--accent);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;}
+  .next-topic-btn{padding:0.75rem 2rem;background:var(--next);color:white;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;margin-left:0.5rem;}
+  @media(max-width:500px){main{padding:1.2rem;}.opts-grid{grid-template-columns:1fr;}.topic-header::after{display:none;}}
+</style>
+</head>
+<body>
+<div style="background:#0d1b3e;color:white;padding:0.45rem 1.5rem;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-size:0.8rem;">
+  <a href="https://www.tutorwarren.com/" style="color:white;text-decoration:none;font-weight:700;opacity:0.9;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.9">← tutorwarren.com</a>
+  <span style="font-weight:600;opacity:0.7;letter-spacing:0.05em;">Functional Skills Maths</span>
+</div>
+<nav>
+  <a href="../index.html" class="back-btn">🏠 Main Home</a>
+  <span class="nav-sep">/</span>
+  <a href="level2.html" class="nav-crumb">Level 2</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Money &amp; Finance</span>
+</nav>
+<div class="topic-header">
+  <div class="topic-tag">Level 2 · Topic 2</div>
+  <h1>Money &amp; Finance</h1>
+  <p>Compound interest, reverse percentages, income tax, loans and currency conversion</p>
+</div>
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('intro',this)">📖 Introduction</button>
+  <button class="tab-btn" onclick="showTab('examples',this)">💷 Worked Examples</button>
+  <button class="tab-btn" onclick="showTab('practice',this)">✏️ Practice</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">🎯 Quiz</button>
+</div>
+<main>
+
+<div class="section visible" id="intro">
+
+  <div class="intro-box">
+    <h2>Compound interest</h2>
+    <p>Unlike simple interest, <strong>compound interest</strong> is calculated on the amount including previously earned interest — interest on interest. This makes savings grow faster (and debts grow too).</p>
+    <div class="formula-box">
+      A = P × (1 + r/100)ⁿ<br>
+      A = final amount &nbsp;|&nbsp; P = principal &nbsp;|&nbsp; r = rate % &nbsp;|&nbsp; n = number of years
+    </div>
+    <div class="tip-box"><strong>💡 Example:</strong> £1,000 at 5% for 3 years: A = 1000 × 1.05³ = 1000 × 1.157625 = £1,157.63</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Reverse percentages</h2>
+    <p>A <strong>reverse percentage</strong> question gives you a value <em>after</em> a percentage change and asks you to find the original. You must divide by the multiplier, not subtract the percentage.</p>
+    <div class="formula-box">
+      After 20% increase: value = original × 1.20<br>
+      So original = value ÷ 1.20<br><br>
+      After 15% decrease: value = original × 0.85<br>
+      So original = value ÷ 0.85
+    </div>
+    <div class="tip-box"><strong>💡 Common mistake:</strong> Do NOT just subtract the percentage. If a price is £90 after a 10% discount, the original is NOT £90 + £9 = £99. It is £90 ÷ 0.90 = £100.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Income tax and tax bands</h2>
+    <p>In the UK, income tax is charged at different rates on different portions of your income. You only pay tax above the <strong>Personal Allowance</strong> (tax-free amount).</p>
+    <table class="tax-table">
+      <tr><th>Band</th><th>Taxable income</th><th>Rate</th></tr>
+      <tr><td>Personal Allowance</td><td>Up to £12,570</td><td>0%</td></tr>
+      <tr><td>Basic rate</td><td>£12,571 – £50,270</td><td>20%</td></tr>
+      <tr><td>Higher rate</td><td>£50,271 – £125,140</td><td>40%</td></tr>
+    </table>
+    <div class="tip-box"><strong>💡 How it works:</strong> Only the income within each band is taxed at that rate. Earning £60,000 does NOT mean all of it is taxed at 40%.</div>
+  </div>
+
+  <div class="intro-box">
+    <h2>Currency conversion</h2>
+    <p>Exchange rates tell you how much one currency is worth in another. To convert, multiply or divide by the exchange rate, depending on direction.</p>
+    <div class="formula-box">
+      Pounds → Foreign currency: multiply by exchange rate<br>
+      Foreign currency → Pounds: divide by exchange rate
+    </div>
+    <div class="tip-box"><strong>💡 Always check direction:</strong> If £1 = €1.17, then £200 = 200 × 1.17 = €234. To convert back: €234 ÷ 1.17 = £200.</div>
+  </div>
+
+</div>
+
+<div class="section" id="examples">
+
+  <div class="example-card" id="ex1">
+    <div class="ex-header" onclick="toggleEx('ex1')"><div class="ex-title"><span class="ex-num">1</span>Compound interest calculation</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">£2,500 is invested at 4% compound interest per year. What is the total after 3 years?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Formula: <span class="calc">A = P × (1 + r/100)ⁿ = 2500 × 1.04³</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Calculate <span class="calc">1.04³ = 1.04 × 1.04 × 1.04 = 1.124864</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt"><span class="calc">2500 × 1.124864 = £2,812.16</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Total after 3 years = £2,812.16</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex2">
+    <div class="ex-header" onclick="toggleEx('ex2')"><div class="ex-title"><span class="ex-num">2</span>Compound interest — depreciation</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A car worth £18,000 depreciates by 15% per year. What is its value after 4 years?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Depreciation: each year worth 85% of previous. Multiplier = <span class="calc">0.85</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt"><span class="calc">A = 18000 × 0.85⁴</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt"><span class="calc">0.85⁴ = 0.85 × 0.85 × 0.85 × 0.85 = 0.52200625</span></span></li>
+        <li class="step"><span class="snum">4</span><span class="stxt"><span class="calc">18000 × 0.52200625 = £9,396.11</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Value after 4 years ≈ £9,396</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex3">
+    <div class="ex-header" onclick="toggleEx('ex3')"><div class="ex-title"><span class="ex-num">3</span>Reverse percentage</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">A laptop costs £612 after a 15% discount. What was the original price?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">After 15% off: price = 85% of original. Multiplier = <span class="calc">0.85</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Original = <span class="calc">£612 ÷ 0.85 = £720</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Check: <span class="calc">£720 × 0.85 = £612 ✓</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Original price = £720</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex4">
+    <div class="ex-header" onclick="toggleEx('ex4')"><div class="ex-title"><span class="ex-num">4</span>Calculating income tax</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">Callum earns £38,000 per year. Using the tax bands above, how much income tax does he pay?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Personal allowance (tax-free): <span class="calc">£12,570</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Taxable income: <span class="calc">£38,000 − £12,570 = £25,430</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">All £25,430 is within the basic rate band (up to £50,270).</span></li>
+        <li class="step"><span class="snum">4</span><span class="stxt">Tax at 20%: <span class="calc">£25,430 × 0.20 = £5,086</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Income tax = £5,086 per year</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex5">
+    <div class="ex-header" onclick="toggleEx('ex5')"><div class="ex-title"><span class="ex-num">5</span>Currency conversion</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">The exchange rate is £1 = $1.26. (a) Convert £350 to dollars. (b) Convert $567 to pounds.</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">(a) Pounds → dollars: <span class="calc">£350 × 1.26 = $441</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">(b) Dollars → pounds: <span class="calc">$567 ÷ 1.26 = £450</span></span></li>
+      </ol>
+      <div class="ans-box">✅ (a) $441 &nbsp;|&nbsp; (b) £450</div>
+    </div>
+  </div>
+
+  <div class="example-card" id="ex6">
+    <div class="ex-header" onclick="toggleEx('ex6')"><div class="ex-title"><span class="ex-num">6</span>Comparing simple vs compound interest</div><span class="chevron">▼</span></div>
+    <div class="ex-body">
+      <div class="q-box">£5,000 invested at 6% for 4 years. How much more does compound interest earn than simple interest?</div>
+      <ol class="steps">
+        <li class="step"><span class="snum">1</span><span class="stxt">Simple interest: <span class="calc">(5000 × 6 × 4) ÷ 100 = £1,200</span></span></li>
+        <li class="step"><span class="snum">2</span><span class="stxt">Compound: <span class="calc">5000 × 1.06⁴ = 5000 × 1.26247696 = £6,312.38</span></span></li>
+        <li class="step"><span class="snum">3</span><span class="stxt">Compound interest earned: <span class="calc">£6,312.38 − £5,000 = £1,312.38</span></span></li>
+        <li class="step"><span class="snum">4</span><span class="stxt">Difference: <span class="calc">£1,312.38 − £1,200 = £112.38</span></span></li>
+      </ol>
+      <div class="ans-box">✅ Compound earns £112.38 more than simple interest.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" id="practice">
+
+  <div class="pq-card">
+    <div class="pq-label">Question 1</div>
+    <div class="pq-text">£3,000 is invested at 5% compound interest per year for 2 years. What is the total amount?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£3,300: that is simple interest (£300 each year). Compound: 3000×1.05²=£3,307.50.')">£3,300.00</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 3000×1.05²=3000×1.1025=£3,307.50.')">£3,307.50</button>
+      <button class="opt" onclick="checkP(this,'wrong','£3,315: not correct. 1.05²=1.1025. 3000×1.1025=£3,307.50.')">£3,315.00</button>
+      <button class="opt" onclick="checkP(this,'wrong','£3,150: that is only one year of interest, not two.')">£3,150.00</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 2</div>
+    <div class="pq-text">A phone costs £459 after a 15% VAT increase. What was the pre-VAT price?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£390: £459÷1.15=£399.13. Not £390.')">£390.00</button>
+      <button class="opt" onclick="checkP(this,'wrong','£391.65: reverse correctly — £459÷1.15=£399.13.')">£391.65</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £459÷1.15=£399.13 (pre-VAT price).')">£399.13</button>
+      <button class="opt" onclick="checkP(this,'wrong','£527.85: that would be adding VAT again. Divide by 1.15 to reverse.')">£527.85</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 3</div>
+    <div class="pq-text">£1 = €1.15. How many euros do you get for £420?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','€365.22: that is £420÷1.15 (wrong direction). To get euros, multiply: 420×1.15.')">€365.22</button>
+      <button class="opt" onclick="checkP(this,'wrong','€421.15: adding exchange rate, not multiplying.')">€421.15</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £420 × 1.15 = €483.')">€483.00</button>
+      <button class="opt" onclick="checkP(this,'wrong','€490: 420×1.15=483, not 490.')">€490.00</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 4</div>
+    <div class="pq-text">Priya earns £55,000. Using the tax bands above, how much income tax does she pay?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£8,486: that is 20% of all taxable income. But £4,730 is in the higher rate band at 40%.')">£8,486</button>
+      <button class="opt" onclick="checkP(this,'wrong','£11,000: that is 20% of £55,000 — ignores personal allowance and higher rate.')">£11,000</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! Taxable=£42,430. Basic rate portion: £37,700×20%=£7,540. Higher rate: £4,730×40%=£1,892. Total: £9,432.')">£9,432</button>
+      <button class="opt" onclick="checkP(this,'wrong','£22,000: that would be 40% on all earnings — ignores allowance and bands.')">£22,000</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 5</div>
+    <div class="pq-text">A car costing £20,000 depreciates by 20% per year. What is it worth after 3 years?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£8,000: that is 40% of original (3×20%=60% off). Compound depreciation works differently.')">£8,000</button>
+      <button class="opt" onclick="checkP(this,'wrong','£9,600: 20000×0.8²=£12,800 after 2 years. ×0.8 again: £10,240.')">£9,600</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 20000×0.8³=20000×0.512=£10,240.')">£10,240</button>
+      <button class="opt" onclick="checkP(this,'wrong','£12,800: that is after 2 years, not 3.')">£12,800</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 6</div>
+    <div class="pq-text">A jacket costs £94.50 after a 30% increase. What was the original price?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£66.15: subtracting 30% of £94.50. Original = £94.50÷1.30=£72.69.')">£66.15</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! £94.50÷1.30=£72.69 (original before 30% increase).')">£72.69</button>
+      <button class="opt" onclick="checkP(this,'wrong','£75.60: not correct. £94.50÷1.30=£72.69.')">£75.60</button>
+      <button class="opt" onclick="checkP(this,'wrong','£123.85: that adds another 30%. We need to REVERSE the increase.')">£123.85</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 7</div>
+    <div class="pq-text">£1 = 1.32 AUD. Convert 660 AUD to pounds.</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£435: 660÷1.32=500, not 435.')">£435</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 660÷1.32=£500.')">£500</button>
+      <button class="opt" onclick="checkP(this,'wrong','£528: 660÷1.32=500.')">£528</button>
+      <button class="opt" onclick="checkP(this,'wrong','£871.20: multiplied instead of divided. To convert foreign→pounds, divide.')">£871.20</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+  <div class="pq-card">
+    <div class="pq-label">Question 8</div>
+    <div class="pq-text">£4,000 at 3.5% compound interest for 3 years. How much interest is earned?</div>
+    <div class="opts-grid">
+      <button class="opt" onclick="checkP(this,'wrong','£420: that is simple interest for 3 years (3×£140). Compound interest is slightly more.')">£420</button>
+      <button class="opt" onclick="checkP(this,'wrong','£432.94: 4000×1.035³=4000×1.108717=£4,434.87. Interest=£434.87.')">£432.94</button>
+      <button class="opt" onclick="checkP(this,'correct','Correct! 4000×1.035³=£4,434.87. Interest=£434.87.')">£434.87</button>
+      <button class="opt" onclick="checkP(this,'wrong','£441.00: not correct. 1.035³=1.108717. 4000×1.108717=4434.87. Interest=£434.87.')">£441.00</button>
+    </div>
+    <div class="fb"></div>
+  </div>
+
+</div>
+
+<div class="section" id="quiz">
+  <div class="quiz-container">
+    <div id="quizMain">
+      <div class="qprog" id="qprog"></div>
+      <div class="qcard">
+        <div class="qmeta" id="qmeta"></div>
+        <div class="qq" id="qq"></div>
+        <div class="qopts" id="qopts"></div>
+        <div class="qfb" id="qfb"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()">Next Question →</button>
+      </div>
+    </div>
+    <div class="score-screen" id="scoreScreen">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div style="margin-top:1.5rem;">
+        <button class="retry-btn" onclick="startQuiz()">Try Again</button>
+        <a href="l2-measures.html" class="next-topic-btn">Next: Measures →</a>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<script>
+function showTab(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('visible'));document.getElementById(id).classList.add('visible');document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(id==='quiz'&&!quizStarted)startQuiz();}
+function toggleEx(id){document.getElementById(id).classList.toggle('open');}
+function checkP(btn,result,msg){const card=btn.closest('.pq-card');card.querySelectorAll('.opt').forEach(b=>b.disabled=true);btn.classList.add(result);const fb=card.querySelector('.fb');fb.textContent=(result==='correct'?'✅ ':'❌ ')+msg;fb.className='fb '+result;}
+const quizData=[
+  {q:'£5,000 at 6% compound interest for 2 years. Total amount?',opts:['£5,560','£5,618','£5,600','£5,648'],correct:1,explanation:'5000×1.06²=5000×1.1236=£5,618.'},
+  {q:'A price after a 20% increase is £180. What was the original?',opts:['£144','£148','£150','£156'],correct:2,explanation:'Original=£180÷1.20=£150.'},
+  {q:'£1=1.18€. Convert €295 to pounds.',opts:['£240.45','£248.31','£250.00','£261.40'],correct:2,explanation:'£295÷1.18=£250.00.'},
+  {q:'A car bought for £15,000 loses 25% value each year. Value after 2 years?',opts:['£7,500','£8,437.50','£8,750','£10,000'],correct:1,explanation:'15000×0.75²=15000×0.5625=£8,437.50.'},
+  {q:'Jake earns £28,000. Personal allowance £12,570. How much income tax at 20%?',opts:['£2,800','£3,086','£3,286','£5,600'],correct:1,explanation:'Taxable: £28,000−£12,570=£15,430. Tax: £15,430×0.20=£3,086.'},
+  {q:'A TV costs £544 after a 12% VAT increase. Pre-VAT price?',opts:['£478.72','£484.88','£485.71','£499.99'],correct:2,explanation:'£544÷1.12=£485.71.'},
+  {q:'£2,000 at 8% compound interest for 3 years. Interest earned?',opts:['£480','£500','£517.73','£540'],correct:2,explanation:'2000×1.08³=2000×1.259712=£2,519.42. Interest=£519.42. Closest=£517.73 — exact: £519.42.'},
+  {q:'£1=1.28 USD. Convert £750 to dollars.',opts:['$586','$826','$960','$1028'],correct:2,explanation:'£750×1.28=$960.'},
+  {q:'After a 35% reduction, an item costs £97.50. Original price?',opts:['£130','£147','£150','£158'],correct:2,explanation:'£97.50÷0.65=£150.'},
+  {q:'Which formula correctly calculates compound interest amount A?',opts:['A = P + (P×r×n)/100','A = P(1 + r/100)ⁿ','A = P(1 + rn)/100','A = P + Prn'],correct:1,explanation:'A = P(1 + r/100)ⁿ is the compound interest formula.'},
+];
+quizData[6]={q:'£2,000 at 8% compound interest for 3 years. Total amount (to nearest £)?',opts:['£2,480','£2,500','£2,519','£2,540'],correct:2,explanation:'2000×1.08³=2000×1.259712=£2,519.42 ≈ £2,519.'};
+let qIdx=0,score=0,answered=false,quizStarted=false;
+function startQuiz(){qIdx=0;score=0;answered=false;quizStarted=true;document.getElementById('scoreScreen').classList.remove('show');document.getElementById('quizMain').style.display='block';renderQ();}
+function renderQ(){answered=false;const q=quizData[qIdx],total=quizData.length;const prog=document.getElementById('qprog');prog.innerHTML='';for(let i=0;i<total;i++){const d=document.createElement('div');d.className='qdot'+(i<qIdx?' done':i===qIdx?' current':'');prog.appendChild(d);}document.getElementById('qmeta').textContent=`Question ${qIdx+1} of ${total}`;document.getElementById('qq').textContent=q.q;const opts=document.getElementById('qopts');opts.innerHTML='';q.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='qopt';b.textContent=o;b.onclick=()=>answerQ(i,b);opts.appendChild(b);});document.getElementById('qfb').className='qfb';document.getElementById('qfb').textContent='';document.getElementById('nextBtn').className='next-btn';}
+function answerQ(idx,btn){if(answered)return;answered=true;const q=quizData[qIdx];document.querySelectorAll('.qopt').forEach(b=>b.disabled=true);const fb=document.getElementById('qfb');if(idx===q.correct){score++;btn.classList.add('correct');fb.className='qfb correct';fb.textContent='✅ Correct! '+q.explanation;}else{btn.classList.add('wrong');document.querySelectorAll('.qopt')[q.correct].classList.add('correct');fb.className='qfb wrong';fb.textContent='❌ Not quite. '+q.explanation;}document.getElementById('nextBtn').className='next-btn show';}
+function nextQ(){qIdx++;if(qIdx>=quizData.length)showScore();else renderQ();}
+function showScore(){document.getElementById('quizMain').style.display='none';document.getElementById('scoreScreen').classList.add('show');const pct=Math.round(score/quizData.length*100);document.getElementById('scoreBig').textContent=`${score}/${quizData.length}`;document.getElementById('scoreGrade').textContent=pct>=85?'⭐ Excellent!':pct>=65?'👍 Good effort!':pct>=50?'💪 Getting there!':'📖 Keep practising!';document.getElementById('scoreMsg').textContent=pct>=85?'Excellent Level 2 Money skills! Move on to Measures when ready.':pct>=65?'Good work! Review any tricky areas in the Worked Examples then try again.':'Keep going — the Introduction and Examples will help you build confidence.';}
+</script>
+</body>
+</html>
