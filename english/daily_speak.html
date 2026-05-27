@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DailySpeak — ESOL English Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#1a1a2e;--cream:#f5f0e8;--gold:#c9a84c;--gold-light:#e8d5a3;
+    --sage:#4a7c59;--sage-light:#a8c5b0;--rose:#c4705a;--slate:#4a5568;
+    --card-bg:#fff;--shadow:0 4px 24px rgba(26,26,46,.10);--radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(ellipse 80% 60% at 15% 10%,rgba(201,168,76,.13) 0%,transparent 60%),
+               radial-gradient(ellipse 60% 50% at 85% 80%,rgba(74,124,89,.10) 0%,transparent 60%)}
+  .app{position:relative;z-index:1}
+  /* LANG SCREEN */
+  #lang-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px}
+  .brand{text-align:center;margin-bottom:48px;animation:fadeDown .8s ease both}
+  .brand-title{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,6vw,4.5rem);font-weight:900;color:var(--ink);letter-spacing:-1px;line-height:1}
+  .brand-title span{color:var(--gold)}
+  .brand-sub{font-size:1rem;color:var(--slate);margin-top:10px;letter-spacing:.05em;text-transform:uppercase}
+  .lang-prompt{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,2.5vw,1.4rem);color:var(--slate);text-align:center;margin-bottom:36px;animation:fadeDown .8s .2s ease both}
+  .lang-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px;max-width:720px;width:100%;animation:fadeUp .8s .4s ease both}
+  .lang-btn{background:var(--card-bg);border:2px solid transparent;border-radius:var(--radius);padding:20px 14px;cursor:pointer;text-align:center;box-shadow:var(--shadow);transition:all .25s ease;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .lang-btn:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 8px 32px rgba(201,168,76,.25)}
+  .lang-flag{font-size:2.2rem;line-height:1}
+  .lang-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink)}
+  .lang-native{font-size:.78rem;color:var(--slate)}
+  /* MAIN APP */
+  #main-app{display:none}
+  header{background:var(--ink);color:var(--cream);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.2)}
+  .header-brand{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;letter-spacing:-.5px}
+  .header-brand span{color:var(--gold)}
+  .lang-badge{background:var(--gold);color:var(--ink);padding:5px 12px;border-radius:20px;font-size:.78rem;font-weight:600;cursor:pointer;transition:opacity .2s}
+  .lang-badge:hover{opacity:.85}
+  .app-layout{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 64px)}
+  .sidebar{background:var(--ink);color:var(--cream);padding:24px 0;overflow-y:auto;position:sticky;top:64px;height:calc(100vh - 64px)}
+  .sidebar-heading{font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);padding:8px 24px 4px}
+  .topic-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;color:rgba(245,240,232,.7);font-family:'DM Sans',sans-serif;font-size:.88rem;padding:9px 24px;cursor:pointer;text-align:left;transition:all .18s ease;border-left:3px solid transparent}
+  .topic-btn:hover{background:rgba(201,168,76,.1);color:var(--cream);border-left-color:var(--gold)}
+  .topic-btn.active{background:rgba(201,168,76,.15);color:var(--gold-light);border-left-color:var(--gold);font-weight:600}
+  .topic-icon{font-size:1rem;width:20px;text-align:center}
+  .main-content{padding:36px 40px;max-width:960px}
+  .topic-header{margin-bottom:28px;animation:fadeDown .5s ease both}
+  .topic-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:900;color:var(--ink);line-height:1.15}
+  .topic-desc{margin-top:8px;color:var(--slate);font-size:.95rem;line-height:1.6;max-width:680px}
+  .topic-desc-translated{margin-top:6px;color:var(--sage);font-size:.88rem;font-style:italic;display:none}
+  .subtopic-tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;animation:fadeUp .5s .1s ease both}
+  .subtopic-tab{background:var(--card-bg);border:2px solid #e2ddd4;border-radius:10px;padding:8px 18px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;color:var(--slate);cursor:pointer;transition:all .2s ease}
+  .subtopic-tab:hover{border-color:var(--gold);color:var(--ink)}
+  .subtopic-tab.active{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:600}
+  .examples-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;animation:fadeUp .5s .2s ease both}
+  .example-card{background:var(--card-bg);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1.5px solid #eee8dd;transition:all .25s ease;position:relative;overflow:hidden}
+  .example-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--sage-light));opacity:0;transition:opacity .25s}
+  .example-card:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(26,26,46,.13);border-color:var(--gold-light)}
+  .example-card:hover::before{opacity:1}
+  .example-english{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:8px;line-height:1.3}
+  .example-narration{font-size:.82rem;color:var(--slate);line-height:1.6;margin-bottom:12px;min-height:44px}
+  .example-translation{font-size:.84rem;color:var(--sage);font-style:italic;line-height:1.6;padding-top:10px;border-top:1px solid #eee8dd;display:none;white-space:pre-line}
+  .card-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .btn-speak{display:flex;align-items:center;gap:5px;background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:6px 12px;font-size:.76rem;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;transition:all .2s ease}
+  .btn-speak:hover{background:var(--sage)}
+  .btn-speak.speaking{background:var(--rose)}
+  .btn-translate{display:flex;align-items:center;gap:5px;background:var(--gold-light);color:var(--ink);border:none;border-radius:8px;padding:6px 12px;font-size:.76rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:all .2s ease}
+  .btn-translate:hover{background:var(--gold)}
+  .btn-translate.active{background:var(--gold)}
+  .global-bar{display:flex;align-items:center;justify-content:space-between;background:var(--card-bg);border:1.5px solid #eee8dd;border-radius:var(--radius);padding:14px 22px;margin-bottom:24px;box-shadow:var(--shadow);animation:fadeDown .5s .05s ease both;flex-wrap:wrap;gap:12px}
+  .global-bar-label{font-size:.84rem;color:var(--slate)}
+  .global-bar-label strong{color:var(--ink)}
+  .btn-global-translate{display:flex;align-items:center;gap:8px;background:var(--sage);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-size:.84rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:all .2s ease}
+  .btn-global-translate:hover{background:var(--ink)}
+  .progress-bar{height:4px;background:#e8e2d9;border-radius:2px;margin-bottom:28px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--sage));border-radius:2px;transition:width .4s ease;width:10%}
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:768px){
+    .app-layout{grid-template-columns:1fr}
+    .sidebar{position:relative;top:0;height:auto;display:flex;flex-wrap:wrap;padding:10px;gap:4px}
+    .sidebar-heading{display:none}
+    .topic-btn{padding:6px 12px;font-size:.78rem;border-left:none;border-radius:8px;white-space:nowrap;border-bottom:2px solid transparent}
+    .topic-btn.active{border-bottom-color:var(--gold);background:rgba(201,168,76,.2)}
+    .main-content{padding:20px 16px}
+    .examples-grid{grid-template-columns:1fr}
+    .lang-grid{grid-template-columns:repeat(2,1fr)}
+    header{padding:12px 16px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+<!-- LANGUAGE SELECTION -->
+<div id="lang-screen">
+  <div class="brand">
+    <div class="brand-title">Daily<span>Speak</span></div>
+    <div class="brand-sub">ESOL English Learning · Works Offline</div>
+  </div>
+  <div class="lang-prompt">Choose your mother tongue to begin</div>
+  <div class="lang-grid">
+    <button class="lang-btn" onclick="selectLanguage('fr','French','Français','🇫🇷')"><span class="lang-flag">🇫🇷</span><span class="lang-name">French</span><span class="lang-native">Français</span></button>
+    <button class="lang-btn" onclick="selectLanguage('it','Italian','Italiano','🇮🇹')"><span class="lang-flag">🇮🇹</span><span class="lang-name">Italian</span><span class="lang-native">Italiano</span></button>
+    <button class="lang-btn" onclick="selectLanguage('pt','Portuguese','Português','🇵🇹')"><span class="lang-flag">🇵🇹</span><span class="lang-name">Portuguese</span><span class="lang-native">Português</span></button>
+    <button class="lang-btn" onclick="selectLanguage('zh','Chinese','中文','🇨🇳')"><span class="lang-flag">🇨🇳</span><span class="lang-name">Chinese</span><span class="lang-native">中文</span></button>
+    <button class="lang-btn" onclick="selectLanguage('tr','Turkish','Türkçe','🇹🇷')"><span class="lang-flag">🇹🇷</span><span class="lang-name">Turkish</span><span class="lang-native">Türkçe</span></button>
+    <button class="lang-btn" onclick="selectLanguage('ja','Japanese','日本語','🇯🇵')"><span class="lang-flag">🇯🇵</span><span class="lang-name">Japanese</span><span class="lang-native">日本語</span></button>
+    <button class="lang-btn" onclick="selectLanguage('ko','Korean','한국어','🇰🇷')"><span class="lang-flag">🇰🇷</span><span class="lang-name">Korean</span><span class="lang-native">한국어</span></button>
+    <button class="lang-btn" onclick="selectLanguage('ar','Arabic','العربية','🇸🇦')"><span class="lang-flag">🇸🇦</span><span class="lang-name">Arabic</span><span class="lang-native">العربية</span></button>
+    <button class="lang-btn" onclick="selectLanguage('es','Spanish','Español','🇪🇸')"><span class="lang-flag">🇪🇸</span><span class="lang-name">Spanish</span><span class="lang-native">Español</span></button>
+    <button class="lang-btn" onclick="selectLanguage('pl','Polish','Polski','🇵🇱')"><span class="lang-flag">🇵🇱</span><span class="lang-name">Polish</span><span class="lang-native">Polski</span></button>
+  </div>
+</div>
+<!-- MAIN APP -->
+<div id="main-app">
+  <header>
+    <div class="header-brand">Daily<span>Speak</span></div>
+    <span id="lang-indicator" class="lang-badge" onclick="changeLang()" title="Change language"></span>
+  </header>
+  <div class="app-layout">
+    <nav class="sidebar" id="sidebar"></nav>
+    <main class="main-content">
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="topic-header">
+        <div class="topic-title" id="topic-title"></div>
+        <div class="topic-desc" id="topic-desc"></div>
+        <div class="topic-desc-translated" id="topic-desc-translated"></div>
+      </div>
+      <div class="global-bar">
+        <div class="global-bar-label">🌐 <strong id="support-lang-name"></strong> translations built-in — instant, works on all devices</div>
+        <button class="btn-global-translate" id="btn-global" onclick="translateAll()">🌍 Show All Translations</button>
+      </div>
+      <div class="subtopic-tabs" id="subtopic-tabs"></div>
+      <div class="examples-grid" id="examples-grid"></div>
+    </main>
+  </div>
+</div>
+</div>
+<script>
+// ── ALL TRANSLATIONS PRE-EMBEDDED (works offline & on iOS) ──
+// Each example has: en, narration, t: {fr,it,pt,zh,tr,ja,ko,ar,es,pl}
+// t[lang] = ["translated expression", "translated narration"]
+
+const curriculum = [
+  {
+    id:'greetings', icon:'👋', title:'Greetings & Introductions',
+    desc:'Learn to greet people and introduce yourself confidently in everyday English.',
+    desct:{fr:'Apprenez à saluer les gens et à vous présenter avec confiance au quotidien.',it:'Impara a salutare le persone e a presentarti con sicurezza nella vita di tutti i giorni.',pt:'Aprenda a cumprimentar pessoas e a se apresentar com confiança no dia a dia.',zh:'学习如何自信地问候他人并介绍自己。',tr:'Günlük İngilizce durumlarında insanları selamlayıp kendinizi güvenle tanıtmayı öğrenin.',ja:'日常の英語の場面で自信を持って挨拶し、自己紹介する方法を学びましょう。',ko:'일상적인 영어 상황에서 자신 있게 인사하고 자기소개하는 방법을 배웁니다.',ar:'تعلّم كيف تحيّي الناس وتعرّف بنفسك بثقة في المواقف اليومية.',es:'Aprende a saludar y presentarte con confianza en situaciones cotidianas en inglés.',pl:'Naucz się, jak pewnie witać się z ludźmi i przedstawiać siebie w codziennych sytuacjach.'},
+    subtopics:[
+      { name:'Basic Greetings', examples:[
+        {en:'Hello!',narration:'The most universal English greeting. Works any time of day with anyone — strangers, colleagues, or friends.',t:{fr:['Bonjour !','La salutation anglaise la plus universelle. Fonctionne à toute heure avec n\'importe qui.'],it:['Ciao! / Salve!','Il saluto inglese più universale. Funziona in qualsiasi momento con chiunque.'],pt:['Olá!','A saudação inglesa mais universal. Funciona a qualquer hora com qualquer pessoa.'],zh:['你好！','最通用的英语问候语，任何时间、任何人都适用。'],tr:['Merhaba!','En evrensel İngilizce selamlama. Günün her saatinde herkesle işe yarar.'],ja:['こんにちは！','最も普遍的な英語の挨拶です。いつでも誰にでも使えます。'],ko:['안녕하세요!','가장 보편적인 영어 인사말입니다. 언제 누구에게나 사용할 수 있습니다.'],ar:['مرحبا!','أكثر التحيات الإنجليزية شيوعاً. تصلح في أي وقت مع أي شخص.'],es:['¡Hola!','El saludo inglés más universal. Funciona a cualquier hora con cualquier persona.'],pl:['Cześć! / Witaj!','Najbardziej uniwersalne angielskie pozdrowienie. Działa o każdej porze z każdym.']}},
+        {en:'Good morning!',narration:'Used from sunrise until around noon. Warm and polite — very common in schools and workplaces.',t:{fr:['Bonjour !','Utilisé du lever du soleil jusqu\'à midi environ. Chaleureux et poli — très courant dans les écoles et les lieux de travail.'],it:['Buongiorno!','Usato dall\'alba fino a mezzogiorno circa. Caldo e cortese — molto comune in scuole e luoghi di lavoro.'],pt:['Bom dia!','Usado do nascer do sol até ao meio-dia. Caloroso e educado — muito comum em escolas e locais de trabalho.'],zh:['早上好！','从日出到正午前使用。温暖有礼，在学校和职场中非常常见。'],tr:['Günaydın!','Güneşin doğuşundan öğlene kadar kullanılır. Sıcak ve kibar — okullarda ve iş yerlerinde çok yaygındır.'],ja:['おはようございます！','日の出から正午頃まで使います。温かく丁寧で、学校や職場でよく使われます。'],ko:['좋은 아침이에요!','해가 뜰 때부터 정오쯤까지 사용합니다. 따뜻하고 공손하며 학교와 직장에서 매우 흔합니다.'],ar:['صباح الخير!','يُستخدم من الفجر حتى الظهر تقريباً. دافئ ومهذّب — شائع جداً في المدارس وأماكن العمل.'],es:['¡Buenos días!','Se usa desde el amanecer hasta el mediodía. Cálido y educado — muy común en escuelas y lugares de trabajo.'],pl:['Dzień dobry! (rano)','Używane od wschodu słońca do południa. Ciepłe i grzeczne — bardzo popularne w szkołach i miejscach pracy.']}},
+        {en:'Good evening!',narration:'Used after 6 pm when arriving somewhere — a restaurant, event, or someone\'s home.',t:{fr:['Bonsoir !','Utilisé après 18h en arrivant quelque part — un restaurant, un événement ou chez quelqu\'un.'],it:['Buonasera!','Usato dopo le 18 quando si arriva da qualche parte — un ristorante, un evento o a casa di qualcuno.'],pt:['Boa noite!','Usado depois das 18h ao chegar a algum lugar — restaurante, evento ou casa de alguém.'],zh:['晚上好！','下午6点后到达某处时使用，如餐厅、活动或别人家中。'],tr:['İyi akşamlar!','Saat 18\'den sonra bir yere varırken kullanılır — restoran, etkinlik veya birinin evi.'],ja:['こんばんは！','午後6時以降にどこかに到着するときに使います。レストラン、イベント、人の家など。'],ko:['안녕하세요! (저녁)','저녁 6시 이후 어딘가에 도착할 때 사용합니다 — 식당, 행사, 또는 누군가의 집.'],ar:['مساء الخير!','يُستخدم بعد الساعة السادسة مساءً عند الوصول إلى مكان ما — مطعم أو حفل أو منزل شخص ما.'],es:['¡Buenas noches!','Se usa después de las 6 pm al llegar a algún lugar — restaurante, evento o casa de alguien.'],pl:['Dobry wieczór!','Używane po godzinie 18:00 przy wchodzeniu gdzieś — do restauracji, na wydarzenie lub do czyjegoś domu.']}},
+        {en:'Hi, how are you?',narration:'Casual and friendly. In English, people often reply "Fine, thanks!" even when not feeling perfect — it is simply polite.',t:{fr:['Salut, comment vas-tu ?','Décontracté et amical. En anglais, on répond souvent "Fine, thanks!" même si on ne se sent pas très bien — c\'est simplement poli.'],it:['Ciao, come stai?','Informale e amichevole. In inglese si risponde spesso "Fine, thanks!" anche quando non si sta benissimo — è semplicemente cortesia.'],pt:['Oi, como vai você?','Casual e amigável. Em inglês, as pessoas frequentemente respondem "Fine, thanks!" mesmo sem se sentir bem — é simplesmente educação.'],zh:['嗨，你好吗？','随意而友善。英语中，人们通常回答"Fine, thanks!"，即使感觉不太好——这只是礼貌用语。'],tr:['Merhaba, nasılsın?','Samimi ve dostça. İngilizce\'de insanlar kendilerini pek iyi hissetmeseler bile genellikle "Fine, thanks!" diye yanıt verir — bu sadece kibarlıktır.'],ja:['やあ、元気？','カジュアルでフレンドリーな表現です。英語では、気分が完璧でなくても「Fine, thanks!」と答えることが多いです。'],ko:['안녕, 어때?','캐주얼하고 친근한 표현입니다. 영어에서는 기분이 완벽하지 않아도 "Fine, thanks!"라고 답하는 경우가 많습니다.'],ar:['مرحباً، كيف حالك؟','غير رسمي وودود. في الإنجليزية، كثيراً ما يجيب الناس بـ "Fine, thanks!" حتى لو لم يكونوا بأحسن حال — هذا مجرد تهذيب.'],es:['Hola, ¿cómo estás?','Casual y amistoso. En inglés, la gente suele responder "Fine, thanks!" aunque no se sienta muy bien — es simplemente educación.'],pl:['Cześć, jak się masz?','Swobodne i przyjazne. W języku angielskim ludzie często odpowiadają "Fine, thanks!" nawet gdy nie czują się najlepiej — to po prostu uprzejmość.']}},
+      ]},
+      { name:'Introductions', examples:[
+        {en:'My name is...',narration:'The classic, formal way to introduce yourself. Suitable in all situations — interviews, classes, or social events.',t:{fr:['Je m\'appelle…','La façon classique et formelle de se présenter. Convient à toutes les situations — entretiens, cours ou événements sociaux.'],it:['Mi chiamo…','Il modo classico e formale per presentarsi. Adatto a tutte le situazioni — colloqui, lezioni o eventi sociali.'],pt:['Meu nome é…','A forma clássica e formal de se apresentar. Adequada para todas as situações — entrevistas, aulas ou eventos sociais.'],zh:['我的名字是……','介绍自己的经典正式方式，适用于所有场合——面试、课堂或社交活动。'],tr:['Benim adım…','Kendinizi tanıtmanın klasik, resmi yolu. Her duruma uygun — mülakatlar, dersler veya sosyal etkinlikler.'],ja:['私の名前は…です。','自己紹介の定番の丁寧な言い方です。面接、授業、社交イベントなどあらゆる場面に適しています。'],ko:['제 이름은 …입니다.','자신을 소개하는 고전적이고 격식 있는 방법입니다. 면접, 수업, 사교 행사 등 모든 상황에 적합합니다.'],ar:['اسمي هو…','الطريقة الكلاسيكية الرسمية لتقديم نفسك. مناسبة لجميع المواقف — المقابلات والدروس والفعاليات الاجتماعية.'],es:['Mi nombre es…','La forma clásica y formal de presentarse. Adecuada para todas las situaciones — entrevistas, clases o eventos sociales.'],pl:['Mam na imię… / Nazywam się…','Klasyczny, formalny sposób na przedstawienie się. Odpowiedni we wszystkich sytuacjach — rozmowach kwalifikacyjnych, zajęciach czy wydarzeniach towarzyskich.']}},
+        {en:'Nice to meet you!',narration:'Said when meeting someone for the first time. Often followed by a handshake in professional or formal settings.',t:{fr:['Enchanté(e) !','Dit lors d\'une première rencontre. Souvent suivi d\'une poignée de main dans les contextes professionnels ou formels.'],it:['Piacere di conoscerti!','Detto quando si incontra qualcuno per la prima volta. Spesso seguito da una stretta di mano in contesti professionali o formali.'],pt:['Prazer em conhecê-lo(a)!','Dito ao encontrar alguém pela primeira vez. Frequentemente seguido de um aperto de mão em contextos profissionais ou formais.'],zh:['很高兴认识你！','初次见面时说。在职业或正式场合通常伴随握手。'],tr:['Tanıştığımıza memnun oldum!','Biriyle ilk kez karşılaşıldığında söylenir. Profesyonel veya resmi ortamlarda genellikle el sıkışma ile devam eder.'],ja:['はじめまして！','初めて会ったときに言います。プロや公式な場ではよく握手が伴います。'],ko:['만나서 반가워요!','누군가를 처음 만날 때 말합니다. 전문적이거나 격식 있는 자리에서는 종종 악수가 뒤따릅니다.'],ar:['يسعدني لقاؤك!','يُقال عند مقابلة شخص ما لأول مرة. غالباً ما يتبعه مصافحة في السياقات المهنية أو الرسمية.'],es:['¡Encantado/a de conocerte!','Se dice al conocer a alguien por primera vez. A menudo va seguido de un apretón de manos en entornos profesionales o formales.'],pl:['Miło mi cię poznać!','Mówione przy pierwszym spotkaniu z kimś. W środowiskach zawodowych lub formalnych często towarzyszy temu uścisk dłoni.']}},
+        {en:'I\'m from...',narration:'Use this to tell people your country or city of origin. You can extend it: "I\'m from Brazil, but I live in London."',t:{fr:['Je viens de…','Utilisez ceci pour indiquer votre pays ou ville d\'origine. Vous pouvez l\'étendre : "Je viens du Brésil, mais je vis à Londres."'],it:['Vengo da…','Usalo per dire da dove sei. Puoi aggiungere: "Vengo dal Brasile, ma vivo a Londra."'],pt:['Sou de…','Use isso para dizer de onde você é. Pode complementar: "Sou do Brasil, mas moro em Londres."'],zh:['我来自……','用来介绍自己的国家或城市。可以扩展说："我来自巴西，但住在伦敦。"'],tr:['Ben … şehrinden/ülkesinden geliyorum.','Bunu ülkenizi veya şehrinizi söylemek için kullanın. Genişletebilirsiniz: "Brezilyalıyım ama Londra\'da yaşıyorum."'],ja:['私は…出身です。','出身地の国や都市を伝えるときに使います。「私はブラジル出身ですが、ロンドンに住んでいます」と拡張できます。'],ko:['저는 …에서 왔어요.','출신 나라나 도시를 말할 때 사용합니다. 확장할 수 있습니다: "저는 브라질 출신인데 런던에 살고 있어요."'],ar:['أنا من…','استخدم هذه العبارة للحديث عن بلدك أو مدينتك الأصلية. يمكنك توسيعها: "أنا من البرازيل، لكنني أعيش في لندن."'],es:['Soy de…','Úsalo para decir de dónde eres. Puedes ampliarlo: "Soy de Brasil, pero vivo en Londres."'],pl:['Jestem z…','Używaj tego, aby powiedzieć, z jakiego kraju lub miasta pochodzisz. Możesz rozszerzyć: "Jestem z Brazylii, ale mieszkam w Londynie."']}},
+      ]},
+      { name:'Farewells', examples:[
+        {en:'Goodbye!',narration:'The standard farewell. Works in any situation — formal or casual, short or long parting.',t:{fr:['Au revoir !','L\'au revoir standard. Fonctionne dans toutes les situations — formelles ou décontractées.'],it:['Arrivederci!','Il commiato standard. Funziona in qualsiasi situazione — formale o informale.'],pt:['Adeus! / Tchau!','A despedida padrão. Funciona em qualquer situação — formal ou casual.'],zh:['再见！','标准告别语，适用于任何场合，无论正式还是随意。'],tr:['Güle güle! / Hoşça kal!','Standart veda. Her durumda işe yarar — resmi veya samimi.'],ja:['さようなら！','標準的な別れの挨拶です。フォーマルでもカジュアルでも、どんな場面でも使えます。'],ko:['안녕히 가세요!','표준 작별 인사입니다. 격식체든 비격식체든 어떤 상황에서도 사용할 수 있습니다.'],ar:['وداعاً! / مع السلامة!','الوداع المعتاد. يصلح في أي موقف — رسمي أو غير رسمي.'],es:['¡Adiós!','La despedida estándar. Funciona en cualquier situación — formal o informal.'],pl:['Do widzenia!','Standardowe pożegnanie. Działa w każdej sytuacji — formalnej lub nieformalnej.']}},
+        {en:'See you later!',narration:'Casual farewell suggesting you expect to meet again soon. "Later" doesn\'t have to mean today.',t:{fr:['À plus tard !','Au revoir décontracté suggérant que vous vous reverrez bientôt. "Plus tard" ne veut pas forcément dire aujourd\'hui.'],it:['A dopo! / Ci vediamo!','Commiato informale che suggerisce di rivedersi presto. "Dopo" non significa necessariamente oggi.'],pt:['Até logo!','Despedida casual sugerindo que você espera se encontrar em breve. "Logo" não precisa ser hoje.'],zh:['回头见！','随意的告别，暗示你期待很快再见面。"later"不一定指今天。'],tr:['Görüşürüz!','Yakında tekrar görüşmeyi beklediğinizi ima eden samimi bir veda. "Sonra" bugün anlamına gelmeyebilir.'],ja:['またね！','近いうちにまた会うことを示すカジュアルな別れの挨拶です。「later」は必ずしも今日を意味しません。'],ko:['나중에 봐요!','곧 다시 만날 것을 기대하는 편안한 작별 인사입니다. "나중에"가 반드시 오늘을 의미하지는 않습니다.'],ar:['إلى اللقاء!','وداع غير رسمي يشير إلى أنك تتوقع الالتقاء قريباً. "لاحقاً" لا تعني بالضرورة اليوم.'],es:['¡Hasta luego!','Despedida informal que sugiere que esperas volver a encontrarte pronto. "Luego" no tiene que ser hoy.'],pl:['Do zobaczenia!','Swobodne pożegnanie sugerujące, że spodziewasz się niedługo znowu się spotkać. "Później" nie musi oznaczać dziś.']}},
+        {en:'Take care!',narration:'Warm farewell showing you care about the person\'s wellbeing. Very common among friends and colleagues.',t:{fr:['Prends soin de toi !','Au revoir chaleureux montrant que vous vous souciez du bien-être de la personne. Très courant entre amis et collègues.'],it:['Prenditi cura di te!','Un caldo addio che mostra che ti importa del benessere dell\'altra persona. Molto comune tra amici e colleghi.'],pt:['Cuide-se!','Despedida calorosa mostrando que você se preocupa com o bem-estar da pessoa. Muito comum entre amigos e colegas.'],zh:['保重！','温暖的告别语，表示你关心对方的健康。在朋友和同事之间非常常见。'],tr:['Kendine iyi bak!','Karşı tarafın iyiliğini önemsediğinizi gösteren sıcak bir veda. Arkadaşlar ve meslektaşlar arasında çok yaygındır.'],ja:['お体に気をつけて！','相手の健康を気にかけていることを示す温かい別れの言葉です。友人や同僚の間でよく使われます。'],ko:['잘 지내요!','상대방의 안녕을 걱정하는 따뜻한 작별 인사입니다. 친구와 동료 사이에서 매우 흔합니다.'],ar:['اعتنِ بنفسك!','وداع دافئ يُظهر اهتمامك بسلامة الشخص. شائع جداً بين الأصدقاء والزملاء.'],es:['¡Cuídate!','Despedida cálida que muestra que te preocupas por el bienestar de la persona. Muy común entre amigos y colegas.'],pl:['Dbaj o siebie!','Ciepłe pożegnanie pokazujące, że troszczyć się o dobro danej osoby. Bardzo popularne wśród przyjaciół i kolegów.']}},
+      ]},
+    ]
+  },
+  {
+    id:'food', icon:'🍽️', title:'Food & Ordering',
+    desc:'Order confidently in cafés and restaurants, and discuss food preferences.',
+    desct:{fr:'Commandez avec confiance dans les cafés et restaurants, et discutez de vos préférences alimentaires.',it:'Ordina con sicurezza in bar e ristoranti, e parla delle tue preferenze alimentari.',pt:'Peça com confiança em cafés e restaurantes, e discuta preferências alimentares.',zh:'自信地在咖啡馆和餐厅点餐，并讨论饮食偏好。',tr:'Kafe ve restoranlarda güvenle sipariş verin ve yiyecek tercihlerinizi tartışın.',ja:'カフェやレストランで自信を持って注文し、食の好みについて話せるようになりましょう。',ko:'카페와 식당에서 자신 있게 주문하고 음식 취향에 대해 이야기하는 방법을 배웁니다.',ar:'اطلب بثقة في المقاهي والمطاعم، وناقش تفضيلاتك الغذائية.',es:'Pide con confianza en cafés y restaurantes, y habla sobre tus preferencias alimentarias.',pl:'Zamawiaj pewnie w kawiarniach i restauracjach oraz rozmawiaj o preferencjach żywieniowych.'},
+    subtopics:[
+      { name:'Ordering', examples:[
+        {en:'Can I have a coffee, please?',narration:'The standard way to order. Always add "please" — it is considered essential politeness in British English.',t:{fr:['Puis-je avoir un café, s\'il vous plaît ?','La façon standard de commander. Ajoutez toujours "please" — c\'est considéré comme indispensable en anglais britannique.'],it:['Posso avere un caffè, per favore?','Il modo standard per ordinare. Aggiungi sempre "please" — è considerato educazione essenziale in inglese britannico.'],pt:['Posso tomar um café, por favor?','A forma padrão de pedir. Sempre adicione "please" — é considerado essencial em inglês britânico.'],zh:['我可以要一杯咖啡吗？','标准的点餐方式。总要加上"please"——这在英式英语中被认为是基本礼貌。'],tr:['Bir kahve alabilir miyim, lütfen?','Sipariş vermenin standart yolu. Her zaman "please" ekleyin — bu İngiliz İngilizcesinde temel nezaket olarak kabul edilir.'],ja:['コーヒーをいただけますか？','注文の標準的な言い方です。「please」を必ず付けましょう。イギリス英語では必須の礼儀とされています。'],ko:['커피 한 잔 주시겠어요?','주문하는 표준 방식입니다. 항상 "please"를 추가하세요 — 영국 영어에서는 필수적인 예의로 여겨집니다.'],ar:['هل يمكنني الحصول على قهوة من فضلك؟','الطريقة المعتادة للطلب. أضف دائماً "please" — فهي تُعدّ أساس اللباقة في الإنجليزية البريطانية.'],es:['¿Me pone un café, por favor?','La forma estándar de pedir. Añade siempre "please" — se considera cortesía esencial en el inglés británico.'],pl:['Poproszę kawę.','Standardowy sposób zamawiania. Zawsze dodaj "please" — w języku angielskim jest to uważane za niezbędną grzeczność.']}},
+        {en:'I\'d like a table for two.',narration:'"I\'d like" = "I would like" — a polite, slightly formal way to make a request in a restaurant.',t:{fr:['Je voudrais une table pour deux.','\"Je voudrais\" est une façon polie et légèrement formelle de faire une demande dans un restaurant.'],it:['Vorrei un tavolo per due.','\"Vorrei\" è un modo educato e leggermente formale per fare una richiesta in un ristorante.'],pt:['Gostaria de uma mesa para dois.','\"Gostaria\" é uma forma educada e ligeiramente formal de fazer um pedido num restaurante.'],zh:['我想要一张两人桌。','"I\'d like"="I would like"，是在餐厅提出请求的礼貌而略显正式的方式。'],tr:['İki kişilik bir masa istiyorum.','\"I\'d like\" = \"İstiyorum\" anlamında — restoranda istek belirtmenin kibar ve biraz resmi yolu.'],ja:['2名用のテーブルをお願いしたいのですが。','「I\'d like」=「〜がほしいのですが」。レストランでのリクエストに使う丁寧で少し改まった言い方です。'],ko:['2인 테이블 부탁드립니다.','\"I\'d like\"=\"원합니다\"라는 뜻으로, 식당에서 요청하는 정중하고 약간 격식 있는 표현입니다.'],ar:['أريد طاولة لشخصين.','\"I\'d like\" = \"أودّ\" — طريقة مهذّبة ورسمية نسبياً لتقديم طلب في مطعم.'],es:['Me gustaría una mesa para dos.','\"Me gustaría\" es una forma educada y ligeramente formal de hacer una petición en un restaurante.'],pl:['Poproszę stolik dla dwóch osób.','\"I\'d like\" = \"Chciałbym/Chciałabym\" — grzeczny, nieco formalny sposób składania prośby w restauracji.']}},
+        {en:'What do you recommend?',narration:'A great question to ask staff. Shows curiosity and often results in the best or freshest dish.',t:{fr:['Que recommandez-vous ?','Une excellente question à poser au personnel. Montre de la curiosité et donne souvent le meilleur plat.'],it:['Cosa consiglia?','Un\'ottima domanda da fare al personale. Mostra curiosità e spesso porta al piatto migliore o più fresco.'],pt:['O que você recomenda?','Uma ótima pergunta para fazer ao pessoal. Mostra curiosidade e geralmente resulta no melhor prato.'],zh:['你推荐什么？','问工作人员的好问题。表现出好奇心，通常能得到最好或最新鲜的菜肴。'],tr:['Ne önerirsiniz?','Personele sorulacak harika bir soru. Merak gösterir ve genellikle en iyi veya en taze yemeği getirir.'],ja:['何がおすすめですか？','スタッフに聞くのに最適な質問です。好奇心を示し、最高または最も新鮮な料理につながることが多いです。'],ko:['무엇을 추천하시나요?','직원에게 묻기 좋은 질문입니다. 호기심을 보여주며 보통 가장 좋거나 신선한 요리를 추천받게 됩니다.'],ar:['ماذا تنصحني؟','سؤال رائع لتوجيهه للموظفين. يُظهر فضولك وغالباً ما يؤدي إلى أفضل طبق أو أطازجه.'],es:['¿Qué recomienda?','Una gran pregunta para hacerle al personal. Muestra curiosidad y suele resultar en el mejor plato.'],pl:['Co pan/pani poleca?','Świetne pytanie do personelu. Pokazuje ciekawość i często skutkuje najlepszym lub najświeższym daniem.']}},
+        {en:'I\'m allergic to nuts.',narration:'Critical phrase for personal safety. Say it clearly and early. Staff take allergies very seriously by law in the UK.',t:{fr:['Je suis allergique aux noix / fruits à coque.','Expression cruciale pour la sécurité personnelle. Dites-le clairement et tôt. En UK, les allergies sont prises très au sérieux.'],it:['Sono allergico/a alle noci.','Espressione fondamentale per la sicurezza personale. Dillo chiaramente e subito. Il personale prende le allergie molto sul serio.'],pt:['Tenho alergia a nozes / amendoim.','Expressão crítica para a segurança pessoal. Diga claramente e cedo. Na UK, alergias são levadas muito a sério por lei.'],zh:['我对坚果过敏。','关乎人身安全的重要表达。清晰、提前说明。英国法律要求工作人员非常认真对待过敏问题。'],tr:['Kuruyemişlere alerjim var.','Kişisel güvenlik için kritik bir ifade. Bunu açıkça ve erken söyleyin. İngiltere\'de personel alerjileri yasal olarak çok ciddiye alır.'],ja:['ナッツアレルギーがあります。','個人の安全に関わる重要な表現です。明確に、早めに伝えましょう。英国では法律によりアレルギーは非常に真剣に扱われます。'],ko:['저는 견과류 알레르기가 있습니다.','개인 안전을 위한 중요한 표현입니다. 명확하게, 일찍 말하세요. 영국에서는 법적으로 알레르기를 매우 진지하게 다룹니다.'],ar:['أنا مصاب بحساسية من المكسرات.','عبارة بالغة الأهمية للسلامة الشخصية. قلها بوضوح ومبكراً. يأخذ الموظفون الحساسية بجدية تامة وفقاً للقانون في المملكة المتحدة.'],es:['Soy alérgico/a a los frutos secos.','Expresión crítica para la seguridad personal. Dilo claramente y pronto. El personal toma las alergias muy en serio en el Reino Unido.'],pl:['Mam uczulenie na orzechy.','Krytyczne wyrażenie dla bezpieczeństwa osobistego. Mów to wyraźnie i wcześnie. W UK personel traktuje alergie bardzo poważnie.']}},
+      ]},
+      { name:'Preferences & Complaints', examples:[
+        {en:'It\'s delicious!',narration:'A strong, warm compliment. More enthusiastic than just "good." Use it to show genuine appreciation.',t:{fr:['C\'est délicieux !','Un compliment fort et chaleureux. Plus enthousiaste que simplement "bon". Utilisez-le pour montrer une vraie appréciation.'],it:['È delizioso!','Un complimento forte e caloroso. Più entusiasta di un semplice "buono". Usalo per mostrare apprezzamento genuino.'],pt:['Está delicioso!','Um elogio forte e caloroso. Mais entusiasmado do que simplesmente "bom". Use para mostrar apreço genuíno.'],zh:['太好吃了！','强烈而温暖的赞美，比单说"good"更热情。用于表达真诚的欣赏。'],tr:['Nefis!','Güçlü ve sıcak bir iltifat. Sadece "iyi" demekten daha coşkulu. Gerçek takdirinizi göstermek için kullanın.'],ja:['とてもおいしいです！','力強く温かい褒め言葉です。「good」と言うよりも熱意があります。心からの感謝を示すために使いましょう。'],ko:['정말 맛있어요!','강하고 따뜻한 칭찬입니다. 단순히 "좋다"보다 더 열정적입니다. 진심 어린 감사를 표현할 때 사용하세요.'],ar:['إنه لذيذ جداً!','مديح قوي وحار. أكثر حماساً من مجرد "جيد". استخدمه لإظهار تقديرك الحقيقي.'],es:['¡Está delicioso!','Un cumplido fuerte y cálido. Más entusiasta que simplemente "bueno". Úsalo para mostrar aprecio genuino.'],pl:['To jest pyszne!','Mocny, ciepły komplement. Bardziej entuzjastyczny niż zwykłe "dobre". Użyj go, aby wyrazić prawdziwe uznanie.']}},
+        {en:'Could I get the bill, please?',narration:'"Bill" is British English; "check" is American. Both are understood everywhere.',t:{fr:['L\'addition, s\'il vous plaît.','\"Addition\" est le terme français. En anglais britannique on dit "bill", en américain "check". Les deux sont compris partout.'],it:['Il conto, per favore.','\"Bill\" è l\'inglese britannico; \"check\" è quello americano. Entrambi sono compresi ovunque.'],pt:['A conta, por favor.','\"Bill\" é inglês britânico; \"check\" é americano. Ambos são entendidos em qualquer lugar.'],zh:['请买单。','"Bill"是英式英语，"check"是美式英语。两者在全球都能被理解。'],tr:['Hesabı alabilir miyim, lütfen?','\"Bill\" İngiliz İngilizcesidir; \"check\" Amerikancadır. Her ikisi de her yerde anlaşılır.'],ja:['お会計をお願いします。','「bill」はイギリス英語、「check」はアメリカ英語です。どちらも世界中で通じます。'],ko:['계산서 주시겠어요?','"bill"은 영국 영어이고 "check"는 미국 영어입니다. 둘 다 어디서나 통합니다.'],ar:['هل يمكنني الحصول على الفاتورة من فضلك؟','"bill" هي الإنجليزية البريطانية؛ و"check" هي الأمريكية. كلاهما مفهوم في كل مكان.'],es:['¿Me trae la cuenta, por favor?','"Bill" es inglés británico; "check" es americano. Ambos se entienden en todas partes.'],pl:['Poproszę rachunek.','\"Bill\" to język angielski brytyjski; \"check\" to amerykański. Oba są rozumiane wszędzie.']}},
+      ]},
+    ]
+  },
+  {
+    id:'health', icon:'🏥', title:'Health & the Doctor',
+    desc:'Describe symptoms clearly and communicate confidently in medical settings.',
+    desct:{fr:'Décrivez les symptômes clairement et communiquez avec confiance dans les contextes médicaux.',it:'Descrivi i sintomi chiaramente e comunica con sicurezza in ambito medico.',pt:'Descreva sintomas claramente e comunique-se com confiança em contextos médicos.',zh:'清晰描述症状，自信地在医疗场合进行交流。',tr:'Semptomları açıkça tanımlayın ve tıbbi ortamlarda güvenle iletişim kurun.',ja:'症状を明確に伝え、医療の場で自信を持ってコミュニケーションを取れるようになりましょう。',ko:'증상을 명확하게 설명하고 의료 환경에서 자신 있게 소통하는 방법을 배웁니다.',ar:'صِف الأعراض بوضوح وتواصل بثقة في المواقف الطبية.',es:'Describe síntomas claramente y comunícate con confianza en entornos médicos.',pl:'Opisuj objawy wyraźnie i komunikuj się pewnie w środowiskach medycznych.'},
+    subtopics:[
+      { name:'Symptoms', examples:[
+        {en:'I have a headache.',narration:'The structure "I have a + symptom" works for most health problems. Learn this pattern and swap the symptom.',t:{fr:['J\'ai mal à la tête.','La structure \"J\'ai + symptôme\" fonctionne pour la plupart des problèmes de santé. Apprenez ce modèle et changez le symptôme.'],it:['Ho mal di testa.','La struttura \"Ho + sintomo\" funziona per la maggior parte dei problemi di salute. Impara questo schema e sostituisci il sintomo.'],pt:['Estou com dor de cabeça.','A estrutura "Estou com + sintoma" funciona para a maioria dos problemas de saúde.'],zh:['我头疼。','"I have a + 症状"的结构适用于大多数健康问题。记住这个句型，替换症状词即可。'],tr:['Başım ağrıyor.','\"I have a + semptom\" yapısı çoğu sağlık sorunu için işe yarar. Bu kalıbı öğrenin ve semptomu değiştirin.'],ja:['頭痛がします。','「I have a + 症状」の構造は、ほとんどの健康問題に使えます。このパターンを覚えて症状を入れ替えましょう。'],ko:['두통이 있어요.','\"I have a + 증상\" 구조는 대부분의 건강 문제에 사용됩니다. 이 패턴을 배우고 증상을 바꿔 사용하세요.'],ar:['أعاني من صداع.','نمط \"I have a + العَرَض\" يصلح لمعظم المشكلات الصحية. تعلّم هذا النمط وغيّر العَرَض حسب الحاجة.'],es:['Tengo dolor de cabeza.','La estructura "Tengo + síntoma" funciona para la mayoría de los problemas de salud.'],pl:['Mam ból głowy.','Struktura \"I have a + objaw\" działa w przypadku większości problemów zdrowotnych. Naucz się tego wzorca i zamieniaj objaw.']}},
+        {en:'I feel dizzy.',narration:'"Dizzy" means the room feels like it is spinning. Very useful for describing how you feel.',t:{fr:['J\'ai la tête qui tourne.','\"Dizzy\" signifie que la pièce semble tourner. Très utile pour décrire comment vous vous sentez.'],it:['Mi gira la testa.','\"Dizzy\" significa che la stanza sembra girare. Molto utile per descrivere come ci si sente.'],pt:['Estou com tontura.','\"Dizzy\" significa que o quarto parece estar girando. Muito útil para descrever como você se sente.'],zh:['我感到头晕。','"Dizzy"意思是房间好像在旋转。非常适合描述身体感受。'],tr:['Başım dönüyor.','\"Dizzy\" odanın döndüğü hissi anlamına gelir. Nasıl hissettiğinizi tanımlamak için çok kullanışlıdır.'],ja:['めまいがします。','「dizzy」は部屋が回っているように感じる状態です。体の状態を説明するのに非常に役立ちます。'],ko:['어지러워요.','\"dizzy\"는 방이 빙글빙글 도는 것 같은 느낌을 의미합니다. 컨디션을 설명하는 데 매우 유용합니다.'],ar:['أشعر بالدوار.','تعني كلمة \"Dizzy\" الشعور بأن الغرفة تدور. مفيدة جداً لوصف كيف تشعر.'],es:['Me siento mareado/a.','\"Dizzy\" significa que la habitación parece girar. Muy útil para describir cómo te sientes.'],pl:['Kręci mi się w głowie.','\"Dizzy\" oznacza, że pokój wydaje się wirować. Bardzo przydatne do opisania samopoczucia.']}},
+        {en:'I\'d like to make an appointment.',narration:'Standard phrase for booking a GP visit. In the UK, a doctor\'s office is called a "surgery" or "GP practice."',t:{fr:['Je voudrais prendre un rendez-vous.','Expression standard pour prendre un rendez-vous chez le médecin. En UK, le cabinet médical s\'appelle \"surgery\" ou \"GP practice\".'],it:['Vorrei prendere un appuntamento.','Espressione standard per prenotare una visita dal medico. In UK, lo studio medico si chiama \"surgery\" o \"GP practice\".'],pt:['Gostaria de marcar uma consulta.','Frase padrão para marcar uma visita ao médico. No UK, o consultório médico chama-se \"surgery\" ou \"GP practice\".'],zh:['我想预约一个就诊时间。','预约全科医生的标准用语。在英国，诊所称为"surgery"或"GP practice"。'],tr:['Randevu almak istiyorum.','Doktor ziyareti için standart ifade. İngiltere\'de doktor muayenehanesi \"surgery\" veya \"GP practice\" olarak adlandırılır.'],ja:['予約を取りたいのですが。','かかりつけ医の診察を予約するための標準的なフレーズです。英国では診療所を「surgery」または「GP practice」と呼びます。'],ko:['진료 예약을 하고 싶습니다.','GP 방문을 예약하는 표준 표현입니다. 영국에서는 의원을 "surgery" 또는 "GP practice"라고 합니다.'],ar:['أودّ تحديد موعد.','العبارة المعتادة لحجز زيارة عند الطبيب. في المملكة المتحدة، يُسمى عيادة الطبيب "surgery" أو "GP practice".'],es:['Me gustaría pedir una cita.','Frase estándar para pedir cita con el médico. En el Reino Unido, la consulta médica se llama "surgery" o "GP practice".'],pl:['Chciałbym/Chciałabym umówić się na wizytę.','Standardowe wyrażenie przy zapisywaniu się do lekarza. W UK gabinet lekarski nazywa się "surgery" lub "GP practice".']}},
+      ]},
+    ]
+  },
+  {
+    id:'work', icon:'💼', title:'Work & Professional English',
+    desc:'Succeed in job interviews and professional conversations.',
+    desct:{fr:'Réussissez vos entretiens d\'embauche et vos conversations professionnelles.',it:'Riesci nei colloqui di lavoro e nelle conversazioni professionali.',pt:'Tenha sucesso em entrevistas de emprego e conversas profissionais.',zh:'在求职面试和职业对话中取得成功。',tr:'İş görüşmelerinde ve profesyonel konuşmalarda başarılı olun.',ja:'就職面接やビジネスの会話で成功できるようになりましょう。',ko:'취업 면접과 전문적인 대화에서 성공하는 방법을 배웁니다.',ar:'انجح في مقابلات العمل والمحادثات المهنية.',es:'Triunfa en entrevistas de trabajo y conversaciones profesionales.',pl:'Odnieś sukces na rozmowach kwalifikacyjnych i w rozmowach zawodowych.'},
+    subtopics:[
+      { name:'Interviews', examples:[
+        {en:'Tell me about yourself.',narration:'The classic opening interview question. Prepare a confident 2-minute summary of your background and skills.',t:{fr:['Parlez-moi de vous.','La question d\'ouverture classique d\'entretien. Préparez un résumé confiant de 2 minutes de votre parcours et compétences.'],it:['Mi parli di sé.','La classica domanda di apertura del colloquio. Prepara un riassunto sicuro di 2 minuti sul tuo background e competenze.'],pt:['Fale-me sobre você.','A clássica pergunta de abertura de entrevista. Prepare um resumo confiante de 2 minutos sobre seu histórico e habilidades.'],zh:['请介绍一下你自己。','面试经典开场问题。准备一个自信的两分钟个人背景和技能摘要。'],tr:['Bana kendinizden bahsedin.','Klasik mülakat açılış sorusu. Geçmişinizi ve becerilerinizi anlatan güvenli bir 2 dakikalık özet hazırlayın.'],ja:['自己紹介をしてください。','面接の定番の最初の質問です。経歴とスキルの自信ある2分間のまとめを準備しておきましょう。'],ko:['자기소개를 해주세요.','면접의 고전적인 첫 질문입니다. 자신의 배경과 기술에 대한 자신감 있는 2분 요약을 준비하세요.'],ar:['حدّثني عن نفسك.','السؤال الافتتاحي الكلاسيكي في المقابلات. أعدّ ملخصاً موثوقاً من دقيقتين عن خلفيتك ومهاراتك.'],es:['Háblame de ti.','La pregunta clásica de apertura de entrevista. Prepara un resumen confiado de 2 minutos sobre tu experiencia y habilidades.'],pl:['Proszę opowiedzieć coś o sobie.','Klasyczne pytanie otwierające rozmowę kwalifikacyjną. Przygotuj pewne, 2-minutowe podsumowanie swojego doświadczenia i umiejętności.']}},
+        {en:'I have experience in...',narration:'Use this to introduce your relevant skills. Always follow with a specific example — evidence is more powerful than claims.',t:{fr:['J\'ai de l\'expérience dans…','Utilisez ceci pour présenter vos compétences. Suivez toujours avec un exemple spécifique — les preuves valent plus que les affirmations.'],it:['Ho esperienza in…','Usalo per introdurre le tue competenze rilevanti. Segui sempre con un esempio specifico — le prove valgono più delle affermazioni.'],pt:['Tenho experiência em…','Use isto para apresentar suas habilidades. Sempre continue com um exemplo específico — evidências são mais poderosas que afirmações.'],zh:['我在……方面有经验。','用于介绍你的相关技能。始终跟上具体例子——证据比声明更有说服力。'],tr:['… konusunda deneyimim var.','Bunu ilgili becerilerinizi tanıtmak için kullanın. Her zaman belirli bir örnekle devam edin — kanıt, iddiadan daha güçlüdür.'],ja:['…の経験があります。','関連するスキルを紹介するために使います。常に具体的な例を続けましょう。証拠は主張よりも説得力があります。'],ko:['저는 …에 경험이 있습니다.','관련 기술을 소개할 때 사용합니다. 항상 구체적인 예시를 이어서 말하세요 — 증거가 주장보다 강력합니다.'],ar:['لديّ خبرة في…','استخدم هذه العبارة لتقديم مهاراتك ذات الصلة. اتبعها دائماً بمثال محدد — الدليل أقوى من مجرد الادعاء.'],es:['Tengo experiencia en…','Úsalo para presentar tus habilidades relevantes. Siempre sigue con un ejemplo específico — la evidencia es más poderosa que las afirmaciones.'],pl:['Mam doświadczenie w…','Użyj tego, aby przedstawić swoje umiejętności. Zawsze podążaj za konkretnym przykładem — dowody są silniejsze niż twierdzenia.']}},
+        {en:'Could you clarify that, please?',narration:'Professional way to ask someone to explain again. Never be afraid to ask — clarity prevents costly mistakes.',t:{fr:['Pourriez-vous préciser cela, s\'il vous plaît ?','Façon professionnelle de demander une clarification. N\'ayez jamais peur de demander — la clarté évite les erreurs coûteuses.'],it:['Potrebbe chiarire questo, per favore?','Modo professionale per chiedere di spiegare di nuovo. Non aver mai paura di chiedere — la chiarezza previene errori costosi.'],pt:['Poderia esclarecer isso, por favor?','Forma profissional de pedir uma explicação. Nunca tenha medo de perguntar — a clareza evita erros dispendiosos.'],zh:['您能澄清一下吗？','要求对方再次说明的专业方式。永远不要害怕提问——清晰可以避免代价高昂的错误。'],tr:['Bunu açıklayabilir misiniz lütfen?','Birinden tekrar açıklamasını istemenin profesyonel yolu. Sormaktan korkmayın — netlik, maliyetli hatalarını önler.'],ja:['もう少し説明していただけますか？','もう一度説明してもらうための専門的な言い方です。聞くことを恐れないでください——明確さはミスを防ぎます。'],ko:['그것을 명확히 해주시겠어요?','다시 설명해달라고 요청하는 전문적인 방법입니다. 질문하는 것을 두려워하지 마세요 — 명확성이 실수를 방지합니다.'],ar:['هل يمكنك توضيح ذلك من فضلك؟','طريقة مهنية لطلب الشرح مجدداً. لا تخشَ أبداً أن تسأل — الوضوح يمنع الأخطاء المكلفة.'],es:['¿Podría aclarar eso, por favor?','Forma profesional de pedir que alguien explique de nuevo. Nunca tengas miedo de preguntar — la claridad evita errores costosos.'],pl:['Czy mógłby/mogłaby pan/pani to wyjaśnić?','Profesjonalny sposób na prośbę o ponowne wyjaśnienie. Nigdy nie bój się pytać — jasność zapobiega kosztownym błędom.']}},
+      ]},
+    ]
+  },
+  {
+    id:'grammar', icon:'📖', title:'Grammar Essentials',
+    desc:'Build a strong English foundation with key grammar patterns used every day.',
+    desct:{fr:'Construisez une solide base en anglais avec les structures grammaticales clés utilisées chaque jour.',it:'Costruisci una solida base di inglese con i modelli grammaticali chiave usati ogni giorno.',pt:'Construa uma base sólida de inglês com padrões gramaticais essenciais usados diariamente.',zh:'通过每天使用的关键语法模式建立扎实的英语基础。',tr:'Her gün kullanılan temel dilbilgisi kalıplarıyla güçlü bir İngilizce temeli oluşturun.',ja:'毎日使う重要な文法パターンで英語の強固な基礎を築きましょう。',ko:'매일 사용되는 핵심 문법 패턴으로 탄탄한 영어 기초를 쌓습니다.',ar:'ابنِ أساساً قوياً في اللغة الإنجليزية من خلال أنماط القواعد الأساسية المستخدمة يومياً.',es:'Construye una base sólida de inglés con los patrones gramaticales clave usados a diario.',pl:'Zbuduj mocne podstawy angielskiego z kluczowymi wzorcami gramatycznymi używanymi każdego dnia.'},
+    subtopics:[
+      { name:'Verb Tenses', examples:[
+        {en:'I am eating lunch.',narration:'Present continuous: "am/is/are + verb-ing." Used for actions happening RIGHT NOW.',t:{fr:['Je suis en train de déjeuner.','Présent continu : \"am/is/are + verbe-ing\". Utilisé pour les actions qui se passent EN CE MOMENT.'],it:['Sto mangiando a pranzo.','Presente continuo: \"am/is/are + verbo-ing\". Usato per azioni che accadono ORA.'],pt:['Estou almoçando.','Presente contínuo: \"am/is/are + verbo-ing\". Usado para ações acontecendo AGORA.'],zh:['我正在吃午饭。','现在进行时："am/is/are + 动词-ing"，用于正在发生的动作。'],tr:['Öğle yemeği yiyorum.','Şimdiki zaman süreklisi: \"am/is/are + fiil-ing\". ŞU AN gerçekleşen eylemler için kullanılır.'],ja:['昼食を食べています。','現在進行形：「am/is/are + 動詞-ing」。今まさに行われている動作に使います。'],ko:['점심을 먹고 있어요.','현재 진행형: "am/is/are + 동사-ing". 지금 일어나고 있는 동작에 사용됩니다.'],ar:['أنا أتناول الغداء الآن.','المضارع المستمر: \"am/is/are + فعل-ing\". يُستخدم للأفعال التي تحدث الآن.'],es:['Estoy almorzando.','Presente continuo: \"am/is/are + verbo-ing\". Se usa para acciones que ocurren AHORA MISMO.'],pl:['Jem lunch.','Czas teraźniejszy ciągły: \"am/is/are + czasownik-ing\". Używany dla czynności dziejących się TERAZ.']}},
+        {en:'She went to school yesterday.',narration:'Simple past: add "-ed" to regular verbs. "Went" is irregular — one of many irregular past forms to learn.',t:{fr:['Elle est allée à l\'école hier.','Passé simple : ajoutez \"-ed\" aux verbes réguliers. \"Went\" est irrégulier — l\'un des nombreux passés irréguliers à apprendre.'],it:['Lei è andata a scuola ieri.','Passato semplice: aggiungi \"-ed\" ai verbi regolari. \"Went\" è irregolare — una delle tante forme passate irregolari da imparare.'],pt:['Ela foi à escola ontem.','Passado simples: adicione \"-ed\" aos verbos regulares. \"Went\" é irregular — uma das muitas formas irregulares a aprender.'],zh:['她昨天去上学了。','一般过去时：规则动词加"-ed"。"Went"是不规则形式——是众多不规则过去式之一。'],tr:['O dün okula gitti.','Geçmiş zaman: düzenli fiillere \"-ed\" ekleyin. \"Went\" düzensizdir — öğrenilmesi gereken pek çok düzensiz geçmiş formdan biridir.'],ja:['彼女は昨日学校に行きました。','過去形：規則動詞には「-ed」を付けます。「went」は不規則形の一つです。'],ko:['그녀는 어제 학교에 갔어요.','단순 과거: 규칙 동사에 "-ed"를 추가합니다. "went"는 불규칙 — 배워야 할 불규칙 과거형 중 하나입니다.'],ar:['ذهبت إلى المدرسة أمس.','الماضي البسيط: أضف \"-ed\" إلى الأفعال المنتظمة. \"Went\" غير منتظم — أحد أشكال الماضي غير المنتظمة الكثيرة التي يجب تعلمها.'],es:['Ella fue a la escuela ayer.','Pasado simple: añade \"-ed\" a los verbos regulares. \"Went\" es irregular — una de las muchas formas irregulares del pasado a aprender.'],pl:['Ona poszła wczoraj do szkoły.','Czas przeszły prosty: dodaj \"-ed\" do regularnych czasowników. \"Went\" jest nieregularny — jeden z wielu nieregularnych form czasu przeszłego do nauczenia.']}},
+        {en:'You should drink more water.',narration:'"Should" gives advice or a recommendation. It is softer than "must" — the choice still belongs to the listener.',t:{fr:['Tu devrais boire plus d\'eau.','\"Should\" donne un conseil ou une recommandation. C\'est plus doux que \"must\" — le choix appartient toujours à l\'auditeur.'],it:['Dovresti bere più acqua.','\"Should\" dà un consiglio o una raccomandazione. È più morbido di \"must\" — la scelta appartiene ancora all\'ascoltatore.'],pt:['Você deveria beber mais água.','\"Should\" dá conselhos ou recomendações. É mais suave que \"must\" — a escolha ainda pertence ao ouvinte.'],zh:['你应该多喝水。','"Should"表示建议或推荐。比"must"更温和——选择权仍在听者手中。'],tr:['Daha fazla su içmelisin.','\"Should\" tavsiye verir. \"Must\"tan daha kibardır — karar hâlâ dinleyiciye aittir.'],ja:['もっと水を飲んだ方がいいですよ。','「should」はアドバイスや推薦を表します。「must」より柔らかく、選択は相手に委ねられています。'],ko:['물을 더 마셔야 해요.','\"should\"는 조언이나 권고를 줍니다. "must"보다 부드럽고, 선택권은 여전히 듣는 사람에게 있습니다.'],ar:['يجب أن تشرب المزيد من الماء.','تُعطي \"should\" نصيحة أو توصية. هي أرقّ من \"must\" — الخيار لا يزال بيد المستمع.'],es:['Deberías beber más agua.','\"Should\" da un consejo o recomendación. Es más suave que \"must\" — la elección sigue siendo del oyente.'],pl:['Powinieneś/Powinnaś pić więcej wody.','\"Should\" wyraża poradę lub zalecenie. Jest łagodniejsze niż \"must\" — wybór nadal należy do słuchacza.']}},
+      ]},
+    ]
+  },
+  {
+    id:'pronunciation', icon:'🔊', title:'Pronunciation & Sounds',
+    desc:'Train your ear and voice with key English sounds and stress patterns.',
+    desct:{fr:'Entraînez votre oreille et votre voix avec les sons anglais clés et les schémas d\'accentuation.',it:'Allenate orecchio e voce con i suoni chiave dell\'inglese e i modelli di accento.',pt:'Treine seu ouvido e voz com sons essenciais do inglês e padrões de ênfase.',zh:'通过英语关键音和重音模式训练你的听力和发音。',tr:'Temel İngilizce sesleri ve vurgu kalıplarıyla kulağınızı ve sesinizi antrenman yapın.',ja:'重要な英語の音とストレスのパターンで耳と声をトレーニングしましょう。',ko:'핵심 영어 소리와 강세 패턴으로 듣기와 발음을 훈련합니다.',ar:'درّب أذنك وصوتك على أصوات الإنجليزية الأساسية وأنماط النبر.',es:'Entrena tu oído y voz con los sonidos clave del inglés y los patrones de acento.',pl:'Trenuj ucho i głos z kluczowymi dźwiękami angielskiego i wzorcami akcentu.'},
+    subtopics:[
+      { name:'Vowel Sounds', examples:[
+        {en:'ship / sheep',narration:'Short /ɪ/ vs long /iː/. "Ship" is quick; "sheep" is drawn out. Try: "I see a ship carrying sheep."',t:{fr:['bateau / mouton','Court /ɪ/ vs long /iː/. \"Ship\" est court ; \"sheep\" est prolongé. Essayez : \"Je vois un bateau transportant des moutons.\"'],it:['nave / pecora','Breve /ɪ/ contro lungo /iː/. \"Ship\" è corto; \"sheep\" è prolungato. Prova: \"Vedo una nave con delle pecore.\"'],pt:['navio / ovelha','Curto /ɪ/ vs longo /iː/. \"Ship\" é rápido; \"sheep\" é prolongado. Tente: \"Vejo um navio carregando ovelhas.\"'],zh:['ship（船）/ sheep（绵羊）','短元音/ɪ/对比长元音/iː/。"ship"短促，"sheep"拉长。试试：I see a ship carrying sheep。'],tr:['gemi / koyun','Kısa /ɪ/ ve uzun /iː/. \"Ship\" kısa; \"sheep\" uzatılmış. Deneyin: \"Koyun taşıyan bir gemi görüyorum.\"'],ja:['ship（船）/ sheep（羊）','短い/ɪ/と長い/iː/の違い。「ship」は短く、「sheep」は伸ばします。練習：「I see a ship carrying sheep.」'],ko:['ship(배) / sheep(양)','짧은 /ɪ/ 대 긴 /iː/. "ship"은 짧고 "sheep"은 길게 발음합니다. 연습: "I see a ship carrying sheep."'],ar:['سفينة / خروف','صوت قصير /ɪ/ مقابل طويل /iː/. \"Ship\" سريع؛ \"sheep\" ممتد. جرّب: \"أرى سفينة تحمل خراف.\"'],es:['barco / oveja','Corta /ɪ/ vs larga /iː/. \"Ship\" es rápida; \"sheep\" es prolongada. Prueba: \"Veo un barco con ovejas.\"'],pl:['statek / owca','Krótkie /ɪ/ kontra długie /iː/. \"Ship\" jest krótkie; \"sheep\" przeciągnięte. Spróbuj: \"Widzę statek przewożący owce.\"']}},
+        {en:'going to → "gonna"',narration:'In natural fast speech, "going to" sounds like "gonna." You don\'t need to say it, but you MUST recognise it.',t:{fr:['going to → \"gonna\"','Dans la parole rapide naturelle, \"going to\" ressemble à \"gonna\". Vous n\'avez pas besoin de le dire, mais vous DEVEZ le reconnaître.'],it:['going to → \"gonna\"','Nel parlato veloce naturale, \"going to\" suona come \"gonna\". Non è necessario dirlo, ma DEVI riconoscerlo.'],pt:['going to → \"gonna\"','Na fala rápida natural, \"going to\" soa como \"gonna\". Não precisa dizer assim, mas DEVE reconhecer.'],zh:['going to → "gonna"','在自然快速的口语中，"going to"听起来像"gonna"。你不需要这样说，但必须能够识别。'],tr:['going to → \"gonna\"','Doğal hızlı konuşmada \"going to\" \"gonna\" gibi duyulur. Bunu söylemeniz gerekmez ama TANIYABILMELISINIZ.'],ja:['going to → "gonna"','自然な速い話し方では、「going to」は「gonna」のように聞こえます。言わなくてよいですが、聞き取れる必要があります。'],ko:['going to → "gonna"','자연스러운 빠른 말에서 "going to"는 "gonna"처럼 들립니다. 그렇게 말할 필요는 없지만 반드시 인식할 수 있어야 합니다.'],ar:['going to ← \"gonna\"','في الكلام السريع الطبيعي، تُنطق \"going to\" مثل \"gonna\". لا تحتاج إلى قولها هكذا، لكن يجب عليك التعرف عليها.'],es:['going to → \"gonna\"','En el habla rápida natural, \"going to\" suena como \"gonna\". No necesitas decirlo así, pero DEBES reconocerlo.'],pl:['going to → \"gonna\"','W naturalnej szybkiej mowie \"going to\" brzmi jak \"gonna\". Nie musisz tak mówić, ale MUSISZ to rozpoznawać.']}},
+      ]},
+    ]
+  },
+  {
+    id:'shopping', icon:'🛍️', title:'Shopping & Services',
+    desc:'Navigate shops and handle transactions confidently in English.',
+    desct:{fr:'Naviguez dans les magasins et gérez les transactions avec confiance en anglais.',it:'Orienta nei negozi e gestisci le transazioni con sicurezza in inglese.',pt:'Navegue em lojas e trate transações com confiança em inglês.',zh:'自信地在商店购物并用英语处理交易。',tr:'Mağazalarda güvenle alışveriş yapın ve işlemleri İngilizce olarak yönetin.',ja:'ショップでの買い物や手続きを英語で自信を持って行えるようになりましょう。',ko:'가게에서 자신 있게 쇼핑하고 영어로 거래를 처리하는 방법을 배웁니다.',ar:'تصرّف في المتاجر وأدِر المعاملات بثقة بالإنجليزية.',es:'Navega por las tiendas y realiza transacciones con confianza en inglés.',pl:'Poruszaj się pewnie w sklepach i obsługuj transakcje po angielsku.'},
+    subtopics:[
+      { name:'In a Shop', examples:[
+        {en:'I\'m just browsing, thank you.',narration:'Tells staff you are looking around without needing help. Polite and very commonly used in British shops.',t:{fr:['Je regarde juste, merci.','Dit au personnel que vous regardez sans avoir besoin d\'aide. Poli et très courant dans les boutiques britanniques.'],it:['Sto solo guardando, grazie.','Comunica al personale che stai guardando senza bisogno di aiuto. Educato e molto comune nei negozi britannici.'],pt:['Estou só a ver, obrigado/a.','Diz ao pessoal que você está apenas olhando sem precisar de ajuda. Educado e muito comum em lojas britânicas.'],zh:['我只是看看，谢谢。','告诉工作人员你只是随便看看，不需要帮助。礼貌且在英国商店中非常常用。'],tr:['Sadece bakıyorum, teşekkürler.','Personele yardıma ihtiyaç duymadan baktığınızı söyler. Kibarca ve İngiliz mağazalarında çok yaygın olarak kullanılır.'],ja:['見ているだけです。ありがとうございます。','スタッフに助けが必要なく見て回っているだけと伝えます。英国の店でよく使われる丁寧な表現です。'],ko:['그냥 구경하는 중이에요, 감사합니다.','직원에게 도움 없이 둘러보고 있다고 알립니다. 영국 상점에서 매우 흔하게 사용되는 공손한 표현입니다.'],ar:['أنا أتصفح فقط، شكراً لك.','تُعلم الموظفين أنك تتطلع فقط دون الحاجة للمساعدة. مهذّب وشائع جداً في المتاجر البريطانية.'],es:['Solo estoy mirando, gracias.','Le dice al personal que estás mirando sin necesitar ayuda. Educado y muy común en las tiendas británicas.'],pl:['Tylko się oglądam, dziękuję.','Informuje personel, że rozglądasz się bez potrzeby pomocy. Grzeczne i bardzo powszechne w brytyjskich sklepach.']}},
+        {en:'How much is this?',narration:'The most fundamental shopping question. Short and clear.',t:{fr:['Combien ça coûte ?','La question commerciale la plus fondamentale. Courte et claire.'],it:['Quanto costa questo?','La domanda più fondamentale per fare shopping. Breve e chiara.'],pt:['Quanto custa isto?','A pergunta mais fundamental ao fazer compras. Curta e clara.'],zh:['这个多少钱？','最基本的购物问题，简短明了。'],tr:['Bu ne kadar?','En temel alışveriş sorusu. Kısa ve net.'],ja:['これはいくらですか？','最も基本的な買い物の質問です。短くて明確です。'],ko:['이거 얼마예요?','가장 기본적인 쇼핑 질문입니다. 짧고 명확합니다.'],ar:['بكم هذا؟','أكثر أسئلة التسوق أساسيةً. قصيرة وواضحة.'],es:['¿Cuánto cuesta esto?','La pregunta de compras más fundamental. Corta y clara.'],pl:['Ile to kosztuje?','Najbardziej podstawowe pytanie zakupowe. Krótkie i jasne.']}},
+      ]},
+    ]
+  },
+  {
+    id:'transport', icon:'🚌', title:'Transport & Travel',
+    desc:'Use public transport and handle travel situations confidently.',
+    desct:{fr:'Utilisez les transports en commun et gérez les situations de voyage avec confiance.',it:'Usa i mezzi pubblici e gestisci le situazioni di viaggio con sicurezza.',pt:'Use transportes públicos e lide com situações de viagem com confiança.',zh:'自信地使用公共交通并处理旅途中的各种情况。',tr:'Toplu taşımayı kullanın ve seyahat durumlarıyla güvenle başa çıkın.',ja:'公共交通機関を使い、旅行中のさまざまな場面に自信を持って対応しましょう。',ko:'대중교통을 이용하고 여행 상황을 자신 있게 처리하는 방법을 배웁니다.',ar:'استخدم وسائل النقل العام وتعامل مع مواقف السفر بثقة.',es:'Usa el transporte público y maneja situaciones de viaje con confianza.',pl:'Korzystaj ze środków transportu publicznego i pewnie radź sobie w sytuacjach podróżnych.'},
+    subtopics:[
+      { name:'Public Transport', examples:[
+        {en:'A single to Oxford, please.',narration:'"Single" = one-way ticket. "Return" = round trip. "Please" is always important when buying tickets.',t:{fr:['Un aller simple pour Oxford, s\'il vous plaît.','\"Single\" = billet aller simple. \"Return\" = aller-retour. \"Please\" est toujours important lors de l\'achat de billets.'],it:['Un biglietto di sola andata per Oxford, per favore.','\"Single\" = biglietto solo andata. \"Return\" = andata e ritorno. \"Please\" è sempre importante quando si acquistano biglietti.'],pt:['Um bilhete simples para Oxford, por favor.','\"Single\" = bilhete de ida. \"Return\" = ida e volta. \"Please\" é sempre importante ao comprar bilhetes.'],zh:['一张去牛津的单程票，谢谢。','"Single"=单程票，"Return"=往返票。购票时"please"非常重要。'],tr:['Oxford\'a tek yön bilet lütfen.','\"Single\" = gidiş bileti. \"Return\" = gidiş-dönüş. Bilet alırken \"please\" her zaman önemlidir.'],ja:['オックスフォードまで片道一枚ください。','「single」=片道切符、「return」=往復切符。切符を買うときは必ず「please」を付けましょう。'],ko:['옥스퍼드까지 편도 한 장 주세요.','"single"=편도 티켓, "return"=왕복 티켓. 티켓 구매 시 "please"는 항상 중요합니다.'],ar:['تذكرة ذهاب فقط إلى أكسفورد، من فضلك.','\"Single\" = تذكرة ذهاب فقط. \"Return\" = ذهاب وإياب. كلمة \"please\" مهمة دائماً عند شراء التذاكر.'],es:['Un billete de ida a Oxford, por favor.','\"Single\" = billete de ida. \"Return\" = ida y vuelta. \"Please\" siempre es importante al comprar billetes.'],pl:['Poproszę bilet w jedną stronę do Oksfordu.','\"Single\" = bilet w jedną stronę. \"Return\" = bilet powrotny. \"Please\" jest zawsze ważne przy kupowaniu biletów.']}},
+        {en:'Is this seat taken?',narration:'Polite way to check if a seat is free. If empty, the person will say "No, go ahead" — that means you can sit.',t:{fr:['Cette place est-elle prise ?','Façon polie de vérifier si une place est libre. Si libre, la personne dira \"Non, allez-y\" — ça veut dire que vous pouvez vous asseoir.'],it:['Questo posto è occupato?','Modo educato per verificare se un posto è libero. Se è libero, la persona dirà \"No, prego\" — significa che puoi sederti.'],pt:['Este lugar está ocupado?','Forma educada de verificar se um lugar está livre. Se livre, a pessoa dirá "Não, fique à vontade" — significa que pode sentar.'],zh:['这个座位有人吗？','礼貌地询问座位是否空着。如果没人，对方会说"No, go ahead"——意思是你可以坐。'],tr:['Bu koltuk boş mu?','Bir koltuğun boş olup olmadığını kontrol etmenin kibar yolu. Boşsa kişi \"Hayır, buyurun\" der — oturabilirsiniz.'],ja:['この席は空いていますか？','席が空いているか確認する丁寧な言い方です。空いていれば「どうぞ」と言われます。'],ko:['이 자리 비어 있나요?','좌석이 비어 있는지 확인하는 공손한 방법입니다. 비어 있으면 "No, go ahead"라고 합니다 — 앉아도 된다는 뜻입니다.'],ar:['هل هذا المقعد مشغول؟','طريقة مؤدبة للتحقق من خلو مقعد. إذا كان فارغاً، سيقول الشخص \"لا، تفضّل\" — أي يمكنك الجلوس.'],es:['¿Está ocupado este asiento?','Forma educada de comprobar si un asiento está libre. Si está libre, la persona dirá "No, adelante" — significa que puedes sentarte.'],pl:['Czy to miejsce jest zajęte?','Grzeczny sposób sprawdzenia, czy miejsce jest wolne. Jeśli wolne, osoba powie \"Nie, proszę\" — to znaczy, że możesz siąść.']}},
+      ]},
+    ]
+  }
+];
+
+// ── STATE ──
+let currentLang = null, currentLangName = '', currentLangFlag = '';
+let currentTopicIndex = 0, currentSubtopicIndex = 0;
+
+function selectLanguage(code, name, native, flag) {
+  currentLang = code; currentLangName = name; currentLangFlag = flag;
+  document.getElementById('lang-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'block';
+  document.getElementById('lang-indicator').textContent = `${flag} ${native}`;
+  document.getElementById('support-lang-name').textContent = name;
+  buildSidebar(); loadTopic(0);
+}
+function changeLang() {
+  document.getElementById('lang-screen').style.display = 'flex';
+  document.getElementById('main-app').style.display = 'none';
+}
+function buildSidebar() {
+  const nav = document.getElementById('sidebar');
+  nav.innerHTML = '<div class="sidebar-heading">Topics</div>';
+  curriculum.forEach((t,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'topic-btn'+(i===0?' active':'');
+    btn.id = 'topic-btn-'+i;
+    btn.innerHTML = `<span class="topic-icon">${t.icon}</span>${t.title}`;
+    btn.onclick = () => loadTopic(i);
+    nav.appendChild(btn);
+  });
+}
+function loadTopic(index) {
+  currentTopicIndex = index; currentSubtopicIndex = 0;
+  document.querySelectorAll('.topic-btn').forEach((b,i) => b.classList.toggle('active',i===index));
+  const t = curriculum[index];
+  document.getElementById('topic-title').textContent = `${t.icon} ${t.title}`;
+  document.getElementById('topic-desc').textContent = t.desc;
+  const td = document.getElementById('topic-desc-translated');
+  td.style.display = 'none'; td.textContent = '';
+  document.getElementById('progress-fill').style.width = Math.round(((index+1)/curriculum.length)*100)+'%';
+  buildSubtopicTabs(t); renderExamples(t.subtopics[0]);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function buildSubtopicTabs(topic) {
+  const c = document.getElementById('subtopic-tabs'); c.innerHTML = '';
+  topic.subtopics.forEach((s,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'subtopic-tab'+(i===0?' active':'');
+    btn.textContent = s.name;
+    btn.onclick = () => {
+      document.querySelectorAll('.subtopic-tab').forEach((b,j) => b.classList.toggle('active',j===i));
+      currentSubtopicIndex = i; renderExamples(topic.subtopics[i]);
+    };
+    c.appendChild(btn);
+  });
+}
+function renderExamples(subtopic) {
+  const grid = document.getElementById('examples-grid'); grid.innerHTML = '';
+  subtopic.examples.forEach((ex,i) => {
+    const tr = ex.t ? ex.t[currentLang] : null;
+    const card = document.createElement('div');
+    card.className = 'example-card';
+    card.setAttribute('data-idx', i);
+    card.innerHTML = `
+      <div class="example-english">${ex.en}</div>
+      <div class="example-narration">${ex.narration}</div>
+      <div class="example-translation" id="tr-${i}">${tr ? tr[0]+'\n'+tr[1] : ''}</div>
+      <div class="card-actions">
+        <button class="btn-speak" onclick="speakText(this,'${ex.en.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">🔊 Listen</button>
+        <button class="btn-translate" id="btn-tr-${i}" onclick="toggleTr(${i},this)">${currentLangFlag} ${currentLangName}</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+function toggleTr(i, btn) {
+  const div = document.getElementById('tr-'+i);
+  if (!div.textContent.trim()) {
+    div.textContent = '⚠️ No translation available for this expression yet.';
+  }
+  const visible = div.style.display === 'block';
+  div.style.display = visible ? 'none' : 'block';
+  btn.classList.toggle('active', !visible);
+}
+function translateAll() {
+  const topic = curriculum[currentTopicIndex];
+  const subtopic = topic.subtopics[currentSubtopicIndex];
+  subtopic.examples.forEach((ex, i) => {
+    const tr = ex.t ? ex.t[currentLang] : null;
+    const div = document.getElementById('tr-'+i);
+    const btn = document.getElementById('btn-tr-'+i);
+    if (div) {
+      div.textContent = tr ? tr[0]+'\n'+tr[1] : '⚠️ No translation available for this expression yet.';
+      div.style.display = 'block';
+    }
+    if (btn) btn.classList.add('active');
+  });
+  const t = curriculum[currentTopicIndex];
+  const td = document.getElementById('topic-desc-translated');
+  if (t.desct && t.desct[currentLang]) {
+    td.textContent = '→ ' + t.desct[currentLang];
+    td.style.display = 'block';
+  }
+  const gbtn = document.getElementById('btn-global');
+  gbtn.textContent = '✅ All Shown'; 
+  setTimeout(() => { gbtn.textContent = '🌍 Show All Translations'; }, 3000);
+}
+function speakText(btn, text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-GB'; u.rate = 0.88;
+  btn.classList.add('speaking'); btn.textContent = '⏹ Stop';
+  u.onend = u.onerror = () => { btn.classList.remove('speaking'); btn.textContent = '🔊 Listen'; };
+  window.speechSynthesis.speak(u);
+}
+</script>
+</body>
+</html>
