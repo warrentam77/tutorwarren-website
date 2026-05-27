@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Interactive Guide to Safe Isolation, Cable Termination and Regulations</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e17;
+    --surface: #1a1828;
+    --surface2: #231f35;
+    --accent: #e8a045;
+    --accent2: #7c6fcd;
+    --accent3: #4ecdc4;
+    --danger: #e05c5c;
+    --success: #5cb85c;
+    --text: #f0eee8;
+    --muted: #9b97b0;
+    --border: rgba(255,255,255,0.08);
+    --card: #1e1c2e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+
+  /* NAV */
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;background:rgba(15,14,23,0.95);backdrop-filter:blur(8px)}
+  .nav-logo{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--accent)}
+  .nav-badge{background:var(--accent2);color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500;letter-spacing:.5px}
+  .nav-right{display:flex;align-items:center;gap:1rem}
+  .nav-student{font-size:13px;color:var(--muted)}
+  .nav-progress{font-size:13px;color:var(--accent3)}
+
+  /* PAGES */
+  .page{display:none;min-height:calc(100vh - 64px)}
+  .page.active{display:block}
+
+  /* ===== ATTRIBUTION BANNER ===== */
+  .attr-banner{background:rgba(124,111,205,.10);border-bottom:1px solid rgba(124,111,205,.2);padding:.55rem 2rem;text-align:center;font-size:12px;color:var(--muted);letter-spacing:.2px}
+  .attr-banner a{color:var(--accent2);text-decoration:none;font-weight:500}
+  .attr-banner a:hover{text-decoration:underline}
+
+  /* ===== WATERMARK ===== */
+  .watermark-footer{border-top:1px solid var(--border);padding:1.25rem 2rem;text-align:center;font-size:12px;color:rgba(155,151,176,.45);letter-spacing:.5px;user-select:none;pointer-events:none}
+
+  /* ===== HOME BUTTON ===== */
+  .nav-home-btn{background:rgba(232,160,69,.12);border:1px solid rgba(232,160,69,.3);color:var(--accent);border-radius:8px;padding:.38rem .85rem;font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;text-decoration:none;letter-spacing:.2px;transition:background .2s,border-color .2s;display:inline-flex;align-items:center;gap:.35rem}
+  .nav-home-btn:hover{background:rgba(232,160,69,.2);border-color:rgba(232,160,69,.55)}
+
+  /* ===== HOME / DASHBOARD PAGE ===== */
+  #page-home{padding:2rem}
+  .home-header{margin-bottom:2rem}
+  .home-header h2{font-family:'DM Serif Display',serif;font-size:2rem;margin-bottom:.4rem}
+  .home-header p{color:var(--muted);font-size:.9rem}
+  .modules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:2rem}
+  .module-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:border-color .2s,transform .15s;position:relative;overflow:hidden}
+  .module-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+  .module-card.c1::before{background:var(--accent)}
+  .module-card.c2::before{background:var(--accent2)}
+  .module-card.c3::before{background:var(--accent3)}
+  .module-card.c4::before{background:#e05c8a}
+  .module-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
+  .module-icon{font-size:1.8rem;margin-bottom:.75rem}
+  .module-card h3{font-size:1rem;margin-bottom:.35rem;font-weight:500}
+  .module-card p{font-size:12px;color:var(--muted);line-height:1.5}
+  .module-meta{display:flex;gap:.75rem;margin-top:.75rem}
+  .meta-pill{font-size:11px;background:rgba(255,255,255,.06);border-radius:20px;padding:2px 10px;color:var(--muted)}
+  .progress-bar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:.75rem}
+  .progress-fill{height:100%;border-radius:2px;transition:width .5s}
+
+  .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .action-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;gap:1rem}
+  .action-card:hover{border-color:rgba(255,255,255,.2)}
+  .action-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+  .action-card h4{font-size:.9rem;font-weight:500;margin-bottom:.2rem}
+  .action-card p{font-size:12px;color:var(--muted)}
+
+  /* ===== LEARN PAGE ===== */
+  #page-learn{padding:2rem}
+  .back-btn{background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:.45rem 1rem;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:1.5rem;transition:border-color .2s,color .2s}
+  .back-btn:hover{border-color:rgba(255,255,255,.25);color:var(--text)}
+  .learn-header{margin-bottom:2rem}
+  .learn-header h2{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.4rem}
+  .chapter-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+  .ch-tab{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.45rem 1rem;font-size:13px;cursor:pointer;color:var(--muted);transition:all .2s;font-family:'DM Sans',sans-serif}
+  .ch-tab.active{background:var(--accent2);border-color:var(--accent2);color:#fff}
+  .learn-content{display:none}
+  .learn-content.active{display:block}
+
+  .learn-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.25rem}
+  .learn-section h3{font-size:1.05rem;font-weight:500;margin-bottom:.75rem;color:var(--accent3)}
+  .learn-section p{font-size:.9rem;color:#c8c4d8;line-height:1.75;margin-bottom:.75rem}
+  .learn-section p:last-child{margin-bottom:0}
+  .key-box{background:#2a2110;border:1px solid rgba(232,160,69,.45);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:1rem 1.25rem;margin:1rem 0}
+  .key-box strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:#f5c06a;margin-bottom:.4rem;font-weight:600}
+  .key-box p{margin:0;font-size:.875rem;color:#ede8d8;line-height:1.7}
+  .warning-box{background:#261414;border:1px solid rgba(224,92,92,.45);border-left:4px solid var(--danger);border-radius:0 8px 8px 0;padding:1rem 1.25rem;margin:1rem 0}
+  .warning-box strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:#f08080;margin-bottom:.4rem;font-weight:600}
+  .warning-box p{margin:0;font-size:.875rem;color:#ede8d8;line-height:1.7}
+  .info-box{background:#0f2422;border:1px solid rgba(78,205,196,.4);border-left:4px solid var(--accent3);border-radius:0 8px 8px 0;padding:1rem 1.25rem;margin:1rem 0}
+  .info-box strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:#5ed9d0;margin-bottom:.4rem;font-weight:600}
+  .info-box p{margin:0;font-size:.875rem;color:#ede8d8;line-height:1.7}
+  /* AM2 reminder highlight box */
+  .reminder-box{background:#1e1230;border:2px solid #b44fff;border-radius:10px;padding:1.1rem 1.3rem;margin:1rem 0;position:relative}
+  .reminder-box::before{content:'🔑 AM2 REMINDER';display:block;font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#d580ff;font-weight:700;margin-bottom:.5rem}
+  .reminder-box p{margin:0;font-size:.9rem;color:#f0e8ff;line-height:1.75}
+  .reminder-box strong{color:#ffdd57;font-weight:700}
+
+  .steps-list{list-style:none;padding:0;counter-reset:steps}
+  .steps-list li{counter-increment:steps;display:flex;align-items:flex-start;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.9rem;color:#c8c4d8}
+  .steps-list li:last-child{border-bottom:none}
+  .steps-list li::before{content:counter(steps);background:var(--accent2);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px}
+
+  .figure-caption{font-size:12px;color:var(--muted);font-style:italic;margin-top:.4rem;text-align:center}
+
+  /* Flow chart diagram */
+  .flowchart{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1rem;overflow-x:auto}
+  .flow-nodes{display:flex;flex-direction:column;align-items:center;gap:0}
+  .flow-node{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.6rem 1.5rem;font-size:13px;text-align:center;min-width:220px;max-width:260px}
+  .flow-node.decision{background:rgba(232,160,69,.12);border-color:rgba(232,160,69,.4);color:var(--accent)}
+  .flow-node.end-node{background:rgba(78,205,196,.12);border-color:rgba(78,205,196,.4);color:var(--accent3)}
+  .flow-arrow{text-align:center;color:var(--muted);font-size:18px;line-height:1.2}
+  .flow-label{font-size:11px;color:var(--accent);margin:0 4px}
+
+  /* ===== FLIP CARDS PAGE ===== */
+  #page-cards{padding:2rem}
+  .cards-header{margin-bottom:1.5rem}
+  .cards-header h2{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.4rem}
+  .cards-header p{color:var(--muted);font-size:.9rem}
+  .cards-filter{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+  .filter-btn{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:.35rem .9rem;font-size:12px;cursor:pointer;color:var(--muted);transition:all .2s;font-family:'DM Sans',sans-serif}
+  .filter-btn.active{background:var(--accent2);border-color:var(--accent2);color:#fff}
+
+  .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+  .flip-card-wrap{height:200px;perspective:1000px;cursor:pointer}
+  .flip-card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+  .flip-card-wrap.flipped .flip-card-inner{transform:rotateY(180deg)}
+  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;padding:1.25rem;display:flex;flex-direction:column;justify-content:space-between}
+  .flip-front{background:var(--surface);border:1px solid var(--border)}
+  .flip-back{background:var(--surface2);border:1px solid rgba(124,111,205,.3);transform:rotateY(180deg)}
+  .flip-category{font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:600;color:var(--muted)}
+  .flip-question{font-size:.95rem;font-weight:500;line-height:1.5;flex:1;display:flex;align-items:center;padding:.5rem 0}
+  .flip-hint{font-size:11px;color:var(--muted);text-align:right}
+  .flip-answer{font-size:.875rem;color:#c8c4d8;line-height:1.6;flex:1;display:flex;align-items:center;padding:.5rem 0}
+  .flip-answer-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--accent2);font-weight:600}
+  .flip-card-count{font-size:13px;color:var(--muted);margin-bottom:1rem}
+
+  /* ===== MCQ PAGE ===== */
+  #page-mcq{padding:2rem}
+  .mcq-header{margin-bottom:1.5rem}
+  .mcq-header h2{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.4rem}
+  .mcq-progress-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.5rem}
+  .mcq-prog-text{font-size:13px;color:var(--muted);white-space:nowrap}
+  .mcq-prog-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+  .mcq-prog-fill{height:100%;background:var(--accent2);border-radius:3px;transition:width .4s}
+  .mcq-score-text{font-size:13px;color:var(--accent3);white-space:nowrap}
+  .question-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+  .q-number{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;margin-bottom:.75rem}
+  .q-text{font-size:1rem;line-height:1.6;margin-bottom:1.25rem;font-weight:500}
+  .options{display:flex;flex-direction:column;gap:.65rem}
+  .opt-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;text-align:left;cursor:pointer;font-size:.9rem;font-family:'DM Sans',sans-serif;color:var(--text);transition:all .2s;display:flex;align-items:center;gap:.75rem}
+  .opt-btn:hover:not(:disabled){border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.03)}
+  .opt-btn .opt-label{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;transition:all .2s}
+  .opt-btn.correct{border-color:var(--success);background:rgba(92,184,92,.08)}
+  .opt-btn.correct .opt-label{background:var(--success);border-color:var(--success);color:#fff}
+  .opt-btn.wrong{border-color:var(--danger);background:rgba(224,92,92,.08)}
+  .opt-btn.wrong .opt-label{background:var(--danger);border-color:var(--danger);color:#fff}
+  .opt-btn:disabled{cursor:default}
+  .q-explanation{background:#0d2220;border:1px solid rgba(78,205,196,.35);border-radius:8px;padding:.85rem 1rem;margin-top:.75rem;font-size:.875rem;color:#d0f5f2;line-height:1.6;display:none}
+  .q-explanation.show{display:block}
+  .mcq-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+  .btn-sec{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:.65rem 1.25rem;font-size:.9rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+  .btn-sec:hover{border-color:rgba(255,255,255,.25)}
+  .btn-acc{background:var(--accent2);border:none;color:#fff;border-radius:8px;padding:.65rem 1.5rem;font-size:.9rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:opacity .2s}
+  .btn-acc:hover{opacity:.85}
+
+  /* RESULTS */
+  .results-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;text-align:center;max-width:500px;margin:0 auto}
+  .results-score{font-family:'DM Serif Display',serif;font-size:4rem;color:var(--accent);margin:.5rem 0}
+  .results-grade{font-size:1.1rem;margin-bottom:1.5rem;color:var(--muted)}
+  .results-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1.5rem 0}
+  .result-stat{background:var(--bg);border-radius:10px;padding:1rem}
+  .result-stat .num{font-size:1.5rem;font-weight:600;margin-bottom:.2rem}
+  .result-stat .lbl{font-size:12px;color:var(--muted)}
+  .submit-form{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-top:1.5rem;text-align:left}
+  .submit-form h4{font-size:.95rem;margin-bottom.75rem;margin-bottom:.75rem}
+  .submit-form p{font-size:12px;color:var(--muted);margin-bottom:1rem;line-height:1.5}
+  .submit-form input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.65rem .9rem;color:var(--text);font-size:.9rem;font-family:'DM Sans',sans-serif;margin-bottom:.75rem}
+  .submit-form input:focus{outline:none;border-color:var(--accent2)}
+  .btn-submit{background:var(--accent3);border:none;color:#0f0e17;border-radius:8px;padding:.7rem 1.5rem;font-size:.9rem;cursor:pointer;font-weight:600;font-family:'DM Sans',sans-serif;transition:opacity .2s;width:100%}
+  .btn-submit:hover{opacity:.85}
+  .submit-success{background:rgba(92,184,92,.1);border:1px solid rgba(92,184,92,.3);border-radius:8px;padding:1rem;text-align:center;color:#8fe08f;font-size:.9rem;margin-top:.75rem;display:none}
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:600px){
+    .quick-actions{grid-template-columns:1fr}
+    .flip-grid{grid-template-columns:1fr}
+    .nav{padding:.75rem 1rem}
+    #page-learn,#page-cards,#page-mcq,#page-home{padding:1.25rem}
+  }
+
+  /* ===== PRINT PROTECTION ===== */
+  @media print{
+    body *{display:none!important}
+    body::after{content:'© tutorwarren.com — All Rights Reserved.\AUnauthorised reproduction or printing of this material is prohibited.';display:block!important;white-space:pre;text-align:center;font-size:14pt;font-weight:bold;padding:3cm 2cm;border:4px solid #000;margin:2cm;font-family:sans-serif}
+  }
+
+  /* ===== SELECTION & COPY PROTECTION ===== */
+  body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+  img{pointer-events:none;-webkit-user-drag:none;user-drag:none}
+</style>
+</head>
+<body>
+
+<!-- ATTRIBUTION BANNER -->
+<div class="attr-banner">
+  This learning resource is developed by <a href="https://www.tutorwarren.com" target="_blank" rel="noopener">tutorwarren.com</a>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">⚡</div>
+  <div class="nav-right">
+    <a href="index.html" class="nav-home-btn">🏠 Home</a>
+    <span class="nav-badge">Level 3</span>
+  </div>
+</nav>
+
+<!-- ========== HOME PAGE ========== -->
+<div id="page-home" class="page active">
+  <div class="home-header">
+    <h2 id="home-greeting">An Interactive Guide to Safe Isolation, Cable Termination and Regulations</h2>
+    <p>Level 3 · Choose a module to begin your studies</p>
+  </div>
+  <div class="modules-grid">
+    <div class="module-card c1" onclick="openLearn(0)">
+      <div class="module-icon">🔌</div>
+      <h3>Chapter 1: Safe Isolation</h3>
+      <p>Requirements, dangers of failure, isolation procedures, AVI testing</p>
+      <div class="module-meta">
+        <span class="meta-pill">3 parts</span>
+        <span class="meta-pill">Expanded</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="background:var(--accent);width:0%"></div></div>
+    </div>
+    <div class="module-card c2" onclick="openLearn(1)">
+      <div class="module-icon">📋</div>
+      <h3>Chapter 2: Regulatory Requirements</h3>
+      <p>BS 7671, Electricity at Work Regs, Health &amp; Safety at Work Act</p>
+      <div class="module-meta">
+        <span class="meta-pill">3 parts</span>
+        <span class="meta-pill">Key docs</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="background:var(--accent2);width:0%"></div></div>
+    </div>
+    <div class="module-card c3" onclick="openLearn(2)">
+      <div class="module-icon">🔧</div>
+      <h3>Chapter 3: Methods of Termination</h3>
+      <p>Requirements for connections, types of connections, good practice</p>
+      <div class="module-meta">
+        <span class="meta-pill">3 parts</span>
+        <span class="meta-pill">Tools & technique</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="background:var(--accent3);width:0%"></div></div>
+    </div>
+    <div class="module-card c4" onclick="openLearn(3)">
+      <div class="module-icon">🛡️</div>
+      <h3>Chapter 4 &amp; 5: Cables &amp; H&amp;S</h3>
+      <p>Cable types, termination techniques, PPE, risk assessment, tools</p>
+      <div class="module-meta">
+        <span class="meta-pill">3 parts</span>
+        <span class="meta-pill">Cable types &amp; H&amp;S</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="background:#e05c8a;width:0%"></div></div>
+    </div>
+  </div>
+  <div class="quick-actions">
+    <div class="action-card" onclick="showPage('page-cards')">
+      <div class="action-icon" style="background:rgba(124,111,205,.15);">🃏</div>
+      <div>
+        <h4>Flashcard Revision</h4>
+        <p>20 flip cards · test yourself on key concepts</p>
+      </div>
+    </div>
+    <div class="action-card" onclick="showPage('page-mcq')">
+      <div class="action-icon" style="background:rgba(78,205,196,.15);">✅</div>
+      <div>
+        <h4>Take MCQ Test</h4>
+        <p>30 questions · submit results to tutor</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== LEARN PAGE ========== -->
+<div id="page-learn" class="page">
+  <button class="back-btn" onclick="showPage('page-home')">← Back to Dashboard</button>
+  <div class="learn-header">
+    <h2 id="learn-title">Chapter 1: Safe Isolation of Conductors</h2>
+    <p style="color:var(--muted);font-size:.9rem">Study the material below, then test yourself with flashcards and MCQs</p>
+  </div>
+  <div class="chapter-tabs" id="learn-tabs"></div>
+  <div id="learn-body"></div>
+</div>
+
+<!-- ========== FLIP CARDS PAGE ========== -->
+<div id="page-cards" class="page">
+  <button class="back-btn" onclick="showPage('page-home')">← Back to Dashboard</button>
+  <div class="cards-header">
+    <h2>Flashcard Revision</h2>
+    <p>Click a card to reveal the answer · tap the filter to focus on a topic</p>
+  </div>
+  <div class="cards-filter" id="cards-filter"></div>
+  <div class="flip-card-count" id="cards-count"></div>
+  <div class="flip-grid" id="flip-grid"></div>
+</div>
+
+<!-- ========== MCQ PAGE ========== -->
+<div id="page-mcq" class="page">
+  <button class="back-btn" onclick="showPage('page-home')">← Back to Dashboard</button>
+  <div class="mcq-header">
+    <h2>Multiple Choice Assessment</h2>
+    <p style="color:var(--muted);font-size:.9rem">30 questions covering all chapters · your answers are recorded for submission</p>
+  </div>
+  <div class="mcq-progress-wrap">
+    <span class="mcq-prog-text" id="q-counter">Question 0 of 15</span>
+    <div class="mcq-prog-bar"><div class="mcq-prog-fill" id="q-prog-fill" style="width:0%"></div></div>
+    <span class="mcq-score-text" id="q-score-live">Score: 0</span>
+  </div>
+  <div id="mcq-body"></div>
+  <div class="mcq-nav" id="mcq-nav" style="display:none">
+    <button class="btn-sec" id="btn-prev" onclick="mcqPrev()">← Previous</button>
+    <button class="btn-acc" id="btn-next" onclick="mcqNext()">Next Question →</button>
+  </div>
+</div>
+
+<script>
+// ======================================
+// DATA
+// ======================================
+const CHAPTERS = [
+  // ════════════════════════════════════════════
+  // CHAPTER 1
+  // ════════════════════════════════════════════
+  {
+    title: "Chapter 1: Safe Isolation of Conductors",
+    tabs: ["Part 1: The Requirement", "Part 2: Procedures", "Part 3: Special Situations"],
+    content: [
+      // ── Part 1 ──
+      [
+        {type:"section", title:"What is Safe Isolation?",
+         body:`Safe isolation is the process of making an electrical circuit or installation dead and ensuring it cannot be accidentally re-energised while work is being carried out on it. It is one of the most critical skills an electrician must master. Safe isolation does not simply mean switching off a circuit — it requires a formal, documented procedure that proves the circuit is dead and prevents anyone else from re-energising it during the work period. The requirement for safe isolation applies equally to single circuits, complete consumer units, and entire distribution systems.`},
+        {type:"section", title:"When is Safe Isolation Required?",
+         body:`Safe isolation is required whenever electrical work is carried out on or near live conductors — including alterations, additions, inspection, testing, and fault-finding. Even when a circuit appears to be dead (for example, a lighting circuit with no luminaire fitted), safe isolation must still be completed and verified. Assumptions about the state of a circuit are extremely dangerous and have led to fatal accidents. The Electricity at Work Regulations 1989 Regulation 13 states that adequate precautions shall be taken to prevent electrical equipment, which has been made dead in order to prevent danger while work is carried out, from becoming electrically charged during that work.`},
+        {type:"key", label:"ELECTRICITY AT WORK REGULATIONS 1989 — REG 13", text:"Adequate precautions shall be taken to prevent electrical equipment which has been made dead in order to prevent danger while work is carried out from becoming electrically charged during that work. This is the legal basis for the entire safe isolation procedure."},
+        {type:"section", title:"The Physiological Effects of Electric Shock",
+         body:`The effect of electric current passing through the human body depends on the magnitude of the current, the path it takes through the body, and the duration of contact. At 1mA a tingling sensation is felt. At 5mA involuntary muscle contractions begin. At 10–15mA the grip tightens and the person cannot let go (the 'let-go threshold'). At 50mA (0.05A) ventricular fibrillation of the heart can occur, which is often fatal without immediate defibrillation. At currents above 100mA death is likely. The human body has an average resistance of approximately 1kΩ. At 230V, the resulting current is 230mA — more than four times the fibrillation threshold. Even at 50V in damp conditions, lethal currents are possible.`},
+        {type:"warning", label:"DANGER — LETHAL THRESHOLD", text:"A current of just 50mA (0.05A) across the chest is sufficient to cause ventricular fibrillation. At 230V with a body resistance of 1kΩ, the actual current is 230mA — 4.6× the lethal threshold. There is NO safe level of electric shock."},
+        {type:"section", title:"Secondary Injuries from Electric Shock",
+         body:`Electric shock does not only cause direct electrical injury. Secondary injuries are common and can be equally serious. When a person receives a shock, the involuntary muscle contraction may cause them to fall from a ladder, scaffold, or roof. They may drop tools, strike themselves, or collide with machinery. Burns occur at the entry and exit points of the current and internally along its path through the body. These burns can be deep and severe even when the external appearance suggests minor injury. The shock may also trigger a cardiac event hours after the initial incident, which is why anyone who receives a significant shock should always seek medical attention.`},
+        {type:"section", title:"Fire and Structural Damage from Failure to Isolate",
+         body:`Failure to safely isolate introduces the risk of arcing between live parts. An electrical arc between live conductors or between a live conductor and earth converts electrical energy into intense heat, producing a plasma at temperatures exceeding 20,000°C. The molten metal produced can ignite surrounding materials, starting fires that cannot be extinguished by operation of the protective device. Arcing can also cause catastrophic damage to switchgear, distribution boards, and the building structure. A single arc flash incident can destroy an entire distribution board and start a fire in a building that may already be occupied.`},
+        {type:"key", label:"KEY FACT — ARC FLASH", text:"An electrical arc flash can produce temperatures exceeding 20,000°C — hotter than the surface of the sun. Even a single ELV torch battery can produce a spark sufficient to cause an explosion in a flammable atmosphere where gases, vapours, or dust are present."},
+        {type:"section", title:"Implications for Building Systems",
+         body:`When a circuit or installation is isolated, this has wider implications for the building and its occupants. Systems that may be affected include: fire detection and alarm systems (which may cause the fire service to respond), burglar alarms linked to police or security companies (a false alarm call-out may be charged to the client), emergency lighting systems (if isolated, escape routes may be unlit), door access control and time-lock systems, CCTV and security cameras, heating and ventilation controls, and IT server equipment. The duty holder must be informed about which systems will be affected and for how long, so that appropriate arrangements can be made.`},
+        {type:"info", label:"DUTY HOLDER RESPONSIBILITIES", text:"The duty holder is the person responsible for the electrical installation — not just any employee. You must always obtain permission from the duty holder before isolating any circuit. They need to know: which circuit(s) will be isolated, how long the isolation will last, and which building services will be affected."},
+      ],
+      // ── Part 2 ──
+      [
+        {type:"section", title:"The Safe Isolation Procedure — Circuit Isolation",
+         body:`The following procedure must be followed rigorously when isolating a single circuit. Deviating from the procedure, even partially, creates a risk of injury or death. Every step has a purpose and none should be omitted. The procedure is based on GS 38 and accepted industry practice as outlined in the IET Guidance Note 3 and on-site guide.`},
+        {type:"steps", items:[
+          "Seek permission to isolate from the duty holder — explain the area and duration",
+          "Identify the circuit to be isolated using circuit charts, labels, or proprietary circuit finders",
+          "Isolate by switching off the circuit breaker, fuse, or isolator — do NOT use a dimmer switch or RCD as an isolator",
+          "Fit an approved locking-off device through the circuit breaker to prevent it being switched back on",
+          "Attach a warning label: 'DO NOT SWITCH ON — ELECTRICIAN WORKING'",
+          "Secure the working area with barriers or notices if the public or other trades could access it",
+          "Remove the accessory cover or enclosure at the point of work",
+          "Select an approved voltage indicator (AVI) that complies with GS 38",
+          "Confirm the AVI is working correctly using a proving unit — all LED indicators must illuminate",
+          "Test between ALL live conductors at the point of work",
+          "Is the circuit dead? If live readings are present, do NOT proceed — go back to step 2 and re-identify the circuit",
+          "Test between all live conductors and earth",
+          "Is the circuit dead? If live readings are present, do NOT proceed — go back to step 2",
+          "Re-prove the AVI using the proving unit to confirm it is still functioning correctly after the test sequence"
+        ]},
+        {type:"reminder", text:"After locking off the circuit to be isolated, <strong>KEEP the padlock key IN your POCKET</strong>. If you don't while taking an AM2 assessment in your training programme, your <strong>assessment will fail</strong>."},
+        {type:"warning", label:"CRITICAL — DO NOT USE THESE AS ISOLATORS", text:"A dimmer switch, time switch, thermostat, contactor, or RCD must NEVER be used as a means of isolation. Only a circuit breaker, fuse, or dedicated isolator that disconnects ALL live conductors simultaneously may be used."},
+        {type:"section", title:"Circuit Identification Tools",
+         body:`Before isolating, the correct circuit must be positively identified. Where distribution boards are well labelled and circuit charts are available, identification may be straightforward. Where labelling is poor or absent, proprietary circuit identification instruments must be used. These tools work by transmitting a signal through the circuit (via a socket outlet or direct connection) and sensing the signal at each fuse or circuit breaker in the distribution board. The sensitivity can be adjusted to give a clear positive identification. Two-person operation may be required if a direct connection to live parts is needed to inject the signal.`},
+        {type:"section", title:"Locking-Off Devices and Warning Labels",
+         body:`Once the circuit breaker has been switched off, a locking-off device must be fitted. This is a mechanical device that physically prevents the circuit breaker from being switched back on. A padlock is inserted through the locking-off device and only the person working on the circuit holds the key. If more than one person is working on circuits supplied from the same distribution board, each person must fit their own padlock through a multi-lock hasp. This ensures that no individual can re-energise the circuit while another person is still working. A warning label must also be attached adjacent to the circuit breaker.`},
+        {type:"key", label:"MULTI-PERSON ISOLATION", text:"When two or more electricians work on circuits from the same distribution board, a multi-lock hasp is fitted to the main isolator. Each person fits their own padlock. The supply cannot be restored until EVERY padlock is removed — meaning every person has confirmed they have finished work and are safe."},
+        {type:"section", title:"The Approved Voltage Indicator (AVI) and Proving Unit",
+         body:`An approved voltage indicator (AVI) is a voltage detection instrument that meets all the requirements of GS 38. This means it has: adequately insulated probes and leads, a limited amount of exposed metal at the probe tip (typically no more than 2–4mm), leads that are fused or current-limited, and a clearly visible indication when voltage is detected. Neon screwdrivers and basic voltage testers do NOT meet GS 38 requirements and must not be used. A proving unit generates a known voltage to test that the AVI is working correctly. The AVI must be proved immediately before and immediately after every safe isolation test sequence.`},
+        {type:"section", title:"Confirming Isolation — Single Phase",
+         body:`For a single-phase circuit (e.g. a lighting or ring circuit), tests must be carried out at the point of work between: (1) line and neutral, (2) line and earth, and (3) neutral and earth. A switched lighting circuit will also require tests between the switch line and all other conductors. No voltage should be detected at any of these test points. If voltage IS detected, the circuit has not been fully isolated and work must not proceed. The source of the remaining voltage must be investigated before the circuit is opened.`},
+        {type:"info", label:"SINGLE PHASE — TEST COMBINATIONS AT CEILING ROSE", text:"Tests required: 1 and 2 (L–N loop), 1 and 3 (L–SW), 1 and 4 (L–E), 2 and 4 (N–E), 3 and 4 (SW–E), 2 and 3 (N–SW). All six combinations must show zero volts before the circuit is considered safe to work on."},
+        {type:"section", title:"Distribution Board Isolation Procedure",
+         body:`Isolating a complete distribution board follows a similar procedure to circuit isolation but with important differences. The main isolator for the board is switched off rather than an individual circuit breaker. For a three-phase and neutral distribution board, 10 separate tests are required between all conductor combinations to confirm isolation: L1–L2, L1–L3, L2–L3, L1–N, L2–N, L3–N, L1–E, L2–E, L3–E, and N–E. When isolating a distribution board it is possible to use the incoming supply terminals (which remain live) to prove the AVI before and after testing, which is not possible during single circuit isolation.`},
+        {type:"key", label:"THREE-PHASE TESTS REQUIRED", text:"To confirm isolation of a 3-phase and neutral system: L1–L2, L1–L3, L2–L3 (3 phase-to-phase tests) + L1–N, L2–N, L3–N (3 phase-to-neutral tests) + L1–E, L2–E, L3–E, N–E (4 earth tests) = 10 tests in total."},
+      ],
+      // ── Part 3 ──
+      [
+        {type:"section", title:"Working on Live Conductors — Exceptional Circumstances",
+         body:`The Electricity at Work Regulations 1989, Regulation 14 states that no person shall work on or so near any live conductor (other than one suitably covered with insulating material) that danger may arise unless: it is unreasonable in all the circumstances for it to be dead; it is reasonable in all the circumstances for the person to work on it while live; and suitable precautions (including, where necessary, the provision of suitable protective equipment) are taken to prevent injury. Live working should therefore be an absolute last resort and must only be undertaken by a skilled competent person using appropriately rated PPE.`},
+        {type:"warning", label:"REGULATION 14 — LIVE WORKING", text:"Live working is only legally permissible when: (1) it is unreasonable for the circuit to be made dead, AND (2) it is reasonable for the person to work live, AND (3) suitable precautions are in place. All three conditions must be satisfied simultaneously. Convenience is NOT an acceptable reason for live working."},
+        {type:"section", title:"GS 38 — Test Equipment Requirements",
+         body:`GS 38 'Electrical test equipment for use by electricians' sets out the requirements for safe test equipment. Test leads must be made from flexible, well-insulated, low-capacitance cable. The amount of exposed metal at the probe tip should not exceed 2mm for general use, though a longer tip may be used where necessary provided it is no wider than 2mm. Leads must be fused, or the instrument itself must incorporate current limiting, to protect against the high fault currents that may flow if a lead is accidentally shorted. Probe holders must be designed so that the user's fingers cannot slip onto the exposed metal tip. Leads must be inspected before each use.`},
+        {type:"section", title:"Five Additional Dangers in the Working Environment",
+         body:`GS 38 identifies five additional hazards that must be considered before carrying out any testing or safe isolation work: (1) Flammable or explosive atmospheres — a spark from test equipment could ignite flammable gases, vapours, or dust; (2) Damp or wet conditions — moisture reduces body resistance and makes electric shock more severe and more likely; (3) Confined spaces — limited room to manoeuvre increases risk of accidental contact and makes escape or rescue difficult; (4) Other services — underground cables, gas pipes, water pipes, and structural steelwork may be in close proximity; (5) Overhead lines — accidental contact with overhead conductors during testing in outdoor or semi-outdoor environments.`},
+        {type:"key", label:"5 ADDITIONAL DANGERS (GS 38)", text:"1. Flammable/explosive atmospheres  2. Damp or wet conditions  3. Confined spaces  4. Presence of other services (gas, water, structural steel)  5. Overhead lines. These must be assessed BEFORE commencing any test or isolation work."},
+        {type:"section", title:"Defects in Test Equipment",
+         body:`All test equipment must be regularly inspected and maintained. GS 38 identifies three examples of defects that electricians must be able to recognise: (1) Damaged or cracked probe or lead insulation — which may allow live parts to be touched accidentally; (2) A probe tip that has been modified (e.g. sharpened or extended) — which may increase the risk of accidental contact with adjacent live parts; (3) Failure of the instrument's indication system (e.g. a burnt-out LED) — which could cause a live circuit to appear dead. Any item of test equipment found to be defective must be withdrawn from service immediately and clearly labelled 'DEFECTIVE — DO NOT USE'.`},
+        {type:"warning", label:"DEFECTIVE EQUIPMENT", text:"Never use test equipment with damaged insulation, cracked probes, modified tips, or unreliable indication. A defective AVI that fails to show voltage could lead directly to a fatal accident. Always prove the AVI before AND after use — even if it appeared to be working earlier in the day."},
+        {type:"section", title:"Safe Isolation — Summary Flow",
+         body:`The safe isolation flow chart (as reproduced in the IET On-Site Guide and widely available from the HSE) summarises the decision process: Determine what is to be worked on → Check AVI is working → Identify what is to be worked on → Obtain permission → Is it in use? → Determine means of isolation → Isolate → Lock off and post notices → Test to confirm isolation → If DEAD: re-check AVI working → Safe to work on. If LIVE at any test point: refer to drawings and charts → check what has been isolated → investigate and re-isolate before proceeding.`},
+        {type:"info", label:"AIDE MEMOIRE", text:"A laminated copy of the safe isolation flow chart should be kept with your test equipment at all times. When in doubt about any step, stop and consult the chart. The cost of a few minutes' delay is infinitely less than the cost of an electric shock incident."},
+      ]
+    ]
+  },
+  // ════════════════════════════════════════════
+  // CHAPTER 2
+  // ════════════════════════════════════════════
+  {
+    title: "Chapter 2: Regulatory Requirements",
+    tabs: ["Part 1: The Regulatory Framework", "Part 2: Key Documents in Detail", "Part 3: Applying the Regulations"],
+    content: [
+      // ── Part 1 ──
+      [
+        {type:"section", title:"Why a Regulatory Framework Exists",
+         body:`Electricity is invisible, odourless, and silent — yet it is one of the leading causes of workplace fatalities and fires in the UK. The regulatory framework exists to ensure that all electrical installations are designed, installed, inspected, tested, and maintained to a standard that prevents injury to people, livestock, and damage to property. The framework operates at two levels: statutory legislation (Acts of Parliament and Statutory Instruments which are the law) and non-statutory standards and guidance (which define best practice and serve as benchmarks for compliance with the law). Electricians must understand both levels and how they interact.`},
+        {type:"section", title:"Statutory vs Non-Statutory Documents",
+         body:`Statutory documents are legal instruments. Failure to comply with them is a criminal offence and can result in prosecution, fines, and imprisonment. Examples include the Electricity at Work Regulations 1989, the Health and Safety at Work etc. Act 1974, and the Management of Health and Safety at Work Regulations 1999. Non-statutory documents are guidance standards. Failure to comply with them is not in itself a criminal offence, but in the event of an accident or prosecution, failure to meet the standard can be used as evidence that adequate precautions were not taken. The most important non-statutory document for electrical installation work in the UK is BS 7671.`},
+        {type:"key", label:"STATUTORY vs NON-STATUTORY", text:"STATUTORY (the law): Electricity at Work Regulations 1989, Health & Safety at Work etc. Act 1974, Management of H&S at Work Regs 1999, Building Regulations. NON-STATUTORY (standards & guidance): BS 7671, IET Guidance Notes, HSE Guidance Notes (GS 38 etc.). Non-compliance with non-statutory documents can still be used as evidence in prosecutions."},
+        {type:"section", title:"The Electricity at Work Regulations 1989",
+         body:`The Electricity at Work Regulations 1989 (EAWR) were made under the Health and Safety at Work etc. Act 1974 and came into force on 1 April 1990. They apply to all electrical systems in all workplaces. The key regulations are: Regulation 4 — systems, work activities and protective equipment must be constructed and maintained to prevent danger; Regulation 5 — no electrical equipment shall be used where its strength and capability may be exceeded; Regulation 12 — means of cutting off the supply and isolating electrical equipment must be available; Regulation 13 — adequate precautions must be taken to prevent re-energisation of isolated equipment; Regulation 14 — live working is only permitted in defined exceptional circumstances; Regulation 16 — persons must be competent to prevent danger and injury.`},
+        {type:"section", title:"The Health and Safety at Work etc. Act 1974",
+         body:`The Health and Safety at Work etc. Act 1974 (HSWA) is the primary piece of health and safety legislation in Great Britain. It places a general duty on employers to ensure, so far as is reasonably practicable, the health, safety, and welfare at work of all employees. It also places duties on employees to take reasonable care for their own safety and the safety of others, to cooperate with their employer on health and safety matters, and not to interfere with or misuse anything provided for health and safety purposes. Electricians are employees under this Act and can be prosecuted individually if they fail in their duty of care.`},
+        {type:"warning", label:"PERSONAL LIABILITY", text:"Under the HSWA 1974, individual employees — including electricians — can be prosecuted for failing to take reasonable care for their own safety or the safety of others. Ignorance of the law is not a defence. If you carry out unsafe work, you personally may face prosecution, fines, or imprisonment."},
+        {type:"section", title:"Management of Health and Safety at Work Regulations 1999",
+         body:`These regulations require employers to carry out suitable and sufficient risk assessments of work activities, implement preventive and protective measures based on those assessments, appoint competent persons to assist with health and safety, provide information to employees about risks, and provide appropriate training. For electrical contractors, this means that before any electrical work begins, a risk assessment must be completed and a safe system of work established. The safe isolation procedure is part of that safe system of work.`},
+        {type:"info", label:"THE HIERARCHY OF RISK CONTROL", text:"Under the Management Regs: (1) Eliminate the hazard, (2) Substitute with something less hazardous, (3) Engineering controls, (4) Administrative controls (procedures, training), (5) Personal Protective Equipment. PPE is always the LAST resort, not the first line of defence."},
+      ],
+      // ── Part 2 ──
+      [
+        {type:"section", title:"BS 7671 — IET Wiring Regulations (18th Edition)",
+         body:`BS 7671 is the national standard for the design, erection, and verification of electrical installations in the United Kingdom. It is published jointly by the British Standards Institution (BSI) and the Institution of Engineering and Technology (IET). The current edition is the 18th Edition, incorporating Amendment 2 (2022). BS 7671 is a non-statutory standard but compliance with it is accepted as evidence of compliance with the Electricity at Work Regulations 1989. Most electricity supply companies will not connect a new installation to the public supply without a declaration that the installation complies with BS 7671.`},
+        {type:"section", title:"Structure of BS 7671",
+         body:`BS 7671 is divided into Parts, which are subdivided into Chapters, Sections, and individual Regulations. Part 1: Scope, object and fundamental principles. Part 2: Definitions. Part 3: Assessment of general characteristics. Part 4: Protection for safety. Part 5: Selection and erection of equipment. Part 6: Inspection and testing. Part 7: Special installations or locations. Appendices A–F contain supporting technical information. Section 526 (Electrical Connections) is within Part 5. A regulation reference such as 526.1 means Part 5, Section 526, Regulation 1.`},
+        {type:"key", label:"BS 7671 STRUCTURE EXPLAINED", text:"Parts (1–7 + Appendices) → Chapters → Sections → Regulations. Example: Regulation 526.1.1 = Part 5, Section 526 (Electrical Connections), Regulation 1, Sub-regulation 1. The first digit of any regulation number identifies the Part."},
+        {type:"section", title:"Section 526 — Electrical Connections",
+         body:`Section 526 of BS 7671 deals specifically with electrical connections and is therefore highly relevant to this unit. Regulation 526.1 states that every connection shall provide durable electrical continuity and adequate mechanical strength and protection. Regulation 526.2 requires that the means of connection shall be appropriate to the material, cross-sectional area, and number of conductors. Regulation 526.3 states that connections shall be accessible for inspection and testing unless they are maintenance-free joints. Regulation 526.4 addresses the protection of connections from mechanical damage and from the ingress of foreign bodies and moisture.`},
+        {type:"section", title:"Building Regulations — Part P",
+         body:`Part P of the Building Regulations (England and Wales) covers electrical safety in dwellings. It requires that electrical installations in dwellings are designed and installed to protect persons from fire and injury. Regulation 4 of Part P requires that all electrical work in dwellings is carried out in accordance with BS 7671. Notifiable work — including new circuits, consumer unit replacement, and electrical work in bathrooms, kitchens, and outside — must be either carried out by a registered competent person scheme member (e.g. NICEIC, NAPIT, ELECSA) or notified to the local Building Control Authority. Building Regulations apply in England and Wales only; Scotland has its own Building Standards.`},
+        {type:"info", label:"PART P — NOTIFIABLE WORK", text:"In England and Wales, the following ALWAYS requires notification: new circuits, consumer unit replacements, work in special locations (bathrooms, swimming pools), and work outside the building. A Minor Works Certificate or Electrical Installation Certificate must be issued on completion."},
+        {type:"section", title:"HSE Guidance Notes",
+         body:`The Health and Safety Executive publishes a series of Guidance Notes to assist employers and workers in meeting their legal obligations. Guidance Notes are non-statutory but carry significant weight in legal proceedings. The most relevant for electrical installation work include: GS 38 — Electrical test equipment for use by electricians; GS 6 — Avoidance of danger from overhead electric lines; HSG 85 — Electricity at work: Safe working practices; HSG 107 — Maintenance of portable and transportable electrical equipment; INDG 236 — Electrical safety and you. GS 38 specifically covers the selection, use, and maintenance of voltage indicators, test leads, and proving units.`},
+        {type:"section", title:"The IET Guidance Notes",
+         body:`The IET publishes a series of Guidance Notes that expand on the requirements of BS 7671 and provide practical guidance for designers and installers. Guidance Note 1 covers selection and erection of equipment. Guidance Note 2 covers isolation and switching. Guidance Note 3 covers inspection and testing. Guidance Note 7 covers special locations. Guidance Note 3 is particularly relevant to safe isolation as it contains detailed procedures for inspection, testing, and verification of electrical installations, including the safe isolation procedure and the use of approved voltage indicators. These guidance notes are non-statutory but represent accepted best practice.`},
+      ],
+      // ── Part 3 ──
+      [
+        {type:"section", title:"Applying Regulations to Termination Work",
+         body:`When making electrical connections and terminations, the regulations most directly applicable are BS 7671 Section 526, the Electricity at Work Regulations 1989, and the specific manufacturer's instructions for the terminals and accessories being used. Section 526 requires that all connections are mechanically and electrically sound, appropriate for the conductor, and accessible for inspection. EAWR Regulation 4 requires that the system is constructed and maintained to prevent danger. Manufacturer's instructions have legal force under both EAWR Regulation 4 and under the Supply of Machinery (Safety) Regulations — deviating from them without good reason creates liability.`},
+        {type:"section", title:"The Importance of Competence",
+         body:`EAWR Regulation 16 requires that no person shall engage in any work activity where technical knowledge or experience is necessary to prevent danger or injury, unless that person possesses such knowledge or experience, or is under appropriate supervision. This is the legal basis for the requirement that electrical work is carried out only by competent persons. Competence is not purely a matter of holding a qualification — it includes current, up-to-date knowledge of the regulations and standards, practical skill in the specific type of work being undertaken, and awareness of the hazards involved and how to control them. An electrician who is qualified but unfamiliar with the current edition of BS 7671 may not be considered competent.`},
+        {type:"key", label:"COMPETENCE UNDER EAWR REG 16", text:"Competence = technical knowledge + practical experience + awareness of hazards + current knowledge of applicable standards. Holding a qualification is necessary but not sufficient — you must also be up to date with the current edition of BS 7671 and any relevant amendments."},
+        {type:"section", title:"Notifiable Work and Certification",
+         body:`Certain types of electrical work require formal certification on completion. For all new fixed wiring installations and alterations, an Electrical Installation Certificate (EIC) must be issued, signed by both the designer and the inspector/tester. For minor additions to existing circuits, a Minor Electrical Installation Works Certificate (MEIWC) is appropriate. For periodic inspection and testing of existing installations, an Electrical Installation Condition Report (EICR) is issued. These documents form the paper trail that demonstrates compliance with BS 7671 and the Building Regulations. They are required by insurers, mortgage lenders, and Local Authority Building Control departments.`},
+        {type:"section", title:"Working with Other Contractors and Employers",
+         body:`On large construction sites and in commercial buildings, electrical contractors work alongside other trades. The Construction (Design and Management) Regulations 2015 (CDM) place duties on all parties — clients, principal designers, principal contractors, contractors, and workers — to cooperate on health and safety matters. Electrical contractors must provide method statements and risk assessments to the principal contractor, attend site safety briefings, and follow the site's specific health and safety rules. When electrical work creates hazards for other trades (e.g. exposed live terminals, open trenches, cables under tension), these must be communicated clearly and promptly.`},
+        {type:"warning", label:"CDM 2015", text:"Under the Construction (Design and Management) Regulations 2015, all contractors on a construction project have a duty to cooperate with the principal contractor on health and safety. Failure to comply with site safety rules is a criminal offence, not just a disciplinary matter."},
+        {type:"section", title:"Keeping Up to Date",
+         body:`Regulations and standards change. BS 7671 is updated periodically with amendments, and new legislation may be introduced or existing legislation amended. Electricians are personally responsible for keeping their knowledge current. This can be achieved through: attending CPD (Continuing Professional Development) courses, reading IET and HSE publications, membership of professional bodies such as the IET or the ECA, attending regular updates from awarding bodies such as City & Guilds and EAL, and using reliable online resources such as the IET website and the HSE website (www.hse.gov.uk).`},
+        {type:"info", label:"STAYING CURRENT", text:"Always check that you are using the current edition of BS 7671 (currently the 18th Edition, Amendment 2, 2022). Older editions remain on shelves but may not reflect current requirements. The IET publishes errata and amendments — sign up for notifications at www.theiet.org."},
+      ]
+    ]
+  },
+  // ════════════════════════════════════════════
+  // CHAPTER 3
+  // ════════════════════════════════════════════
+  {
+    title: "Chapter 3: Methods of Termination",
+    tabs: ["Part 1: Requirements & Principles", "Part 2: Types of Connection", "Part 3: Tools & Technique"],
+    content: [
+      // ── Part 1 ──
+      [
+        {type:"section", title:"Requirements for Connections — BS 7671 Section 526",
+         body:`Every electrical connection made during installation or maintenance work must comply with the requirements of BS 7671 Section 526. The fundamental requirement is stated in Regulation 526.1: every connection shall provide durable electrical continuity and adequate mechanical strength and protection. This means the connection must remain sound throughout the operational life of the installation — not just at the moment of installation. Connections that rely on contact pressure (such as screw terminals) must maintain their clamping force over time despite thermal cycling, vibration, and ageing of the materials.`},
+        {type:"section", title:"Electrical Requirements of a Good Connection",
+         body:`A good electrical connection must have a low and stable contact resistance. A high contact resistance causes heating at the joint, which can lead to insulation damage, fire, and equipment failure. Contact resistance is affected by the cleanliness of the conductor surfaces (oxidation on aluminium conductors is a common problem), the contact area between the conductor and the terminal, the clamping pressure, and the materials involved. Aluminium conductors require special bimetallic terminals or connection compounds to prevent galvanic corrosion at the joint. Copper conductors are less susceptible to oxidation but still require clean, undamaged surfaces for reliable connections.`},
+        {type:"key", label:"REQUIREMENTS FOR CONNECTIONS (S.526)", text:"Every connection must: (1) Provide durable electrical continuity, (2) Have adequate mechanical strength and protection, (3) Be appropriate for the conductor CSA, material, and number of conductors, (4) Be accessible for inspection and testing unless maintenance-free, (5) Be protected from mechanical damage, moisture, and corrosive substances."},
+        {type:"section", title:"Mechanical Requirements of a Good Connection",
+         body:`A connection that is electrically sound but mechanically weak will fail in service. Mechanical requirements include: the terminal must be able to withstand the mechanical forces applied during installation (cable pulling, bending) and in service (vibration, thermal expansion and contraction); the connection must not rely on the conductor insulation for mechanical support — the conductor itself must be supported; in overhead or vertical installations, the conductor weight must be borne by a mechanical cable support or grip, not by the terminal; and terminals must not be over-tightened, which can damage the conductor strands and reduce the effective cross-sectional area.`},
+        {type:"section", title:"Environmental Considerations for Connections",
+         body:`The environment in which a connection is made and used significantly affects its long-term reliability. Key factors include: temperature — high ambient temperatures reduce terminal clamping force and accelerate insulation ageing; vibration — connections in motor installations and machinery are subject to vibration which can loosen screw terminals over time and requires spring-loaded or anti-vibration terminals; moisture — moisture causes oxidation, reduces insulation resistance, and promotes galvanic corrosion between dissimilar metals; corrosive atmospheres — aggressive chemicals in industrial environments can attack conductor and terminal materials, requiring the use of special alloys or protective coatings.`},
+        {type:"warning", label:"IMPORTANT — ACCESSIBILITY", text:"All connections must be accessible for inspection and testing unless they are specifically designed to be maintenance-free joints (e.g. compression joints on underground cables). It is not acceptable to bury a standard junction box in plaster or concrete. Where a maintenance-free joint is used, this must be documented in the installation records."},
+        {type:"section", title:"Conductor Identification and Colour Coding",
+         body:`Before making any connection, conductors must be correctly identified. Current UK colour coding (in accordance with BS 7671 and harmonised European standard CENELEC HD 308): Line (phase) conductors in single-phase installations — Brown; Neutral — Blue; Circuit Protective Conductor (CPC/earth) — Green-and-Yellow. In three-phase systems: L1 — Brown, L2 — Black, L3 — Grey, Neutral — Blue, CPC — Green-and-Yellow. Old (pre-2004) UK colours were: Phase — Red, Neutral — Black, Earth — Green-and-Yellow. Where old colours are encountered, extreme care must be taken as the colour coding conventions are different. The switch wire (switch line/switched live) in a lighting circuit must be marked brown at both ends where it uses a cable with blue insulation.`},
+        {type:"info", label:"COLOUR CODING REMINDER", text:"Current UK: Brown (L), Blue (N), Green/Yellow (E). Three phase: Brown (L1), Black (L2), Grey (L3), Blue (N). OLD UK colours: Red (L), Black (N) — note that old Black = Neutral, but new Black = L2. This is a common source of potentially fatal errors when working on existing installations."},
+      ],
+      // ── Part 2 ──
+      [
+        {type:"section", title:"Screw and Screwless Terminals",
+         body:`The most common type of terminal in UK electrical accessories and equipment. A clamping plate or saddle is driven by a screw to grip the conductor against a metal base. The terminal must be tightened to the manufacturer's specified torque — under-tightening results in a high-resistance joint that may cause heating; over-tightening can damage the conductor strands, reducing current capacity and creating a stress concentration that may cause the conductor to fracture. For stranded conductors, a crimped bootlace ferrule (end sleeve) must be used unless the terminal is specifically designed to accept stranded conductors. Screwless spring-clamp terminals (e.g. WAGO 221 series) use a stainless-steel spring to maintain constant contact pressure regardless of temperature changes.`},
+        {type:"key", label:"TERMINAL TORQUE", text:"Always tighten terminals to the manufacturer's specified torque. Typical torques: 1.5mm² — 0.5–0.8Nm; 4mm² — 1.2–1.5Nm; 10mm² — 2.0–2.5Nm; 16mm² — 2.5–3.0Nm. Use a calibrated torque screwdriver. Re-tighten after first thermal cycle where specified."},
+        {type:"section", title:"Crimped Connections",
+         body:`Crimping uses a mechanical tool to compress a metal sleeve (ferrule, lug, or splice connector) around the conductor, creating a gas-tight connection through plastic deformation of both the sleeve and the conductor. This is particularly useful for: bootlace ferrules on stranded conductors before insertion into screw terminals; compression lugs for large cross-section conductors (connecting to busbar or equipment terminals); inline splice connectors for joining conductors in an accessible location; and ring terminals and fork terminals for mechanical fastening. The correct die must be used in the crimping tool to match the terminal and conductor size — incorrect die selection produces unreliable joints.`},
+        {type:"section", title:"Compression Joints — Permanent Maintenance-Free Connections",
+         body:`Compression joints (also called hydraulic or high-pressure compression connectors) are used for permanent connections in underground cables, large cross-section conductors, and high-voltage installations. They are made using a hydraulic crimping tool that applies several tonnes of force to compress a heavy-duty copper or aluminium sleeve around the conductors. These joints are designed to be maintenance-free and may be buried, cast into concrete, or installed in inaccessible locations. Once made, they cannot be dismantled without cutting the cable. They must be documented in the installation records as maintenance-free joints.`},
+        {type:"section", title:"Soldered Connections",
+         body:`Soldering uses a low-melting-point metal alloy (solder) to bond conductors together or to terminals. In electrical installations solder is used for: tinning the ends of flexible cord conductors before connecting to screw terminals (to keep strands together and improve contact); soldering connections on PCBs and electronic components; and historically for making joints in telecommunications cables. Solder should not be relied upon as the sole means of mechanical connection in a terminal — the terminal clamp must provide the mechanical hold. Modern lead-free solder (required by RoHS regulations) has a higher melting point than traditional tin-lead solder and requires more careful temperature control.`},
+        {type:"info", label:"WAGO-TYPE SPRING TERMINALS", text:"WAGO 221 lever-nut connectors and similar spring terminals do not require tools and accept both solid and stranded conductors. They maintain a constant contact force independent of temperature change (unlike screw terminals which lose torque when heated). They are accepted by BS 7671 and increasingly used in consumer unit wiring, luminaire connections, and junction boxes."},
+        {type:"section", title:"Cable Glands and Entries",
+         body:`Cable glands are mechanical devices that seal and terminate cables where they enter enclosures, equipment, or junction boxes. They serve several purposes simultaneously: mechanical retention of the cable (preventing the cable being pulled out of the enclosure); sealing against moisture, dust, and other contaminants (IP rating); maintenance of electrical continuity of the cable armour or screen (for screened and armoured cables); and strain relief to prevent tensile forces being transmitted to the internal connections. Cable glands must be selected to match the cable type (e.g. SWA, braided flexible, unarmoured), the cable diameter, and the IP rating of the enclosure.`},
+        {type:"section", title:"Junction Boxes and Adaptable Boxes",
+         body:`Where connections cannot be made within an accessory or piece of equipment, a junction box or adaptable box must be used. BS 7671 Regulation 526.3 requires all connections to be accessible for inspection and testing unless they are maintenance-free. Junction boxes must therefore be located where they can be accessed — they must not be buried in walls, ceilings, or floors unless using maintenance-free connectors (which must be documented). The IP rating of the junction box must be appropriate for the location. In damp or outdoor locations, an IP54 or higher rating is required. Adaptable boxes (also called adaptaboxes) are general-purpose metal or plastic enclosures used for making connections in a wide range of situations.`},
+      ],
+      // ── Part 3 ──
+      [
+        {type:"section", title:"Stripping Conductors — Correct Technique",
+         body:`The stripping length is critical to a good termination. Too much insulation stripped leaves bare conductor exposed outside the terminal, creating a risk of short circuit and electric shock. Too little stripped means the insulation is gripped by the terminal clamp rather than the conductor, resulting in a high-resistance joint that will overheat. The correct strip length depends on the terminal type and is specified by the terminal manufacturer — typically 8–12mm for most accessories. A cable stripper adjusted to the correct insulation thickness should always be used rather than a knife, to avoid nicking the conductor strands. A nicked conductor has reduced current capacity and is likely to fracture in service.`},
+        {type:"warning", label:"NICKED CONDUCTORS", text:"A conductor that has been nicked during stripping is weakened and may fracture in service, causing an open circuit fault or, if the break is partial, a high-resistance joint that overheats. Always use a proper cable stripper set to the correct insulation depth — never strip with a knife blade drawn across the conductor."},
+        {type:"section", title:"Fitting Bootlace Ferrules",
+         body:`A bootlace ferrule (end sleeve/Aderendhülse) is a short copper tube, usually tin-plated, that is crimped onto the stripped end of a stranded conductor before insertion into a screw terminal. The ferrule keeps all strands together, prevents individual strands from escaping the terminal clamp, ensures an even contact area, and makes reinsertion easier. Ferrules are available in colour-coded sizes corresponding to conductor cross-sectional areas: 0.5mm² (white), 0.75mm² (white), 1.0mm² (white), 1.5mm² (black), 2.5mm² (blue), 4mm² (grey), 6mm² (yellow), 10mm² (orange). Always use the correct size ferrule for the conductor. Use a ratchet crimping tool — hand pressure alone will not produce a reliable crimp.`},
+        {type:"key", label:"FERRULE COLOUR CODES (COMMON)", text:"0.5mm² White · 0.75mm² White · 1.0mm² White · 1.5mm² Black · 2.5mm² Blue · 4mm² Grey · 6mm² Yellow · 10mm² Orange. Always match ferrule size to conductor CSA. Use a ratchet crimping tool — never a generic plier."},
+        {type:"section", title:"Making a Good Screw Terminal Connection",
+         body:`Follow this sequence for every screw terminal connection: (1) Strip the correct length of insulation; (2) Inspect the conductor — discard if nicked or corroded; (3) Fit a bootlace ferrule for stranded conductors; (4) Insert the conductor fully into the terminal so no bare conductor is visible outside; (5) Tighten the terminal screw to the correct torque using a calibrated torque screwdriver; (6) Gently pull-test the conductor to confirm it is gripped; (7) Check that no adjacent terminals have been accidentally bridged by stray strands. After the installation is first energised and has undergone a full thermal cycle, screw terminals should be re-tightened as specified by the manufacturer, since thermal expansion and contraction can reduce terminal torque.`},
+        {type:"section", title:"Connections in Special Locations",
+         body:`Special locations as defined in BS 7671 Part 7 impose additional requirements on connections. In bathrooms and shower rooms (Zone 0, 1, and 2), all wiring accessories and connections must be rated to at least IP44 (IP67 in Zone 0). In swimming pools, connections must be rated IP68. In agricultural premises, connections must be resistant to the specific chemicals, moisture, and physical conditions present. In potentially explosive atmospheres (ATEX zones), only specifically certified equipment and connection methods may be used. In high-temperature environments (e.g. sauna rooms, motor junction boxes), only insulation rated for the maximum temperature present may be used, and standard PVC insulation may not be acceptable.`},
+        {type:"section", title:"Testing Connections After Installation",
+         body:`After making all connections, the installation or circuit must be inspected and tested before it is energised. Visual inspection checks that: all connections are tight, no bare conductors are exposed outside terminals, cores are correctly identified and connected to the right terminals, and all enclosures are correctly closed and sealed. Continuity testing (Regulation 643) verifies that the circuit conductors are correctly connected and intact. Insulation resistance testing (Regulation 643) verifies that insulation has not been damaged during installation and that no inadvertent connections exist between conductors. Only after satisfactory inspection and testing results should the circuit be energised.`},
+        {type:"info", label:"PULL TEST", text:"After tightening every terminal, perform a gentle pull test — apply a small axial force to the conductor. If the conductor pulls out, the terminal is defective, incorrectly sized, or was not tightened correctly. Re-strip, re-fit, and re-tighten. A conductor that pulls out during a test is infinitely better than one that works loose in service and causes a fire."},
+      ]
+    ]
+  },
+  // ════════════════════════════════════════════
+  // CHAPTER 4 & 5
+  // ════════════════════════════════════════════
+  {
+    title: "Chapters 4 & 5: Cable Types & Health and Safety",
+    tabs: ["Part 1: Cable Types & Termination", "Part 2: Further Cable Types", "Part 3: Health, Safety & Risk"],
+    content: [
+      // ── Part 1 ──
+      [
+        {type:"section", title:"Thermoplastic (PVC) Insulated and Sheathed Cables",
+         body:`Thermoplastic cables are the most widely used cables in UK domestic and commercial installations. Standard flat twin-and-earth (6242Y) and three-core-and-earth cables have PVC insulation on the individual cores, a plain (uninsulated) copper CPC, and an overall PVC sheath. When terminating: strip the outer sheath back to within 10–15mm of the entry point; apply green-and-yellow sleeving to the bare CPC; strip the core insulation to the correct length; and connect to the appropriate terminals. PVC insulation becomes brittle at temperatures below 0°C and may crack if bent when cold, so cables must not be installed in very cold conditions without prior warming.`},
+        {type:"key", label:"THERMOPLASTIC (PVC) — KEY PROPERTIES", text:"Max conductor temp: 70°C normal, 160°C short-circuit. Temp range: −5°C to +70°C. Not suitable for high-temperature environments. Susceptible to damage from oils and certain solvents. Sheath colours: Grey (general), White (surface wiring), Black (external/underground)."},
+        {type:"section", title:"Thermosetting (XLPE/LSF) Insulated Cables",
+         body:`Thermosetting cables use cross-linked polyethylene (XLPE) or ethylene-propylene rubber (EPR) as insulation, and Low Smoke and Fume (LSF) or Low Smoke Zero Halogen (LSZH) compounds for the sheath. Unlike thermoplastic materials, thermosetting insulation does not soften when heated — it maintains its properties at temperatures up to 90°C (or 125°C for EPR). This makes them suitable for installations where higher operating temperatures are expected, such as near boilers, in industrial environments, or where high fault current levels exist. LSF and LSZH cables produce significantly less toxic gas and smoke in a fire compared to PVC cables, which is critical in hospitals, transport tunnels, and buildings with limited means of escape.`},
+        {type:"section", title:"Mineral Insulated (MI) Cable — Construction and Properties",
+         body:`MI cable consists of one or more copper conductors packed in compressed magnesium oxide (MgO) powder within a seamless copper outer sheath. It is manufactured by a drawing process that compresses the entire assembly. The result is an extremely robust cable capable of operating at very high temperatures (up to 250°C continuous, higher for short periods) and rated for use in fire alarm and emergency lighting circuits where cables must maintain circuit integrity during a fire (as required by BS 5839 and BS 5266). MI cable has a very small overall diameter for its current rating, is completely waterproof, rodent-proof, and resistant to most chemicals. Its main drawbacks are high installation cost, difficulty of forming, and the hygroscopic nature of the MgO insulation.`},
+        {type:"warning", label:"MI CABLE — HYGROSCOPIC INSULATION", text:"Magnesium oxide powder absorbs moisture extremely rapidly. Once the cable is cut, moisture begins entering immediately. The pot-end seal MUST be fitted within a few minutes of cutting the cable. Any cable that has been left unsealed or has been wet must have its insulation resistance checked before sealing, as MgO-absorbed moisture cannot be removed by drying after sealing."},
+        {type:"section", title:"Terminating MI Cable — The Pot-End Seal",
+         body:`MI cable termination requires a proprietary sealing kit (pot-end). The process is: (1) Cut the cable squarely and allow it to warm to ambient temperature; (2) Remove the outer copper sheath for the required length using a rotary stripper (a knife must not be used — it will damage the MgO); (3) Immediately pack the pot with the supplied sealing compound and fit the pot over the cable end; (4) Tighten the gland nut to compress the sealing compound around the individual conductors; (5) Fit a shroud or insulating sleeve over the pot; (6) Apply insulating sleeving in the correct colours to each conductor; (7) The terminated conductors are now ready for connection. Cold-applied compound seals must be used in situations where heat-applied sealants are inappropriate.`},
+        {type:"section", title:"Braided Flexible Cables — Fire-Resistant Cables",
+         body:`Fire-resistant cables such as those to BS 7629 (Enhanced Fire Resistant Cables) or BS 6387 use mineral compounds, mica tape, or other fire-resistant insulation systems to maintain circuit integrity during a fire. They are mandatory for fire alarm power supplies, emergency lighting, and smoke control systems. They are typically terminated using the same techniques as standard flexible cables, but with the additional requirement that any metallic braid or screen must be correctly earthed through the cable gland. Coaxial cables (used for antenna and data signals) are terminated using BNC, F-type, or N-type connectors which must be correctly crimped or soldered to maintain the characteristic impedance of the cable.`},
+      ],
+      // ── Part 2 ──
+      [
+        {type:"section", title:"Steel Wire Armoured (SWA) Cables — Construction",
+         body:`SWA cables consist of: individual insulated copper conductors, a polymeric bedding layer, a layer of steel wire armour, and an outer PVC or LSF sheath. The steel wire armour provides mechanical protection against physical damage and, in installations where the armour is used as the circuit protective conductor, provides a low-impedance earth path. Aluminium wire armoured (AWA) cables use aluminium armour wires instead of steel, which reduces weight and is better for single-core cables where the circular arrangement of a single layer of armour avoids the inductive effects that would occur with steel armour on single-core AC cables. SWA cables are used for underground runs, mains supply cables, and industrial distribution.`},
+        {type:"section", title:"Terminating SWA Cable — Gland Selection and Fitting",
+         body:`SWA termination requires: (1) Calculate the required gland size from the cable outer diameter using the manufacturer's tables; (2) Strip back the outer sheath to the required length (typically 20–30mm depending on gland type); (3) Spread and cut the armour wires to the correct length using SWA cutters; (4) Ensure the armour wires are clean and free from burrs; (5) Thread the inner locking ring and outer locking nut onto the cable; (6) Insert the gland body under the armour wires; (7) Tighten the inner locking ring to clamp the armour wires in the gland cone; (8) Thread the gland through the enclosure knockout and tighten the outer locking nut; (9) Fit the earth tail from the gland body to the earth terminal within the enclosure. The gland must be rated for the IP classification of the enclosure.`},
+        {type:"key", label:"SWA GLAND TYPES", text:"Type A: Un-armoured cable, indoor, dry — no seal. Type B: SWA cable, indoor — armour clamped, no outer seal. Type BW/CW: SWA cable, outdoor/wet — armour clamped AND outer sheath sealed. Type E1W: SWA cable, explosive atmospheres — certified ATEX gland required. Always check the IP and Ex rating required for the installation environment."},
+        {type:"section", title:"Using SWA Armour as the CPC",
+         body:`The steel wire armour of an SWA cable may be used as the circuit protective conductor (CPC) where the armour's cross-sectional area meets the requirements of BS 7671 Regulation 543. The minimum CPC CSA is determined by the 'adiabatic equation' or by reference to BS 7671 Table 54.7. In practice, the armour of a correctly selected SWA cable almost always meets this requirement. Where the armour is used as the CPC, continuity of the armour path must be maintained at every gland and entry point, and the armour must be correctly earthed at both ends of the cable run. Where additional protection or a lower earth fault loop impedance is required, a separate CPC conductor within the cable (or run parallel to it) must be used.`},
+        {type:"section", title:"Fibre Optic Cables — Construction and Types",
+         body:`Fibre optic cables transmit signals as pulses of light through glass or plastic fibres rather than as electrical current. There are two main types: single-mode fibre (SMF), which has a very small core diameter (~9 microns) and transmits light in a single path, allowing very high bandwidth and very long distances; and multi-mode fibre (MMF), which has a larger core (~50 or 62.5 microns), supports multiple light paths simultaneously, and is used over shorter distances such as within a building. Fibre optic cables require no electrical connection and present no risk of electric shock or electromagnetic interference. However, optical power is present in the fibre — never look directly into a live fibre optic connector or cable end without appropriate optical power measurement equipment.`},
+        {type:"section", title:"Fibre Optic Termination",
+         body:`Fibre optic termination requires specialist skills and equipment. The process for field-polished connectors involves: (1) strip the outer jacket and protective layers to expose the optical fibre; (2) cleave the fibre at a precise 90° angle using a fibre cleaver; (3) insert the fibre into the connector ferrule and secure with epoxy adhesive; (4) allow the adhesive to cure fully; (5) polish the connector end-face through a series of abrasive films from coarse to fine; (6) inspect the polished end-face under a fibre scope at ×200 magnification; (7) test with an optical power meter. Pre-polished/anaerobic connectors are available that use a factory-polished stub fibre and mechanical splice to terminate the field fibre without epoxy or polishing. Fusion splicing permanently joins two fibres using an electric arc.`},
+        {type:"info", label:"FIBRE OPTIC SAFETY", text:"Never look directly into a fibre optic cable end, patch cord, or active connector. Infrared laser light at power levels used in telecommunications is invisible to the naked eye but can cause immediate and permanent retinal damage. Always use an optical power meter or inspection camera to check whether a fibre circuit is live before working on it."},
+        {type:"section", title:"Terminals and Terminations — Choosing the Right Method",
+         body:`The choice of termination method depends on: the type of conductor (solid, stranded, flexible, optical); the conductor cross-sectional area; the current rating required; the voltage level; the environmental conditions (temperature, moisture, corrosion, vibration); the requirement for accessibility; whether the joint is permanent or semi-permanent; and the regulations applicable to the specific installation type. In all cases, the termination method chosen must comply with BS 7671 Section 526 and, for special installations, the specific requirements of the relevant Part 7 section. Document all maintenance-free joints in the installation records.`},
+      ],
+      // ── Part 3 ──
+      [
+        {type:"section", title:"Health and Safety Legislation Applicable to Termination Work",
+         body:`Electrical termination work is subject to multiple pieces of health and safety legislation simultaneously. The primary legislation is the Electricity at Work Regulations 1989 (requiring safe working on electrical systems). In addition: the Health and Safety at Work etc. Act 1974 (general duty of care); the Management of Health and Safety at Work Regulations 1999 (risk assessment); the Provision and Use of Work Equipment Regulations 1998 (PUWER — safe condition of tools); the Personal Protective Equipment at Work Regulations 2022 (PPE provision and use); and the Manual Handling Operations Regulations 1992 (for heavy cable drums and equipment). On construction sites, CDM 2015 also applies.`},
+        {type:"section", title:"Selection and Use of Tools for Termination Work",
+         body:`Every tool used in termination work must be: appropriate for the task; in good condition (free from cracks, damaged insulation, or missing parts); regularly inspected and maintained; used in accordance with the manufacturer's instructions; and stored correctly when not in use. PUWER (Provision and Use of Work Equipment Regulations 1998) places a legal duty on employers to ensure that work equipment is maintained in good condition. Key tools for termination include: cable strippers (set to the correct depth for the insulation thickness), wire cutters, torque screwdrivers (calibrated to the required torque range), ratchet crimping tools (with the correct die sets), insulation piercing tools, and screwdrivers with correctly fitting tips (a worn screwdriver tip can slip and damage the terminal or the installer's hand).`},
+        {type:"key", label:"PUWER 1998 — TOOL REQUIREMENTS", text:"All work equipment must be: suitable for the intended use; maintained in good condition; inspected at regular intervals; used only by trained and competent persons; accompanied by adequate information and warnings. A visual pre-use check is required for all tools before each use. Defective tools must be immediately withdrawn from service and clearly labelled."},
+        {type:"section", title:"Insulated Tools",
+         body:`Insulated tools to IEC 60900 / GS 38 are required whenever there is a risk of contact with live conductors. The insulation is rated to 1000V AC / 1500V DC. Insulated tools are not merely painted — they have a full insulating coating over all metal parts except the working tip, and are individually tested during manufacture. They must be inspected before each use for cracks, cuts, or damaged insulation, which would defeat their protective function. Insulated screwdrivers, pliers, cutters, and strippers are all available. Never use an insulated tool if the insulation shows any sign of damage — a tool with a hairline crack in the insulation offers no protection at all.`},
+        {type:"section", title:"Personal Protective Equipment for Termination Work",
+         body:`PPE must be selected and used in accordance with the Personal Protective Equipment at Work Regulations 2022 and manufacturer's guidance. PPE does not remove the hazard — it is always the last line of defence after engineering and administrative controls have been applied. For electrical termination work relevant PPE includes: insulating gloves (BS EN 60903, tested to the voltage level of the circuit); arc-rated face shield (for work near energised equipment); safety glasses (for cable stripping and cutting, to protect against flying copper strands and swarf); safety footwear (steel toecap and penetration-resistant sole, rated to EN ISO 20345); hard hat (on construction sites); high-visibility vest (on roads and sites with vehicle movements); and knee pads (for work at floor level over extended periods).`},
+        {type:"section", title:"Risk Assessment for Termination Work",
+         body:`Before beginning any termination work, a suitable and sufficient risk assessment must be completed. For routine work on isolated, dead circuits, a generic risk assessment covering the standard safe working method may be sufficient. For non-routine work involving complex environments, confined spaces, energised conductors, or multiple hazards, a specific risk assessment and method statement must be produced. The HSE's five steps of risk assessment are: (1) Identify the hazards — what could cause harm?; (2) Decide who might be harmed and how — consider electricians, other trades, members of the public, vulnerable people; (3) Evaluate the risks and decide on precautions — what controls are needed?; (4) Record the findings and implement the controls; (5) Review and update the assessment if circumstances change.`},
+        {type:"warning", label:"UNSAFE SITUATIONS — STOP WORK", text:"If at any point during termination work an unsafe situation is discovered — including unexpected live conductors, evidence of overheating or arcing at existing connections, deteriorated insulation, incorrect wiring, or inadequate earthing — STOP WORK immediately. Secure the area. Report the hazard to the duty holder and/or your employer. Do not continue work until the hazard has been properly assessed and made safe by a competent person."},
+        {type:"section", title:"Working in Special Environments",
+         body:`Termination work in certain environments requires additional controls. In confined spaces (tanks, ducts, vaults), a confined space entry procedure, permit to work, and rescue arrangements are required before entry. In flammable/explosive atmospheres (ATEX zones), only intrinsically safe or flameproof tools and equipment may be used, and no source of ignition is permitted. In wet environments, class II (double-insulated) or SELV (safety extra-low voltage) equipment should be used where possible, and all temporary supplies used for task lighting or power tools must be protected by an RCD. At height, work at height regulations apply, with appropriate means of preventing falls from ladders, scaffolding, or mobile elevated work platforms (MEWPs).`},
+        {type:"info", label:"PERMIT TO WORK", text:"A Permit to Work (PTW) is a formal documented safe system of work used where the hazards are too complex or serious to be controlled by a standard procedure alone. Common in substations, industrial plants, and large commercial buildings. The PTW specifies exactly what work may be done, which equipment is isolated, what precautions are in place, and requires formal sign-off before work begins and on completion."},
+      ]
+    ]
+  }
+];
+
+const FLASHCARDS = [
+  {cat:"Safe Isolation",q:"What is the legal basis for the safe isolation procedure?",a:"Electricity at Work Regulations 1989, Regulation 13: adequate precautions must be taken to prevent electrical equipment, made dead to prevent danger, from becoming electrically charged during work."},
+  {cat:"Safe Isolation",q:"What is the minimum shock current that can cause ventricular fibrillation?",a:"Approximately 0.05A (50mA) across the chest. At 230V with a body resistance of 1kΩ, the resulting current is 0.23A — more than 4.5× this threshold. There is no safe level of electric shock."},
+  {cat:"Safe Isolation",q:"What is the 'let-go threshold' for electric current?",a:"Approximately 10–15mA. At this current level, involuntary muscle contraction prevents the person from releasing their grip on the conductor. Above this level, the person cannot let go without assistance."},
+  {cat:"Safe Isolation",q:"State the purpose of a proving unit in the safe isolation procedure.",a:"To prove the approved voltage indicator (AVI) is functioning correctly BEFORE and AFTER the test sequence. All LED indicators must illuminate. A proving unit is mandatory for circuit isolation where no other known live source is available."},
+  {cat:"Safe Isolation",q:"State the 14-step safe isolation procedure for a single circuit.",a:"1.Seek permission 2.Identify circuit 3.Isolate (CB/isolator) 4.Fit locking device 5.Attach warning label 6.Secure area 7.Remove accessory 8.Select AVI 9.Confirm AVI complies with GS 38 10.Prove AVI with proving unit 11.Test all live conductors 12.Is it dead? If not → step 2 13.Test live conductors to earth 14.Is it dead? If not → step 2. Re-prove AVI after."},
+  {cat:"Safe Isolation",q:"Why must the AVI be proved before AND after the isolation test?",a:"Before: to confirm the AVI is working before relying on it. After: to confirm the AVI is still working after the test — a false 'dead' reading due to a failed AVI could be mistaken for successful isolation, leading to a fatal accident."},
+  {cat:"Safe Isolation",q:"Why must the AVI be re-proved if a live reading is found during testing?",a:"If voltage is detected, the correct circuit has not been isolated. Work must stop, return to step 2 to re-identify and re-isolate the correct circuit. Continuing to work could result in contact with a live conductor."},
+  {cat:"Safe Isolation",q:"For a single-phase circuit, which test combinations confirm safe isolation at a ceiling rose?",a:"Six tests: Line–Neutral (loop), Line–Switch wire, Line–Earth, Neutral–Earth, Switch wire–Earth, Neutral–Switch wire. No voltage should be present at any combination."},
+  {cat:"Safe Isolation",q:"How many tests are required to confirm safe isolation of a 3-phase and neutral system, and what are they?",a:"10 tests: L1–L2, L1–L3, L2–L3 (3 phase-to-phase), L1–N, L2–N, L3–N (3 phase-to-neutral), L1–E, L2–E, L3–E, N–E (4 to earth)."},
+  {cat:"Safe Isolation",q:"Two electricians work on different circuits from the same distribution board. What lock-off arrangement is required?",a:"A multi-lock hasp is fitted to the main isolator. Each electrician fits their own padlock and attaches their own warning notice. The supply cannot be restored until both padlocks are removed — two padlocks, one multi-lock hasp, two warning notices."},
+  {cat:"Safe Isolation",q:"Under what three conditions does EAWR Regulation 14 permit live working?",a:"1. It is unreasonable in all the circumstances for the circuit to be dead. 2. It is reasonable for the person to work live. 3. Suitable precautions (including appropriate PPE) are taken to prevent injury. ALL THREE conditions must apply simultaneously."},
+  {cat:"Safe Isolation",q:"State three examples of defects in test equipment identified in GS 38.",a:"1. Damaged or cracked probe/lead insulation. 2. A probe tip that has been modified (e.g. sharpened or extended). 3. Failure of the instrument's indication system (e.g. a burnt-out LED indicator)."},
+  {cat:"Regulations",q:"What is BS 7671 and what is its legal status?",a:"BS 7671 (IET Wiring Regulations, 18th Edition) is the UK national standard for electrical installation design, erection, and verification. It is non-statutory but compliance is accepted as evidence of compliance with the Electricity at Work Regulations 1989."},
+  {cat:"Regulations",q:"Explain the regulation numbering system in BS 7671 — what does 526.1 mean?",a:"Section 526 (Electrical Connections), Regulation 1. The leading '5' indicates Part 5 (Selection and Erection of Equipment). Format: Section.Regulation.Sub-regulation where applicable."},
+  {cat:"Regulations",q:"State four key regulations from the Electricity at Work Regulations 1989 and what they require.",a:"Reg 4: Systems constructed and maintained to prevent danger. Reg 12: Means of isolation must be available. Reg 13: Precautions against re-energisation during work. Reg 14: Live working only in defined exceptional circumstances. Reg 16: Only competent persons to work on electrical systems."},
+  {cat:"Regulations",q:"What is the difference between statutory and non-statutory documents?",a:"Statutory = the law (e.g. EAWR 1989). Non-statutory = standards/guidance (e.g. BS 7671). Non-compliance with non-statutory documents is not itself a criminal offence, but failure to meet the standard can be used as evidence in legal proceedings following an accident."},
+  {cat:"Regulations",q:"What is GS 38 and where can it be obtained?",a:"GS 38 'Electrical test equipment for use by electricians' is an HSE Guidance Note. It specifies requirements for voltage indicators, test leads, and proving units. Available as a free download from www.hse.gov.uk."},
+  {cat:"Regulations",q:"What work is notifiable under Part P of the Building Regulations?",a:"New circuits, consumer unit replacements, work in special locations (bathrooms, swimming pools, kitchens), and work outside the building. Must be carried out by a Competent Person Scheme member OR notified to Local Authority Building Control."},
+  {cat:"Regulations",q:"What certification documents are required for completed electrical installation work?",a:"New installations/circuits: Electrical Installation Certificate (EIC). Minor additions to existing circuits: Minor Electrical Installation Works Certificate (MEIWC). Periodic inspection: Electrical Installation Condition Report (EICR)."},
+  {cat:"Regulations",q:"What does EAWR Regulation 16 require regarding competence?",a:"No person shall engage in work where technical knowledge or experience is necessary to prevent danger, unless that person possesses such knowledge/experience or is under appropriate supervision by a competent person."},
+  {cat:"Termination",q:"State five requirements every electrical connection must meet under BS 7671 Section 526.",a:"1. Durable electrical continuity. 2. Adequate mechanical strength and protection. 3. Appropriate for the conductor material, CSA, and number of conductors. 4. Accessible for inspection/testing (unless maintenance-free). 5. Protected from mechanical damage, moisture, and corrosive substances."},
+  {cat:"Termination",q:"Why should a bootlace ferrule be used with stranded conductors in screw terminals?",a:"To keep all strands together, prevent individual strands from escaping the terminal clamp (which could cause short circuits), ensure an even contact area, and maintain reliable low-resistance contact. Use a ratchet crimping tool — not hand pressure alone."},
+  {cat:"Termination",q:"What are the consequences of under-tightening and over-tightening a screw terminal?",a:"Under-tightening: high contact resistance → localised heating → insulation damage → fire risk. Over-tightening: damaged conductor strands → reduced current-carrying capacity → stress concentration → conductor fracture. Always use a calibrated torque screwdriver."},
+  {cat:"Termination",q:"State the current UK colour code for conductors in a single-phase installation.",a:"Line (phase): Brown. Neutral: Blue. Circuit Protective Conductor (CPC/earth): Green-and-Yellow. Old UK colours: Phase = Red, Neutral = Black. Note: old Black = Neutral, new Black = L2 (three-phase) — a potentially fatal confusion on existing installations."},
+  {cat:"Termination",q:"When is a connection permitted to be maintenance-free (inaccessible)?",a:"When the joint is specifically designed as a maintenance-free type — e.g. underground compression joints, resin-filled enclosures. This must be documented in the installation records. Standard junction boxes in wall plaster or concrete are NOT acceptable as maintenance-free."},
+  {cat:"Cables",q:"What are the maximum operating temperatures for thermoplastic (PVC) and thermosetting (XLPE) cables?",a:"Thermoplastic (PVC): 70°C conductor temperature, 160°C short-circuit. Thermosetting (XLPE): 90°C conductor temperature, 250°C short-circuit. Thermosetting cables can carry more current for the same CSA and are preferred in high-temperature environments."},
+  {cat:"Cables",q:"Why must MI cable be terminated in a dry atmosphere, and what must be done immediately after cutting?",a:"The mineral insulation (magnesium oxide) is hygroscopic — it absorbs moisture immediately on exposure to air. Moisture reduces insulation resistance to near zero. The pot-end seal MUST be fitted within minutes of cutting the cable. Wet or delayed-sealed cable may need the insulation resistance checked before sealing."},
+  {cat:"Cables",q:"State the construction of a Steel Wire Armoured (SWA) cable from inside to outside.",a:"Inner conductors (insulated) → bedding layer → steel wire armour layer → outer PVC (or LSF) sheath. The armour provides mechanical protection and can act as the circuit protective conductor (CPC) if of sufficient CSA."},
+  {cat:"Cables",q:"What is the purpose of the cable gland when terminating SWA cable?",a:"(1) Mechanically retains the cable in the enclosure. (2) Clamps and electrically connects the steel wire armour (as CPC). (3) Seals the cable entry against moisture and dust (IP rating). (4) Provides strain relief to prevent tensile forces reaching the internal connections."},
+  {cat:"Cables",q:"What is the difference between single-mode and multi-mode fibre optic cable?",a:"Single-mode (SMF): core ~9 microns, transmits single light path, very high bandwidth, long distances. Multi-mode (MMF): core ~50/62.5 microns, multiple light paths, lower bandwidth, shorter distances (within buildings). Neither type presents an electric shock risk but infrared laser light can cause permanent eye damage."},
+  {cat:"Cables",q:"Name four types of cable gland and their applications.",a:"Type A: unarmoured cable, dry indoor. Type B: SWA cable, indoor. Type BW/CW: SWA cable, outdoor/wet (outer seal). Type E1W: SWA cable, ATEX explosive atmosphere (certified). Match IP rating to enclosure requirement."},
+  {cat:"Health & Safety",q:"State the five steps of a risk assessment in the correct order.",a:"1. Identify the hazards. 2. Decide who might be harmed and how. 3. Evaluate the risks and decide on precautions. 4. Record findings and implement controls. 5. Review and update if circumstances change."},
+  {cat:"Health & Safety",q:"State three types of PPE relevant to electrical termination work and the standard each must meet.",a:"Insulating gloves — BS EN 60903 (rated to circuit voltage). Safety glasses — EN166. Safety footwear — EN ISO 20345 (steel toecap, penetration-resistant). Arc-rated face shield for work near energised equipment. Hard hat — EN 397 on construction sites."},
+  {cat:"Health & Safety",q:"What does PUWER 1998 require regarding hand tools used for electrical termination?",a:"All work equipment must be: suitable for the intended use; maintained in good condition; inspected at regular intervals by a competent person; used only by trained persons; accompanied by adequate information. A pre-use visual check is required before each use. Defective tools must be withdrawn and labelled immediately."},
+  {cat:"Health & Safety",q:"What action must be taken if an unsafe situation is discovered during termination work?",a:"Stop work immediately. Secure the area to prevent access by others. Report the hazard to the duty holder and/or employer. Do not resume work until the hazard has been properly assessed and made safe by a competent person. Document the finding."},
+  {cat:"Health & Safety",q:"State the five additional dangers identified in GS 38 that must be considered before testing.",a:"1. Flammable or explosive atmospheres. 2. Damp or wet conditions. 3. Confined spaces. 4. Presence of other services (gas, water, structural steel). 5. Overhead lines. All must be assessed before any testing or safe isolation begins."},
+  {cat:"Health & Safety",q:"What legislation requires employers to carry out risk assessments?",a:"Management of Health and Safety at Work Regulations 1999, Regulation 3: every employer must carry out a suitable and sufficient assessment of risks to employees and others arising from work activities."},
+  {cat:"Health & Safety",q:"When is a Permit to Work (PTW) required?",a:"When the hazards are too complex or serious to be controlled by a standard procedure alone. Common in substations, chemical plants, large commercial buildings, and live HV systems. The PTW specifies the work to be done, isolation arrangements, precautions, and requires formal sign-off before and after."},
+  {cat:"Health & Safety",q:"State the hierarchy of risk control in the correct order.",a:"1. Eliminate the hazard. 2. Substitute with something less hazardous. 3. Engineering controls (guarding, enclosure). 4. Administrative controls (procedures, training, supervision). 5. Personal Protective Equipment (PPE). PPE is always the last resort."},
+  {cat:"Health & Safety",q:"What specific precautions are required when carrying out electrical termination in a confined space?",a:"Confined space entry procedure must be followed. A permit to work is required. A competent standby person must be present outside. Rescue arrangements and emergency equipment must be in place before entry. Atmosphere testing may be required. Communication must be maintained with the standby person throughout."},
+];
+
+const MCQS = [
+  {q:"The minimum shock current accepted as capable of causing ventricular fibrillation of the heart is approximately:",opts:["a) 0.5mA","b) 0.05A (50mA)","c) 0.5A","d) 5A"],ans:1,exp:"50mA (0.05A) across the chest can cause ventricular fibrillation. At 230V with a 1kΩ body resistance the resulting current is 230mA — over 4.5× the lethal threshold."},
+  {q:"The Electricity at Work Regulations 1989, Regulation 13 requires that:",opts:["a) All electrical systems are colour coded","b) Adequate precautions prevent re-energisation of isolated equipment","c) All installations must use RCDs","d) Test equipment is calibrated annually"],ans:1,exp:"Regulation 13 states that adequate precautions shall be taken to prevent equipment which has been made dead from becoming electrically charged during the work."},
+  {q:"'Electrical test equipment for use by electricians' is the title of:",opts:["a) BS 67","b) GS 83","c) GS 38","d) BS 88"],ans:2,exp:"GS 38 is the HSE Guidance Note covering the selection, use, and maintenance of test equipment including voltage indicators, test leads, and proving units."},
+  {q:"The statutory document which identifies a requirement for the quality of terminations is:",opts:["a) BS 7671","b) The Building Regulations","c) Electricity at Work Regulations","d) IET On-Site Guide"],ans:2,exp:"The Electricity at Work Regulations 1989 are statutory legislation (the law). BS 7671 is non-statutory — it is a standard, not a law."},
+  {q:"In BS 7671, the regulation number 526.1 indicates:",opts:["a) Part 5, Chapter 2, Regulation 6.1","b) Section 526, Regulation 1","c) Chapter 5, Regulation 26.1","d) Section 52, Regulation 6.1"],ans:1,exp:"The format is Section number (526) followed by Regulation number (1). The leading '5' indicates Part 5 of BS 7671 (Selection and Erection of Equipment)."},
+  {q:"A three-phase and neutral circuit is to be isolated. The number of tests required to confirm safe isolation is:",opts:["a) 3","b) 6","c) 7","d) 10"],ans:3,exp:"L1–L2, L1–L3, L2–L3 (3 phase-to-phase) + L1–N, L2–N, L3–N (3 phase-to-neutral) + L1–E, L2–E, L3–E, N–E (4 to earth) = 10 tests."},
+  {q:"Two electricians work on different circuits supplied from the same distribution board. To ensure both are safe, the main isolator requires:",opts:["a) One padlock, multi-lock hasp, and one warning notice","b) One padlock, single lock hasp, and two warning notices","c) Two padlocks, multi-lock hasp, and two warning notices","d) Two padlocks, single lock hasp, and one warning notice"],ans:2,exp:"Each electrician fits their own padlock through a multi-lock hasp, and each attaches their own warning notice. The supply cannot be restored until both padlocks are removed."},
+  {q:"Before testing with an approved voltage indicator (AVI), you must first:",opts:["a) Isolate the circuit","b) Prove the AVI is functioning correctly using a proving unit","c) Fit the locking device","d) Obtain permission to isolate"],ans:1,exp:"The AVI must be proved using a proving unit immediately before AND after testing. This ensures a false 'dead' reading cannot be mistaken for successful isolation."},
+  {q:"Which of the following may NOT be used as a means of isolation?",opts:["a) Circuit breaker","b) Isolating switch","c) Dimmer switch","d) Fused isolator"],ans:2,exp:"A dimmer switch controls voltage by varying the waveform — it does not disconnect ALL live conductors simultaneously and must never be used as a means of isolation."},
+  {q:"Under EAWR 1989 Regulation 14, live working is permissible only when:",opts:["a) The electrician is experienced","b) A risk assessment has been written","c) It is unreasonable to make the circuit dead, and suitable precautions are in place","d) The client requests it urgently"],ans:2,exp:"All three conditions of Regulation 14 must be met simultaneously: unreasonable to be dead, reasonable to work live, AND suitable precautions in place. Client convenience is never a valid reason for live working."},
+  {q:"Which of the following is a requirement of every electrical connection under BS 7671 Section 526?",opts:["a) It must be soldered","b) It must be mechanically and electrically sound","c) It must be accessible at all times without exception","d) It must use a bootlace ferrule"],ans:1,exp:"Section 526.1 requires durable electrical continuity and adequate mechanical strength. Accessibility is required unless the joint is specifically designed as maintenance-free."},
+  {q:"Why should a bootlace ferrule be used with stranded conductors in screw terminals?",opts:["a) To increase the conductor CSA","b) To keep strands together and prevent short circuits from escaping strands","c) To reduce the length of insulation that needs to be stripped","d) To provide additional earth continuity"],ans:1,exp:"A bootlace ferrule (end sleeve) prevents individual strands from spreading, which could cause poor connections, high resistance, or short circuits to adjacent conductors."},
+  {q:"Mineral insulated cable must be terminated in a dry atmosphere because the mineral insulation is:",opts:["a) Conductive when wet","b) Hygroscopic (absorbs moisture)","c) Soluble in water","d) Flammable when wet"],ans:1,exp:"Magnesium oxide is hygroscopic — it absorbs moisture immediately on exposure to air, which dramatically reduces insulation resistance. Seals must be fitted within minutes of cutting the cable."},
+  {q:"The purpose of the cable gland when terminating SWA cable includes:",opts:["a) Providing additional insulation on the cores","b) Connecting the armour to the phase conductor","c) Mechanically retaining the cable and connecting the armour as CPC","d) Reducing the bending radius of the cable"],ans:2,exp:"The gland mechanically retains the cable, clamps the armour wires (providing electrical continuity for use as CPC), seals the entry (IP rating), and provides strain relief."},
+  {q:"Under the Electricity at Work Regulations 1989, Regulation 16 requires that:",opts:["a) All cables are colour coded to BS 7671","b) Persons working on electrical systems are competent to prevent danger","c) All installations use RCDs for shock protection","d) Test equipment is calibrated every 12 months"],ans:1,exp:"Regulation 16: no person shall engage in work where technical knowledge or experience is necessary to prevent danger unless they have such knowledge/experience or are under appropriate supervision."},
+  {q:"Which of the following best describes a thermosetting insulated cable?",opts:["a) Insulation softens when heated, maximum conductor temperature 70°C","b) Insulation does not soften when heated, maximum conductor temperature approximately 90°C","c) Insulation that melts completely at 230°C","d) Single-core cable used only underground"],ans:1,exp:"Thermosetting insulation (XLPE, EPR) does not soften when heated. It maintains its properties at up to ~90°C conductor temperature and has better fire performance than PVC."},
+  {q:"The five steps of a risk assessment in the correct order are:",opts:["a) Identify hazards → record → evaluate → who is harmed → review","b) Identify hazards → who might be harmed → evaluate risks → record findings → review","c) Evaluate → identify → record → review → act","d) Act → record → evaluate → identify → review"],ans:1,exp:"HSE five steps: 1.Identify hazards, 2.Decide who might be harmed and how, 3.Evaluate risks and decide on precautions, 4.Record findings and implement, 5.Review and update."},
+  {q:"If an unsafe situation is discovered during electrical termination work, the correct action is to:",opts:["a) Complete the immediate task then report it","b) Fix it yourself without reporting","c) Stop work, secure the area, and report to a responsible person","d) Continue working but take extra care"],ans:2,exp:"Work must stop immediately. The area must be secured to prevent access by others. The hazard must be reported to the duty holder/employer. Work must not resume until the hazard is made safe."},
+  {q:"The Management of Health and Safety at Work Regulations 1999 require employers to:",opts:["a) Provide steel-toed boots to all workers","b) Carry out suitable and sufficient risk assessments of work activities","c) Ensure all workers hold a Level 3 qualification","d) Inspect all tools weekly"],ans:1,exp:"Regulation 3 of the Management Regs requires every employer to carry out a suitable and sufficient assessment of risks to employees and others arising from or in connection with their work."},
+  {q:"What is the maximum conductor operating temperature for a standard PVC insulated cable?",opts:["a) 50°C","b) 70°C","c) 90°C","d) 110°C"],ans:1,exp:"Standard thermoplastic (PVC) insulated cables have a maximum conductor operating temperature of 70°C. Thermosetting (XLPE) cables are rated at 90°C."},
+  {q:"A connection in a completed installation must be accessible for inspection unless:",opts:["a) It is in a dry location","b) It was made using a standard junction box","c) It is specifically designed as a maintenance-free joint and documented","d) It is rated above 6A"],ans:2,exp:"BS 7671 Regulation 526.3 requires accessibility unless the joint is specifically designed to be a maintenance-free type. This must be documented in the installation records."},
+  {q:"Bootlace ferrule colour codes: which colour corresponds to 2.5mm² conductors?",opts:["a) Black","b) White","c) Blue","d) Grey"],ans:2,exp:"Standard ferrule colour codes: 1.5mm² = Black, 2.5mm² = Blue, 4mm² = Grey, 6mm² = Yellow, 10mm² = Orange. 0.5–1.0mm² are typically White."},
+  {q:"Under PUWER 1998, what must happen to a tool found to be defective during a pre-use inspection?",opts:["a) It may be used carefully for the rest of the day","b) It must be immediately withdrawn from service and clearly labelled defective","c) It must be reported to the Health and Safety Executive","d) It may be used if a risk assessment is first completed"],ans:1,exp:"PUWER requires that defective tools are immediately withdrawn from service. They should be clearly labelled 'DEFECTIVE — DO NOT USE' and referred for repair or disposal."},
+  {q:"Single-mode fibre optic cable has a core diameter of approximately:",opts:["a) 50 microns","b) 62.5 microns","c) 9 microns","d) 125 microns"],ans:2,exp:"Single-mode fibre has a core diameter of approximately 9 microns, allowing a single transmission path and enabling very high bandwidths over long distances."},
+  {q:"The colour code for the L2 conductor in a UK three-phase installation is:",opts:["a) Brown","b) Black","c) Grey","d) Red"],ans:1,exp:"Current UK (BS 7671 harmonised) three-phase colours: L1 = Brown, L2 = Black, L3 = Grey, N = Blue, E = Green/Yellow. Note: Black now means L2 — not neutral as in old UK colours."},
+  {q:"Which regulation of BS 7671 specifically covers the requirements for electrical connections?",opts:["a) Section 413","b) Section 511","c) Section 526","d) Section 543"],ans:2,exp:"Section 526 'Electrical Connections' covers all requirements for the making and protection of electrical connections, including mechanical strength, continuity, accessibility, and protection."},
+  {q:"What type of gland is required for terminating SWA cable in a wet or outdoor environment?",opts:["a) Type A","b) Type B","c) Type BW or CW","d) Type E1W"],ans:2,exp:"Type BW/CW glands clamp the SWA armour AND seal the outer cable sheath, making them suitable for outdoor and wet environments. Type B glands have no outer seal and are suitable for indoor-dry use only."},
+  {q:"The let-go threshold — the current at which a person cannot release their grip — is approximately:",opts:["a) 1mA","b) 5mA","c) 10–15mA","d) 50mA"],ans:2,exp:"At approximately 10–15mA, involuntary muscle contraction prevents the person from releasing their grip. This is the 'let-go threshold'. Above this level, rescue requires external intervention."},
+  {q:"Part P of the Building Regulations applies to:",opts:["a) All commercial electrical installations in the UK","b) Electrical safety in dwellings in England and Wales","c) High voltage installations above 1000V","d) Temporary electrical installations on construction sites"],ans:1,exp:"Part P applies to electrical installations in dwellings (houses, flats) in England and Wales only. Scotland operates under its own Building Standards. Commercial installations are not covered by Part P."},
+  {q:"An Electrical Installation Certificate (EIC) must be issued for:",opts:["a) Any minor repair to an existing circuit","b) Replacement of a like-for-like socket outlet","c) All new electrical installation work and additions of new circuits","d) Only installations above 100A"],ans:2,exp:"An EIC is required for all new electrical installation work and additions of new circuits. Minor additions to existing circuits require a Minor Electrical Installation Works Certificate (MEIWC) instead."},
+];
+
+// ======================================
+// APP STATE
+// ======================================
+let currentChapter = 0;
+let currentMCQ = 0;
+let mcqAnswers = {};
+let mcqScore = 0;
+let cardFilter = "All";
+
+// ======================================
+// PAGE NAVIGATION
+// ======================================
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ======================================
+// LEARN PAGE
+// ======================================
+function openLearn(idx) {
+  currentChapter = idx;
+  const ch = CHAPTERS[idx];
+  document.getElementById('learn-title').textContent = ch.title;
+
+  // Tabs
+  const tabsEl = document.getElementById('learn-tabs');
+  tabsEl.innerHTML = ch.tabs.map((t, i) =>
+    `<button class="ch-tab ${i===0?'active':''}" onclick="switchTab(${i})">${t}</button>`
+  ).join('');
+
+  // Content
+  const bodyEl = document.getElementById('learn-body');
+  bodyEl.innerHTML = ch.content.map((part, pi) =>
+    `<div class="learn-content ${pi===0?'active':''}" id="lc-${pi}">${renderContent(part)}</div>`
+  ).join('');
+
+  showPage('page-learn');
+}
+
+function switchTab(idx) {
+  document.querySelectorAll('.ch-tab').forEach((t, i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.learn-content').forEach((c, i) => c.classList.toggle('active', i===idx));
+}
+
+function renderContent(parts) {
+  return parts.map(p => {
+    if (p.type === 'section') return `<div class="learn-section"><h3>${p.title}</h3><p>${p.body}</p></div>`;
+    if (p.type === 'key') return `<div class="key-box"><strong>📌 ${p.label}</strong><p>${p.text}</p></div>`;
+    if (p.type === 'warning') return `<div class="warning-box"><strong>⚠️ ${p.label}</strong><p>${p.text}</p></div>`;
+    if (p.type === 'info') return `<div class="info-box"><strong>💡 ${p.label}</strong><p>${p.text}</p></div>`;
+    if (p.type === 'steps') return `<div class="learn-section"><ol class="steps-list">${p.items.map(s=>`<li>${s}</li>`).join('')}</ol></div>`;
+    if (p.type === 'reminder') return `<div class="reminder-box"><p>${p.text}</p></div>`;
+
+    return '';
+  }).join('');
+}
+
+// ======================================
+// FLIP CARDS
+// ======================================
+function renderFlipCards() {
+  // Build filter buttons
+  const cats = ['All', ...new Set(FLASHCARDS.map(c => c.cat))];
+  const filterEl = document.getElementById('cards-filter');
+  filterEl.innerHTML = cats.map(c =>
+    `<button class="filter-btn ${c===cardFilter?'active':''}" onclick="setCardFilter('${c}')">${c}</button>`
+  ).join('');
+
+  const filtered = cardFilter === 'All' ? FLASHCARDS : FLASHCARDS.filter(c => c.cat === cardFilter);
+  document.getElementById('cards-count').textContent = `${filtered.length} card${filtered.length!==1?'s':''} · click any card to reveal the answer`;
+
+  const grid = document.getElementById('flip-grid');
+  grid.innerHTML = filtered.map((card, i) => `
+    <div class="flip-card-wrap" id="fc-${i}" onclick="toggleCard(${i})">
+      <div class="flip-card-inner">
+        <div class="flip-front">
+          <span class="flip-category">${card.cat}</span>
+          <div class="flip-question">${card.q}</div>
+          <span class="flip-hint">tap to reveal →</span>
+        </div>
+        <div class="flip-back">
+          <span class="flip-answer-label">Answer</span>
+          <div class="flip-answer">${card.a}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setCardFilter(cat) {
+  cardFilter = cat;
+  renderFlipCards();
+}
+
+function toggleCard(i) {
+  document.getElementById(`fc-${i}`).classList.toggle('flipped');
+}
+
+// ======================================
+// MCQ
+// ======================================
+function renderMCQ() {
+  renderQuestion(currentMCQ);
+  document.getElementById('mcq-nav').style.display = 'flex';
+  updateProgress();
+}
+
+function renderQuestion(idx) {
+  const q = MCQS[idx];
+  const answered = mcqAnswers.hasOwnProperty(idx);
+  const body = document.getElementById('mcq-body');
+
+  body.innerHTML = `
+    <div class="question-card">
+      <div class="q-number">Question ${idx+1} of ${MCQS.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((opt, oi) => {
+          let cls = '';
+          if (answered) {
+            if (oi === q.ans) cls = 'correct';
+            else if (oi === mcqAnswers[idx] && oi !== q.ans) cls = 'wrong';
+          }
+          return `<button class="opt-btn ${cls}" onclick="answerQ(${idx},${oi})" ${answered?'disabled':''}>
+            <span class="opt-label">${String.fromCharCode(65+oi)}</span>
+            <span>${opt.substring(3)}</span>
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="q-explanation ${answered?'show':''}" id="exp-${idx}">${q.exp}</div>
+    </div>
+  `;
+
+  const prevBtn = document.getElementById('btn-prev');
+  const nextBtn = document.getElementById('btn-next');
+  prevBtn.style.visibility = idx === 0 ? 'hidden' : 'visible';
+  if (idx === MCQS.length - 1) {
+    nextBtn.textContent = 'Finish Test ✓';
+    nextBtn.onclick = showResults;
+  } else {
+    nextBtn.textContent = 'Next Question →';
+    nextBtn.onclick = mcqNext;
+  }
+  updateProgress();
+}
+
+function answerQ(qIdx, optIdx) {
+  if (mcqAnswers.hasOwnProperty(qIdx)) return;
+  mcqAnswers[qIdx] = optIdx;
+  if (optIdx === MCQS[qIdx].ans) mcqScore++;
+  updateProgress();
+  renderQuestion(qIdx);
+}
+
+function mcqNext() {
+  if (currentMCQ < MCQS.length - 1) { currentMCQ++; renderQuestion(currentMCQ); }
+}
+function mcqPrev() {
+  if (currentMCQ > 0) { currentMCQ--; renderQuestion(currentMCQ); }
+}
+
+function updateProgress() {
+  const answered = Object.keys(mcqAnswers).length;
+  document.getElementById('q-counter').textContent = `Question ${currentMCQ+1} of ${MCQS.length}`;
+  document.getElementById('q-prog-fill').style.width = `${(answered/MCQS.length)*100}%`;
+  document.getElementById('q-score-live').textContent = `Score: ${mcqScore}/${answered}`;
+}
+
+function showResults() {
+  const pct = Math.round((mcqScore / MCQS.length) * 100);
+  let grade = pct >= 80 ? '🏆 Excellent' : pct >= 60 ? '✅ Pass' : '📚 Needs Revision';
+  document.getElementById('mcq-nav').style.display = 'none';
+  const body = document.getElementById('mcq-body');
+  body.innerHTML = `
+    <div class="results-card">
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:.25rem">Your result</p>
+      <div class="results-score">${pct}%</div>
+      <div class="results-grade">${grade} · ${mcqScore} correct out of ${MCQS.length}</div>
+      <div class="results-breakdown">
+        <div class="result-stat"><div class="num" style="color:var(--success)">${mcqScore}</div><div class="lbl">Correct</div></div>
+        <div class="result-stat"><div class="num" style="color:var(--danger)">${MCQS.length-mcqScore}</div><div class="lbl">Incorrect</div></div>
+        <div class="result-stat"><div class="num" style="color:var(--accent)">${pct}%</div><div class="lbl">Score</div></div>
+        <div class="result-stat"><div class="num" style="color:var(--accent2)">${Object.keys(mcqAnswers).length}</div><div class="lbl">Answered</div></div>
+      </div>
+      <div class="submit-form">
+        <h4>📧 Submit Results to Tutor</h4>
+        <p>Enter your tutor's email address below. A pre-filled email will open with your score and a full question-by-question breakdown.</p>
+        <input type="email" id="submit-email" placeholder="Tutor email address e.g. tutor@college.ac.uk" />
+        <button class="btn-submit" onclick="submitResults()">Send Results to Tutor</button>
+        <div class="submit-success" id="submit-success">
+          ✅ Email client opened! If it didn't open, copy the results below and email them manually:<br><br>
+          <small id="email-body-preview" style="font-family:monospace;font-size:11px;line-height:1.6;color:#8fe08f;white-space:pre-wrap"></small>
+        </div>
+      </div>
+      <button class="btn-sec" style="margin-top:1rem;width:100%" onclick="retryMCQ()">Retry Assessment</button>
+    </div>
+  `;
+}
+
+function submitResults() {
+  const email = document.getElementById('submit-email').value.trim();
+  if (!email) { alert('Please enter a tutor email address.'); return; }
+
+  const pct = Math.round((mcqScore / MCQS.length) * 100);
+  const breakdown = MCQS.map((q, i) => {
+    const ans = mcqAnswers.hasOwnProperty(i);
+    const correct = mcqAnswers[i] === q.ans;
+    return `Q${i+1}: ${correct?'✓':'✗'} ${ans ? (correct?'Correct':'Wrong – answered '+q.opts[mcqAnswers[i]]+', correct: '+q.opts[q.ans]) : 'Not answered'}`;
+  }).join('\n');
+
+  const body = `
+ELECTRICAL INSTALLATION – TERMINATION & CONNECTION OF CONDUCTORS
+MCQ Assessment Results · tutorwarren.com
+═══════════════════════════════════════════
+Date: ${new Date().toLocaleDateString('en-GB')}
+
+RESULT: ${mcqScore}/${MCQS.length} (${pct}%)
+───────────────────────────────────────────
+${breakdown}
+═══════════════════════════════════════════
+© tutorwarren.com · All Rights Reserved`;
+
+  const mailtoLink = `mailto:${email}?subject=MCQ Results – Termination & Connection of Conductors&body=${encodeURIComponent(body)}`;
+  window.location.href = mailtoLink;
+
+  document.getElementById('submit-success').style.display = 'block';
+  document.getElementById('email-body-preview').textContent = body.trim();
+}
+
+function retryMCQ() {
+  mcqAnswers = {};
+  mcqScore = 0;
+  currentMCQ = 0;
+  document.getElementById('mcq-nav').style.display = 'flex';
+  renderMCQ();
+}
+
+// ======================================
+// INIT + PROTECTION
+// ======================================
+document.addEventListener('DOMContentLoaded', () => {
+  showPage('page-home');
+  renderFlipCards();
+  renderMCQ();
+});
+
+// Block right-click context menu
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// Block common copy/save keyboard shortcuts
+document.addEventListener('keydown', e => {
+  const ctrl = e.ctrlKey || e.metaKey;
+  if (ctrl && ['c','u','s','a','p'].includes(e.key.toLowerCase())) e.preventDefault();
+  if (e.key === 'F12' || (ctrl && e.shiftKey && ['i','j'].includes(e.key.toLowerCase()))) e.preventDefault();
+  if (ctrl && e.key === 'PrintScreen') e.preventDefault();
+});
+
+// Block drag-start on all elements (prevents image dragging/saving)
+document.addEventListener('dragstart', e => e.preventDefault());
+</script>
+<!-- WATERMARK FOOTER -->
+<footer class="watermark-footer">
+  © tutorwarren.com · All Rights Reserved · Unauthorised reproduction prohibited
+</footer>
+
+</body>
+</html>
