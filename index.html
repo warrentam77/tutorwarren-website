@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TutorWarren.com | Interactive Learning Resources</title>
+  <style>
+    :root{--green:#0f766e;--dark:#0f172a;--light:#f0fdfa;--card:#ffffff;--muted:#475569;--blue:#2563eb;--amber:#f59e0b;--shadow:0 12px 28px rgba(15,23,42,.12)}
+    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f8fafc;color:var(--dark);line-height:1.6} a{color:inherit;text-decoration:none}
+    header{background:linear-gradient(135deg,#dff2ff,#cfefff);color:#071d49;padding:34px 18px}.wrap{max-width:1150px;margin:auto;padding:0 18px}
+    .hero{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:center}.site-logo{width:100%;border-radius:22px;box-shadow:var(--shadow);background:#dff2ff}.logo{font-size:2.6rem;font-weight:900;margin:0 0 10px;color:#073fd1}.tag{font-size:1.05rem;max-width:850px;margin:0;color:#244866}.btns{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}.btn{background:#073fd1;color:#fff;padding:12px 18px;border-radius:999px;font-weight:800;box-shadow:var(--shadow)}.btn.secondary{background:#fff;color:#071d49;border:1px solid #dbeafe}
+    nav{background:#071d49;position:sticky;top:0;z-index:5;box-shadow:0 2px 12px rgba(0,0,0,.08)} nav .wrap{display:flex;gap:0;justify-content:center;flex-wrap:wrap;padding:0} nav a{padding:16px 18px;font-weight:900;color:white;border-right:1px solid rgba(255,255,255,.14)} nav a:last-child{border-right:none} nav a:hover{background:#073fd1}
+    section{padding:36px 0}.section-title{text-align:center;font-size:1.9rem;margin:0 0 22px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}.card{background:var(--card);border-radius:22px;padding:22px;box-shadow:var(--shadow);border:1px solid #e2e8f0}.card h3{margin:0 0 8px;font-size:1.35rem}.card p{color:var(--muted);margin:0 0 14px}.chiprow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.chip{background:#ecfdf5;color:#065f46;border:1px solid #bbf7d0;border-radius:999px;padding:7px 10px;font-size:.9rem;font-weight:700}.chip:hover{background:#d1fae5}.open{display:inline-block;background:#0f766e;color:#fff;border-radius:12px;padding:10px 14px;font-weight:800;margin-top:8px}.open:hover{background:#115e59}.green-card{border-top:8px solid #16a34a}.blue-card{border-top:8px solid #2563eb}.orange-card{border-top:8px solid #f59e0b}.purple-card{border-top:8px solid #7c3aed}
+    .pub{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center}.cover-img{width:150px;max-width:100%;border-radius:12px;box-shadow:0 8px 20px rgba(15,23,42,.18);border:1px solid #e2e8f0}.soon{color:#b45309;font-weight:800}.published{color:#15803d;font-weight:800} footer{background:#0f172a;color:#cbd5e1;text-align:center;padding:24px 18px;margin-top:28px}
+    @media(max-width:760px){.hero{grid-template-columns:1fr;text-align:center}.site-logo{max-width:330px;margin:auto}.btns{justify-content:center}nav a{width:50%;text-align:center}.logo{font-size:2.1rem}.pub{grid-template-columns:1fr;text-align:center}.cover-img{margin:auto}}
+
+    /* Intro video gate */
+    body.intro-active > header,
+    body.intro-active > nav,
+    body.intro-active > main,
+    body.intro-active > footer{
+      display:none;
+    }
+    #intro-gate, #intro-video-screen{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      background:linear-gradient(135deg,#071d49,#073fd1,#0f766e);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:24px;
+    }
+    #intro-video-screen{
+      background:#000;
+      display:none;
+      flex-direction:column;
+    }
+    .intro-card{
+      width:min(720px,94vw);
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:28px;
+      padding:36px 24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
+      backdrop-filter:blur(10px);
+    }
+    .intro-logo{
+      width:min(260px,70vw);
+      border-radius:22px;
+      box-shadow:0 14px 35px rgba(0,0,0,.3);
+      margin-bottom:22px;
+      background:#dff2ff;
+    }
+    .intro-title{
+      font-size:clamp(2rem,6vw,3.4rem);
+      font-weight:900;
+      margin:0 0 8px;
+    }
+    .intro-subtitle{
+      font-size:1.1rem;
+      margin:0 0 26px;
+      color:#e0f2fe;
+    }
+    .enter-button, .skip-button{
+      border:none;
+      cursor:pointer;
+      font-weight:900;
+      border-radius:999px;
+      box-shadow:0 12px 30px rgba(0,0,0,.25);
+    }
+    .enter-button{
+      font-size:clamp(1.2rem,4vw,1.8rem);
+      padding:18px 34px;
+      background:#fff;
+      color:#071d49;
+    }
+    .enter-button:hover{
+      transform:translateY(-2px);
+      background:#e0f2fe;
+    }
+    .intro-note{
+      margin-top:16px;
+      font-size:.95rem;
+      color:#dbeafe;
+    }
+    #intro-video{
+      width:min(1000px,94vw);
+      max-height:78vh;
+      border-radius:18px;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+      background:#000;
+    }
+    .skip-button{
+      margin-top:18px;
+      font-size:1rem;
+      padding:12px 22px;
+      background:#fff;
+      color:#071d49;
+    }
+    .skip-button:hover{
+      background:#e0f2fe;
+    }
+    .fade-out{
+      animation:fadeOut .45s ease forwards;
+    }
+    @keyframes fadeOut{
+      to{opacity:0;visibility:hidden}
+    }
+
+  </style>
+</head>
+<body class="intro-active">
+<div id="intro-gate" aria-label="TutorWarren.com intro screen">
+  <div class="intro-card">
+    <img class="intro-logo" src="images/logo.png" alt="TutorWarren.com logo">
+    <h1 class="intro-title">TutorWarren.com</h1>
+    <p class="intro-subtitle">Interactive learning resources for Electrical, English, Maths and Green Technologies.</p>
+    <button id="enter-site" class="enter-button" type="button">▶ Enter TutorWarren.com</button>
+    <p class="intro-note">Click to play the 10-second introduction with sound.</p>
+  </div>
+</div>
+
+<div id="intro-video-screen" aria-label="TutorWarren.com introduction video">
+  <video id="intro-video" playsinline controls preload="auto">
+    <source src="logo_video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <button id="skip-intro" class="skip-button" type="button">Skip Intro →</button>
+</div>
+<header>
+  <div class="wrap hero">
+    <img class="site-logo" src="images/logo.png" alt="TutorWarren.com logo">
+    <div>
+      <h1 class="logo">TutorWarren.com</h1>
+      <p class="tag">Professional, interactive learning resources for Electrical, English, Maths and Green Technologies — designed for college learners, apprentices and adult learners.</p>
+      <div class="btns"><a class="btn" href="#subjects">Explore Subjects</a><a class="btn secondary" href="#publications">View Publications</a></div>
+    </div>
+  </div>
+</header>
+<nav><div class="wrap"><a href="#about">About</a><a href="electrical">Electrical</a><a href="Green%20Technology%20Lessons/index.html">Green Technologies</a><a href="english/index.html">English</a><a href="maths/entry.html">Maths</a><a href="#publications">Publications</a><a href="#contact">Contact</a></div></nav>
+<main>
+<section id="about"><div class="wrap"><h2 class="section-title">About TutorWarren.com</h2><div class="card"><p>TutorWarren.com provides professional interactive learning resources in Electrical, English, Maths and Green Technologies, helping learners study practical subjects and succeed through modern digital learning.</p></div></div></section>
+<section id="subjects"><div class="wrap"><h2 class="section-title">Learning Areas</h2><div class="grid">
+  <article id="electrical" class="card purple-card"><h3>Electrical Learning Resources</h3><p>Study support for electrical installation, electrical science, practical skills, testing and inspection.</p><a class="open" href="electrical">Open Electrical →</a><div class="chiprow"><a class="chip" href="electrical">Electrical Science</a><a class="chip" href="electrical">Installation</a><a class="chip" href="L3_Isolation_Termination.html">Safe Isolation</a><a class="chip" href="electrical">Testing</a><a class="chip" href="electrical">Practical Skills</a></div></article>
+  <article id="green" class="card green-card"><h3>Green Technologies and Applications Interactive Course</h3><p>Explore sustainable energy solutions and the technologies shaping a greener future.</p><a class="open" href="Green%20Technology%20Lessons/index.html">Open Course →</a><div class="chiprow"><a class="chip" href="Green%20Technology%20Lessons/index.html#solar">Solar Energy</a><a class="chip" href="Green%20Technology%20Lessons/index.html#wind">Wind Energy</a><a class="chip" href="Green%20Technology%20Lessons/index.html#hydropower">Hydropower</a><a class="chip" href="Green%20Technology%20Lessons/index.html#nuclear">Nuclear Energy</a><a class="chip" href="Green%20Technology%20Lessons/index.html#geothermal">Geothermal</a><a class="chip" href="Green%20Technology%20Lessons/index.html#biomass">Biomass</a><a class="chip" href="Green%20Technology%20Lessons/index.html#heat-pumps">Heat Pumps</a><a class="chip" href="Green%20Technology%20Lessons/index.html#revision">Final Revision</a></div></article>
+  <article id="english" class="card blue-card"><h3>English Learning Resources</h3><p>Interactive learning resources for Functional Skills, GCSE and ESOL support.</p><a class="open" href="english/index.html">Open English →</a><div class="chiprow"><a class="chip" href="english/functional-skills-platform.html">Functional Skills English</a><a class="chip" href="english/gcse-english-intro-paper1.html">GCSE Paper 1</a><a class="chip" href="english/gcse-english-paper2.html">GCSE Paper 2</a><a class="chip" href="english/esol-listen-and-answer.html">ESOL Practice</a><a class="chip" href="english/daily_speak.html">Daily English</a></div></article>
+  <article id="maths" class="card orange-card"><h3>Maths Learning Resources</h3><p>Interactive learning resources for Functional Skills and GCSE Maths support.</p><a class="open" href="maths/entry.html">Open Maths →</a><div class="chiprow"><a class="chip" href="maths/entry.html">Entry Level</a><a class="chip" href="maths/level1.html">Level 1</a><a class="chip" href="maths/level2.html">Level 2</a><a class="chip" href="maths/l1-number.html">Number</a><a class="chip" href="maths/l1-money.html">Money</a><a class="chip" href="maths/l1-measures.html">Measures</a><a class="chip" href="maths/l1-data.html">Data</a><a class="chip" href="Maths_Multi_languages.html">Multi-languages</a></div></article>
+</div></div></section>
+<section id="publications"><div class="wrap"><h2 class="section-title">Publications</h2><div class="grid"><div class="card pub"><img class="cover-img" src="images/electrical book front cover.png" alt="A Comprehensive Guide to Electrical Science and Principles book cover"><div><h3>A Comprehensive Guide to Electrical Science & Principles</h3><p>The complete study resource for Electrical learners, covering theory, principles and practical applications.</p><p class="soon">Available soon</p></div></div><div class="card pub"><img class="cover-img" src="images/Isolation_cover.png" alt="Safe Isolation, Cable Termination and Regulations book cover"><div><h3>Safe Isolation, Cable Termination and Regulations</h3><p>An interactive Level 3 learning resource covering safe isolation, lock-off procedures, cable termination methods and key electrical regulations.</p><p class="published">✅ Published</p></div></div><div class="card pub"><img class="cover-img" src="green-technologies-cover.png" alt="Green Technologies and Applications Interactive Course front cover"><div><h3>Green Technologies & Applications Interactive Course</h3><p>A complete interactive course covering renewable energy technologies and sustainable solutions.</p><p class="published">✅ Published</p></div></div></div></div></section>
+<section id="contact"><div class="wrap"><h2 class="section-title">Contact</h2><div class="card"><p>Contact Tutor Warren for enquiries, collaborations and learning resource development.</p><p><strong>Email:</strong> <a href="mailto:warren@tutorwarren.com">warren@tutorwarren.com</a></p><p><strong>General enquiries:</strong> <a href="mailto:info@tutorwarren.com">info@tutorwarren.com</a></p></div></div></section>
+</main><footer>@tutorwarren.com — All Rights Reserved</footer>
+
+<script>
+(function(){
+  const body = document.body;
+  const introGate = document.getElementById('intro-gate');
+  const videoScreen = document.getElementById('intro-video-screen');
+  const video = document.getElementById('intro-video');
+  const enterButton = document.getElementById('enter-site');
+  const skipButton = document.getElementById('skip-intro');
+
+  function showHomepage(){
+    if(video){
+      video.pause();
+      video.currentTime = 0;
+    }
+    if(introGate) introGate.style.display = 'none';
+    if(videoScreen) videoScreen.style.display = 'none';
+    body.classList.remove('intro-active');
+    window.scrollTo(0,0);
+  }
+
+  enterButton.addEventListener('click', function(){
+    introGate.classList.add('fade-out');
+    setTimeout(function(){
+      introGate.style.display = 'none';
+      videoScreen.style.display = 'flex';
+      video.volume = 1;
+      video.muted = false;
+      video.play().catch(function(){
+        video.controls = true;
+      });
+    }, 450);
+  });
+
+  video.addEventListener('ended', showHomepage);
+  skipButton.addEventListener('click', showHomepage);
+})();
+</script>
+
+</body></html>
