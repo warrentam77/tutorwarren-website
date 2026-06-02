@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>18th Edition Study App — BS 7671:2018+A3:2024</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161b24; --ink-soft:#3c4452; --line:#e3ddd2;
+    --paper:#f6f3ec; --card:#ffffff; --navy:#0f1623; --navy-2:#172234;
+    --copper:#bd6a32; --copper-d:#a3551f; --copper-soft:#f3e2d4;
+    --amber:#f2c14e; --amber-d:#caa024;
+    --green:#3f7d54; --red:#c0392b; --redbg:#fbe9e7; --greenbg:#e7f3ea;
+    --shadow:0 1px 2px rgba(20,27,36,.06),0 8px 24px rgba(20,27,36,.07);
+    --shadow-lg:0 12px 40px rgba(15,22,35,.18);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'IBM Plex Sans',sans-serif; color:var(--ink);
+    background:var(--paper);
+    background-image:radial-gradient(circle at 12% 10%,rgba(189,106,50,.05),transparent 40%),
+                     radial-gradient(circle at 88% 0%,rgba(15,22,35,.04),transparent 35%);
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  code,.mono{font-family:'IBM Plex Mono',monospace}
+  h1,h2,h3,h4,.disp{font-family:'Archivo',sans-serif;line-height:1.1;letter-spacing:-.01em}
+
+  /* ---------- HEADER ---------- */
+  header{
+    background:var(--navy);
+    background-image:linear-gradient(135deg,#0f1623,#1b2740 70%,#243453);
+    color:#fff; position:sticky; top:0; z-index:50;
+    border-bottom:3px solid var(--copper);
+    box-shadow:0 6px 30px rgba(0,0,0,.25);
+  }
+  .topbar{max-width:1180px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:13px;cursor:pointer}
+  .bolt{
+    width:42px;height:42px;flex:none;border-radius:11px;
+    background:linear-gradient(145deg,var(--amber),var(--copper));
+    display:grid;place-items:center;box-shadow:0 4px 14px rgba(189,106,50,.4);
+  }
+  .bolt svg{width:24px;height:24px}
+  .brand-txt b{font-family:'Archivo';font-weight:900;font-size:1.18rem;display:block;letter-spacing:-.02em}
+  .brand-txt span{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);font-weight:600}
+
+  .site-home{
+    font-family:'Archivo';font-weight:700;font-size:.84rem;letter-spacing:.02em;
+    background:var(--amber);color:var(--navy);text-decoration:none;
+    padding:9px 15px;border-radius:9px;box-shadow:0 4px 12px rgba(242,193,78,.25);
+    display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:.18s;
+  }
+  .site-home:hover{background:#ffd76a;transform:translateY(-1px)}
+  nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+  nav button{
+    font-family:'Archivo';font-weight:600;font-size:.84rem;letter-spacing:.01em;
+    background:transparent;color:#cdd6e4;border:0;padding:9px 14px;border-radius:9px;
+    cursor:pointer;transition:.18s;white-space:nowrap;
+  }
+  nav button:hover{background:rgba(255,255,255,.09);color:#fff}
+  nav button.active{background:var(--copper);color:#fff;box-shadow:0 4px 12px rgba(189,106,50,.4)}
+
+  /* ---------- LAYOUT ---------- */
+  main{max-width:1180px;margin:0 auto;padding:34px 22px 80px}
+  .view{display:none;animation:fade .4s ease}
+  .view.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .crumb{font-size:.82rem;color:var(--ink-soft);margin-bottom:14px;font-weight:500}
+  .crumb b{color:var(--copper-d)}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--navy);background-image:linear-gradient(120deg,#0f1623,#1d2c47);
+    color:#fff;border-radius:var(--radius);padding:46px 40px;position:relative;overflow:hidden;
+    box-shadow:var(--shadow-lg);margin-bottom:30px;
+  }
+  .hero::after{content:"";position:absolute;right:-60px;top:-60px;width:280px;height:280px;
+    background:radial-gradient(circle,rgba(242,193,78,.22),transparent 70%);border-radius:50%}
+  .hero .tag{display:inline-block;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--amber);font-weight:600;border:1px solid rgba(242,193,78,.4);padding:4px 12px;border-radius:30px;margin-bottom:18px}
+  .hero h1{font-size:clamp(1.9rem,4.5vw,3.1rem);font-weight:900;max-width:680px;margin-bottom:14px}
+  .hero h1 em{color:var(--amber);font-style:normal}
+  .hero p{max-width:620px;color:#c7d0de;font-size:1.04rem}
+  .hero .pills{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
+  .hero .pills span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+    padding:7px 14px;border-radius:30px;font-size:.8rem;font-weight:500}
+
+  .sec-title{font-size:1.5rem;font-weight:800;margin:38px 0 6px;display:flex;align-items:center;gap:11px}
+  .sec-title .n{font-family:'IBM Plex Mono';font-size:.85rem;background:var(--copper);color:#fff;
+    width:30px;height:30px;display:grid;place-items:center;border-radius:8px;flex:none}
+  .sec-sub{color:var(--ink-soft);margin-bottom:20px;font-size:.96rem}
+
+  /* ---------- PART TILES ---------- */
+  .grid{display:grid;gap:16px}
+  .parts-grid{grid-template-columns:repeat(auto-fill,minmax(255px,1fr))}
+  .ptile{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px;cursor:pointer;transition:.2s;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .ptile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--copper);transform:scaleY(0);transform-origin:top;transition:.25s}
+  .ptile:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--copper-soft)}
+  .ptile:hover::before{transform:scaleY(1)}
+  .ptile .num{font-family:'Archivo';font-weight:900;font-size:2.4rem;color:var(--copper-soft);line-height:.9}
+  .ptile:hover .num{color:var(--copper)}
+  .ptile h3{font-size:1.12rem;font-weight:800;margin:8px 0 6px}
+  .ptile .tag{font-size:.78rem;color:var(--copper-d);font-weight:600;letter-spacing:.02em}
+  .ptile .meta{margin-top:14px;font-size:.8rem;color:var(--ink-soft);display:flex;align-items:center;gap:6px}
+
+  /* ---------- FEATURE CARDS ---------- */
+  .feat-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .feat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;
+    cursor:pointer;transition:.2s;box-shadow:var(--shadow)}
+  .feat:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .feat .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:14px;
+    background:var(--copper-soft);color:var(--copper-d)}
+  .feat .ic svg{width:24px;height:24px}
+  .feat h3{font-size:1.08rem;font-weight:800;margin-bottom:6px}
+  .feat p{font-size:.88rem;color:var(--ink-soft)}
+
+  /* ---------- CHAPTER / EXPLANATION ---------- */
+  .chapter{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 28px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .chapter h3{font-size:1.22rem;font-weight:800;margin-bottom:4px}
+  .chapter .ch-num{font-family:'IBM Plex Mono';font-size:.78rem;color:var(--copper-d);font-weight:600;
+    text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:block}
+  .chapter .body{font-size:.97rem;color:var(--ink-soft)}
+  .chapter .body em{color:var(--ink);font-style:italic;font-weight:500}
+  .chapter .body strong{color:var(--ink)}
+  .regbox{margin-top:18px;border-top:1px dashed var(--line);padding-top:16px}
+  .regbox .lbl{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-bottom:10px}
+  .reg{border-bottom:1px solid #f0ece3;cursor:pointer;transition:background .15s}
+  .reg:last-child{border-bottom:0}
+  .reg:hover{background:#faf7f1}
+  .reg-head{display:flex;gap:12px;padding:11px 8px 11px 0;align-items:center}
+  .reg .ref{font-family:'IBM Plex Mono';font-weight:600;font-size:.86rem;color:#fff;background:var(--navy-2);
+    padding:3px 9px;border-radius:6px;flex:none;white-space:nowrap}
+  .reg .what{font-size:.92rem;color:var(--ink);font-weight:500;flex:1}
+  .reg-chev{color:var(--ink-soft);flex:none;transition:transform .25s}
+  .reg.open .reg-chev{transform:rotate(90deg)}
+  .reg.open{background:#faf7f1}
+  .reg-detail{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .reg.open .reg-detail{max-height:600px}
+  .reg-detail-inner{padding:2px 10px 16px 10px;font-size:.92rem;line-height:1.6;color:var(--ink-soft);
+    border-left:3px solid var(--copper);margin:0 0 6px 2px;padding-left:16px}
+  .reg-detail-inner b{color:var(--ink);font-weight:600}
+  .reg-detail-inner .newtag{margin-bottom:0}
+
+  /* ---------- INDEX ---------- */
+  .searchwrap{position:relative;margin-bottom:18px}
+  .searchwrap svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--ink-soft)}
+  #idxSearch,#kwGoInput{width:100%;font-family:'IBM Plex Sans';font-size:1rem;padding:15px 16px 15px 48px;
+    border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:var(--shadow)}
+  #idxSearch:focus{outline:none;border-color:var(--copper);box-shadow:0 0 0 4px var(--copper-soft)}
+  .idx-count{font-size:.82rem;color:var(--ink-soft);margin-bottom:14px}
+  .idx-list{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .idx-row{display:flex;align-items:center;gap:14px;padding:13px 20px;border-bottom:1px solid #f0ece3;transition:.12s}
+  .idx-row:last-child{border-bottom:0}
+  .idx-row:hover{background:#faf7f1}
+  .idx-row .term{flex:1;font-weight:500;font-size:.94rem}
+  .idx-row .term .hl{background:var(--amber);border-radius:3px;padding:0 2px}
+  .idx-row .ppart{font-size:.74rem;color:var(--ink-soft);white-space:nowrap}
+  .idx-row .ref{font-family:'IBM Plex Mono';font-weight:600;font-size:.84rem;color:var(--copper-d);
+    background:var(--copper-soft);padding:3px 10px;border-radius:6px;white-space:nowrap}
+
+  /* ---------- DEFINITIONS ---------- */
+  .def-letter{font-family:'Archivo';font-weight:900;font-size:1.1rem;color:var(--copper);
+    margin:18px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--copper-soft)}
+  .def-group{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;box-shadow:var(--shadow);margin-bottom:6px}
+  .def-row{padding:14px 20px;border-bottom:1px solid #f0ece3}
+  .def-row:last-child{border-bottom:0}
+  .def-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+  .def-term{font-family:'Archivo';font-weight:700;font-size:1rem;color:var(--ink)}
+  .def-term .hl,.def-text .hl{background:var(--amber);border-radius:3px;padding:0 2px}
+  .def-cat{font-family:'IBM Plex Mono';font-size:.66rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--navy-2);background:#eef1f6;border:1px solid var(--line);padding:1px 8px;border-radius:20px}
+  .def-text{font-size:.92rem;line-height:1.55;color:var(--ink-soft)}
+
+  /* ---------- FLASH CARDS ---------- */
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+  .chip{font-family:'Archivo';font-weight:600;font-size:.8rem;padding:8px 14px;border-radius:30px;
+    border:1px solid var(--line);background:var(--card);cursor:pointer;transition:.15s;color:var(--ink-soft)}
+  .chip:hover{border-color:var(--copper)}
+  .chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .fc-stage{display:grid;place-items:center;margin:10px 0 22px}
+  .flashcard{width:100%;max-width:640px;height:340px;perspective:1600px;cursor:pointer}
+  .fc-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+  .flashcard.flip .fc-inner{transform:rotateY(180deg)}
+  .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;padding:36px;
+    display:flex;flex-direction:column;justify-content:center;box-shadow:var(--shadow-lg)}
+  .fc-front{background:var(--card);border:1px solid var(--line)}
+  .fc-back{background:var(--navy);background-image:linear-gradient(140deg,#0f1623,#20304c);color:#fff;transform:rotateY(180deg)}
+  .fc-face .kicker{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:16px}
+  .fc-front .kicker{color:var(--copper-d)}
+  .fc-back .kicker{color:var(--amber)}
+  .fc-front .q{font-family:'Archivo';font-weight:700;font-size:1.35rem;line-height:1.25}
+  .fc-back .a{font-size:1rem;line-height:1.55;color:#dde4ef}
+  .fc-back .a strong{color:#fff}.fc-back .a em{color:var(--amber);font-style:normal;font-weight:600}
+  .fc-hint{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:.74rem;opacity:.55}
+  .fc-controls{display:flex;align-items:center;justify-content:center;gap:14px}
+  .btn{font-family:'Archivo';font-weight:600;font-size:.9rem;padding:11px 20px;border-radius:10px;border:0;cursor:pointer;transition:.15s}
+  .btn-primary{background:var(--copper);color:#fff;box-shadow:0 4px 12px rgba(189,106,50,.3)}
+  .btn-primary:hover{background:var(--copper-d)}
+  .btn-ghost{background:var(--card);border:1px solid var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--copper)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .fc-progress{font-family:'IBM Plex Mono';font-size:.84rem;color:var(--ink-soft);min-width:60px;text-align:center}
+
+  /* ---------- QUIZ ---------- */
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px;box-shadow:var(--shadow);max-width:720px;margin:0 auto}
+  .quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;
+    font-family:'IBM Plex Mono';font-size:.82rem;color:var(--ink-soft)}
+  .scorepill{background:var(--greenbg);color:var(--green);font-weight:600;padding:4px 12px;border-radius:30px}
+  .quiz-q{font-family:'Archivo';font-weight:700;font-size:1.28rem;line-height:1.3;margin-bottom:22px}
+  .opt{display:block;width:100%;text-align:left;background:var(--paper);border:1.5px solid var(--line);
+    border-radius:11px;padding:15px 18px;margin-bottom:11px;cursor:pointer;transition:.15s;font-size:.96rem;font-family:'IBM Plex Sans'}
+  .opt:hover:not(.locked){border-color:var(--copper);background:#fdf7f1}
+  .opt .ltr{font-family:'IBM Plex Mono';font-weight:600;color:var(--copper-d);margin-right:10px}
+  .opt.correct{background:var(--greenbg);border-color:var(--green);color:#1e5631}
+  .opt.wrong{background:var(--redbg);border-color:var(--red);color:#922}
+  .opt.locked{cursor:default}
+  .explain{margin-top:16px;background:#f4f6fb;border-left:4px solid var(--navy-2);border-radius:8px;
+    padding:14px 16px;font-size:.92rem;color:var(--ink-soft);display:none}
+  .explain.show{display:block;animation:fade .3s}
+  .explain b{color:var(--ink)}
+  .quiz-foot{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px}
+  .progbar{height:7px;background:var(--line);border-radius:10px;overflow:hidden;margin-bottom:22px}
+  .progbar span{display:block;height:100%;background:linear-gradient(90deg,var(--copper),var(--amber));transition:.4s}
+  .result{text-align:center;padding:20px}
+  .result .big{font-family:'Archivo';font-weight:900;font-size:4rem;color:var(--copper)}
+  .result h3{font-size:1.5rem;margin-bottom:8px}
+
+  /* ---------- KEYWORD TRAINER ---------- */
+  .kw-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px;box-shadow:var(--shadow);max-width:760px;margin:0 auto}
+  .kw-tag{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--copper-d);font-weight:600;margin-bottom:12px}
+  .kw-q{font-size:1.12rem;line-height:1.45;background:var(--paper);border-radius:11px;padding:20px;margin-bottom:8px}
+  .kw-q .mark{background:var(--amber);border-radius:4px;padding:1px 4px;font-weight:600;box-shadow:0 1px 0 var(--amber-d)}
+  .kw-step{border:1px solid var(--line);border-radius:12px;margin-top:14px;overflow:hidden}
+  .kw-step-h{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;background:var(--card);transition:.15s}
+  .kw-step-h:hover{background:#faf7f1}
+  .kw-step-h .sn{font-family:'Archivo';font-weight:900;width:30px;height:30px;border-radius:8px;flex:none;
+    display:grid;place-items:center;background:var(--navy);color:#fff;font-size:.85rem}
+  .kw-step-h .st{font-family:'Archivo';font-weight:700;font-size:1rem;flex:1}
+  .kw-step-h .chev{transition:.25s;color:var(--ink-soft)}
+  .kw-step.open .chev{transform:rotate(90deg)}
+  .kw-step-b{max-height:0;overflow:hidden;transition:max-height .35s ease;background:#faf8f3}
+  .kw-step.open .kw-step-b{max-height:420px}
+  .kw-step-b .inner{padding:4px 18px 18px;font-size:.94rem;color:var(--ink-soft)}
+  .kw-step-b .inner .reftag{font-family:'IBM Plex Mono';font-weight:600;color:#fff;background:var(--copper);padding:3px 10px;border-radius:6px;display:inline-block;margin-top:6px}
+  .kwlist{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+  .kwlist span{background:var(--copper-soft);color:var(--copper-d);font-weight:600;font-size:.82rem;padding:4px 11px;border-radius:20px;font-family:'IBM Plex Mono'}
+
+  /* ---------- EXAM SKILLS ---------- */
+  .method-step{display:flex;gap:18px;margin-bottom:8px;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);position:relative}
+  .method-step .mn{font-family:'Archivo';font-weight:900;font-size:1.8rem;color:#fff;background:var(--copper);
+    width:54px;height:54px;border-radius:13px;display:grid;place-items:center;flex:none}
+  .method-step h3{font-size:1.12rem;margin-bottom:5px}
+  .method-step p{font-size:.93rem;color:var(--ink-soft)}
+  .arrow-down{text-align:center;color:var(--copper);font-size:1.4rem;margin:2px 0}
+  .callout{background:#fff8e8;border:1px solid var(--amber);border-left:5px solid var(--amber-d);
+    border-radius:12px;padding:18px 22px;margin:22px 0;font-size:.94rem}
+  .callout b{color:var(--ink)}
+
+  footer{text-align:center;padding:30px 20px;color:var(--ink-soft);font-size:.84rem;border-top:1px solid var(--line)}
+  footer b{color:var(--copper-d);font-family:'Archivo'}
+  .credit-badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+    padding:7px 16px;border-radius:30px;box-shadow:var(--shadow);font-weight:600;font-size:.85rem;color:var(--ink)}
+
+  .newtag{display:inline-block;background:var(--green);color:#fff;font-family:'IBM Plex Mono',monospace;
+    font-size:.66rem;font-weight:600;letter-spacing:.06em;padding:2px 8px;border-radius:5px;margin-right:6px;
+    vertical-align:middle;text-transform:uppercase}
+
+  .disc{background:rgba(15,22,35,.04);border:1px solid var(--line);border-radius:10px;padding:13px 16px;
+    font-size:.8rem;color:var(--ink-soft);margin-top:22px}
+
+  @media(max-width:640px){
+    .topbar{padding:12px 16px}.brand-txt b{font-size:1rem}
+    nav{width:100%;margin-left:0;overflow-x:auto;padding-bottom:4px}
+    main{padding:24px 16px 60px}.hero{padding:30px 22px}
+    .method-step{flex-direction:column;gap:12px}.flashcard{height:380px}
+  }
+
+  /* ---------- COPY PROTECTION ---------- */
+  body{
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
+    -webkit-touch-callout:none;
+  }
+  /* keep the search/typing fields usable */
+  input,textarea{-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text}
+
+  /* ---------- PRINT BLOCKING ---------- */
+  @media print{
+    body *{display:none !important;}
+    body::before{
+      content:"Printing is disabled.\A\A © tutorwarren.com — All Rights Reserved.";
+      white-space:pre-wrap; display:block !important; text-align:center;
+      font-family:'Archivo',sans-serif; font-size:18pt; font-weight:800;
+      color:#000; padding:60px 30px;
+    }
+  }
+
+  /* ---------- WATERMARK ---------- */
+  .wm{
+    position:fixed; bottom:8px; right:14px; z-index:60; pointer-events:none;
+    font-family:'IBM Plex Mono',monospace; font-size:.7rem; font-weight:600;
+    letter-spacing:.03em; color:rgba(15,22,35,.5); text-align:right; max-width:300px;
+    background:rgba(246,243,236,.72); backdrop-filter:blur(2px);
+    padding:5px 12px; border-radius:14px; border:1px solid rgba(189,106,50,.25);
+    user-select:none; line-height:1.35;
+  }
+  .wm .wm-main{color:var(--copper-d)}
+  .wm .wm-sub{display:block; font-size:.62rem; font-weight:500; color:rgba(15,22,35,.42); margin-top:1px}
+  @media(max-width:640px){ .wm{font-size:.6rem; max-width:220px; bottom:6px; right:8px} .wm .wm-sub{font-size:.55rem} }
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="brand" onclick="go('home')">
+      <div class="bolt"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L4.5 13.5H11L10 22l9-12h-6.5L13 2z" fill="#0f1623"/></svg></div>
+      <div class="brand-txt"><b>18th Edition</b><span>BS 7671:2018+A3:2024</span></div>
+    </div>
+    <a class="site-home" href="https://tutorwarren.com/" aria-label="Return to tutorwarren.com homepage">🏠 Website Home</a>
+    <nav id="nav">
+      <button data-view="home" class="active">Home</button>
+      <button data-view="parts">Parts &amp; Chapters</button>
+      <button data-view="index">Index Finder</button>
+      <button data-view="definitions">Definitions</button>
+      <button data-view="figures">Figures</button>
+      <button data-view="flashcards">Flash Cards</button>
+      <button data-view="quiz">Test Yourself</button>
+      <button data-view="keyword">Keyword Trainer</button>
+      <button data-view="examskills">Exam Skills</button>
+    </nav>
+  </div>
+</header>
+<main id="app"><!--VIEWS--></main>
+<footer>
+  <div class="credit-badge">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 2L4.5 13.5H11L10 22l9-12h-6.5L13 2z" fill="#bd6a32"/></svg>
+    Developed by tutorwarren.com
+  </div>
+  <p style="margin-top:12px">An independent study aid for the IET Wiring Regulations, 18th Edition. Always work from your own current copy of <b>BS 7671</b>.</p>
+</footer>
+
+<script>
+/* ============================================================
+   BS 7671:2018+A3:2024 — 18th Edition Study App
+   Content data. All explanations written in plain English.
+   Regulation numbers are cited as reference only — no verbatim
+   text from BS 7671 is reproduced.
+   Developed by tutorwarren.com — All Rights Reserved.
+   ============================================================ */
+
+/* ---------- PARTS, CHAPTERS & SECTIONS ---------- */
+const PARTS = [
+  {
+    id: "p1", num: "1", title: "Scope, Object & Fundamental Principles",
+    tag: "The 'why' of the regs",
+    intro: "Part 1 sets the boundaries of the book — what BS 7671 applies to, what it leaves out, and the safety principles every other Part is built on. If a question asks whether the regs even apply to something, you start here.",
+    chapters: [
+      { num: "Chapter 11", title: "Scope",
+        body: "Defines the installations BS 7671 covers — dwellings, commercial, industrial, agricultural, construction sites, caravans, marinas, low-voltage generating sets and more. Equally important is what it <em>excludes</em>: the distributor's equipment, railway traction, motor vehicles, ships, aircraft, mines/quarries, radio interference equipment and lightning protection of buildings (BS EN 62305). The book applies up to 1000V AC / 1500V DC.",
+        regs: [
+          {ref:"110.1.2", topic:"List of installations the regs apply to", detail:"Lists the installation types within scope: residential, commercial, public, industrial and agricultural premises, prefabricated buildings, caravans and caravan parks, construction sites, marinas, exhibitions, medical locations, mobile units, PV systems and LV generating sets. If your installation is one of these, BS 7671 applies. <b>Exam tip:</b> questions sometimes describe an unusual location (a marina, an exhibition stand) to test whether you know it's still covered — it usually is, and it'll have its own Part 7 section."},
+          {ref:"110.2", topic:"Installations specifically EXCLUDED", detail:"Lists what BS 7671 does NOT cover: equipment on ships and aircraft, traction/railway systems, motor vehicles (except caravans), mines and quarries, radio interference suppression equipment, and the distributor's own network. <b>Why it matters:</b> if a question is about any of these, the answer is that BS 7671 does not apply — a common trap."},
+          {ref:"110.1.3", topic:"Equipment/systems not covered", detail:"Clarifies that the distributor's equipment (the supply network up to and including the meter) and lightning protection systems of buildings (covered by BS EN 62305) fall outside the regs. The dividing line is the origin of the installation — generally the output terminals of the meter or the consumer's main switch."}
+        ]},
+      { num: "Chapter 12", title: "Object and Effects",
+        body: "States that the regs exist to provide for the safety of persons, livestock and property against the dangers and damage that can arise from the use of electricity, and to ensure the installation functions correctly for its intended use.",
+        regs: [{ref:"120.1", topic:"Object — safety of persons, livestock and property", detail:"The overarching purpose: protect people and animals from electric shock, burns and injury, and protect property from fire and thermal damage caused by an installation. Every specific requirement later in the book is a means to one of these ends — keep this in mind and most regulations make intuitive sense."}]},
+      { num: "Chapter 13", title: "Fundamental Principles",
+        body: "The backbone of the whole standard. Four broad requirements: <strong>protection for safety</strong> (Reg 131), <strong>design</strong> (132), <strong>selection of equipment</strong> (133) and <strong>erection & initial verification</strong> (134). If a topic isn't covered specifically elsewhere, Chapter 13 governs by general principle.",
+        regs: [
+          {ref:"131", topic:"Protection for safety — the general principles", detail:"Sets the headline safety aims that later Parts deliver in detail: protection against electric shock (basic + fault protection), against thermal effects (fire/burns), against overcurrent, against fault current, and against voltage disturbances. Think of 131 as the table of contents for Part 4."},
+          {ref:"132", topic:"Design — load, supply, diversity, future expansion", detail:"Requires the design to take account of the characteristics of the supply, the maximum demand (allowing for diversity), the number and type of conductors, the earthing arrangements, and the need for future expansion. Good design starts here: you size everything around the assessed load, not guesswork."},
+          {ref:"132.12", topic:"Maintainability", detail:"The installation must be designed so it can be safely inspected, tested and maintained throughout its life. In practice this means accessible joints, room to work at the board, isolation where needed, and durable labelling. <b>Exam tip:</b> 'maintainability' as a keyword points you straight here (and to 341)."},
+          {ref:"133", topic:"Selection of equipment — suitable & to a standard", detail:"Every item of equipment must comply with the relevant British or Harmonised Standard (see Appendix 1) and be suitable for the conditions and the duty it will see. You can't just fit any device — it must be rated for the voltage, current, fault level and environment present."},
+          {ref:"134", topic:"Erection and initial verification — good workmanship", detail:"Work must be carried out by skilled or instructed persons, using proper materials and good workmanship, and every new installation must be inspected and tested before being put into service. This links Part 1 directly to Part 6."}
+        ]},
+      { num: "Chapter 14", title: "Relationship & Compliance",
+        body: "Confirms how BS 7671 sits alongside statutory law. Compliance with BS 7671 is one recognised way of meeting the legal duty to provide a safe installation under the Electricity at Work Regulations 1989.",
+        regs: [{ref:"114", topic:"Relationship with statutory regulations", detail:"BS 7671 is a standard, not a law in itself, but conforming to it is regarded by the HSE as likely to satisfy the relevant parts of the Electricity at Work Regulations 1989 and the ESQCR. <b>Key point:</b> compliance with a British Standard cannot by itself confer immunity from legal obligations — the duty-holder still carries responsibility."}]}
+    ]
+  },
+  {
+    id: "p2", num: "2", title: "Definitions",
+    tag: "What the words actually mean",
+    intro: "Part 2 is the book's dictionary. The exam frequently turns on whether you know the precise BS 7671 meaning of a term. When a question hinges on a defined word, go straight to Part 2 — the definition often IS the answer.",
+    chapters: [
+      { num: "Part 2", title: "Key Definitions",
+        body: "These are the definitions most often tested. Read each one until the distinction is automatic — many exam questions are really just asking 'do you know what this word means in BS 7671?'.",
+        regs: [
+          {ref:"Part 2", topic:"Basic protection vs fault protection", detail:"<b>Basic protection</b> stops you contacting live parts in normal use — insulation, barriers, enclosures (old term: 'protection against direct contact'). <b>Fault protection</b> protects you when a fault makes normally-dead metal live — chiefly automatic disconnection of supply (old term: 'protection against indirect contact'). Together they give the two layers of shock protection."},
+          {ref:"Part 2", topic:"Exposed- vs extraneous-conductive-part", detail:"An <b>exposed-conductive-part</b> is metalwork that IS part of the installation and could become live under fault — e.g. a Class I appliance casing or a metal back-box. An <b>extraneous-conductive-part</b> is metalwork NOT part of the installation that can bring in a potential (usually earth) from elsewhere — e.g. a metal water or gas pipe, or structural steel. The distinction decides what gets bonded and what gets a CPC."},
+          {ref:"Part 2", topic:"Skilled / instructed / ordinary person", detail:"A <b>skilled person (electrically)</b> has the knowledge and experience to perceive and avoid electrical dangers. An <b>instructed person</b> is adequately advised or supervised by a skilled person to do so. An <b>ordinary person</b> is neither. Some requirements relax where access is restricted to skilled/instructed persons only (e.g. switchrooms)."},
+          {ref:"Part 2", topic:"SELV, PELV and FELV", detail:"<b>SELV</b> — extra-low voltage from a safety-isolating source, electrically separated from earth and from other circuits (no earth connection). <b>PELV</b> — the same, but one point may be earthed. <b>FELV</b> — functional ELV that does NOT meet all SELV/PELV requirements, so it still needs basic and fault protection appropriate to the primary voltage. Voltage band: ELV is ≤50V AC / ≤120V ripple-free DC."},
+          {ref:"Part 2", topic:"Earthing conductor, CPC and bonding conductor", detail:"The <b>earthing conductor</b> connects the main earthing terminal to the means of earthing (electrode or supply earth). A <b>circuit protective conductor (CPC)</b> connects exposed-conductive-parts of a circuit back to the MET. A <b>protective bonding conductor</b> connects extraneous-conductive-parts together/to the MET to keep them at the same potential. Different jobs — don't mix them up."},
+          {ref:"Part 2", topic:"Bidirectional protective device (new, A3:2024)", detail:"<span class='newtag'>A3:2024</span> A device the manufacturer intends to work with a supply connected to either side — or to both sets of terminals at once. Useful where power genuinely flows both ways, e.g. between a battery/PV inverter and the board. It can be wired either way round without losing its protective function."},
+          {ref:"Part 2", topic:"Unidirectional protective device (new, A3:2024)", detail:"<span class='newtag'>A3:2024</span> A device the manufacturer intends to have the supply connected to ONE defined set of terminals only. Its 'line' and 'load' sides must be wired the correct way round — connect it backwards in a bidirectional installation and it may not protect correctly. This is why new Reg 530.3.201 requires you to check the device's marking."}
+        ]}
+    ]
+  },
+  {
+    id: "p3", num: "3", title: "Assessment of General Characteristics",
+    tag: "Survey before you design",
+    intro: "Before designing anything you assess the supply, the loads, the earthing system and the external influences. Part 3 is where the earthing-system arrangements (TN-S, TN-C-S, TT, IT) live, plus maximum demand, maintainability and safety services.",
+    chapters: [
+      { num: "Chapter 31", title: "Purpose, Supplies & Structure",
+        body: "Covers maximum demand and diversity, the number and type of live conductors, and the nature of the supply — its voltage, frequency, prospective fault current and the external earth fault loop impedance (Ze).",
+        regs: [
+          {ref:"311", topic:"Maximum demand and diversity", detail:"You must assess the maximum demand of the installation, applying diversity (the realistic fact that not every load runs at full power simultaneously). This sets the size of the supply, main switch, tails and distribution cables. Over-estimate and you waste money; under-estimate and you overload — diversity factors (see the On-Site Guide) help you land it right."},
+          {ref:"313", topic:"Supply characteristics — voltage, frequency, Ipf, Ze", detail:"You need to know the nominal voltage (230V single-phase / 400V three-phase), frequency (50Hz), the prospective fault current at the origin, and the external loop impedance Ze. These come from the distributor or by measurement, and they drive your device breaking-capacity and disconnection-time calculations."}
+        ]},
+      { num: "Chapter 31 (312)", title: "Earthing Systems",
+        body: "The system types are identified by two letters — the first is how the SUPPLY is earthed, the second is how the INSTALLATION's exposed-conductive-parts are earthed. Knowing these cold is essential because they decide your protection strategy and your Zs values.",
+        regs: [
+          {ref:"312.2", topic:"Types of system earthing — TN-S, TN-C-S, TT, IT", detail:"<b>TN-S</b>: separate neutral and protective conductors all the way; earth provided via the supply cable sheath — low Ze. <b>TN-C-S (PME)</b>: supply has a combined PEN conductor that splits into N and PE at the intake; most common in UK housing — very low Ze. <b>TT</b>: installation earthed only through its own electrode — high Ze, so RCDs are essential. <b>IT</b>: supply not earthed (or via high impedance) — rare, used in some medical/industrial settings. <b>Exam tip:</b> the system type changes the disconnection times and whether you can rely on the overcurrent device or must use an RCD."},
+          {ref:"312.3", topic:"Types of live conductors", detail:"Defines the conductor arrangements — single-phase two-wire, three-phase three- or four-wire, etc. This affects cable selection, voltage-drop calculations and the choice of protective devices."}
+        ]},
+      { num: "Chapters 33–36", title: "Compatibility, Maintainability, Safety Services, Continuity",
+        body: "Four short chapters flagging design considerations: equipment that could interfere with other equipment (33), how maintainable the installation needs to be (34), whether safety services are required (35), and whether continuity of supply is critical (36).",
+        regs: [
+          {ref:"331", topic:"Compatibility", detail:"Assess whether any equipment will produce harmful effects on other equipment or the supply — transients, harmonics, high starting (inrush) currents, DC, high-frequency, or earth leakage. Where it would, you take measures to prevent the interference (e.g. separate circuits, filters)."},
+          {ref:"341", topic:"Maintainability", detail:"You must assess how often and how well the installation will be maintained, and design accordingly — including providing for safe isolation, access and the recommended interval to the next inspection. Links back to fundamental Reg 132.12."},
+          {ref:"35", topic:"Safety services", detail:"Where life-safety systems are needed (emergency escape lighting, fire alarms, smoke control), Chapter 35 flags the requirement for a suitable independent source and circuits that keep working in a fire. The detailed selection is in Chapter 56 / Section 560."}
+        ]}
+    ]
+  },
+  {
+    id: "p4", num: "4", title: "Protection for Safety",
+    tag: "The heart of the exam",
+    intro: "Part 4 is the most heavily examined Part. It covers protection against electric shock (Ch 41), thermal effects/fire (42), overcurrent (43), voltage and electromagnetic disturbances (44), and isolation/switching principles (46). If a question is about RCDs, disconnection times, AFDDs, SPDs, or simply 'how do we keep people safe', it's almost always Part 4.",
+    chapters: [
+      { num: "Chapter 41", title: "Protection Against Electric Shock",
+        body: "The single most important chapter. Shock protection is delivered by a combination of <strong>basic protection</strong> (insulation, barriers, enclosures) and <strong>fault protection</strong>, the main method being <strong>Automatic Disconnection of Supply (ADS)</strong> in Section 411. ADS works by ensuring that, under an earth fault, enough current flows to operate the protective device fast enough to prevent a dangerous shock.",
+        regs: [
+          {ref:"411.3.2", topic:"Requirement for automatic disconnection", detail:"Under an earth fault, the protective device (fuse, MCB or RCD) must disconnect the circuit within the time given in Table 41.1. This relies on the earth fault loop impedance (Zs) being low enough that the fault current is high enough to trip the device in time — which is why you measure and verify Zs."},
+          {ref:"411.3.3", topic:"Additional protection: 30mA RCD on socket-outlets ≤32A", detail:"Socket-outlets rated up to 32A must have additional protection by a 30mA RCD (in most premises), because sockets feed portable equipment and trailing leads that are easily damaged. The same applies to mobile equipment up to 32A used outdoors. 30mA is chosen because it disconnects before a shock becomes lethal. <b>Exam tip:</b> 'socket-outlet' is a strong keyword for this reg."},
+          {ref:"411.3.4", topic:"30mA RCD on AC lighting circuits in dwellings (A2:2022)", detail:"<span class='newtag'>A2:2022</span> AC final circuits supplying luminaires in household (domestic) premises must have 30mA RCD additional protection. The reasoning: people change lamps and fittings live, and damaged lighting wiring is a real shock risk in homes."},
+          {ref:"Table 41.1", topic:"Maximum disconnection times", detail:"The numbers you must memorise. For a 230V system: final circuits ≤32A must disconnect in <b>0.4s on TN</b> and <b>0.2s on TT</b>. Distribution circuits and final circuits >32A get <b>5s on TN</b> and <b>1s on TT</b>. TT times are shorter because the higher loop impedance makes ADS by overcurrent device unreliable — hence RCDs."},
+          {ref:"414", topic:"SELV and PELV protective measures", detail:"Using extra-low voltage from a safety-isolating source as a protective measure. Because the voltage is so low (≤50V AC), and the circuit is separated, the risk of harmful shock is removed. Common in bathrooms (e.g. SELV shaver supplies) and in special locations. PELV is similar but may be earthed."},
+          {ref:"415.1", topic:"Additional protection — 30mA RCD", detail:"Defines 'additional protection' by an RCD with a rated residual operating current not exceeding 30mA. It's a backup layer — it does not replace basic or fault protection, but catches the situations they miss (a child poking a wire, a damaged flex, a person becoming part of the fault path)."},
+          {ref:"415.2", topic:"Additional protection — supplementary bonding", detail:"Connecting exposed- and extraneous-conductive-parts together so that, even during a fault, the voltage between two simultaneously-touchable parts stays safely low. Historically used heavily in bathrooms; now often omitted where the conditions of 701.415.2 are met."}
+        ]},
+      { num: "Chapter 42", title: "Protection Against Thermal Effects",
+        body: "Protection against fire, burns and overheating caused by electrical equipment. The headline addition in recent amendments is the <strong>AFDD</strong> (Arc Fault Detection Device), which detects the signature of a dangerous arcing fault — a leading cause of electrical fires — and disconnects.",
+        regs: [
+          {ref:"421.1.7", topic:"AFDDs — required in higher-risk premises (A2:2022)", detail:"<span class='newtag'>A2:2022</span> AFDDs are <b>required</b> for single-phase AC socket-outlet final circuits up to 32A in Higher-Risk Residential Buildings (HRRBs), houses in multiple occupation (HMOs), purpose-built student accommodation and care homes — places where occupants are vulnerable or escape is harder. They are <b>recommended</b> elsewhere. An AFDD spots series/parallel arcing that fuses and RCDs miss."},
+          {ref:"422", topic:"Locations with increased fire risk", detail:"Where external influences create a fire risk — combustible materials stored (BE2), flammable dust (BE3), or buildings of significant fire-spread risk (CA2) — extra wiring-system precautions apply, such as restricting cable types and providing better mechanical protection."},
+          {ref:"422.3.1", topic:"Fire-risk locations — wiring requirements", detail:"In such locations, wiring systems must minimise the risk of fire spread — e.g. cables with improved fire performance, metallic conduit/trunking, and avoidance of cable types that propagate flame. RCD protection (300mA) is also commonly required to catch earth-leakage that could start a fire."},
+          {ref:"423", topic:"Protection against burns", detail:"Touchable parts of equipment must not reach temperatures that would burn skin. The standard gives maximum surface-temperature limits depending on the material and whether the part is meant to be touched in normal use (e.g. a metal handle has a lower limit than a non-touchable enclosure)."}
+        ]},
+      { num: "Chapter 43", title: "Protection Against Overcurrent",
+        body: "Overcurrent means too much current — either an <strong>overload</strong> (a healthy circuit asked to carry more than its design) or a <strong>fault current</strong> (a short-circuit or earth fault). The cable and its protective device must be coordinated so the cable never overheats before the device disconnects.",
+        regs: [
+          {ref:"433.1.1", topic:"Overload coordination — Ib ≤ In ≤ Iz and I2 ≤ 1.45 Iz", detail:"The golden rule of cable sizing. <b>Ib</b> (design current) ≤ <b>In</b> (device rating) ≤ <b>Iz</b> (the installed cable's current-carrying capacity after correction factors). Plus <b>I2 ≤ 1.45 × Iz</b>, where I2 is the current that reliably operates the device — for modern MCBs/fuses to BS EN standards this second condition is met automatically when the first is. Get Iz from Appendix 4 after applying Ca, Cg, Ci, Cf."},
+          {ref:"434", topic:"Protection against fault current", detail:"The device must safely interrupt the maximum prospective fault current at its point of installation — so its breaking capacity (kA rating) must be ≥ the prospective fault current there. It must also disconnect fast enough that the cable's conductors don't exceed their limiting temperature, checked by the adiabatic equation."},
+          {ref:"434.5.2", topic:"Adiabatic equation — S = √(I²t)/k", detail:"Used to confirm a conductor (often the CPC) is big enough to survive the heat of a fault before disconnection. <b>S</b> = minimum CSA (mm²), <b>I</b> = fault current (A), <b>t</b> = disconnection time (s), <b>k</b> = a constant for the conductor material/insulation (from the tables in Ch 54). If the calculated S is larger than the conductor you've used, you need a bigger conductor or faster disconnection."},
+          {ref:"435", topic:"Coordination of overload and fault protection", detail:"Where a single device provides both overload and fault protection it must satisfy both sets of rules. Where separate devices are used (e.g. overload at the load, fault at the origin), Chapter 43 sets out how they must work together so there's no gap in protection."},
+          {ref:"433.3.1", topic:"Where overload protection may be omitted", detail:"Overload protection isn't always required — e.g. on a circuit that can't be overloaded (a fixed resistive load) or where omitting it is safer than the risk of unexpected disconnection (some safety circuits). The reg lists the specific permitted cases; don't assume — check the conditions."}
+        ]},
+      { num: "Chapter 44", title: "Voltage & Electromagnetic Disturbances",
+        body: "Protection against overvoltages — both transient (lightning, switching surges) and from supply faults — and against electromagnetic interference. The practical focus is <strong>Surge Protective Devices (SPDs)</strong>.",
+        regs: [
+          {ref:"443.4", topic:"When transient overvoltage protection is required", detail:"<span class='newtag'>A2:2022</span> Protection (an SPD) must be provided where a transient overvoltage could cause: serious injury or loss of human life; interruption of public services or damage to cultural heritage; interruption of commercial/industrial activity; or affect large numbers of co-located people. For most dwellings the practical outcome is that an SPD is fitted."},
+          {ref:"443.5", topic:"Risk assessment (CRL) for SPD requirement", detail:"Where the consequence isn't one of the mandatory cases, you either carry out the calculated risk-level (CRL) assessment in the standard, or simply fit an SPD anyway (often cheaper than doing the assessment). If the assessment shows the risk is acceptable, an SPD may be omitted — but you must record the justification."},
+          {ref:"444", topic:"Electromagnetic disturbances (EMC)", detail:"Measures to reduce electromagnetic interference between systems — e.g. segregating power and data cabling, choosing wiring topologies (meshed/star earthing) that limit interference, and bonding to control common-mode currents. Increasingly relevant with sensitive electronics and data systems."},
+          {ref:"534", topic:"Selection and erection of SPDs (cross-ref)", detail:"Once 443 says you need an SPD, Section 534 tells you how to choose and install it — the type (Type 1 for direct-strike risk, Type 2 for general, Type 3 at sensitive equipment), the voltage protection level, and connecting-conductor lengths (keep them short — ideally ≤0.5m total — or the protection is undermined)."}
+        ]},
+      { num: "Chapter 46", title: "Isolation & Switching (principles)",
+        body: "A reinstated chapter setting out the four switching functions an installation must provide for. The detailed device selection lives in Section 537.",
+        regs: [
+          {ref:"462", topic:"Isolation", detail:"Every circuit must be capable of being securely isolated (cut off from every source of supply) for safe working. Isolation must be secure against inadvertent reclosure — hence lockable devices and 'safe isolation' procedures. The means of isolation must have a visible gap or reliable position indication."},
+          {ref:"463", topic:"Switching off for mechanical maintenance", detail:"Where mechanical maintenance could involve a risk of injury (e.g. servicing a motor or fan), a means of switching off must be provided and kept under the control of the person doing the work, so the equipment can't be started unexpectedly."},
+          {ref:"465", topic:"Emergency switching / stopping", detail:"Where a hazard could arise, a means of rapidly cutting the supply must be provided — readily accessible and clearly identified (e.g. a red mushroom-head stop). Emergency switching removes a dangerous electrical condition; emergency stopping also stops dangerous mechanical movement."}
+        ]}
+    ]
+  },
+  {
+    id: "p5", num: "5", title: "Selection & Erection of Equipment",
+    tag: "Choosing and installing kit",
+    intro: "Part 5 is about choosing the right equipment and installing it correctly — cable sizing, wiring methods, protective devices, earthing and bonding, accessories and luminaires. Questions about cable colours, RCD types, CPC sizing, main bonding sizes and 'how deep can a cable be buried in a wall' live here.",
+    chapters: [
+      { num: "Chapter 51", title: "Common Rules & Identification",
+        body: "General rules for selecting and installing equipment, plus identification and notices (Section 514). Equipment must suit the external influences it will face — moisture, dust, temperature, mechanical impact, all classified by the AD/AE/BE codes in Section 512.",
+        regs: [
+          {ref:"514", topic:"Identification of conductors and notices", detail:"Conductors and circuits must be identifiable, and the correct safety notices fitted. UK harmonised colours: <b>line = brown</b>, <b>neutral = blue</b>, <b>CPC = green-and-yellow</b>; three-phase lines are brown/black/grey (L1/L2/L3). Mislabelling is a common real-world danger and an easy exam mark."},
+          {ref:"514.9", topic:"Diagrams, charts and tables at the origin", detail:"A durable schedule/diagram must be provided at the origin showing the circuits, their protective devices, the type of wiring and the testing required. On a domestic board this is the circuit chart inside the consumer unit cover."},
+          {ref:"514.12.1", topic:"Notice — periodic inspection and testing", detail:"A notice must be fixed at the origin stating the date of the last inspection and the recommended date for the next. It's how the next person knows when the installation is due for an EICR."},
+          {ref:"514.12.2", topic:"Notice — RCD quarterly test", detail:"Where an RCD is fitted, a notice must tell the user to operate the test button quarterly to confirm the RCD still works. RCDs are mechanical and can seize — the test button is the user's check."},
+          {ref:"512.2", topic:"External influences — classification codes", detail:"Equipment must be selected to withstand the conditions of its location, classified by codes for environment (AD water, AE foreign bodies), utilisation (BA skill of persons) and building construction (CA materials). The IP rating you choose follows directly from the AD/AE codes."}
+        ]},
+      { num: "Chapter 52", title: "Selection & Erection of Wiring Systems",
+        body: "How cables and wiring systems are chosen and installed — current-carrying capacity, voltage drop, and protection from heat, water, corrosion and (importantly) mechanical damage and concealment in walls.",
+        regs: [
+          {ref:"522.6.202", topic:"Cables in walls <50mm deep — 30mA RCD", detail:"A cable concealed in a wall/partition at less than 50mm depth, that isn't mechanically protected and isn't run in a recognised 'safe zone', must have 30mA RCD additional protection. The danger is someone drilling or nailing into a hidden cable. <b>Exam tip:</b> 'cable in a wall' + 'depth' is a classic trigger — check zone, depth, protection and RCD."},
+          {ref:"522.6.203", topic:"Cables in metal-framed partitions", detail:"Where a cable is run in a partition with metallic parts (e.g. metal studs), 30mA RCD protection is required regardless of depth, because the metal framing itself can damage the cable and become live. Often caught out in modern commercial fit-outs."},
+          {ref:"522.8.10", topic:"Wiring support — must not collapse in fire", detail:"Wiring must be supported so it can't prematurely collapse and either trap escaping occupants or hamper firefighters — the 'death by cable' rule introduced after firefighters were entangled by failed plastic clips. Use metal clips/supports for cables on escape routes and surface runs, not plastic-only fixings."},
+          {ref:"523", topic:"Current-carrying capacity", detail:"The current a cable can carry continuously without exceeding its temperature limit, found in Appendix 4 for the installation method, then corrected for ambient temperature (Ca), grouping (Cg), thermal insulation (Ci) and any BS 3036 rewireable fuse (Cf). This gives Iz for the Ib ≤ In ≤ Iz check."},
+          {ref:"525", topic:"Voltage drop", detail:"Voltage drop from the origin to the furthest point must stay within limits so equipment works correctly — typically <b>3% for lighting</b> and <b>5% for other uses</b> of the 230V nominal (i.e. about 6.9V and 11.5V). Long runs often fail on voltage drop before they fail on current capacity — calculate using the mV/A/m figures in Appendix 4."}
+        ]},
+      { num: "Chapter 53", title: "Protection, Isolation, Switching, Control & Monitoring",
+        body: "Selection of the protective devices and switchgear themselves. Section 531 covers RCD selection; 537 covers isolation and switching devices. Amendment 3:2024 adds the requirement to consider a device's direction of supply.",
+        regs: [
+          {ref:"530.3.201", topic:"Unidirectional vs bidirectional devices (new, A3:2024)", detail:"<span class='newtag'>A3:2024</span> When selecting and installing a protective device you must take account of whether it is unidirectional or bidirectional. Critical in installations where power can flow both ways — solar PV, battery storage, EV vehicle-to-grid — because a unidirectional device wired the wrong way round may fail to protect. Check the device marking (line/load, in/out, or arrows)."},
+          {ref:"531.3.3", topic:"Selection of RCD type (AC / A / F / B)", detail:"RCDs must suit the earth-fault current waveform the circuit can produce. <b>Type AC</b>: only smooth AC (now rarely adequate alone). <b>Type A</b>: AC plus pulsating DC — the modern general default. <b>Type F</b>: adds mixed frequencies (some appliances). <b>Type B</b>: adds smooth DC — needed for many EV chargers and inverters. Pick the type from the connected load, not habit."},
+          {ref:"537", topic:"Isolation and switching devices", detail:"Specifies what equipment can serve as a means of isolation, switching off for maintenance, emergency switching, or functional switching, and the requirements each must meet (e.g. contact gap, position indication, ability to be secured off)."},
+          {ref:"537.2.2", topic:"Devices for isolation — requirements", detail:"A device used for isolation must reliably cut off all live supply conductors, give a clear indication of the off position (or a visible gap), and be secure against unintended or unauthorised reclosure. A plug and socket can serve as isolation for a single item of equipment."},
+          {ref:"536", topic:"Coordination / selectivity of devices", detail:"Where devices are in series (e.g. a main switch-fuse upstream of a final-circuit MCB), they should be coordinated so a downstream fault trips only the nearest device, not the whole board — 'discrimination' or 'selectivity'. This keeps the maximum amount of the installation running during a fault."}
+        ]},
+      { num: "Chapter 54", title: "Earthing Arrangements & Protective Conductors",
+        body: "How the installation is connected to earth, and how protective conductors and bonding are sized. Get the earthing and bonding right and ADS works; get it wrong and exposed metal can stay dangerously live during a fault.",
+        regs: [
+          {ref:"542.1.201", topic:"Main earthing terminal (MET)", detail:"Every installation must have a main earthing terminal where the earthing conductor, the main protective bonding conductors and the CPCs all come together. It's the single reference point for the whole installation's earthing — and the place you'll connect your test instruments."},
+          {ref:"543.1", topic:"Minimum CSA of protective conductors", detail:"A CPC is sized either by <b>selection</b> (Table 54.7 — for a line conductor up to 16mm², the CPC matches it; above that, half, subject to minima) or by <b>calculation</b> using the adiabatic equation. Calculation often allows a smaller, cheaper CPC but you must prove it survives the fault energy."},
+          {ref:"Table 54.7", topic:"CPC size by selection", detail:"The quick method: if the line conductor S ≤ 16mm², CPC = S. If 16 < S ≤ 35mm², CPC = 16mm². If S > 35mm², CPC = S/2. Conservative but fast — use it unless you need the smaller size that calculation gives."},
+          {ref:"544.1.1", topic:"Main protective bonding conductor sizing", detail:"Main bonding connects incoming metallic services (water, gas, oil, structural steel) to the MET so they can't introduce a dangerous potential difference. Minimum <b>6mm²</b> for non-PME systems; for PME (TN-C-S) it's sized from Table 54.8 against the supply neutral. <b>Exam tip:</b> 'bonding' + 'PME/gas/water' points here."},
+          {ref:"Table 54.8", topic:"Main bonding CSA for PME (TN-C-S)", detail:"For PME supplies the main bonding must be larger because the PEN carries normal current and an open-PEN fault is dangerous. Typical values: <b>10mm²</b> for a supply neutral up to 35mm², 16mm² up to 50mm², rising with the supply. Always check the actual neutral size."},
+          {ref:"544.2", topic:"Supplementary bonding conductors", detail:"Local bonding that ties exposed- and extraneous-conductive-parts together within a location (historically bathrooms). Minimum sizes are given (e.g. 4mm² unprotected, 2.5mm² if mechanically protected). Often now omittable in bathrooms under 701.415.2."}
+        ]},
+      { num: "Chapter 55", title: "Other Equipment",
+        body: "Specific rules for generating sets (including microgeneration in parallel with the grid), transformers, and luminaires. With the growth of solar and battery storage, the generator rules (551) are increasingly relevant.",
+        regs: [
+          {ref:"551", topic:"Low-voltage generating sets", detail:"Covers standby generators, microgeneration and storage operating either as the sole supply, as a switched alternative, or in parallel with the public network. Parallel operation (e.g. grid-tied solar) brings extra requirements: protection against islanding, and ensuring the generation can't backfeed a dead network and endanger others."},
+          {ref:"559", topic:"Luminaires and lighting installations", detail:"Selection and installation of light fittings — accounting for their heat, the fixing/support, the connection method and protection against fire from hot lamps near combustible surfaces."},
+          {ref:"559.5", topic:"Luminaire supporting couplers (DCL)", detail:"The standardised ceiling connector (Device for Connecting Luminaires) that lets a luminaire be plugged in/unplugged safely. It must be wired and rated correctly so the fitting's weight and current are both handled."},
+          {ref:"559.4.1", topic:"Luminaires — protection against thermal effects", detail:"Luminaires must be installed so the heat they produce can't ignite nearby materials — respecting minimum distances to combustibles, using fire-rated downlight covers in ceilings, and heeding the manufacturer's spacing-to-combustible markings."}
+        ]},
+      { num: "Chapter 56", title: "Safety Services",
+        body: "The sources and circuits for safety services — systems that must keep operating during an emergency such as emergency escape lighting, fire detection and alarm, and smoke-control equipment.",
+        regs: [
+          {ref:"560", topic:"Safety services — sources and circuits", detail:"Safety services need a source that stays available when the normal supply fails (battery, generator, or a separate feeder), with a defined changeover time. The circuits must be independent of other circuits so a fault elsewhere can't take out the life-safety system."},
+          {ref:"560.8", topic:"Wiring systems for safety services — fire resistance", detail:"Cables for safety services on which continued operation depends must maintain circuit integrity in a fire for the required period — using fire-resistant cable (e.g. to BS EN/BS 8434/8491) and fire-rated supports, so the alarm or escape lighting keeps working while people get out."}
+        ]}
+    ]
+  },
+  {
+    id: "p6", num: "6", title: "Inspection & Testing",
+    tag: "Proving it's safe",
+    intro: "Part 6 was restructured in the 18th Edition. It covers initial verification of a new installation (Chapter 64) and periodic inspection and testing of an existing one (Chapter 65), plus the certificates and reports. Questions on the test sequence, EICR codes (C1/C2/C3/FI) and which certificate to issue all live here.",
+    chapters: [
+      { num: "Chapter 64", title: "Initial Verification",
+        body: "Before a new installation (or addition) is energised and handed over it must be inspected (dead) and then tested. Inspection comes first — you look before you test. The tests follow a defined sequence so that an early result doesn't make a later test dangerous.",
+        regs: [
+          {ref:"641.1", topic:"Initial verification required", detail:"Every new installation, and every addition or alteration, must be verified by inspection and testing during erection and on completion, before being put into service — and compared against the design criteria. You can't certify what you haven't verified."},
+          {ref:"643", topic:"Testing — sequence and methods", detail:"The recommended sequence (dead tests first): continuity of protective conductors → continuity of ring final conductors → insulation resistance → polarity (dead). Then, energised: earth electrode resistance (if any) → earth fault loop impedance Zs → prospective fault current → RCD operation → functional checks. Order matters for safety."},
+          {ref:"643.2", topic:"Continuity of conductors", detail:"Confirms protective conductors (CPCs and bonding) are continuous and correctly connected, and verifies ring final circuits are actually rings (no break, no interconnection) using the three-step r1/rn/r2 method. A broken CPC means no fault protection — this is why it's tested first."},
+          {ref:"643.3", topic:"Insulation resistance", detail:"Confirms the insulation between live conductors, and between live conductors and earth, is sound — typically tested at 500V DC for a 230/400V installation, with a minimum acceptable value of 1MΩ (though a healthy installation reads far higher). Low readings reveal damaged or damp insulation before it causes a fault."},
+          {ref:"643.7", topic:"Earth fault loop impedance (Zs)", detail:"Measures the total impedance of the earth fault loop at a point in the circuit. The measured Zs must be low enough that, with the protective device used, disconnection happens within the Table 41.1 time. Compare your measured Zs to the maximum Zs for that device — this is the live test that proves ADS works."},
+          {ref:"644", topic:"Certification — EIC / MEIWC", detail:"On satisfactory completion you issue an Electrical Installation Certificate (EIC) for a new installation or new circuit, or a Minor Electrical Installation Works Certificate (MEIWC) for an addition/alteration that doesn't include a new circuit. The certificate plus schedules is the legal record that the work is safe."}
+        ]},
+      { num: "Chapter 65", title: "Periodic Inspection & Testing",
+        body: "Assessing an EXISTING installation to see whether it remains safe for continued use, and recording the findings in an Electrical Installation Condition Report (EICR). Unlike a new install, you're checking deterioration, damage, wear and departures from the current standard.",
+        regs: [
+          {ref:"651", topic:"Periodic inspection — purpose", detail:"To determine, so far as reasonably practicable, whether the installation is in a safe condition for continued service — identifying deterioration, damage, overloading, and any conditions that could cause shock or fire. Sampling is allowed, and the extent/limitations must be agreed and recorded."},
+          {ref:"653", topic:"Electrical Installation Condition Report (EICR)", detail:"The report recording the inspection, the test results, and any observations with classification codes. The overall outcome is <b>Satisfactory</b> or <b>Unsatisfactory</b> — and any C1, C2 or FI makes it Unsatisfactory, meaning remedial work is needed."},
+          {ref:"Appx 6", topic:"Model forms — EIC, MEIWC, EICR", detail:"Appendix 6 gives the model certificates and the schedules of inspections and test results. The coding to remember: <b>C1</b> danger present (immediate action), <b>C2</b> potentially dangerous (urgent action), <b>C3</b> improvement recommended (not a fail), <b>FI</b> further investigation required."}
+        ]}
+    ]
+  },
+  {
+    id: "p7", num: "7", title: "Special Installations or Locations",
+    tag: "The exceptions",
+    intro: "Part 7 modifies and adds to the general rules for specific locations — bathrooms, swimming pools, construction sites, caravans, medical locations, EV charging and more. A Part 7 section ALWAYS takes priority over the general requirements for that location. Section numbers run 701–753, and the last three digits often mirror the general regulation they modify.",
+    chapters: [
+      { num: "Section 701", title: "Bathrooms & Shower Rooms",
+        body: "Water plus electricity plus bare skin makes bathrooms high-risk, so the protection is tightened by dividing the room into <strong>zones</strong> and restricting what equipment, and what IP rating, is allowed in each.",
+        regs: [
+          {ref:"701.32", topic:"Classification of zones (0, 1, 2)", detail:"<b>Zone 0</b> — inside the bath tub or shower basin (the wettest place). <b>Zone 1</b> — directly above Zone 0 up to 2.25m. <b>Zone 2</b> — the 0.6m-wide band horizontally beyond Zone 1. Each zone limits what equipment may be installed and its minimum IP rating. Beyond Zone 2, normal rules largely apply."},
+          {ref:"701.411.3.3", topic:"30mA RCD for circuits in the location", detail:"All circuits serving the bathroom (and any circuit passing through the zones) must have 30mA RCD additional protection — the wet environment dramatically lowers body resistance, so the extra layer is essential."},
+          {ref:"701.415.2", topic:"Supplementary bonding (and when it may be omitted)", detail:"Supplementary bonding of extraneous-conductive-parts may be <b>omitted</b> if ALL of: main protective bonding is in place; all circuits meet the Section 411 disconnection times; and all circuits have 30mA RCD protection. Modern bathrooms with RCD protection and good main bonding usually qualify — but you must confirm all three conditions, not assume."},
+          {ref:"701.512.3", topic:"IP ratings by zone", detail:"Minimum ingress protection: <b>Zone 0 — IPX7</b> (immersion); <b>Zones 1 and 2 — IPX4</b> (splashing), rising to <b>IPX5</b> where water jets are used for cleaning (e.g. communal showers). Pick equipment rated at least to the zone it sits in."},
+          {ref:"701.55", topic:"Equipment permitted in zones", detail:"What may be installed where — e.g. only SELV (≤12V AC/30V DC, source outside zones 0/1) or fixed permanently-connected equipment suitable for the zone; socket-outlets are generally prohibited within 3m of zone 1 (except SELV and shaver units to BS EN 61558-2-5)."}
+        ]},
+      { num: "Section 702 / 705", title: "Swimming Pools & Agricultural",
+        body: "Two more wet/high-risk environments. Pools (702) use zones much like bathrooms; agricultural premises (705) add livestock, corrosion, dust and fire risk to the mix.",
+        regs: [
+          {ref:"702.32", topic:"Pool zones 0, 1, 2", detail:"Pools and fountains are zoned like bathrooms but to the pool's geometry. Equipment in the water/immediate vicinity must be SELV at reduced voltage, and only specific, robustly-protected equipment is allowed close to the water."},
+          {ref:"705.411.1", topic:"Agricultural — disconnection & RCD", detail:"Livestock are far more sensitive to electric shock than people, so disconnection times and RCD requirements are stricter — socket circuits up to 32A need 30mA RCDs, other circuits up to 300mA RCDs, and supplementary bonding is used to protect animals from even small potential differences."},
+          {ref:"705.422", topic:"Fire risk in agricultural premises", detail:"Barns store hay, feed and bedding — all highly combustible — so additional RCD protection (typically 300mA) is required to catch earth-leakage that could start a fire, along with suitable IP-rated, dust- and corrosion-resistant equipment."}
+        ]},
+      { num: "Section 704 / 706", title: "Construction Sites & Restricted Locations",
+        body: "Harsh, temporary environments (704) and confined conductive spaces (706) where the shock risk is unusually high and equipment takes a beating.",
+        regs: [
+          {ref:"704.410.3.10", topic:"Construction site protective measures", detail:"Construction sites favour <b>reduced low voltage</b> (110V centre-tapped to earth, so only 55V to earth) for portable tools, short disconnection times, robust IP-rated equipment, RCD protection, and frequent inspection because the installation is repeatedly altered and damaged."},
+          {ref:"704.511", topic:"Construction site — equipment robustness", detail:"Equipment must withstand the mechanical knocks, water and dust of a site — typically a minimum IP44, impact-resistant enclosures, and assemblies (ACS units) built to BS EN 60439-4 / 61439-4."},
+          {ref:"706.410.3", topic:"Restricted conductive locations — SELV/separation", detail:"In a conducting location with restricted movement (inside a metal tank or boiler) body contact with earthed metal is almost guaranteed, so supplies must be SELV, or by electrical separation with the source OUTSIDE the location, giving the strongest possible shock protection."}
+        ]},
+      { num: "Section 708 / 721", title: "Caravan Parks & Caravans",
+        body: "The pitch supply (708) and the caravan/motor caravan itself (721). The big theme is the danger of PME earthing where a person is in good contact with the ground or the vehicle.",
+        regs: [
+          {ref:"708.553.1.13", topic:"Caravan park socket-outlets", detail:"Each pitch socket must be close to the pitch, individually protected by its own 30mA RCD (one socket per RCD, so a fault on one pitch doesn't trip a neighbour), and overcurrent-protected — with at least one socket per caravan pitch."},
+          {ref:"708.411.4", topic:"PME prohibited for caravan/pitch supply", detail:"PME (TN-C-S) earthing must NOT be used for a caravan pitch supply, because an open-PEN fault could raise the caravan's metalwork to a dangerous voltage relative to the ground the person is standing on. A TT earth electrode is used instead."},
+          {ref:"721.411", topic:"Caravan — automatic disconnection", detail:"The caravan's own installation uses flexible wiring suited to movement and vibration, with ADS, 30mA RCD protection, and clear notices about connecting/disconnecting the supply and the earthing arrangement."}
+        ]},
+      { num: "Section 710 / 711", title: "Medical Locations & Exhibitions",
+        body: "Patient safety where normal disconnection would be too dangerous (710), and temporary public installations that are repeatedly assembled and dismantled (711).",
+        regs: [
+          {ref:"710.411", topic:"Medical locations — disconnection", detail:"Locations are classified Group 0, 1 or 2 by how the medical equipment contacts the patient. The higher the group, the tighter the protection — because for a patient with, say, a cardiac catheter, even a tiny current or a brief loss of supply can be fatal."},
+          {ref:"710.413", topic:"Medical IT system (Group 2)", detail:"Group 2 locations (operating theatres, intensive care) use a <b>medical IT system</b> — an unearthed supply with insulation monitoring — so that a first earth fault does NOT cause disconnection or a dangerous current, keeping life-support equipment running while the fault is flagged for attention."},
+          {ref:"711.410.3", topic:"Exhibitions — RCD protection", detail:"Stands, shows and exhibitions are temporary, accessible to the public and frequently re-rigged, so they require generous RCD protection, robust connections, and inspection each time they're assembled."}
+        ]},
+      { num: "Section 712", title: "Solar Photovoltaic (PV) Systems",
+        body: "PV brings a DC source that's live whenever there's daylight and can't simply be 'switched off' at source — so the DC side has its own protection, isolation and labelling rules.",
+        regs: [
+          {ref:"712.411.3.2.1.2", topic:"PV — fault protection on DC side", detail:"The DC side requires its own fault-protection strategy because you can't rely on conventional AC overcurrent behaviour — PV string fault currents are limited and the array stays live in daylight. Class II (double-insulated) equipment and careful cable selection are common solutions."},
+          {ref:"712.514", topic:"PV — dual-supply warning labels", detail:"Clear labelling is mandatory: the installation has TWO sources (grid and PV), and the PV DC side stays live in daylight even with the main switch off. Labels at the origin, the inverter and the isolators warn anyone working on the system."},
+          {ref:"712.537", topic:"PV — isolation (DC isolators)", detail:"A means of isolating the PV array on the DC side must be provided (typically a DC isolator at the inverter) so the inverter can be worked on safely — remembering the array itself can't be de-energised while the sun is up, only disconnected."}
+        ]},
+      { num: "Section 722", title: "Electric Vehicle Charging",
+        body: "Heavily updated in recent amendments. EV charging combines outdoor exposure, long charging times with a person potentially touching the vehicle, and DC fault currents from the charger electronics — so the protection is specific and strict.",
+        regs: [
+          {ref:"722.531.3.101", topic:"EV — RCD per point + DC fault detection", detail:"Each charging point generally needs its own 30mA RCD, PLUS protection against DC fault current — either a <b>Type B RCD</b>, or a <b>Type A RCD combined with 6mA DC fault detection</b> built into the charging equipment. Smooth DC can 'blind' an ordinary Type A/AC RCD, hence the extra requirement."},
+          {ref:"722.411.4.1", topic:"EV — PME limitations outdoors", detail:"Using PME (TN-C-S) earthing for outdoor charging is restricted because an open-PEN fault could make the vehicle's body live while a person stands on the ground touching it. Solutions: a dedicated TT earth electrode, or a device that detects the open-PEN/voltage condition and disconnects."},
+          {ref:"722.512.2", topic:"EV — external influences", detail:"Charging equipment outdoors must suit the environment — appropriate IP rating against rain and dust, UV-stable materials, impact resistance, and a mounting height/position that keeps connectors clear of standing water."}
+        ]},
+      { num: "Section 715 / 753", title: "ELV Lighting & Heating Cables",
+        body: "Extra-low-voltage lighting (715) and embedded floor/ceiling heating systems (753) — both involve special conductor and temperature considerations.",
+        regs: [
+          {ref:"715.521", topic:"ELV lighting — wiring and protection", detail:"Low-voltage (e.g. 12V) lighting draws high current for the same power, so conductors and connections must be sized for that current and protected against short-circuit and overheating — a common cause of fires in display and downlight systems wired too thin."},
+          {ref:"753.411.3.2", topic:"Heating systems — 30mA RCD", detail:"Floor and ceiling heating elements are embedded in the building fabric and impossible to inspect, so 30mA RCD protection is required to catch insulation failure quickly."},
+          {ref:"753.423", topic:"Heating systems — temperature limitation", detail:"The system must limit surface and floor temperatures to safe levels (protecting both the building materials and bare feet) using temperature sensors/limiters, and there must be no joints buried in the screed where they can't be reached."}
+        ]}
+    ]
+  },
+  {
+    id: "p8", num: "8", title: "Functional Requirements",
+    tag: "Energy & prosumers",
+    intro: "Part 8 was introduced for energy efficiency and the modern 'prosumer' (producer + consumer) installation — homes and businesses that both consume and generate/store electricity (solar + battery + EV). It's about making installations efficient and grid-friendly, not just safe.",
+    chapters: [
+      { num: "Chapter 82", title: "Prosumer's Low-Voltage Installations",
+        body: "Requirements and recommendations for installations with local generation and storage, so they remain compatible with the public network and operate efficiently — coordinating where the energy comes from and when it's used.",
+        regs: [
+          {ref:"821", topic:"Prosumer installation — general principles", detail:"Covers installations that both draw from and feed back to the grid (PV + battery + EV). The aims: keep generation/storage compatible and safe alongside the public supply, manage the flow of energy (self-consumption, export, load-shifting), and avoid problems like backfeeding a dead network. This ties directly to the new A3:2024 bidirectional-device rule."},
+          {ref:"Appx 17", topic:"Energy efficiency measures", detail:"Appendix 17 provides a framework for assessing and improving the energy efficiency of an installation — efficient cable sizing to cut losses, metering and monitoring, load and tariff management, and the use of local generation/storage. Increasingly important as installations get greener."}
+        ]}
+    ]
+  },
+  {
+    id: "appx", num: "A", title: "Appendices",
+    tag: "The lookup tables",
+    intro: "The appendices are reference goldmines in the open-book exam. Appendix 3 (device curves), Appendix 4 (cable ratings and voltage drop) and Appendix 6 (certificates) get used constantly. Knowing which appendix holds which table saves precious exam minutes.",
+    chapters: [
+      { num: "Appendix 1", title: "British Standards Referenced",
+        body: "The list of BS and BS EN standards that the equipment in your installation must comply with.",
+        regs: [{ref:"Appx 1", topic:"British Standards referenced", detail:"When a question asks 'which standard applies to a particular RCD / cable / accessory', Appendix 1 is your reference. It also underpins Reg 133's requirement that equipment complies with a relevant standard."}]},
+      { num: "Appendix 3", title: "Time/Current Characteristics",
+        body: "The trip curves for fuses and circuit-breakers, used to find the current needed to disconnect in a given time.",
+        regs: [{ref:"Appx 3", topic:"Time/current curves — fuses, MCBs", detail:"Shows, for each device, how quickly it operates at a given fault current. You use it to find the current required for 0.1s/0.4s/5s disconnection, which gives the maximum permitted Zs (Zs = U0 ÷ that current). It also confirms a device's instantaneous trip threshold — Type B trips at 3–5×In, Type C at 5–10×In, Type D at 10–20×In."}]},
+      { num: "Appendix 4", title: "Current-Carrying Capacity & Voltage Drop",
+        body: "The big working appendix: cable current ratings for each installation method, the correction factors, and the voltage-drop figures. You'll spend most cable-calculation time here.",
+        regs: [{ref:"Appx 4", topic:"Cable ratings, correction factors, voltage drop", detail:"Gives the tabulated current-carrying capacity (It) for each cable type and reference installation method, the correction factors — <b>Ca</b> ambient temperature, <b>Cg</b> grouping, <b>Ci</b> thermal insulation, <b>Cf</b> BS 3036 fuse — and the mV/A/m voltage-drop values. Combine these to get Iz and to check voltage drop. Master this appendix and most design questions fall into place."}]},
+      { num: "Appendix 6", title: "Model Forms (Certification)",
+        body: "The model certificates and reports, plus the schedules that go with them.",
+        regs: [{ref:"Appx 6", topic:"Model EIC, MEIWC, EICR", detail:"The blank forms you complete for real work and that exams ask about: which document for which job (EIC = new installation/circuit; MEIWC = addition without a new circuit; EICR = periodic report), what must be recorded, and the EICR classification codes C1/C2/C3/FI."}]},
+      { num: "Appendix 14 / 17", title: "Fault Current & Energy Efficiency",
+        body: "How to determine prospective fault current (14) and how to assess energy efficiency (17).",
+        regs: [
+          {ref:"Appx 14", topic:"Determination of prospective fault current", detail:"Explains how to find the prospective fault current at a point — by measurement, enquiry of the distributor, or calculation. The device's breaking capacity must exceed this value. A common rule of thumb is to measure line-neutral and line-earth and take the higher, or measure single-pole and apply a factor."},
+          {ref:"Appx 17", topic:"Energy efficiency", detail:"The methodology behind Part 8 — scoring and improving an installation's efficiency through cable-loss reduction, metering, load management and integration of local generation and storage."}
+        ]}
+    ]
+  }
+];
+
+/* ---------- FLASH CARDS ---------- */
+const FLASHCARDS = [
+  {topic:"Part 2", q:"<span style='font-size:.7rem;background:#3f7d54;color:#fff;padding:2px 7px;border-radius:5px;font-family:monospace'>A3:2024</span><br>What is the difference between a bidirectional and a unidirectional protective device?", a:"A <em>bidirectional</em> device is intended by the manufacturer to have a supply connected to either side, or to both sets of terminals. A <em>unidirectional</em> device is intended to have the supply on one defined set of terminals only — so it must be wired the correct way round (line/load). Both definitions were added by Amendment 3:2024 (Part 2)."},
+  {topic:"Part 5", q:"<span style='font-size:.7rem;background:#3f7d54;color:#fff;padding:2px 7px;border-radius:5px;font-family:monospace'>A3:2024</span><br>Which new regulation requires account to be taken of a device's direction, and why does it matter?", a:"<strong>Reg 530.3.201</strong> (Amendment 3:2024) requires selection and erection to take account of whether a protective device is unidirectional or bidirectional. It matters because power can flow both ways in installations with PV, battery storage or EV vehicle-to-grid — a unidirectional device connected the wrong way round may not protect correctly. Devices are marked (line/load, in/out, or arrows) to show direction."},
+  {topic:"Part 1", q:"What is the difference between 'basic protection' and 'fault protection'?", a:"Basic protection guards against contact with live parts under <em>normal</em> conditions (insulation, barriers, enclosures). Fault protection guards against shock under <em>fault</em> conditions (e.g. ADS, double insulation). Older terms were 'direct' and 'indirect' contact."},
+  {topic:"Part 1", q:"Name three types of installation that BS 7671 does NOT apply to.", a:"Any three of: distributor's network equipment, railway/traction systems, motor vehicles, ships, aircraft, mines and quarries, equipment of motor vehicles, radio interference suppression equipment, and lightning protection of buildings (Reg 110.2)."},
+  {topic:"Part 1", q:"Which chapter contains the fundamental principles for protection, design, selection and erection?", a:"Chapter 13 — Reg 131 (protection for safety), 132 (design), 133 (selection of equipment), 134 (erection and initial verification)."},
+  {topic:"Part 2", q:"Define an 'extraneous-conductive-part'.", a:"A conductive part that is NOT part of the electrical installation but is liable to introduce a potential (generally earth potential) — e.g. metal water/gas pipes, structural steelwork. Contrast with an exposed-conductive-part, which IS part of the installation."},
+  {topic:"Part 2", q:"What is a 'skilled person (electrically)' versus an 'instructed person'?", a:"A skilled person has the technical knowledge and experience to perceive and avoid electrical dangers. An instructed person is instructed or supervised by a skilled person to avoid those dangers."},
+  {topic:"Part 2", q:"What is the difference between SELV and PELV?", a:"Both are extra-low-voltage from a safety-isolating source with simple separation from higher-voltage circuits. SELV is NOT earthed; PELV may be earthed (one point connected to earth). FELV is functional ELV that does not meet the requirements for SELV/PELV."},
+  {topic:"Part 3", q:"Identify the four system earthing arrangements and their key feature.", a:"TN-S: separate N and PE throughout. TN-C-S (PME): combined PEN at the supply, separated in the installation. TT: installation earthed via its own electrode (high Ze, relies on RCDs). IT: source unearthed or earthed via high impedance."},
+  {topic:"Part 3", q:"Why does a TT system almost always rely on RCDs for fault protection?", a:"Because the earth fault loop impedance (via an earth electrode) is too high to guarantee an overcurrent device will disconnect within the required time, so a 30mA/100mA RCD provides the disconnection instead."},
+  {topic:"Part 4", q:"State the maximum disconnection times for a 230V final circuit ≤32A on TN and on TT systems.", a:"TN: 0.4 seconds. TT: 0.2 seconds. (For distribution circuits and final circuits >32A: 5s on TN, 1s on TT — Table 41.1.)"},
+  {topic:"Part 4", q:"List the circuits that require 30mA RCD additional protection under the 18th Edition.", a:"Socket-outlets rated ≤32A (411.3.3), mobile equipment ≤32A used outdoors, AC lighting final circuits in dwellings (411.3.4, A2:2022), and cables concealed in walls at <50mm depth (522.6.202)."},
+  {topic:"Part 4", q:"When are AFDDs required by A2:2022?", a:"For single-phase AC final circuits supplying socket-outlets up to 32A in higher-risk premises — Higher-Risk Residential Buildings, houses in multiple occupation, purpose-built student accommodation and care homes (421.1.7). Recommended for other premises."},
+  {topic:"Part 4", q:"What is the overload coordination rule and the I2 condition?", a:"Ib ≤ In ≤ Iz (design current ≤ device nominal rating ≤ cable current-carrying capacity), and I2 ≤ 1.45 × Iz (the fusing/tripping current must not exceed 1.45 times the cable capacity). Reg 433.1.1."},
+  {topic:"Part 4", q:"Write out the adiabatic equation and say what it checks.", a:"S = √(I² t) / k. It checks that a conductor's cross-sectional area is large enough to withstand the thermal energy of a fault until the protective device disconnects, without exceeding its limiting temperature. Reg 434.5.2."},
+  {topic:"Part 4", q:"In A2:2022, when must protection against transient overvoltage (an SPD) be provided?", a:"Where the consequence of overvoltage could result in serious injury/loss of life, interruption of public services, damage to cultural heritage, interruption of commercial/industrial activity, or affect a large number of co-located people. Otherwise a risk assessment (or simply fitting an SPD) decides — Section 443."},
+  {topic:"Part 5", q:"State the UK harmonised colours for line, neutral and CPC.", a:"Line = brown, Neutral = blue, Circuit Protective Conductor (CPC) = green-and-yellow. (Three-phase: brown / black / grey for L1/L2/L3.)"},
+  {topic:"Part 5", q:"A cable is buried 30mm deep in a plastered wall with no mechanical protection and not in a permitted zone. What's required?", a:"30mA RCD additional protection for that circuit (Reg 522.6.202), because it is less than 50mm deep, not mechanically protected, and not within a recognised safe zone."},
+  {topic:"Part 5", q:"How is the minimum size of a main protective bonding conductor decided on a PME (TN-C-S) supply?", a:"From Table 54.8, based on the supply neutral conductor CSA — commonly 10mm² where the supply neutral is up to 35mm². For non-PME systems the minimum is generally 6mm² (Reg 544.1.1)."},
+  {topic:"Part 5", q:"Which RCD types are suitable where DC fault currents may occur (e.g. EV chargers)?", a:"Type A copes with pulsating DC; Type F adds mixed frequencies; Type B handles smooth DC. EV charge points need protection against DC faults — either a Type B RCD or a Type A RCD plus 6mA DC fault detection within the charger (Reg 531.3.3 / 722)."},
+  {topic:"Part 6", q:"State the correct sequence of dead tests for initial verification.", a:"Continuity of protective conductors (and ring final circuit conductors) → insulation resistance → polarity (dead). Then live tests: earth electrode resistance, earth fault loop impedance (Zs), prospective fault current and RCD operation."},
+  {topic:"Part 6", q:"What do the EICR classification codes C1, C2, C3 and FI mean?", a:"C1 = danger present, risk of injury, immediate action required. C2 = potentially dangerous, urgent remedial action required. C3 = improvement recommended (not a fail). FI = further investigation required. A C1, C2 or FI makes the report Unsatisfactory."},
+  {topic:"Part 6", q:"Which certificate is issued for adding a single socket-outlet to an existing circuit?", a:"A Minor Electrical Installation Works Certificate (MEIWC) — used for additions/alterations that do not include a new circuit. A new circuit requires an Electrical Installation Certificate (EIC)."},
+  {topic:"Part 7", q:"Describe the bathroom zones 0, 1 and 2.", a:"Zone 0: the interior of the bath tub or shower basin. Zone 1: above zone 0 up to 2.25m. Zone 2: the 0.6m wide space horizontally adjacent to zone 1. Each zone has IP rating and equipment restrictions (Section 701)."},
+  {topic:"Part 7", q:"When may supplementary bonding be omitted in a bathroom?", a:"When all of the following are met: main protective bonding is in place, all circuits satisfy the disconnection times of 411, and all extraneous-conductive-parts are connected to the main earthing terminal (Reg 701.415.2)."},
+  {topic:"Part 7", q:"Why is PME (TN-C-S) earthing generally not used for an EV charge point installed outdoors or for a caravan pitch?", a:"Because an open PEN conductor fault could raise the earthed metalwork (and the vehicle/caravan) to a dangerous potential. An earth electrode, or a device that disconnects on open-PEN/voltage detection, is used instead (722.411.4 / 708.411.4)."},
+  {topic:"Part 7", q:"What protection does each EV charging point generally require?", a:"Its own 30mA RCD, plus protection against DC fault current — typically a Type B RCD, or a Type A RCD combined with 6mA DC fault detection built into the charging equipment (Section 722)."},
+  {topic:"Part 8", q:"What is a 'prosumer's installation' and which Part covers it?", a:"An installation that both consumes and produces/stores electrical energy (e.g. solar PV + battery + EV). It is covered by Part 8, Chapter 82, working alongside Appendix 17 (Energy Efficiency)."},
+  {topic:"Appendices", q:"Which appendix holds the cable current-carrying capacities and the correction factors Ca, Cg, Ci?", a:"Appendix 4 — current-carrying capacity and voltage drop, including ambient temperature (Ca), grouping (Cg), thermal insulation (Ci) and BS 3036 fuse (Cf) correction factors."},
+  {topic:"Appendices", q:"Which appendix gives the time/current trip curves for MCBs and RCDs?", a:"Appendix 3 — time/current characteristics of overcurrent protective devices and RCDs."},
+  {topic:"Appendices", q:"Where do you find the model Electrical Installation Certificate and EICR?", a:"Appendix 6 — model forms for certification and reporting, including the schedules of inspections and test results."}
+];
+
+/* ---------- MULTIPLE CHOICE QUESTIONS ---------- */
+const MCQS = [
+  {topic:"Part 5", q:"Amendment 3:2024 added Regulation 530.3.201. What does it require designers and installers to take account of?", options:["The IP rating of every accessory","Whether a protective device is unidirectional or bidirectional","The colour coding of all conductors","The ambient temperature of the consumer unit"], correct:1, explain:"Reg 530.3.201 (new in A3:2024) requires the appropriate use of unidirectional vs bidirectional protective devices — important where power can flow both ways (PV, storage, EV V2G)."},
+  {topic:"Part 2", q:"A protective device the manufacturer intends to have the supply connected to one defined set of terminals only is termed:", options:["A bidirectional protective device","A unidirectional protective device","An omnidirectional device","A reversible device"], correct:1, explain:"That is a unidirectional protective device (Part 2, added by A3:2024). A bidirectional device can have supply on either or both sets of terminals."},
+  {topic:"Part 1", q:"BS 7671 specifically does NOT apply to which of the following?", options:["A domestic dwelling","A construction site","Equipment on board a ship","A caravan park"], correct:2, explain:"Reg 110.2 excludes ships, aircraft, traction, mines/quarries and motor vehicles. The others are all within scope (110.1.2)."},
+  {topic:"Part 1", q:"Which regulation group sets out the fundamental design requirements such as load assessment and diversity?", options:["Reg 131","Reg 132","Reg 133","Reg 134"], correct:1, explain:"Reg 132 covers design. 131 is protection for safety, 133 is selection of equipment, 134 is erection and initial verification."},
+  {topic:"Part 2", q:"A metal water pipe entering a building from outside is best described as:", options:["An exposed-conductive-part","An extraneous-conductive-part","A protective conductor","A live part"], correct:1, explain:"It is not part of the installation but can introduce earth potential — the definition of an extraneous-conductive-part (Part 2)."},
+  {topic:"Part 2", q:"A SELV system differs from a PELV system because SELV:", options:["Is always 12V","Is not connected to earth","Uses no transformer","Is only for bathrooms"], correct:1, explain:"SELV has no connection to earth; PELV may have one point earthed. Both use a safety-isolating source (Part 2 / Section 414)."},
+  {topic:"Part 3", q:"In a TN-C-S (PME) system, the neutral and protective functions are:", options:["Always separate","Combined throughout","Combined in the supply, separated in the installation","Never connected"], correct:2, explain:"PME combines them as a PEN conductor at the supply, splitting into separate N and PE within the installation (Reg 312.2)."},
+  {topic:"Part 3", q:"Which earthing system relies on its own earth electrode and typically requires RCD protection?", options:["TN-S","TN-C-S","TT","IT"], correct:2, explain:"TT uses a local earth electrode; the high loop impedance means an RCD is normally needed to achieve disconnection."},
+  {topic:"Part 4", q:"The maximum disconnection time for a 230V, 32A final circuit on a TN system is:", options:["0.2s","0.4s","1s","5s"], correct:1, explain:"Table 41.1: final circuits up to 32A on TN systems must disconnect within 0.4s. (TT would be 0.2s.)"},
+  {topic:"Part 4", q:"Which circuit does NOT explicitly require 30mA RCD additional protection under A2:2022?", options:["Socket-outlets rated ≤32A","A lighting circuit in a dwelling","A dedicated 45A cooker circuit on a surface-run cable in safe zones","Cables buried <50mm in a wall"], correct:2, explain:"A surface/safe-zone cooker circuit isn't automatically caught. Sockets ≤32A (411.3.3), dwelling lighting (411.3.4) and shallow concealed cables (522.6.202) all require a 30mA RCD."},
+  {topic:"Part 4", q:"AFDDs are REQUIRED by A2:2022 for socket-outlet circuits ≤32A in:", options:["All domestic premises","Higher-Risk Residential Buildings, HMOs, student accommodation and care homes","Industrial units only","Outdoor installations only"], correct:1, explain:"Reg 421.1.7 requires AFDDs in those higher-risk premises and recommends them elsewhere."},
+  {topic:"Part 4", q:"The correct overload coordination relationship is:", options:["Iz ≤ In ≤ Ib","In ≤ Ib ≤ Iz","Ib ≤ In ≤ Iz","Ib ≤ Iz ≤ In"], correct:2, explain:"Design current ≤ device rating ≤ cable capacity: Ib ≤ In ≤ Iz (Reg 433.1.1)."},
+  {topic:"Part 4", q:"The adiabatic equation S = √(I²t)/k is used to:", options:["Calculate voltage drop","Verify a conductor withstands fault energy","Size a main bonding conductor by table","Set the RCD rating"], correct:1, explain:"It confirms the conductor CSA survives the let-through energy of a fault before disconnection (Reg 434.5.2)."},
+  {topic:"Part 4", q:"Surge Protective Devices are covered for selection and erection in which section?", options:["Section 443","Section 534","Section 537","Section 559"], correct:1, explain:"Section 443 decides WHEN an SPD is needed; Section 534 covers the selection and erection of the SPD itself."},
+  {topic:"Part 5", q:"The harmonised colour for a circuit protective conductor is:", options:["Blue","Brown","Black","Green-and-yellow"], correct:3, explain:"CPC = green-and-yellow; line = brown; neutral = blue (Section 514)."},
+  {topic:"Part 5", q:"A cable run 40mm deep in a plastered stud wall, not mechanically protected and outside the permitted zones, requires:", options:["No additional protection","30mA RCD additional protection","A 100mA RCD","Mineral-insulated cable only"], correct:1, explain:"Less than 50mm and not protected/in a safe zone triggers 30mA RCD additional protection (Reg 522.6.202)."},
+  {topic:"Part 5", q:"Which RCD type is the minimum suitable choice where smooth DC fault current may occur?", options:["Type AC","Type A","Type F","Type B"], correct:3, explain:"Type B is required for smooth DC. Type AC only handles AC; Type A handles pulsating DC (Reg 531.3.3)."},
+  {topic:"Part 5", q:"On a PME supply with a 25mm² supply neutral, a typical minimum main protective bonding conductor is:", options:["4mm²","6mm²","10mm²","16mm²"], correct:2, explain:"Table 54.8 gives 10mm² for PME supplies where the neutral is up to 35mm²."},
+  {topic:"Part 6", q:"Which test is carried out FIRST in the dead test sequence?", options:["Insulation resistance","Earth fault loop impedance","Continuity of protective conductors","RCD operation"], correct:2, explain:"Continuity (of protective conductors and ring conductors) comes first, then insulation resistance, then polarity (dead)."},
+  {topic:"Part 6", q:"On an EICR, an observation coded C2 means:", options:["Improvement recommended","Danger present, immediate action","Potentially dangerous, urgent remedial action","No action needed"], correct:2, explain:"C2 = potentially dangerous, urgent remedial action required, and it renders the report Unsatisfactory."},
+  {topic:"Part 6", q:"Adding one socket-outlet to an existing ring final circuit should be certified with:", options:["An EIC","A MEIWC","An EICR","No certificate"], correct:1, explain:"A Minor Electrical Installation Works Certificate is used for additions that don't include a new circuit."},
+  {topic:"Part 7", q:"In a bathroom, Zone 1 extends:", options:["Inside the bath only","Above the bath/shower up to 2.25m","0.6m beyond the bath","Over the whole room"], correct:1, explain:"Zone 1 is the volume above the basin up to 2.25m; Zone 0 is inside the basin; Zone 2 is 0.6m beyond Zone 1 (701.32)."},
+  {topic:"Part 7", q:"A domestic EV charge point installed outdoors using a TN-C-S supply must address:", options:["Voltage drop only","The risk from an open PEN conductor","Harmonics only","Stroboscopic effect"], correct:1, explain:"Open-PEN risk means an earth electrode or open-PEN/voltage-detection protection is required (Reg 722.411.4)."},
+  {topic:"Part 7", q:"Supplementary equipotential bonding in a bathroom may be omitted when:", options:["The room is small","Main bonding is present, ADS times are met and all extraneous parts are connected to the MET","Plastic pipes are used somewhere","An RCD is fitted to the lighting only"], correct:1, explain:"All three conditions of Reg 701.415.2 must be satisfied to omit supplementary bonding."},
+  {topic:"Part 8", q:"Chapter 82 of Part 8 deals with:", options:["Bathrooms","Prosumer's low-voltage installations","Inspection and testing","Definitions"], correct:1, explain:"Part 8 / Chapter 82 covers prosumer (produce + consume) installations with local generation and storage."},
+  {topic:"Appendices", q:"To find the voltage-drop figure (mV/A/m) for a cable, you use:", options:["Appendix 3","Appendix 4","Appendix 6","Appendix 14"], correct:1, explain:"Appendix 4 holds current ratings, correction factors and voltage drop figures. Appendix 3 holds device trip curves."},
+  {topic:"Appendices", q:"Where are the model Electrical Installation Certificate and EICR found?", options:["Appendix 1","Appendix 3","Appendix 6","Appendix 17"], correct:2, explain:"Appendix 6 — model forms for certification and reporting."}
+];
+
+/* ---------- SEARCHABLE INDEX (keyword -> regulation) ---------- */
+/* ---------- PART 2 — DEFINITIONS (searchable glossary) ----------
+   Plain-English explanations written for study. These paraphrase the
+   concepts; they are not the verbatim wording of BS 7671 Part 2. */
+const DEFINITIONS = [
+  {term:"AC (alternating current)", cat:"General", def:"Current that periodically reverses direction; the UK public supply is AC at 50 Hz."},
+  {term:"Accessory", cat:"Wiring", def:"A device, other than current-using equipment, associated with the wiring and accessories of an installation — e.g. a socket-outlet, switch, plug or connection unit."},
+  {term:"Ambient temperature", cat:"Wiring", def:"The temperature of the air or other medium surrounding equipment. It affects a cable's current-carrying capacity (correction factor Ca)."},
+  {term:"Arm's reach", cat:"Shock protection", def:"The zone extending from any point a person can stand to the limit a hand can reach in any direction without assistance — used when relying on placing live parts out of reach (see Fig 417)."},
+  {term:"Automatic disconnection of supply (ADS)", cat:"Shock protection", def:"The main method of fault protection: a fault to earth causes a protective device to operate and cut off the supply quickly enough to prevent a dangerous shock."},
+  {term:"Barrier", cat:"Shock protection", def:"A part providing basic protection by preventing contact with live parts from any usual direction of access."},
+  {term:"Basic insulation", cat:"Shock protection", def:"Insulation applied to live parts to provide basic protection — the everyday insulation on a conductor."},
+  {term:"Basic protection", cat:"Shock protection", def:"Protection against electric shock under normal (fault-free) conditions — stops you touching live parts (formerly 'protection against direct contact')."},
+  {term:"Bidirectional protective device", cat:"Devices", def:"NEW (A3:2024). A device the manufacturer intends to work with a supply connected to either side, or to both sets of terminals — suited to installations where power flows both ways."},
+  {term:"Bonding conductor", cat:"Earthing & bonding", def:"A protective conductor providing equipotential bonding — connecting conductive parts together to keep them at substantially the same potential."},
+  {term:"Bunched", cat:"Wiring", def:"Cables are bunched when grouped together so that heat doesn't dissipate freely; bunching reduces current-carrying capacity (grouping factor Cg)."},
+  {term:"Cable coupler", cat:"Wiring", def:"A means of connecting/disconnecting two flexible cables, comprising a connector and a plug part."},
+  {term:"Circuit", cat:"General", def:"An assembly of equipment supplied from the same origin and protected against overcurrent by the same protective device(s)."},
+  {term:"Circuit protective conductor (CPC)", cat:"Earthing & bonding", def:"A protective conductor connecting exposed-conductive-parts of equipment to the main earthing terminal, providing the path for earth fault current."},
+  {term:"Class I equipment", cat:"Shock protection", def:"Equipment relying on basic insulation PLUS an earth connection of its exposed metalwork (a CPC) for fault protection."},
+  {term:"Class II equipment", cat:"Shock protection", def:"Equipment with double or reinforced insulation and no reliance on an earth connection — the 'double-insulated' square-in-square symbol."},
+  {term:"Class III equipment", cat:"Shock protection", def:"Equipment relying on supply at SELV, where voltages are too low to cause a harmful shock."},
+  {term:"Conductor — live", cat:"General", def:"A conductor intended to be energised in normal use, including a neutral but excluding a PEN where it's acting as a protective conductor."},
+  {term:"Conduit", cat:"Wiring", def:"A part of a closed wiring system (round or otherwise) for drawing in or replacing insulated conductors or cables."},
+  {term:"Consumer unit", cat:"Devices", def:"A particular type of low-voltage switchgear assembly for a domestic installation — incoming main switch plus the final-circuit protective devices in one enclosure."},
+  {term:"Current-carrying capacity (of a conductor)", cat:"Wiring", def:"The maximum current a conductor can carry continuously under defined conditions without its temperature exceeding the specified limit — the corrected value is Iz."},
+  {term:"Current-using equipment", cat:"General", def:"Equipment that converts electrical energy into another form, such as heat, light or motion (a heater, lamp or motor)."},
+  {term:"DC (direct current)", cat:"General", def:"Current that flows in one direction only; produced by batteries, PV arrays and rectifiers."},
+  {term:"Design current (Ib)", cat:"Overcurrent", def:"The current intended to be carried by a circuit in normal service — the starting point of the Ib ≤ In ≤ Iz cable-sizing check."},
+  {term:"Disconnector (isolator)", cat:"Devices", def:"A mechanical device that provides, in the open position, an isolating distance (a secure gap) to make a circuit safe to work on."},
+  {term:"Distribution board", cat:"Devices", def:"An assembly containing protective devices fed from one or more incoming circuits, with terminals for outgoing circuits."},
+  {term:"Distribution circuit", cat:"General", def:"A circuit supplying a distribution board or switchgear (rather than current-using equipment directly) — e.g. submains between boards."},
+  {term:"Double insulation", cat:"Shock protection", def:"Insulation comprising both basic and supplementary insulation — the basis of Class II equipment."},
+  {term:"Earth", cat:"Earthing & bonding", def:"The conductive mass of the Earth, whose electric potential at any point is taken as zero."},
+  {term:"Earth electrode", cat:"Earthing & bonding", def:"A conductor (or group) in intimate contact with the ground, providing an electrical connection to earth — used on TT systems."},
+  {term:"Earth fault current", cat:"Earthing & bonding", def:"A fault current that flows to earth due to a fault of negligible impedance between a live conductor and an exposed- or extraneous-conductive-part."},
+  {term:"Earth fault loop impedance (Zs)", cat:"Earthing & bonding", def:"The total impedance of the earth fault current loop, starting and ending at the point of fault. Low enough Zs lets the device disconnect in time. Ze is the external part of the loop."},
+  {term:"Earthing", cat:"Earthing & bonding", def:"The act of connecting the exposed-conductive-parts of an installation to the means of earthing."},
+  {term:"Earthing conductor", cat:"Earthing & bonding", def:"A protective conductor connecting the main earthing terminal to the means of earthing (the supply earth or an electrode)."},
+  {term:"Electrical installation", cat:"General", def:"An assembly of associated electrical equipment having coordinated characteristics to fulfil a specific purpose — i.e. the fixed wiring beyond the origin."},
+  {term:"Emergency switching", cat:"Devices", def:"Rapidly cutting off the supply to remove an unexpected danger — the device must be readily accessible and clearly identifiable."},
+  {term:"Enclosure", cat:"Shock protection", def:"A part providing protection of equipment against external influences and basic protection in any direction."},
+  {term:"Equipotential bonding", cat:"Earthing & bonding", def:"Electrical connection keeping conductive parts at substantially the same potential, so dangerous voltage differences can't appear between them."},
+  {term:"Exposed-conductive-part", cat:"Shock protection", def:"Conductive part of equipment that can be touched and is not normally live, but may become live under a fault — e.g. a Class I appliance casing."},
+  {term:"Extraneous-conductive-part", cat:"Shock protection", def:"A conductive part NOT forming part of the installation but liable to introduce a potential, generally earth — e.g. a metal water or gas pipe, or structural steel."},
+  {term:"External influence", cat:"Wiring", def:"Any influence external to the installation that affects its design and operation — moisture, temperature, dust, impact (classified by the AD/AE/BE codes)."},
+  {term:"Fault current", cat:"Overcurrent", def:"A current resulting from a fault — e.g. a short-circuit between live conductors or an earth fault."},
+  {term:"Fault protection", cat:"Shock protection", def:"Protection against electric shock under single-fault conditions — chiefly automatic disconnection of supply (formerly 'protection against indirect contact')."},
+  {term:"FELV (functional extra-low voltage)", cat:"Voltages", def:"An extra-low-voltage system that does NOT meet all the requirements of SELV or PELV, so basic and fault protection appropriate to the primary voltage are still needed."},
+  {term:"Final circuit", cat:"General", def:"A circuit connected directly to current-using equipment or to socket-outlets — the 'last leg' of the installation."},
+  {term:"Functional earthing", cat:"Earthing & bonding", def:"Earthing for reasons other than safety — e.g. for the correct operation of equipment (as distinct from protective earthing)."},
+  {term:"Functional switching", cat:"Devices", def:"Switching intended for normal operation — turning equipment on and off in service (e.g. a light switch)."},
+  {term:"Fuse", cat:"Devices", def:"A protective device that opens a circuit by the melting of a fuse element when the current exceeds a value for a sufficient time."},
+  {term:"Generating set", cat:"Devices", def:"An assembly producing electrical energy — a generator, microgeneration source or storage system, operating standalone, as an alternative, or in parallel with the grid."},
+  {term:"Indirect contact", cat:"Shock protection", def:"Older term for contact with exposed-conductive-parts made live by a fault — now covered by 'fault protection'."},
+  {term:"Instructed person (electrically)", cat:"Persons", def:"A person adequately advised or supervised by a skilled person to enable them to perceive risks and avoid dangers electricity can create."},
+  {term:"Insulation", cat:"Shock protection", def:"Material applied to conductors to prevent the passage of current and provide protection against electric shock."},
+  {term:"Isolation", cat:"Devices", def:"Cutting off a circuit/equipment from every source of supply for safety, in a way that is secure against inadvertent reclosure."},
+  {term:"IT system", cat:"Earthing & bonding", def:"A system with no direct connection between live parts and earth (or earthed through a high impedance); exposed-conductive-parts are earthed independently."},
+  {term:"Leakage current", cat:"General", def:"Current flowing to earth or to extraneous-conductive-parts in a healthy circuit — should be small; excessive leakage trips RCDs."},
+  {term:"Line conductor", cat:"General", def:"A conductor of an AC system for the transmission of energy, other than a neutral or protective conductor (the 'live'/'phase' — brown in the UK)."},
+  {term:"Live part", cat:"Shock protection", def:"A conductor or conductive part intended to be energised in normal use, including a neutral conductor."},
+  {term:"Low voltage", cat:"Voltages", def:"Voltage normally exceeding extra-low voltage but not exceeding 1000 V AC or 1500 V DC between conductors (50–1000 V AC to earth) — the band BS 7671 mainly addresses."},
+  {term:"Luminaire", cat:"Devices", def:"Equipment that distributes, filters or transforms light from one or more lamps, including the parts to support, fix and protect the lamps."},
+  {term:"Luminaire supporting coupler (DCL)", cat:"Devices", def:"A standardised ceiling device for the mechanical support and electrical connection of a luminaire (Device for Connecting Luminaires)."},
+  {term:"Main earthing terminal (MET)", cat:"Earthing & bonding", def:"The terminal or bar provided for the connection of earthing, protective and bonding conductors to the means of earthing — the installation's single earth reference point."},
+  {term:"Maximum demand", cat:"General", def:"The greatest current likely to be drawn by an installation, assessed allowing for diversity — it sizes the supply and main equipment."},
+  {term:"Neutral conductor", cat:"General", def:"A conductor connected to the neutral point of a system that contributes to the transmission of energy (blue in the UK)."},
+  {term:"Nominal voltage", cat:"Voltages", def:"The voltage by which an installation (or part) is designated — e.g. 230 V single-phase, 400 V three-phase. Actual voltage may vary within limits."},
+  {term:"Obstacle", cat:"Shock protection", def:"A part preventing unintentional contact with live parts, but not preventing deliberate contact — only for use where access is restricted to skilled/instructed persons."},
+  {term:"Ordinary person", cat:"Persons", def:"A person who is neither a skilled person nor an instructed person — i.e. the general public, for whom the highest level of protection is assumed."},
+  {term:"Origin of an installation", cat:"General", def:"The point at which electrical energy is delivered to the installation — generally the outgoing terminals of the meter or the consumer's main switch."},
+  {term:"Overcurrent", cat:"Overcurrent", def:"A current exceeding the rated value; in a sound circuit this is an overload, in a faulty circuit it is a fault (short-circuit or earth fault) current."},
+  {term:"Overload current", cat:"Overcurrent", def:"An overcurrent occurring in a circuit that is electrically sound (no fault) — e.g. too many appliances on one circuit."},
+  {term:"PELV (protective extra-low voltage)", cat:"Voltages", def:"An extra-low-voltage system from a safety source that is electrically separated from other circuits but, unlike SELV, may have one point connected to earth."},
+  {term:"PEN conductor", cat:"Earthing & bonding", def:"A conductor combining the functions of both a protective (PE) and neutral (N) conductor — the combined part of a TN-C-S (PME) supply."},
+  {term:"Point (in wiring)", cat:"Wiring", def:"A termination of the fixed wiring intended for the connection of current-using equipment or accessories."},
+  {term:"Portable equipment", cat:"General", def:"Equipment intended to be moved while in operation, or easily moved between uses while connected to the supply."},
+  {term:"Prospective fault current (Ipf)", cat:"Overcurrent", def:"The value of fault current that would flow for a fault of negligible impedance — the protective device's breaking capacity must exceed it."},
+  {term:"Protective conductor (PE)", cat:"Earthing & bonding", def:"A conductor used for protection against electric shock, connecting exposed-conductive-parts, extraneous-conductive-parts, the MET, earth electrode or earthed point of the source."},
+  {term:"Protective multiple earthing (PME)", cat:"Earthing & bonding", def:"An earthing arrangement (TN-C-S) where the supply neutral is also used as the earth, connected to earth at multiple points along the network — common in UK housing."},
+  {term:"Reduced low voltage system", cat:"Voltages", def:"A system in which the voltage between conductors does not exceed 110 V (and 63.5 V to earth) — used for portable tools on construction sites (110 V centre-tapped)."},
+  {term:"Reinforced insulation", cat:"Shock protection", def:"A single insulation system giving protection against shock equivalent to double insulation."},
+  {term:"Residual current", cat:"Devices", def:"The vector sum of the instantaneous currents in the live conductors of a circuit — in a healthy circuit it's near zero; an imbalance indicates leakage/fault."},
+  {term:"Residual current device (RCD)", cat:"Devices", def:"A mechanical switching device designed to open its contacts when the residual current reaches a set value (e.g. 30 mA) — used for additional protection."},
+  {term:"Ring final circuit", cat:"Wiring", def:"A final circuit wired as a loop, starting and ending at the same protective device, so each point is fed from two directions (the classic UK ring main)."},
+  {term:"Safety service", cat:"General", def:"An electrical system for equipment provided to protect or warn people in danger, or essential to their safety — e.g. emergency lighting, fire alarms."},
+  {term:"SELV (separated extra-low voltage)", cat:"Voltages", def:"An extra-low-voltage system from a safety-isolating source, electrically separated from earth and from other circuits (no earth connection)."},
+  {term:"Shock current", cat:"Shock protection", def:"A current passing through a human or animal body of a magnitude that may have harmful physiological effects."},
+  {term:"Simultaneously accessible parts", cat:"Shock protection", def:"Conductors or conductive parts that can be touched at the same time — relevant to touch voltage and the need for bonding."},
+  {term:"Skilled person (electrically)", cat:"Persons", def:"A person with relevant education and experience to enable them to perceive risks and avoid dangers that electricity can create."},
+  {term:"Socket-outlet", cat:"Wiring", def:"A device with socket contacts intended for connection to a plug, and for the connection of flexible cords to the fixed wiring."},
+  {term:"Spur", cat:"Wiring", def:"A branch from a ring or radial final circuit — a fused spur has its own fuse; a non-fused spur is limited in what it may supply."},
+  {term:"Stationary equipment", cat:"General", def:"Fixed equipment, or equipment over 18 kg not provided with a carrying handle — not intended to be moved in normal use."},
+  {term:"Supplementary insulation", cat:"Shock protection", def:"Independent insulation applied in addition to basic insulation, to provide fault protection (together they form double insulation)."},
+  {term:"Supplementary equipotential bonding", cat:"Earthing & bonding", def:"Local bonding connecting simultaneously-accessible exposed- and extraneous-conductive-parts to limit touch voltage during a fault (historically in bathrooms)."},
+  {term:"Switchgear", cat:"Devices", def:"Equipment for switching, controlling and protecting circuits — the assembly of switches, fuses, circuit-breakers and associated control gear."},
+  {term:"System (TN, TT, IT)", cat:"Earthing & bonding", def:"A live conductor (or conductors) and the protective conductors, classified by how the supply and installation are earthed — TN, TT or IT."},
+  {term:"TN-S system", cat:"Earthing & bonding", def:"A TN system with separate neutral and protective conductors throughout, the earth provided via the supply cable (e.g. the cable sheath) — low Ze."},
+  {term:"TN-C-S system", cat:"Earthing & bonding", def:"A TN system where neutral and protective functions are combined (PEN) in the supply and separated within the installation — UK PME; very low Ze."},
+  {term:"TT system", cat:"Earthing & bonding", def:"A system where one point of the supply is earthed and the installation's exposed-conductive-parts are connected to an independent earth electrode — high Ze, needs RCDs."},
+  {term:"Touch voltage", cat:"Shock protection", def:"The voltage appearing between simultaneously-accessible parts during an insulation fault — kept low by ADS and bonding."},
+  {term:"Unidirectional protective device", cat:"Devices", def:"NEW (A3:2024). A device the manufacturer intends to have the supply connected to one defined set of terminals only — its line/load sides must be wired the correct way round."},
+  {term:"Voltage band I", cat:"Voltages", def:"The lower voltage band covering extra-low voltage and systems where protection against shock is provided by the low value of voltage (e.g. SELV/PELV)."},
+  {term:"Voltage band II", cat:"Voltages", def:"The band covering voltages for normal supply to installations — i.e. low voltage up to 1000 V AC, including the 230/400 V supply."},
+  {term:"Wiring system", cat:"Wiring", def:"An assembly of one or more cables or busbars and the parts that fix, support and (if necessary) enclose them — e.g. cables in conduit or on a tray."}
+];
+
+/* ---------- TABLE OF FIGURES ---------- */
+/* Page numbers (where shown) are as in the uploaded copy; figure numbers are
+   stable across prints, so the section reference is given as the reliable locator. */
+const FIGURES = [
+  {fig:"Fig 2.1", title:"Illustration of earthing and protective conductor terms", ref:"Chapter 54", page:"45"},
+  {fig:"Fig 3.1", title:"Single-phase 2-wire system", ref:"Part 3 (312.3)", page:"51"},
+  {fig:"Fig 3.2", title:"Single-phase 3-wire system", ref:"Part 3 (312.3)", page:"52"},
+  {fig:"Fig 3.3", title:"Two-phase 3-wire system", ref:"Part 3 (312.3)", page:"52"},
+  {fig:"Fig 3.4", title:"Three-phase 3-wire system", ref:"Part 3 (312.3)", page:"52"},
+  {fig:"Fig 3.5", title:"Three-phase 4-wire system", ref:"Part 3 (312.3)", page:"52"},
+  {fig:"Fig 3.6", title:"DC 2-wire system", ref:"Part 3 (312.3)", page:"53"},
+  {fig:"Fig 3.7", title:"DC 3-wire system", ref:"Part 3 (312.3)", page:"53"},
+  {fig:"Fig 3.8", title:"TN-S earthing system — separate neutral and protective conductors throughout", ref:"Part 3 (312.2)", page:"54"},
+  {fig:"Fig 3.9", title:"TN-C-S (PME) earthing system — combined PEN at the supply, split in the installation", ref:"Part 3 (312.2)", page:"54"},
+  {fig:"Fig 3.10", title:"TT earthing system — installation earthed via its own electrode", ref:"Part 3 (312.2)", page:"55"},
+  {fig:"Fig 417", title:"Arm's reach — the zone within which simultaneous contact is possible", ref:"Section 417", page:"81"},
+  {fig:"Fig 44.2", title:"Deleted by BS 7671:2018+A2:2022", ref:"Section 444", page:"107"},
+  {fig:"Fig 44.3", title:"Deleted by BS 7671:2018+A2:2022", ref:"Section 444", page:"107"},
+  {fig:"Fig 44.4", title:"Bypass conductor for screen reinforcement to provide a common equipotential bonding system", ref:"Section 444", page:"110"},
+  {fig:"Fig 44.5", title:"Avoidance of neutral conductor currents in a bonded structure (installation method)", ref:"Section 444", page:""},
+  {fig:"Figs 701.x", title:"Bathroom zones — zone dimensions for a location containing a bath or shower (Zones 0, 1, 2)", ref:"Section 701", page:""},
+  {fig:"Figs 702.x", title:"Zone dimensions for swimming pools and basins", ref:"Section 702", page:""},
+  {fig:"Fig 705", title:"Agricultural and horticultural premises — supplementary bonding of metal grids in floors for livestock", ref:"Section 705", page:""},
+  {fig:"Fig 522", title:"Prescribed (safe) zones for cables concealed in walls and partitions", ref:"Section 522.6", page:""},
+  {fig:"Fig 711", title:"Exhibitions, shows and stands — arrangement of supplies", ref:"Section 711", page:""}
+];
+
+const INDEX_ENTRIES = [
+  {term:"Bidirectional protective device (A3:2024)", ref:"530.3.201", part:"Part 5 — Ch 53"},
+  {term:"Unidirectional protective device (A3:2024)", ref:"530.3.201", part:"Part 5 — Ch 53"},
+  {term:"Protective device — directional selection (A3:2024)", ref:"530.3.201", part:"Part 5 — Ch 53"},
+  {term:"AFDD / Arc Fault Detection Device", ref:"421.1.7", part:"Part 4 — Ch 42"},
+  {term:"Additional protection — RCD 30mA", ref:"415.1", part:"Part 4 — Ch 41"},
+  {term:"Additional protection — supplementary bonding", ref:"415.2", part:"Part 4 — Ch 41"},
+  {term:"Adiabatic equation", ref:"434.5.2", part:"Part 4 — Ch 43"},
+  {term:"Agricultural premises", ref:"705", part:"Part 7"},
+  {term:"Ambient temperature correction factor (Ca)", ref:"Appx 4", part:"Appendix 4"},
+  {term:"Bathroom / shower room zones", ref:"701.32", part:"Part 7"},
+  {term:"Basic protection (definition)", ref:"Part 2", part:"Part 2"},
+  {term:"Bonding — main protective, sizing", ref:"544.1.1", part:"Part 5 — Ch 54"},
+  {term:"Bonding — supplementary", ref:"544.2", part:"Part 5 — Ch 54"},
+  {term:"Burns — protection against", ref:"423", part:"Part 4 — Ch 42"},
+  {term:"Cable colours / identification", ref:"514", part:"Part 5 — Ch 51"},
+  {term:"Cables concealed in walls (<50mm)", ref:"522.6.202", part:"Part 5 — Ch 52"},
+  {term:"Caravan / motor caravan", ref:"721", part:"Part 7"},
+  {term:"Caravan & camping parks", ref:"708", part:"Part 7"},
+  {term:"Certificates (EIC, MEIWC, EICR)", ref:"Appx 6", part:"Appendix 6"},
+  {term:"Conducting locations, restricted movement", ref:"706", part:"Part 7"},
+  {term:"Construction & demolition sites", ref:"704", part:"Part 7"},
+  {term:"Continuity of conductors (test)", ref:"643.2", part:"Part 6 — Ch 64"},
+  {term:"CPC sizing — selection / calculation", ref:"543.1", part:"Part 5 — Ch 54"},
+  {term:"Current-carrying capacity", ref:"523 / Appx 4", part:"Part 5 / Appx 4"},
+  {term:"Disconnection times (max)", ref:"Table 41.1", part:"Part 4 — Ch 41"},
+  {term:"Diversity / maximum demand", ref:"311", part:"Part 3 — Ch 31"},
+  {term:"Earth electrode", ref:"542.2", part:"Part 5 — Ch 54"},
+  {term:"Earth fault loop impedance (Zs) test", ref:"643.7.3", part:"Part 6 — Ch 64"},
+  {term:"Earthing systems (TN-S/TN-C-S/TT/IT)", ref:"312.2", part:"Part 3 — Ch 31"},
+  {term:"Electric vehicle (EV) charging", ref:"722", part:"Part 7"},
+  {term:"Electrical separation", ref:"413", part:"Part 4 — Ch 41"},
+  {term:"Emergency switching", ref:"465", part:"Part 4 — Ch 46"},
+  {term:"Energy efficiency", ref:"Appx 17", part:"Appendix 17"},
+  {term:"Exhibitions, shows and stands", ref:"711", part:"Part 7"},
+  {term:"Exposed-conductive-part (definition)", ref:"Part 2", part:"Part 2"},
+  {term:"Extraneous-conductive-part (definition)", ref:"Part 2", part:"Part 2"},
+  {term:"Fault current — protection against", ref:"434", part:"Part 4 — Ch 43"},
+  {term:"Fire risk locations", ref:"422", part:"Part 4 — Ch 42"},
+  {term:"Fundamental principles", ref:"Chapter 13", part:"Part 1"},
+  {term:"Generating sets (LV)", ref:"551", part:"Part 5 — Ch 55"},
+  {term:"Grouping correction factor (Cg)", ref:"Appx 4", part:"Appendix 4"},
+  {term:"Heating cables / embedded heating", ref:"753", part:"Part 7"},
+  {term:"Identification & notices", ref:"514", part:"Part 5 — Ch 51"},
+  {term:"Initial verification", ref:"641", part:"Part 6 — Ch 64"},
+  {term:"Insulation resistance (test)", ref:"643.3", part:"Part 6 — Ch 64"},
+  {term:"IP ratings (bathroom zones)", ref:"701.512.3", part:"Part 7"},
+  {term:"Isolation — means of", ref:"462 / 537.2", part:"Part 4 / Part 5"},
+  {term:"Luminaires", ref:"559", part:"Part 5 — Ch 55"},
+  {term:"Luminaire supporting coupler (DCL)", ref:"559.5", part:"Part 5 — Ch 55"},
+  {term:"Main earthing terminal (MET)", ref:"542.1.201", part:"Part 5 — Ch 54"},
+  {term:"Maintainability", ref:"132.12 / 341", part:"Part 1 / Part 3"},
+  {term:"Maximum demand", ref:"311.1", part:"Part 3 — Ch 31"},
+  {term:"Medical locations", ref:"710", part:"Part 7"},
+  {term:"Mobile / transportable units", ref:"717", part:"Part 7"},
+  {term:"Overload — protection against", ref:"433", part:"Part 4 — Ch 43"},
+  {term:"PELV / SELV / FELV", ref:"414", part:"Part 4 — Ch 41"},
+  {term:"Periodic inspection (EICR)", ref:"651 / 653", part:"Part 6 — Ch 65"},
+  {term:"PME — limitations of use", ref:"411.4 / 722.411.4", part:"Part 4 / Part 7"},
+  {term:"Polarity (test)", ref:"643.6", part:"Part 6 — Ch 64"},
+  {term:"Prospective fault current", ref:"Appx 14", part:"Appendix 14"},
+  {term:"Prosumer's installations", ref:"Chapter 82", part:"Part 8"},
+  {term:"RCD — selection of type (AC/A/F/B)", ref:"531.3.3", part:"Part 5 — Ch 53"},
+  {term:"RCD — test notice", ref:"514.12.2", part:"Part 5 — Ch 51"},
+  {term:"Reduced low voltage (110V) systems", ref:"704.410", part:"Part 7"},
+  {term:"Scope of BS 7671", ref:"110.1", part:"Part 1 — Ch 11"},
+  {term:"Excluded installations", ref:"110.2", part:"Part 1 — Ch 11"},
+  {term:"Safety services", ref:"560", part:"Part 5 — Ch 56"},
+  {term:"Skilled / instructed / ordinary person", ref:"Part 2", part:"Part 2"},
+  {term:"Socket-outlets — RCD protection", ref:"411.3.3", part:"Part 4 — Ch 41"},
+  {term:"Solar photovoltaic (PV) systems", ref:"712", part:"Part 7"},
+  {term:"Supplementary bonding — omission (bathroom)", ref:"701.415.2", part:"Part 7"},
+  {term:"Surge Protective Device — when required", ref:"443.4", part:"Part 4 — Ch 44"},
+  {term:"Surge Protective Device — selection", ref:"534", part:"Part 5 — Ch 53"},
+  {term:"Swimming pools", ref:"702", part:"Part 7"},
+  {term:"Thermal insulation correction factor (Ci)", ref:"Appx 4", part:"Appendix 4"},
+  {term:"Time/current characteristics (curves)", ref:"Appx 3", part:"Appendix 3"},
+  {term:"Transient overvoltage", ref:"443", part:"Part 4 — Ch 44"},
+  {term:"Voltage drop (3% / 5%)", ref:"525 / Appx 4", part:"Part 5 / Appx 4"},
+  {term:"Wiring support (fire — 'death by cable')", ref:"522.8.10", part:"Part 5 — Ch 52"},
+  {term:"Zones (bathroom 0/1/2)", ref:"701.32", part:"Part 7"},
+  {term:"Extra-low voltage lighting", ref:"715", part:"Part 7"},
+  {term:"Abrasion / damage to wiring systems", ref:"522.6 / 522.8", part:"Part 5 — Ch 52"},
+  {term:"Accessibility of equipment for operation & maintenance", ref:"132.12 / 513.1", part:"Part 1 / Part 5"},
+  {term:"AFDD — arc fault detection device", ref:"421.1.7", part:"Part 4 — Ch 42"},
+  {term:"Armoured cable (SWA) used as a protective conductor", ref:"543.2", part:"Part 5 — Ch 54"},
+  {term:"Barriers and enclosures (basic protection)", ref:"416", part:"Part 4 — Ch 41"},
+  {term:"Band I and Band II voltages", ref:"Part 2", part:"Part 2"},
+  {term:"Basic protection — methods", ref:"416 / Part 2", part:"Part 4 / Part 2"},
+  {term:"Breaking capacity of protective devices", ref:"434.5", part:"Part 4 — Ch 43"},
+  {term:"Buried cables / cables in the ground", ref:"522.8.10", part:"Part 5 — Ch 52"},
+  {term:"Cable selection — current rating", ref:"523 / Appx 4", part:"Part 5 / Appx 4"},
+  {term:"Class II equipment / double insulation", ref:"412", part:"Part 4 — Ch 41"},
+  {term:"Conduit and trunking systems", ref:"521 / 522", part:"Part 5 — Ch 52"},
+  {term:"Connections of conductors (terminations & joints)", ref:"526", part:"Part 5 — Ch 52"},
+  {term:"Consumer unit — non-combustible enclosure (domestic)", ref:"421.1.201", part:"Part 4 — Ch 42"},
+  {term:"Cross-sectional area — minimum of conductors", ref:"524 / Table 52.x", part:"Part 5 — Ch 52"},
+  {term:"Damp / wet locations — protection", ref:"512.2 / Sec 522", part:"Part 5 — Ch 51/52"},
+  {term:"Discrimination / selectivity of devices", ref:"536", part:"Part 5 — Ch 53"},
+  {term:"Documentation / information to be provided", ref:"644 / Appx 6", part:"Part 6 / Appx 6"},
+  {term:"Double insulation (Class II protective measure)", ref:"412", part:"Part 4 — Ch 41"},
+  {term:"Earthing conductor — sizing", ref:"542.3 / Table 54.1", part:"Part 5 — Ch 54"},
+  {term:"Electric shock — protective measures", ref:"Chapter 41", part:"Part 4"},
+  {term:"Electrode water heaters and boilers", ref:"554", part:"Part 5 — Ch 55"},
+  {term:"Equipotential bonding — main (fault protection)", ref:"411.3.1.2 / 544.1", part:"Part 4 / Part 5"},
+  {term:"FELV — functional extra-low voltage", ref:"411.7", part:"Part 4 — Ch 41"},
+  {term:"Final circuits — standard arrangements", ref:"Appx 15", part:"Appendix 15"},
+  {term:"Fire — sealing of wiring system penetrations", ref:"527", part:"Part 5 — Ch 52"},
+  {term:"Fire-resistant cable (safety services)", ref:"560.8", part:"Part 5 — Ch 56"},
+  {term:"Fuses — BS 88 / BS 3036 characteristics", ref:"Appx 3", part:"Appendix 3"},
+  {term:"Harmonics — neutral conductor sizing", ref:"524 / 331", part:"Part 5 / Part 3"},
+  {term:"High protective conductor current — circuits", ref:"543.7", part:"Part 5 — Ch 54"},
+  {term:"IP ratings — degrees of protection", ref:"416.2 / 512.2", part:"Part 4 / Part 5"},
+  {term:"IT system — earthing & disconnection", ref:"312.2 / 411.6", part:"Part 3 / Part 4"},
+  {term:"Joints and terminations", ref:"526", part:"Part 5 — Ch 52"},
+  {term:"Labels and warning notices", ref:"514", part:"Part 5 — Ch 51"},
+  {term:"Main switch / origin switching", ref:"462 / 537", part:"Part 4 / Part 5"},
+  {term:"Mineral-insulated cable (MICC)", ref:"Sec 521", part:"Part 5 — Ch 52"},
+  {term:"Motors and rotating machines", ref:"552", part:"Part 5 — Ch 55"},
+  {term:"Neutral conductor — reduced CSA conditions", ref:"524", part:"Part 5 — Ch 52"},
+  {term:"Obstacles and placing out of reach", ref:"417", part:"Part 4 — Ch 41"},
+  {term:"Overhead wiring / lines", ref:"521.10", part:"Part 5 — Ch 52"},
+  {term:"PEN conductor — requirements", ref:"543.4", part:"Part 5 — Ch 54"},
+  {term:"Prospective fault current — assessment", ref:"434 / Appx 14", part:"Part 4 / Appx 14"},
+  {term:"Protective conductor — high current circuits", ref:"543.7", part:"Part 5 — Ch 54"},
+  {term:"Reduced low voltage system (110V CTE)", ref:"411.8 / 704", part:"Part 4 / Part 7"},
+  {term:"Ring final circuit — testing & arrangement", ref:"Appx 15 / 643.2", part:"Appx 15 / Part 6"},
+  {term:"Selectivity (discrimination)", ref:"536", part:"Part 5 — Ch 53"},
+  {term:"Shock protection — automatic disconnection", ref:"411", part:"Part 4 — Ch 41"},
+  {term:"Switchgear and controlgear", ref:"Chapter 53", part:"Part 5"},
+  {term:"TN-S / TN-C-S / TT / IT systems", ref:"312.2", part:"Part 3 — Ch 31"},
+  {term:"Test sequence — initial verification", ref:"643", part:"Part 6 — Ch 64"},
+  {term:"Thermal effects — protection against", ref:"Chapter 42", part:"Part 4"},
+  {term:"Transformers and autotransformers", ref:"555", part:"Part 5 — Ch 55"},
+  {term:"Undervoltage — protection against", ref:"445", part:"Part 4 — Ch 44"},
+  {term:"Verification — initial", ref:"641", part:"Part 6 — Ch 64"},
+  {term:"Voltage bands (Band I / Band II)", ref:"Part 2", part:"Part 2"},
+  {term:"Workmanship and proper materials", ref:"134.1 / 526", part:"Part 1 / Part 5"},
+  {term:"Zone of arm's reach", ref:"417 (Fig 417)", part:"Part 4 — Ch 41"},
+  {term:"Marinas and similar locations", ref:"709", part:"Part 7"},
+  {term:"Mobile / transportable units", ref:"717", part:"Part 7"},
+  {term:"Floor and ceiling heating systems", ref:"753", part:"Part 7"},
+  {term:"Operating and maintenance gangways", ref:"729", part:"Part 7"},
+  {term:"Onshore units of electrical shore connections", ref:"730", part:"Part 7"},
+  {term:"Temporary electrical installations (events)", ref:"711 / 740", part:"Part 7"},
+  {term:"SPD — surge protective device selection", ref:"534 / 443", part:"Part 5 / Part 4"},
+  {term:"Functional switching (control)", ref:"537.3", part:"Part 5 — Ch 53"},
+  {term:"Devices for protection against overvoltage", ref:"534", part:"Part 5 — Ch 53"}
+];
+
+/* ---------- KEYWORD-SPOTTING TRAINER ---------- */
+/* Teaches: read question -> spot trigger words -> decide Part/Chapter -> find regulation */
+const KEYWORD_EXERCISES = [
+  {
+    q:"A solar PV system with battery storage is being added to a dwelling, and the designer must confirm that the RCBOs chosen for the circuits are suitable given that current can flow in either direction. Which regulation governs this, and what must be checked?",
+    keywords:["battery storage / PV","current both directions","RCBO / protective device","suitable"],
+    keywordNote:"'Current in either direction' + 'protective device' points to the new directional-device rule. PV/storage means power can flow back into the installation.",
+    look:"Part 5 → Chapter 53 → Reg 530.3.201 (and the bidirectional/unidirectional definitions in Part 2). Index under 'Bidirectional / Unidirectional protective device'.",
+    reg:"530.3.201 (+ Part 2 definitions)",
+    answer:"Reg 530.3.201 (new in Amendment 3:2024) requires account to be taken of whether each device is unidirectional or bidirectional. A unidirectional device must be connected the correct way round (line/load); a bidirectional device may have supply on either or both sides. The device markings (line/load, in/out, or arrows) confirm which type it is and how to wire it."
+  },
+  {
+    q:"A new circuit is being installed to supply a 13A socket-outlet beside an outdoor patio for general use. What additional protection must be provided for this circuit?",
+    keywords:["socket-outlet","outdoor","additional protection"],
+    keywordNote:"'Socket-outlet' + 'additional protection' points straight at the RCD rules. 'Outdoor' confirms mobile-equipment use.",
+    look:"Part 4 (Protection for safety) → Chapter 41 → Section 411.3.3, and the Index under 'Additional protection'.",
+    reg:"411.3.3 (and 415.1)",
+    answer:"A 30mA RCD must provide additional protection for socket-outlets rated up to 32A. Outdoor general-use sockets also fall under the mobile-equipment rule, reinforcing the 30mA RCD requirement."
+  },
+  {
+    q:"An installer needs to know the longest time a 230V lighting circuit protected at 6A may take to disconnect under earth fault conditions on a TN-C-S system.",
+    keywords:["disconnect","time","TN-C-S","final circuit ≤32A"],
+    keywordNote:"'Disconnect' + 'time' = disconnection times. The 6A rating means it's a final circuit ≤32A; 'TN-C-S' is a TN system.",
+    look:"Part 4 → Chapter 41 → Table 41.1. Index under 'Disconnection times'.",
+    reg:"Table 41.1",
+    answer:"0.4 seconds. For final circuits up to 32A on TN systems the maximum disconnection time is 0.4s."
+  },
+  {
+    q:"During a bathroom rewire, the customer asks whether the metal towel rail and pipework still need supplementary bonding when the property already has main bonding and all circuits are RCD protected.",
+    keywords:["bathroom","supplementary bonding","main bonding","disconnection"],
+    keywordNote:"'Bathroom' sends you to Part 7. 'Supplementary bonding' + 'main bonding' is the omission condition.",
+    look:"Part 7 → Section 701 → Reg 701.415.2. Index under 'Supplementary bonding — omission'.",
+    reg:"701.415.2",
+    answer:"Supplementary bonding may be omitted where main protective bonding is in place, all circuits meet the disconnection times of Section 411, and all extraneous-conductive-parts are connected to the main earthing terminal. If all three are satisfied, it can be omitted."
+  },
+  {
+    q:"A cable for a new circuit will be chased into a plastered wall at a depth of about 35mm, running diagonally (not in a recognised safe zone) with no earthed metal covering. What does BS 7671 require?",
+    keywords:["cable","wall","35mm depth","not in safe zone","no protection"],
+    keywordNote:"'Cable in a wall' at '<50mm' and 'not in a safe zone' is the classic 522.6 trigger.",
+    look:"Part 5 → Chapter 52 → Reg 522.6.202. Index under 'Cables concealed in walls'.",
+    reg:"522.6.202",
+    answer:"Because it is less than 50mm deep, outside the permitted zones and without mechanical/earthed protection, the circuit must be given 30mA RCD additional protection."
+  },
+  {
+    q:"A client wants a domestic EV charge point installed on an external wall. The supply is TN-C-S (PME). What earthing/protection concern must be addressed and what RCD provision is needed?",
+    keywords:["EV charge point","outdoor","TN-C-S / PME","RCD"],
+    keywordNote:"'EV charging' = Part 7 Section 722. 'PME' + 'outdoor' raises the open-PEN concern; 'RCD' points to DC fault detection.",
+    look:"Part 7 → Section 722 → 722.411.4 (PME) and 722.531.3 (RCD). Index under 'Electric vehicle charging'.",
+    reg:"722.411.4 / 722.531.3.101",
+    answer:"The open-PEN risk of PME must be addressed — by an earth electrode or an open-PEN/voltage-detection device. Each charging point also needs a 30mA RCD plus DC fault protection (a Type B RCD, or Type A with 6mA DC detection in the charger)."
+  },
+  {
+    q:"An engineer is producing a report on an existing 1990s installation and finds the consumer unit is a combustible plastic enclosure with no RCD protection on socket circuits. How should this be recorded, and which document is being produced?",
+    keywords:["existing installation","report","record / code","condition"],
+    keywordNote:"'Existing installation' + 'report' = periodic inspection / EICR (Part 6, Chapter 65). 'Record/code' points to the classification codes.",
+    look:"Part 6 → Chapter 65 → Reg 653 (EICR) and the coding guidance; Index under 'Periodic inspection'.",
+    reg:"651 / 653",
+    answer:"The document is an Electrical Installation Condition Report (EICR). Such observations would typically be coded C2 (potentially dangerous) or C3 (improvement recommended) depending on the assessed risk — a C2 makes the report Unsatisfactory."
+  },
+  {
+    q:"A designer must confirm that a 4mm² twin-and-earth cable, protected by a 32A Type B MCB and carrying a design current of 28A, is correctly coordinated for overload.",
+    keywords:["coordination","overload","design current Ib","device In","cable Iz"],
+    keywordNote:"'Coordinated' + 'overload' = the Ib ≤ In ≤ Iz rule.",
+    look:"Part 4 → Chapter 43 → Reg 433.1.1, with cable capacity from Appendix 4. Index under 'Overload'.",
+    reg:"433.1.1 (+ Appx 4)",
+    answer:"Apply Ib ≤ In ≤ Iz: the 28A design current must be ≤ the 32A device rating, which must be ≤ the cable's rated capacity (after correction factors from Appendix 4). If Iz of the installed 4mm² cable is ≥ 32A in its installation method, the circuit is coordinated."
+  },
+  {
+    q:"A specifier asks whether a new dwelling requires surge protection given the property is in an area with frequent thunderstorms and contains expensive electronic equipment.",
+    keywords:["surge protection / SPD","overvoltage","dwelling","risk"],
+    keywordNote:"'Surge protection' / 'overvoltage' = Section 443. 'Risk' points to the risk-assessment route.",
+    look:"Part 4 → Chapter 44 → Section 443 (when required) and Section 534 (selection). Index under 'Transient overvoltage'.",
+    reg:"443.4 / 443.5",
+    answer:"Section 443 requires considering protection against transient overvoltage. Where serious consequences could arise, an SPD is required; otherwise a risk assessment decides — though fitting an SPD is the simplest compliant route, and for dwellings it is now usually provided."
+  },
+  {
+    q:"On a three-phase distribution board, an electrician needs to identify which colour belongs to L2 and confirm the protective conductor colour.",
+    keywords:["colour / identification","L2","protective conductor"],
+    keywordNote:"'Identification' and 'colour' send you to Section 514.",
+    look:"Part 5 → Chapter 51 → Section 514. Index under 'Cable colours / identification'.",
+    reg:"514",
+    answer:"L1 brown, L2 black, L3 grey; neutral blue; CPC green-and-yellow."
+  },
+  {
+    q:"A test schedule needs to be completed for a new installation. Which test is carried out first, and is it a dead or live test?",
+    keywords:["test","sequence","first","initial verification"],
+    keywordNote:"'Test sequence' + 'initial verification' = Part 6, Chapter 64.",
+    look:"Part 6 → Chapter 64 → Reg 643. Index under 'Continuity of conductors'.",
+    reg:"643 (643.2 first)",
+    answer:"Continuity of protective conductors (a dead test) is carried out first, followed by insulation resistance and polarity, before any live tests such as loop impedance and RCD operation."
+  }
+];
+
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const app = document.getElementById('app');
+  const navBtns = Array.from(document.querySelectorAll('#nav button'));
+
+  /* icons */
+  const IC = {
+    book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2V5z"/><path d="M4 19a2 2 0 012-2h12"/></svg>',
+    search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>',
+    cards:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h13a1 1 0 011 1v12"/></svg>',
+    check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11"/></svg>',
+    target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>',
+    skills:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 21l-5-2.9.9-5.5-4-3.9L9.5 8z"/></svg>'
+  };
+
+  /* ---------- ROUTER ---------- */
+  window.go = function (view, arg) {
+    navBtns.forEach(b => b.classList.toggle('active', b.dataset.view === view || (view === 'part' && b.dataset.view === 'parts')));
+    window.scrollTo({top:0,behavior:'smooth'});
+    const render = ({home:renderHome,parts:renderParts,part:()=>renderPart(arg),index:renderIndex,definitions:renderDefinitions,figures:renderFigures,
+      flashcards:renderFlash,quiz:renderQuiz,keyword:renderKeyword,examskills:renderExam}[view]) || renderHome;
+    render();
+  };
+  navBtns.forEach(b => b.addEventListener('click', () => go(b.dataset.view)));
+
+  /* ---------- HOME ---------- */
+  function renderHome(){
+    const tiles = PARTS.map(p => `
+      <div class="ptile" onclick="go('part','${p.id}')">
+        <div class="num">${p.num}</div>
+        <div class="tag">${p.tag}</div>
+        <h3>${p.title}</h3>
+        <div class="meta">${IC.book}<span>${p.chapters.length} section${p.chapters.length>1?'s':''}</span></div>
+      </div>`).join('');
+    const feats = [
+      ['index','Index Finder','Search a word or whole phrase and jump to the regulation number — just like the back of the book.',IC.search],
+      ['definitions','Definitions','The Part 2 glossary, searchable A–Z. Know the exact meaning of a term and the mark is yours.',IC.book],
+      ['figures','Table of Figures','Find any BS 7671 diagram — earthing systems, zones, conductor arrangements — by number or topic.',IC.book],
+      ['flashcards','Flash Cards','Flip cards covering the questions that matter most, filtered by Part.',IC.cards],
+      ['quiz','Test Yourself','Multiple-choice questions with worked explanations and live scoring.',IC.check],
+      ['keyword','Keyword Trainer','The core exam skill: spot the trigger words, decide the Part, find the reg.',IC.target],
+      ['examskills','Exam Skills','The step-by-step method for navigating the open-book exam fast.',IC.skills]
+    ].map(([v,t,d,i]) => `<div class="feat" onclick="go('${v}')"><div class="ic">${i}</div><h3>${t}</h3><p>${d}</p></div>`).join('');
+
+    app.innerHTML = `
+      <section class="hero">
+        <span class="tag">⚡ Open-book exam trainer · Updated to A3:2024</span>
+        <h1>Master the <em>18th Edition</em> Wiring Regulations</h1>
+        <p>Detailed explanations, flash cards and tests across all eight Parts — plus a trainer that teaches you to spot the keywords in a question and find the right regulation, fast.</p>
+        <div class="pills"><span>Parts 1–8 + Appendices</span><span>${FLASHCARDS.length} flash cards</span><span>${MCQS.length} MCQs</span><span>${DEFINITIONS.length} definitions</span><span>${INDEX_ENTRIES.length} indexed terms</span><span>${FIGURES.length} figures</span></div>
+      </section>
+      <div class="callout" style="display:flex;gap:14px;align-items:flex-start">
+        <span class="newtag" style="margin-top:2px">New · A3:2024</span>
+        <div><b>What changed in Amendment 3:2024</b> (in force from 31 July 2024). Two new Part 2 definitions — <b>bidirectional</b> and <b>unidirectional protective devices</b> — and one new regulation, <b>530.3.201</b> in Chapter 53, requiring their direction to be taken into account when selecting and erecting protection. This supports installations where power flows both ways: solar PV, battery storage and EV vehicle-to-grid. It's covered in <a href="#" onclick="go('part','p2');return false" style="color:var(--copper-d);font-weight:600">Part 2</a>, <a href="#" onclick="go('part','p5');return false" style="color:var(--copper-d);font-weight:600">Part 5</a>, and tested in the flash cards and quiz.</div>
+      </div>
+      <div class="sec-title"><span class="n">§</span>The book, Part by Part</div>
+      <p class="sec-sub">Tap any Part to read plain-English explanations and the key regulation numbers it contains.</p>
+      <div class="grid parts-grid">${tiles}</div>
+      <div class="sec-title"><span class="n">★</span>Train your skills</div>
+      <p class="sec-sub">The exam is open-book — your speed at <em>finding</em> the right regulation is what's really tested.</p>
+      <div class="grid feat-grid">${feats}</div>
+      <div class="disc">This app explains BS 7671 and references regulation numbers for study. It does not reproduce the text of the standard. For the definitive wording, always consult your own copy of BS 7671:2018+A3:2024.</div>`;
+  }
+
+  /* ---------- PARTS OVERVIEW ---------- */
+  function renderParts(){
+    const tiles = PARTS.map(p => `
+      <div class="ptile" onclick="go('part','${p.id}')">
+        <div class="num">${p.num}</div><div class="tag">${p.tag}</div>
+        <h3>${p.title}</h3>
+        <div class="meta">${IC.book}<span>${p.chapters.length} section${p.chapters.length>1?'s':''}</span></div>
+      </div>`).join('');
+    app.innerHTML = `
+      <div class="crumb">Contents</div>
+      <div class="sec-title"><span class="n">§</span>Parts &amp; Chapters</div>
+      <p class="sec-sub">The structure of BS 7671. Knowing which Part holds what is half the battle in the exam.</p>
+      <div class="grid parts-grid">${tiles}</div>`;
+  }
+
+  /* ---------- SINGLE PART ---------- */
+  function renderPart(id){
+    const p = PARTS.find(x => x.id === id) || PARTS[0];
+    const chapters = p.chapters.map(c => `
+      <div class="chapter">
+        <span class="ch-num">${c.num}</span>
+        <h3>${c.title}</h3>
+        <div class="body">${c.body}</div>
+        <div class="regbox">
+          <div class="lbl">Key regulations — tap any to learn it in detail</div>
+          ${c.regs.map(r => `<div class="reg" onclick="this.classList.toggle('open')">
+            <div class="reg-head">
+              <span class="ref">${r.ref}</span>
+              <span class="what">${r.topic}</span>
+              <svg class="reg-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+            </div>
+            <div class="reg-detail"><div class="reg-detail-inner">${r.detail || 'See your copy of BS 7671 for the detail of this regulation.'}</div></div>
+          </div>`).join('')}
+        </div>
+      </div>`).join('');
+    const idx = PARTS.indexOf(p);
+    const prev = PARTS[idx-1], next = PARTS[idx+1];
+    app.innerHTML = `
+      <div class="crumb"><b>Parts</b> &nbsp;›&nbsp; Part ${p.num}</div>
+      <div class="hero" style="padding:34px 36px">
+        <span class="tag">Part ${p.num}</span>
+        <h1 style="font-size:clamp(1.6rem,3.5vw,2.4rem)">${p.title}</h1>
+        <p>${p.intro}</p>
+      </div>
+      ${chapters}
+      <div class="toolbar" style="margin-top:24px;justify-content:space-between">
+        ${prev?`<button class="btn btn-ghost" onclick="go('part','${prev.id}')">← Part ${prev.num}</button>`:'<span></span>'}
+        <button class="btn btn-primary" onclick="go('quiz')">Test this material →</button>
+        ${next?`<button class="btn btn-ghost" onclick="go('part','${next.id}')">Part ${next.num} →</button>`:'<span></span>'}
+      </div>`;
+  }
+
+  /* ---------- INDEX FINDER ---------- */
+  function renderIndex(){
+    app.innerHTML = `
+      <div class="crumb">Index Finder</div>
+      <div class="sec-title"><span class="n">${IC.search}</span>Index Finder</div>
+      <p class="sec-sub">Type a keyword <em>or a phrase</em> the way it appears in an exam question — word order doesn't matter, every word just has to appear somewhere in the entry. The index shows the regulation number and the Part it lives in.</p>
+      <div class="searchwrap">${IC.search}<input id="idxSearch" placeholder="e.g. cables in walls · supplementary bonding bathroom · RCD socket · EV charging…" autocomplete="off"></div>
+      <div class="idx-count" id="idxCount"></div>
+      <div class="idx-list" id="idxList"></div>`;
+    const input = document.getElementById('idxSearch');
+    const list = document.getElementById('idxList');
+    const count = document.getElementById('idxCount');
+    const sorted = INDEX_ENTRIES.slice().sort((a,b)=>a.term.localeCompare(b.term));
+    function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+    const norm = s => s.toLowerCase().replace(/[’'`]/g,'');
+    function draw(q){
+      const raw = q.trim();
+      const tokens = norm(raw).split(/\s+/).filter(Boolean);
+      const rows = sorted.filter(e => {
+        if(!tokens.length) return true;
+        const hay = norm(e.term + ' ' + e.ref + ' ' + e.part);
+        return tokens.every(t => hay.includes(t)); // phrase = every word must appear
+      });
+      count.textContent = raw ? `${rows.length} match${rows.length!==1?'es':''} for “${raw}”` : `${sorted.length} indexed terms — type a word or phrase to filter`;
+      const re = tokens.length ? new RegExp('('+tokens.map(esc).join('|')+')','ig') : null;
+      list.innerHTML = rows.length ? rows.map(e=>{
+        let term = e.term;
+        if(re) term = term.replace(re,'<span class="hl">$1</span>');
+        return `<div class="idx-row"><span class="term">${term}</span><span class="ppart">${e.part}</span><span class="ref">${e.ref}</span></div>`;
+      }).join('') : `<div class="idx-row"><span class="term" style="color:var(--ink-soft)">No match. Try fewer or broader words — the index uses the main nouns (e.g. “cables walls”, “bonding bathroom”).</span></div>`;
+    }
+    input.addEventListener('input',()=>draw(input.value));
+    draw('');
+    input.focus();
+  }
+
+  /* ---------- DEFINITIONS (Part 2 glossary) ---------- */
+  function renderDefinitions(){
+    const cats = Array.from(new Set(DEFINITIONS.map(d=>d.cat))).sort();
+    app.innerHTML = `
+      <div class="crumb"><b>Part 2</b> &nbsp;›&nbsp; Definitions</div>
+      <div class="sec-title"><span class="n">A→Z</span>Definitions</div>
+      <p class="sec-sub">Part 2 of BS 7671 is the dictionary, and exam questions love testing a precise definition. Search a word or phrase, or tap a category to filter. Explanations are in plain English for study.</p>
+      <div class="searchwrap">${IC.search}<input id="defSearch" placeholder="e.g. extraneous · fault protection · SELV · earthing system · skilled person…" autocomplete="off"></div>
+      <div class="toolbar" id="defChips"><button class="chip on" data-c="All">All</button>${cats.map(c=>`<button class="chip" data-c="${c}">${c}</button>`).join('')}</div>
+      <div class="idx-count" id="defCount"></div>
+      <div id="defList"></div>`;
+    const input = document.getElementById('defSearch');
+    const list = document.getElementById('defList');
+    const count = document.getElementById('defCount');
+    const sorted = DEFINITIONS.slice().sort((a,b)=>a.term.localeCompare(b.term));
+    let activeCat = 'All';
+    function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+    const norm = s => s.toLowerCase().replace(/[’'`]/g,'');
+    function draw(q){
+      const raw = q.trim();
+      const tokens = norm(raw).split(/\s+/).filter(Boolean);
+      const rows = sorted.filter(d => {
+        if(activeCat!=='All' && d.cat!==activeCat) return false;
+        if(!tokens.length) return true;
+        const hay = norm(d.term + ' ' + d.def + ' ' + d.cat);
+        return tokens.every(t => hay.includes(t));
+      });
+      const note = (raw?`${rows.length} match${rows.length!==1?'es':''} for “${raw}”`:`${rows.length} term${rows.length!==1?'s':''}`) + (activeCat!=='All'?` in ${activeCat}`:'');
+      count.textContent = note;
+      const re = tokens.length ? new RegExp('('+tokens.map(esc).join('|')+')','ig') : null;
+      // group by first letter
+      let html = '', lastLetter = '';
+      rows.forEach(d=>{
+        const L = d.term[0].toUpperCase();
+        if(L!==lastLetter){ if(lastLetter) html+='</div>'; html+=`<div class="def-letter">${L}</div><div class="def-group">`; lastLetter=L; }
+        let term = d.term, def = d.def;
+        if(re){ term = term.replace(re,'<span class="hl">$1</span>'); def = def.replace(re,'<span class="hl">$1</span>'); }
+        html += `<div class="def-row"><div class="def-head"><span class="def-term">${term}</span><span class="def-cat">${d.cat}</span></div><div class="def-text">${def}</div></div>`;
+      });
+      if(lastLetter) html+='</div>';
+      list.innerHTML = rows.length ? html : `<div class="idx-list"><div class="idx-row"><span class="term" style="color:var(--ink-soft)">No matching definition. Try a broader word, e.g. “bonding”, “protection” or “voltage”.</span></div></div>`;
+    }
+    document.querySelectorAll('#defChips .chip').forEach(c=>c.addEventListener('click',()=>{
+      document.querySelectorAll('#defChips .chip').forEach(x=>x.classList.remove('on'));
+      c.classList.add('on'); activeCat=c.dataset.c; draw(input.value);
+    }));
+    input.addEventListener('input',()=>draw(input.value));
+    draw('');
+    input.focus();
+  }
+
+  function renderFigures(){
+    app.innerHTML = `
+      <div class="crumb">Table of Figures</div>
+      <div class="sec-title"><span class="n">▣</span>Table of Figures</div>
+      <p class="sec-sub">The diagrams in BS 7671 — earthing systems, conductor arrangements, zones and bonding. Search by figure number or topic (phrases work too). Where your copy's page number is known it's shown; otherwise the related section is given, which is the surest way to find a figure in the open-book exam.</p>
+      <div class="searchwrap">${IC.search}<input id="figSearch" placeholder="e.g. TN-C-S · earthing systems · bathroom zones · arm's reach…" autocomplete="off"></div>
+      <div class="idx-count" id="figCount"></div>
+      <div class="idx-list" id="figList"></div>`;
+    const input = document.getElementById('figSearch');
+    const list = document.getElementById('figList');
+    const count = document.getElementById('figCount');
+    function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+    const norm = s => s.toLowerCase().replace(/[’'`]/g,'');
+    function draw(q){
+      const raw = q.trim();
+      const tokens = norm(raw).split(/\s+/).filter(Boolean);
+      const rows = FIGURES.filter(f => {
+        if(!tokens.length) return true;
+        const hay = norm(f.fig + ' ' + f.title + ' ' + f.ref + ' ' + (f.page||''));
+        return tokens.every(t => hay.includes(t));
+      });
+      count.textContent = raw ? `${rows.length} figure${rows.length!==1?'s':''} for “${raw}”` : `${FIGURES.length} figures — type to filter`;
+      const re = tokens.length ? new RegExp('('+tokens.map(esc).join('|')+')','ig') : null;
+      list.innerHTML = rows.length ? rows.map(f=>{
+        let title = f.title, fig = f.fig;
+        if(re){ title = title.replace(re,'<span class="hl">$1</span>'); fig = fig.replace(re,'<span class="hl">$1</span>'); }
+        const where = f.page ? `p.${f.page}` : f.ref;
+        return `<div class="idx-row"><span class="ref" style="background:var(--copper-soft);color:var(--copper-d)">${fig}</span><span class="term">${title}</span><span class="ppart">${f.ref}</span><span class="ref">${where}</span></div>`;
+      }).join('') : `<div class="idx-row"><span class="term" style="color:var(--ink-soft)">No matching figure. Try a broader term such as “system”, “zone” or “bonding”.</span></div>`;
+    }
+    input.addEventListener('input',()=>draw(input.value));
+    draw('');
+    input.focus();
+  }
+
+  /* ---------- FLASH CARDS ---------- */
+  let fcSet=[], fcPos=0;
+  function renderFlash(){
+    const topics = ['All', ...Array.from(new Set(FLASHCARDS.map(c=>c.topic)))];
+    app.innerHTML = `
+      <div class="crumb">Flash Cards</div>
+      <div class="sec-title"><span class="n">${IC.cards}</span>Flash Cards</div>
+      <p class="sec-sub">Tap the card to reveal the answer. Filter by Part, or shuffle the whole deck.</p>
+      <div class="toolbar" id="fcChips">${topics.map((t,i)=>`<button class="chip ${i===0?'on':''}" data-t="${t}">${t}</button>`).join('')}
+        <button class="chip" id="fcShuffle">⤮ Shuffle</button></div>
+      <div class="fc-stage"><div class="flashcard" id="flashcard"><div class="fc-inner">
+        <div class="fc-face fc-front"><div class="kicker" id="fcTopic"></div><div class="q" id="fcQ"></div><div class="fc-hint">click to flip ↻</div></div>
+        <div class="fc-face fc-back"><div class="kicker">Answer</div><div class="a" id="fcA"></div><div class="fc-hint">click to flip back ↻</div></div>
+      </div></div></div>
+      <div class="fc-controls">
+        <button class="btn btn-ghost" id="fcPrev">← Prev</button>
+        <span class="fc-progress" id="fcProg"></span>
+        <button class="btn btn-primary" id="fcNext">Next →</button>
+      </div>`;
+    setFcSet('All');
+    const card=document.getElementById('flashcard');
+    card.addEventListener('click',()=>card.classList.toggle('flip'));
+    document.getElementById('fcNext').addEventListener('click',()=>moveFc(1));
+    document.getElementById('fcPrev').addEventListener('click',()=>moveFc(-1));
+    document.getElementById('fcShuffle').addEventListener('click',()=>{
+      document.querySelectorAll('#fcChips .chip').forEach(c=>c.classList.remove('on'));
+      fcSet=FLASHCARDS.slice().sort(()=>Math.random()-0.5);fcPos=0;showFc();
+    });
+    document.querySelectorAll('#fcChips .chip[data-t]').forEach(c=>c.addEventListener('click',()=>{
+      document.querySelectorAll('#fcChips .chip').forEach(x=>x.classList.remove('on'));
+      c.classList.add('on');setFcSet(c.dataset.t);
+    }));
+  }
+  function setFcSet(t){fcSet=(t==='All')?FLASHCARDS.slice():FLASHCARDS.filter(c=>c.topic===t);fcPos=0;showFc();}
+  function showFc(){
+    const c=fcSet[fcPos];if(!c)return;
+    const card=document.getElementById('flashcard');card.classList.remove('flip');
+    setTimeout(()=>{
+      document.getElementById('fcTopic').textContent=c.topic;
+      document.getElementById('fcQ').innerHTML=c.q;
+      document.getElementById('fcA').innerHTML=c.a;
+    },card.classList.contains('flip')?300:0);
+    document.getElementById('fcProg').textContent=`${fcPos+1} / ${fcSet.length}`;
+    document.getElementById('fcPrev').disabled=fcPos===0;
+    document.getElementById('fcNext').disabled=fcPos===fcSet.length-1;
+  }
+  function moveFc(d){const n=fcPos+d;if(n<0||n>=fcSet.length)return;fcPos=n;showFc();}
+
+  /* ---------- QUIZ ---------- */
+  let qSet=[], qPos=0, qScore=0, qAnswered=false;
+  function renderQuiz(){
+    const topics=['All',...Array.from(new Set(MCQS.map(q=>q.topic)))];
+    app.innerHTML=`
+      <div class="crumb">Test Yourself</div>
+      <div class="sec-title"><span class="n">${IC.check}</span>Test Yourself</div>
+      <p class="sec-sub">Pick a topic or take the lot. Each answer reveals a worked explanation pointing to the regulation.</p>
+      <div class="toolbar" id="qChips">${topics.map((t,i)=>`<button class="chip ${i===0?'on':''}" data-t="${t}">${t}</button>`).join('')}</div>
+      <div id="quizBody"></div>`;
+    document.querySelectorAll('#qChips .chip').forEach(c=>c.addEventListener('click',()=>{
+      document.querySelectorAll('#qChips .chip').forEach(x=>x.classList.remove('on'));
+      c.classList.add('on');startQuiz(c.dataset.t);
+    }));
+    startQuiz('All');
+  }
+  function startQuiz(t){
+    qSet=((t==='All')?MCQS.slice():MCQS.filter(q=>q.topic===t)).sort(()=>Math.random()-0.5);
+    qPos=0;qScore=0;showQ();
+  }
+  function showQ(){
+    const body=document.getElementById('quizBody');const q=qSet[qPos];qAnswered=false;
+    const pct=Math.round((qPos/qSet.length)*100);
+    body.innerHTML=`
+      <div class="quiz-card">
+        <div class="progbar"><span style="width:${pct}%"></span></div>
+        <div class="quiz-meta"><span>Question ${qPos+1} of ${qSet.length} · <b style="color:var(--copper-d)">${q.topic}</b></span>
+          <span class="scorepill">Score ${qScore}/${qPos}</span></div>
+        <div class="quiz-q">${q.q}</div>
+        <div id="opts">${q.options.map((o,i)=>`<button class="opt" data-i="${i}"><span class="ltr">${'ABCD'[i]}</span>${o}</button>`).join('')}</div>
+        <div class="explain" id="explain"></div>
+        <div class="quiz-foot"><span></span><button class="btn btn-primary" id="qNext" style="display:none">${qPos===qSet.length-1?'See results':'Next question'} →</button></div>
+      </div>`;
+    document.querySelectorAll('#opts .opt').forEach(b=>b.addEventListener('click',()=>answerQ(+b.dataset.i)));
+    document.getElementById('qNext').addEventListener('click',()=>{if(qPos===qSet.length-1)showResult();else{qPos++;showQ();}});
+  }
+  function answerQ(i){
+    if(qAnswered)return;qAnswered=true;const q=qSet[qPos];
+    const opts=document.querySelectorAll('#opts .opt');
+    opts.forEach((b,j)=>{b.classList.add('locked');if(j===q.correct)b.classList.add('correct');if(j===i&&i!==q.correct)b.classList.add('wrong');});
+    if(i===q.correct)qScore++;
+    const ex=document.getElementById('explain');
+    ex.innerHTML=`<b>${i===q.correct?'✓ Correct.':'✗ Not quite.'}</b> ${q.explain}`;
+    ex.classList.add('show');
+    document.getElementById('qNext').style.display='inline-block';
+    document.querySelector('.scorepill').textContent=`Score ${qScore}/${qPos+1}`;
+  }
+  function showResult(){
+    const pct=Math.round((qScore/qSet.length)*100);
+    let msg = pct>=80?'Exam-ready on this topic. Strong navigation instincts.':pct>=55?'Solid — review the ones you missed and the regs they point to.':'Keep going. Re-read the relevant Part, then retry.';
+    document.getElementById('quizBody').innerHTML=`
+      <div class="quiz-card result">
+        <div class="big">${pct}%</div>
+        <h3>${qScore} out of ${qSet.length}</h3>
+        <p style="color:var(--ink-soft);margin-bottom:22px">${msg}</p>
+        <button class="btn btn-primary" onclick="document.querySelector('#qChips .chip.on').click()">Try again</button>
+        <button class="btn btn-ghost" onclick="go('keyword')">Train keyword spotting →</button>
+      </div>`;
+  }
+
+  /* ---------- KEYWORD TRAINER ---------- */
+  let kwPos=0;
+  function renderKeyword(){
+    app.innerHTML=`
+      <div class="crumb">Keyword Trainer</div>
+      <div class="sec-title"><span class="n">${IC.target}</span>Keyword Trainer</div>
+      <p class="sec-sub">Read the question. <b>Try to spot the trigger words yourself first</b>, then reveal each step to check your method: keywords → which Part/Chapter → the regulation → the answer.</p>
+      <div class="toolbar">
+        <button class="btn btn-ghost" id="kwPrev">← Previous</button>
+        <span class="fc-progress" id="kwProg"></span>
+        <button class="btn btn-ghost" id="kwNext">Next question →</button>
+        <button class="btn btn-primary" id="kwRand" style="margin-left:auto">⤮ Random</button>
+      </div>
+      <div id="kwBody"></div>`;
+    document.getElementById('kwPrev').addEventListener('click',()=>{if(kwPos>0){kwPos--;showKw();}});
+    document.getElementById('kwNext').addEventListener('click',()=>{if(kwPos<KEYWORD_EXERCISES.length-1){kwPos++;showKw();}});
+    document.getElementById('kwRand').addEventListener('click',()=>{kwPos=Math.floor(Math.random()*KEYWORD_EXERCISES.length);showKw();});
+    showKw();
+  }
+  function showKw(){
+    const e=KEYWORD_EXERCISES[kwPos];
+    document.getElementById('kwProg').textContent=`${kwPos+1} / ${KEYWORD_EXERCISES.length}`;
+    document.getElementById('kwPrev').disabled=kwPos===0;
+    document.getElementById('kwNext').disabled=kwPos===KEYWORD_EXERCISES.length-1;
+    const steps=[
+      ['1','Spot the keywords',`<div class="kwlist">${e.keywords.map(k=>`<span>${k}</span>`).join('')}</div><p style="margin-top:8px">${e.keywordNote}</p>`],
+      ['2','Decide where to look',`<p>${e.look}</p>`],
+      ['3','Find the regulation',`<p>The relevant regulation reference is:</p><span class="reftag">${e.reg}</span>`],
+      ['4','The answer',`<p>${e.answer}</p>`]
+    ].map(([n,t,b])=>`
+      <div class="kw-step" onclick="this.classList.toggle('open')">
+        <div class="kw-step-h"><div class="sn">${n}</div><div class="st">${t}</div>
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div>
+        <div class="kw-step-b"><div class="inner">${b}</div></div>
+      </div>`).join('');
+    document.getElementById('kwBody').innerHTML=`
+      <div class="kw-card">
+        <div class="kw-tag">Exam-style question ${kwPos+1}</div>
+        <div class="kw-q">${e.q}</div>
+        <p style="font-size:.84rem;color:var(--ink-soft);margin:6px 2px 2px">Reveal each step in order:</p>
+        ${steps}
+      </div>`;
+  }
+
+  /* ---------- EXAM SKILLS ---------- */
+  function renderExam(){
+    const steps=[
+      ['1','Read the whole question first','Don\'t reach for the book yet. Read it once for meaning. Exam questions are written to sound complicated — strip them back to "what are they actually asking?"'],
+      ['2','Underline the trigger words','Certain words point to a Part almost on their own. "Socket-outlet", "disconnection time", "bonding", "bathroom", "RCD type", "EV charging" — each has a home in the book. Circle them.'],
+      ['3','Map keyword → Part','Shock, RCDs, disconnection, AFDD, SPD → Part 4. Cable sizing, colours, devices, earthing → Part 5. Testing & certificates → Part 6. Any named location → Part 7. Lookup tables → Appendices.'],
+      ['4','Use the Index, not your memory','In an open-book exam the Index is faster than flicking through chapters. Search the main noun ("bonding"), get the regulation number, turn straight to it. Practise this in the Index Finder.'],
+      ['5','Confirm in the regulation, then answer','Land on the reg, read the exact wording (numbers, exceptions, "shall" vs "should"), and answer from the text — not from what you half-remember. The detail is usually in the exceptions.']
+    ].map(([n,t,d],i)=>`
+      <div class="method-step"><div class="mn">${n}</div><div><h3>${t}</h3><p>${d}</p></div></div>
+      ${i<4?'<div class="arrow-down">↓</div>':''}`).join('');
+    app.innerHTML=`
+      <div class="crumb">Exam Skills</div>
+      <div class="sec-title"><span class="n">${IC.skills}</span>The Open-Book Method</div>
+      <p class="sec-sub">The 18th Edition exam is open-book and timed. You're not tested on memorising the regs — you're tested on <em>finding</em> them quickly and reading them precisely. Here's the method.</p>
+      ${steps}
+      <div class="callout">
+        <b>The keyword habit.</b> Most marks are lost by people who know the content but search the wrong Part. Build the reflex: see a trigger word → name the Part out loud → confirm via the Index. Drill it in the <a href="#" onclick="go('keyword');return false" style="color:var(--copper-d);font-weight:600">Keyword Trainer</a>.
+      </div>
+      <div class="callout" style="background:#eef3fb;border-color:var(--navy-2);border-left-color:var(--navy-2)">
+        <b>"Shall" vs "should".</b> In BS 7671, <b>shall</b> = a requirement you must meet; <b>should</b> = a recommendation. Exam questions often hinge on this single word, so read it carefully when you land on the regulation.
+      </div>
+      <div class="toolbar" style="margin-top:24px">
+        <button class="btn btn-primary" onclick="go('keyword')">Start the Keyword Trainer →</button>
+        <button class="btn btn-ghost" onclick="go('index')">Open the Index Finder</button>
+      </div>`;
+  }
+
+  /* boot */
+  go('home');
+});
+</script>
+
+<!-- WATERMARK -->
+<div class="wm"><span class="wm-main">This learning resource is developed by tutorwarren.com</span><span class="wm-sub">&copy; tutorwarren.com &mdash; All Rights Reserved &mdash;</span></div>
+
+<!-- COPY / PRINT PROTECTION -->
+<script>
+(function () {
+  "use strict";
+  // Block right-click context menu
+  document.addEventListener('contextmenu', function (e) { e.preventDefault(); return false; }, false);
+
+  // Block copy, cut and drag of content
+  ['copy','cut','dragstart','selectstart'].forEach(function (evt) {
+    document.addEventListener(evt, function (e) {
+      var t = e.target;
+      // allow normal use of input/textarea fields (e.g. the index search box)
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
+      e.preventDefault();
+      return false;
+    }, false);
+  });
+
+  // Block keyboard shortcuts: view-source, save, print, copy, cut, devtools
+  document.addEventListener('keydown', function (e) {
+    var k = (e.key || '').toLowerCase();
+    var inField = e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA');
+    // F12 (devtools)
+    if (e.keyCode === 123) { e.preventDefault(); return false; }
+    // Ctrl/Cmd + (U save-source, S save, P print, C copy, X cut)
+    if ((e.ctrlKey || e.metaKey) && ['u','s','p','c','x'].indexOf(k) !== -1) {
+      if (inField && (k === 'c' || k === 'x')) return; // let users copy within fields
+      e.preventDefault(); return false;
+    }
+    // Ctrl+Shift+I / J / C (devtools)
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i','j','c'].indexOf(k) !== -1) {
+      e.preventDefault(); return false;
+    }
+  }, false);
+
+  // Belt-and-braces print blocking (in addition to the @media print CSS)
+  window.addEventListener('beforeprint', function () {
+    try { document.body.setAttribute('data-printing', '1'); } catch (err) {}
+  });
+})();
+</script>
+</body>
+</html>
