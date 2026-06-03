@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>On-Site Guide — Level 2 Study App (BS 7671:2018+A2:2022)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@500;600&family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14241d; --ink-soft:#41544c; --line:#dfe6df;
+    --paper:#eef3ee; --card:#ffffff; --deep:#0c2a22; --deep-2:#123a2f;
+    --teal:#0f8a6a; --teal-d:#0a6b52; --teal-soft:#d6efe6;
+    --lime:#a6d92f; --amber:#f2b134; --amber-d:#cf9111;
+    --green:#2f7d52; --red:#c0392b; --redbg:#fbe9e7; --greenbg:#e4f4ea;
+    --shadow:0 1px 2px rgba(12,42,34,.06),0 8px 24px rgba(12,42,34,.08);
+    --shadow-lg:0 14px 44px rgba(12,42,34,.2);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Mulish',sans-serif; color:var(--ink); background:var(--paper);
+    background-image:radial-gradient(circle at 8% 6%,rgba(15,138,106,.06),transparent 42%),
+                     radial-gradient(circle at 92% 0%,rgba(166,217,47,.07),transparent 38%);
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+    -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none;
+  }
+  input,textarea{-webkit-user-select:text;-moz-user-select:text;user-select:text}
+  code,.mono{font-family:'IBM Plex Mono',monospace}
+  h1,h2,h3,h4,.disp{font-family:'Barlow Condensed',sans-serif;line-height:1.02;letter-spacing:.005em;text-transform:uppercase}
+
+  header{background:var(--deep);background-image:linear-gradient(135deg,#0c2a22,#123a2f 60%,#16493a);
+    color:#fff;position:sticky;top:0;z-index:50;border-bottom:3px solid var(--lime);box-shadow:0 6px 30px rgba(0,0,0,.28)}
+  .topbar{max-width:1180px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:13px;cursor:pointer}
+  .badge{width:44px;height:44px;flex:none;border-radius:12px;background:linear-gradient(150deg,var(--lime),var(--teal));
+    display:grid;place-items:center;box-shadow:0 4px 14px rgba(15,138,106,.45);font-family:'Barlow Condensed';font-weight:800;color:#0c2a22;font-size:1.3rem}
+  .brand-txt b{font-family:'Barlow Condensed';font-weight:800;font-size:1.4rem;display:block;letter-spacing:.02em;text-transform:uppercase}
+  .brand-txt span{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--lime);font-weight:700}
+  nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap}
+  nav button{font-family:'Barlow Condensed';font-weight:700;font-size:.95rem;letter-spacing:.03em;text-transform:uppercase;
+    background:transparent;color:#bcd6cc;border:0;padding:9px 13px;border-radius:9px;cursor:pointer;transition:.18s;white-space:nowrap}
+  nav button:hover{background:rgba(255,255,255,.1);color:#fff}
+  nav button.active{background:var(--teal);color:#fff;box-shadow:0 4px 12px rgba(15,138,106,.45)}
+
+  main{max-width:1180px;margin:0 auto;padding:32px 22px 90px}
+  .view{display:none}.view.show{display:block}
+  .crumb{font-size:.82rem;color:var(--ink-soft);margin-bottom:14px;font-weight:600}
+  .crumb b{color:var(--teal-d)}
+
+  .hero{background:var(--deep);background-image:linear-gradient(120deg,#0c2a22,#15463743 70%),linear-gradient(120deg,#0c2a22,#1a5240);
+    color:#fff;border-radius:var(--radius);padding:44px 40px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg);margin-bottom:28px}
+  .hero::after{content:"";position:absolute;right:-50px;top:-50px;width:260px;height:260px;background:radial-gradient(circle,rgba(166,217,47,.22),transparent 70%);border-radius:50%}
+  .hero .tag{display:inline-block;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);font-weight:700;border:1px solid rgba(166,217,47,.45);padding:5px 13px;border-radius:30px;margin-bottom:18px}
+  .hero h1{font-size:clamp(2.1rem,5vw,3.5rem);font-weight:800;max-width:720px;margin-bottom:14px;text-transform:uppercase}
+  .hero h1 em{color:var(--lime);font-style:normal}
+  .hero p{max-width:620px;color:#c2d4cc;font-size:1.05rem}
+  .hero .pills{margin-top:24px;display:flex;gap:9px;flex-wrap:wrap}
+  .hero .pills span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:7px 14px;border-radius:30px;font-size:.8rem;font-weight:600}
+
+  .sec-title{font-family:'Barlow Condensed';font-size:1.9rem;font-weight:800;margin:36px 0 6px;display:flex;align-items:center;gap:11px;text-transform:uppercase}
+  .sec-title .n{font-family:'IBM Plex Mono';font-size:.8rem;background:var(--teal);color:#fff;min-width:30px;height:30px;padding:0 7px;display:grid;place-items:center;border-radius:8px;flex:none}
+  .sec-sub{color:var(--ink-soft);margin-bottom:20px;font-size:.97rem;max-width:760px}
+
+  .grid{display:grid;gap:15px}
+  .secs-grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+  .stile{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;cursor:pointer;transition:.2s;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .stile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--teal);transform:scaleY(0);transform-origin:top;transition:.25s}
+  .stile:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--teal-soft)}
+  .stile:hover::before{transform:scaleY(1)}
+  .stile .num{font-family:'Barlow Condensed';font-weight:800;font-size:2.2rem;color:var(--teal-soft);line-height:.9}
+  .stile:hover .num{color:var(--teal)}
+  .stile h3{font-size:1.25rem;font-weight:700;margin:6px 0 5px;text-transform:uppercase}
+  .stile .tag{font-size:.78rem;color:var(--teal-d);font-weight:700}
+  .stile .meta{margin-top:12px;font-size:.78rem;color:var(--ink-soft)}
+
+  .feat-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+  .feat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;cursor:pointer;transition:.2s;box-shadow:var(--shadow)}
+  .feat:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .feat .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:13px;background:var(--teal-soft);color:var(--teal-d)}
+  .feat .ic svg{width:24px;height:24px}
+  .feat h3{font-size:1.18rem;font-weight:700;margin-bottom:5px;text-transform:uppercase}
+  .feat p{font-size:.88rem;color:var(--ink-soft)}
+
+  .chapter{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;margin-bottom:16px;box-shadow:var(--shadow)}
+  .chapter h3{font-size:1.45rem;font-weight:700;margin-bottom:3px;text-transform:uppercase}
+  .chapter .ch-num{font-family:'IBM Plex Mono';font-size:.78rem;color:var(--teal-d);font-weight:600;letter-spacing:.06em;margin-bottom:10px;display:block}
+  .chapter .body{font-size:.98rem;color:var(--ink-soft)}
+  .chapter .body strong{color:var(--ink)}.chapter .body em{font-style:italic;color:var(--ink);font-weight:600}
+  .regbox{margin-top:18px;border-top:1px dashed var(--line);padding-top:14px}
+  .regbox .lbl{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:10px}
+  .reg{border-bottom:1px solid #eef2ee;cursor:pointer;transition:background .15s}
+  .reg:last-child{border-bottom:0}.reg:hover,.reg.open{background:#f5faf6}
+  .reg-head{display:flex;gap:12px;padding:11px 8px 11px 0;align-items:center}
+  .reg .ref{font-family:'IBM Plex Mono';font-weight:600;font-size:.8rem;color:#fff;background:var(--deep-2);padding:3px 9px;border-radius:6px;flex:none;white-space:nowrap}
+  .reg .what{font-size:.93rem;color:var(--ink);font-weight:600;flex:1}
+  .reg-chev{color:var(--ink-soft);flex:none;transition:transform .25s}
+  .reg.open .reg-chev{transform:rotate(90deg)}
+  .reg-detail{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .reg.open .reg-detail{max-height:700px}
+  .reg-detail-inner{padding:2px 10px 16px 16px;font-size:.92rem;line-height:1.6;color:var(--ink-soft);border-left:3px solid var(--lime);margin:0 0 6px 2px}
+  .reg-detail-inner b{color:var(--ink);font-weight:700}
+
+  .searchwrap{position:relative;margin-bottom:16px}
+  .searchwrap svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--ink-soft)}
+  .search-input{width:100%;font-family:'Mulish';font-size:1rem;padding:15px 16px 15px 48px;border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:var(--shadow)}
+  .search-input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 4px var(--teal-soft)}
+  .idx-count{font-size:.82rem;color:var(--ink-soft);margin-bottom:14px;font-weight:600}
+  .idx-list{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .idx-row{display:flex;align-items:center;gap:14px;padding:13px 20px;border-bottom:1px solid #eef2ee;transition:.12s}
+  .idx-row:last-child{border-bottom:0}.idx-row:hover{background:#f5faf6}
+  .idx-row .term{flex:1;font-weight:600;font-size:.94rem}
+  .idx-row .term .hl{background:var(--amber);border-radius:3px;padding:0 2px}
+  .idx-row .ppart{font-size:.74rem;color:var(--ink-soft);white-space:nowrap}
+  .idx-row .ref{font-family:'IBM Plex Mono';font-weight:600;font-size:.82rem;color:var(--teal-d);background:var(--teal-soft);padding:3px 10px;border-radius:6px;white-space:nowrap}
+
+  .def-letter{font-family:'Barlow Condensed';font-weight:800;font-size:1.3rem;color:var(--teal);margin:18px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--teal-soft)}
+  .def-group{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:6px}
+  .def-row{padding:14px 20px;border-bottom:1px solid #eef2ee}.def-row:last-child{border-bottom:0}
+  .def-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+  .def-term{font-family:'Barlow Condensed';font-weight:700;font-size:1.15rem;color:var(--ink);text-transform:uppercase;letter-spacing:.01em}
+  .def-term .hl,.def-text .hl{background:var(--amber);border-radius:3px;padding:0 2px}
+  .def-cat{font-family:'IBM Plex Mono';font-size:.64rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--deep-2);background:#eaf0ec;border:1px solid var(--line);padding:1px 8px;border-radius:20px}
+  .def-text{font-size:.92rem;line-height:1.55;color:var(--ink-soft)}
+
+  .toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  .chip{font-family:'Barlow Condensed';font-weight:700;font-size:.92rem;letter-spacing:.02em;text-transform:uppercase;padding:8px 14px;border-radius:30px;border:1px solid var(--line);background:var(--card);cursor:pointer;transition:.15s;color:var(--ink-soft)}
+  .chip:hover{border-color:var(--teal)}.chip.on{background:var(--deep);color:#fff;border-color:var(--deep)}
+
+  .fc-stage{display:grid;place-items:center;margin:8px 0 20px}
+  .flashcard{width:100%;max-width:640px;height:330px;perspective:1600px;cursor:pointer}
+  .fc-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+  .flashcard.flip .fc-inner{transform:rotateY(180deg)}
+  .fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;padding:34px;display:flex;flex-direction:column;justify-content:center;box-shadow:var(--shadow-lg)}
+  .fc-front{background:var(--card);border:1px solid var(--line)}
+  .fc-back{background:var(--deep);background-image:linear-gradient(140deg,#0c2a22,#17513e);color:#fff;transform:rotateY(180deg)}
+  .fc-face .kicker{font-family:'IBM Plex Mono';font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:15px}
+  .fc-front .kicker{color:var(--teal-d)}.fc-back .kicker{color:var(--lime)}
+  .fc-front .q{font-family:'Barlow Condensed';font-weight:700;font-size:1.5rem;line-height:1.1;text-transform:uppercase}
+  .fc-back .a{font-size:1rem;line-height:1.55;color:#d4e3dc}
+  .fc-back .a strong{color:#fff}
+  .fc-hint{position:absolute;bottom:15px;left:0;right:0;text-align:center;font-size:.72rem;opacity:.5}
+  .fc-controls{display:flex;align-items:center;justify-content:center;gap:14px}
+  .btn{font-family:'Barlow Condensed';font-weight:700;font-size:1rem;letter-spacing:.03em;text-transform:uppercase;padding:11px 20px;border-radius:10px;border:0;cursor:pointer;transition:.15s}
+  .btn-primary{background:var(--teal);color:#fff;box-shadow:0 4px 12px rgba(15,138,106,.35)}.btn-primary:hover{background:var(--teal-d)}
+  .btn-ghost{background:var(--card);border:1px solid var(--line);color:var(--ink)}.btn-ghost:hover{border-color:var(--teal)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .fc-progress{font-family:'IBM Plex Mono';font-size:.84rem;color:var(--ink-soft);min-width:60px;text-align:center}
+
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);max-width:720px;margin:0 auto}
+  .quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-family:'IBM Plex Mono';font-size:.8rem;color:var(--ink-soft)}
+  .scorepill{background:var(--greenbg);color:var(--green);font-weight:600;padding:4px 12px;border-radius:30px}
+  .quiz-q{font-family:'Mulish',sans-serif;font-weight:700;font-size:1.25rem;line-height:1.35;margin-bottom:20px}
+  .opt{display:block;width:100%;text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:11px;padding:14px 18px;margin-bottom:10px;cursor:pointer;transition:.15s;font-size:.96rem;font-family:'Mulish'}
+  .opt:hover:not(.locked){border-color:var(--teal);background:#f1f9f4}
+  .opt .ltr{font-family:'IBM Plex Mono';font-weight:600;color:var(--teal-d);margin-right:10px}
+  .opt.correct{background:var(--greenbg);border-color:var(--green);color:#1d5436}
+  .opt.wrong{background:var(--redbg);border-color:var(--red);color:#922}
+  .opt.locked{cursor:default}
+  .explain{margin-top:15px;background:#eef4f7;border-left:4px solid var(--deep-2);border-radius:8px;padding:14px 16px;font-size:.92rem;color:var(--ink-soft);display:none}
+  .explain.show{display:block}.explain b{color:var(--ink)}
+  .quiz-foot{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px}
+  .progbar{height:7px;background:var(--line);border-radius:10px;overflow:hidden;margin-bottom:20px}
+  .progbar span{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--lime));transition:.4s}
+  .result{text-align:center;padding:18px}
+  .result .big{font-family:'Barlow Condensed';font-weight:800;font-size:4rem;color:var(--teal)}
+  .result h3{font-size:1.6rem;margin-bottom:8px}
+
+  .kw-card,.calc-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);max-width:760px;margin:0 auto}
+  .kw-tag{font-family:'IBM Plex Mono';font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-d);font-weight:600;margin-bottom:12px}
+  .kw-q{font-size:1.1rem;line-height:1.45;background:var(--paper);border-radius:11px;padding:20px;margin-bottom:8px}
+  .kw-step{border:1px solid var(--line);border-radius:12px;margin-top:14px;overflow:hidden}
+  .kw-step-h{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;background:var(--card);transition:.15s}
+  .kw-step-h:hover{background:#f5faf6}
+  .kw-step-h .sn{font-family:'Barlow Condensed';font-weight:800;width:30px;height:30px;border-radius:8px;flex:none;display:grid;place-items:center;background:var(--deep);color:#fff;font-size:.95rem}
+  .kw-step-h .st{font-family:'Barlow Condensed';font-weight:700;font-size:1.1rem;flex:1;text-transform:uppercase}
+  .kw-step-h .chev{transition:.25s;color:var(--ink-soft)}.kw-step.open .chev{transform:rotate(90deg)}
+  .kw-step-b{max-height:0;overflow:hidden;transition:max-height .35s ease;background:#f6faf7}
+  .kw-step.open .kw-step-b{max-height:460px}
+  .kw-step-b .inner{padding:4px 18px 18px;font-size:.93rem;color:var(--ink-soft)}
+  .kw-step-b .inner .reftag{font-family:'IBM Plex Mono';font-weight:600;color:#fff;background:var(--teal);padding:3px 10px;border-radius:6px;display:inline-block;margin-top:6px}
+  .kwlist{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+  .kwlist span{background:var(--teal-soft);color:var(--teal-d);font-weight:600;font-size:.82rem;padding:4px 11px;border-radius:20px;font-family:'IBM Plex Mono'}
+
+  /* CALCULATIONS */
+  .calc-q{font-size:1.05rem;line-height:1.5;background:var(--paper);border-radius:11px;padding:18px;margin-bottom:14px}
+  .calc-formula{font-family:'IBM Plex Mono';font-size:.95rem;background:var(--deep);color:var(--lime);padding:13px 16px;border-radius:10px;margin-bottom:14px;overflow-x:auto}
+  .calc-steps{counter-reset:step;list-style:none;padding:0;margin:0 0 14px}
+  .calc-steps li{position:relative;padding:10px 0 10px 44px;border-bottom:1px solid #eef2ee;font-size:.94rem;color:var(--ink-soft)}
+  .calc-steps li:last-child{border-bottom:0}
+  .calc-steps li::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:9px;width:28px;height:28px;border-radius:8px;background:var(--teal-soft);color:var(--teal-d);font-family:'IBM Plex Mono';font-weight:600;font-size:.85rem;display:grid;place-items:center}
+  .calc-answer{background:var(--greenbg);border:1px solid var(--green);border-radius:11px;padding:14px 18px;margin-bottom:12px}
+  .calc-answer .lbl{font-family:'IBM Plex Mono';font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green);font-weight:600;display:block;margin-bottom:3px}
+  .calc-answer .val{font-family:'Barlow Condensed';font-weight:800;font-size:1.6rem;color:#1d5436;text-transform:uppercase}
+  .calc-tip{background:#fff7e6;border:1px solid var(--amber);border-left:5px solid var(--amber-d);border-radius:10px;padding:13px 16px;font-size:.9rem;color:var(--ink-soft)}
+  .calc-tip b{color:var(--ink)}
+  .calc-toggle{margin-top:14px}
+
+  .method-step{display:flex;gap:18px;margin-bottom:8px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;box-shadow:var(--shadow)}
+  .method-step .mn{font-family:'Barlow Condensed';font-weight:800;font-size:1.7rem;color:#fff;background:var(--teal);width:52px;height:52px;border-radius:13px;display:grid;place-items:center;flex:none}
+  .method-step h3{font-size:1.25rem;margin-bottom:4px;text-transform:uppercase}
+  .method-step p{font-size:.93rem;color:var(--ink-soft)}
+  .arrow-down{text-align:center;color:var(--teal);font-size:1.3rem;margin:2px 0}
+  .callout{background:#fff7e6;border:1px solid var(--amber);border-left:5px solid var(--amber-d);border-radius:12px;padding:18px 22px;margin:22px 0;font-size:.94rem}
+  .callout b{color:var(--ink)}
+
+  footer{text-align:center;padding:30px 20px;color:var(--ink-soft);font-size:.84rem;border-top:1px solid var(--line)}
+  .credit-badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);padding:7px 16px;border-radius:30px;box-shadow:var(--shadow);font-weight:700;font-size:.85rem;color:var(--ink)}
+  .disc{background:rgba(12,42,34,.04);border:1px solid var(--line);border-radius:10px;padding:13px 16px;font-size:.8rem;color:var(--ink-soft);margin-top:22px}
+  .newtag{display:inline-block;background:var(--green);color:#fff;font-family:'IBM Plex Mono';font-size:.66rem;font-weight:600;letter-spacing:.06em;padding:2px 8px;border-radius:5px;margin-right:6px;vertical-align:middle;text-transform:uppercase}
+
+  .wm{position:fixed;bottom:8px;right:14px;z-index:60;pointer-events:none;font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:600;
+    letter-spacing:.03em;color:rgba(12,42,34,.5);text-align:right;max-width:300px;background:rgba(238,243,238,.74);backdrop-filter:blur(2px);
+    padding:5px 12px;border-radius:14px;border:1px solid rgba(15,138,106,.3);user-select:none;line-height:1.35}
+  .wm .wm-main{color:var(--teal-d)}
+  .wm .wm-sub{display:block;font-size:.62rem;font-weight:500;color:rgba(12,42,34,.42);margin-top:1px}
+
+  @media print{body *{display:none!important}body::before{content:"Printing is disabled.\A\A © tutorwarren.com — All Rights Reserved.";white-space:pre-wrap;display:block!important;text-align:center;font-family:sans-serif;font-size:18pt;font-weight:800;color:#000;padding:60px 30px}}
+  @media(max-width:640px){
+    .topbar{padding:12px 16px}.brand-txt b{font-size:1.15rem}
+    nav{width:100%;margin-left:0;overflow-x:auto;padding-bottom:4px}
+    main{padding:22px 16px 70px}.hero{padding:28px 22px}
+    .method-step{flex-direction:column;gap:12px}.flashcard{height:380px}
+    .wm{font-size:.6rem;max-width:220px;bottom:6px;right:8px}.wm .wm-sub{font-size:.55rem}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="brand" onclick="go('home')">
+      <div class="badge">OSG</div>
+      <div class="brand-txt"><b>On-Site Guide</b><span>Level 2 · BS 7671:2018+A2:2022</span></div>
+    </div>
+    <nav id="nav">
+      <a href="index.html" style="text-decoration:none;display:inline-block;background:#0f8a6a;color:white;padding:9px 14px;border-radius:9px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.03em;text-transform:uppercase;margin-right:6px;">🏠 Website Home</a>
+      <button data-view="home" class="active">Home</button>
+      <button data-view="sections">Sections</button>
+      <button data-view="calcs">Calculations</button>
+      <button data-view="index">Index Finder</button>
+      <button data-view="definitions">Definitions</button>
+      <button data-view="flashcards">Flash Cards</button>
+      <button data-view="quiz">Test Yourself</button>
+      <button data-view="keyword">Keyword Trainer</button>
+      <button data-view="examskills">Exam Skills</button>
+    </nav>
+  </div>
+</header>
+<main id="app"></main>
+<footer>
+  <div class="credit-badge"><div class="badge" style="width:18px;height:18px;font-size:.6rem;border-radius:5px">⚡</div>Developed by tutorwarren.com</div>
+  <p style="margin-top:12px">A study aid for the IET On-Site Guide, based on BS 7671:2018+A2:2022. Always work from your own current copy of the On-Site Guide and BS 7671.</p>
+</footer>
+<div class="wm"><span class="wm-main">This learning resource is developed by tutorwarren.com</span><span class="wm-sub">&copy; tutorwarren.com &mdash; All Rights Reserved &mdash;</span></div>
+
+<script>
+/* ============================================================
+   On-Site Guide (BS 7671:2018+A2:2022) — Level 2 Study App
+   Plain-English explanations written for Level 2 learners.
+   Concepts are paraphrased for study — not the verbatim text of
+   the On-Site Guide or BS 7671.
+   Developed by tutorwarren.com — All Rights Reserved.
+   ============================================================ */
+
+/* ---------- SECTIONS OF THE ON-SITE GUIDE ---------- */
+const SECTIONS = [
+  {
+    id:"s1", num:"1", title:"Introduction", tag:"What the OSG is for",
+    intro:"Section 1 explains what the On-Site Guide (OSG) covers and the information you must gather before you start any job. The OSG is a pocket-sized 'companion' to BS 7671 — it takes the rules from the big book and turns them into ready-to-use tables and guidance for everyday domestic and small commercial work (up to a 100 A single-phase supply).",
+    chapters:[
+      { num:"1.1", title:"Scope & how the OSG relates to BS 7671",
+        body:"The OSG is NOT a replacement for BS 7671 — it's a practical summary for straightforward installations. It is intended for installations supplied at 230 V single-phase up to 100 A. For anything outside that (large, complex or unusual jobs) you must go back to the full BS 7671. <strong>Remember the difference:</strong> BS 7671 is the standard (the rules); the OSG is the on-site helper that makes those rules quick to apply.",
+        regs:[
+          {ref:"OSG Sec 1.1", topic:"Scope — domestic/small commercial up to 100 A single-phase", detail:"The OSG is written for simple installations: a normal house or small unit on a 230 V single-phase supply, with a main fuse up to 100 A. If the job is bigger or unusual, you design from BS 7671 itself. <b>Exam tip:</b> a question describing a large factory or a 3-phase 400 V industrial job is steering you AWAY from the OSG's standard circuits."},
+          {ref:"Statutory law", topic:"Statutory vs non-statutory documents", detail:"<b>Statutory</b> documents are law — you MUST obey them. Examples: the Health and Safety at Work etc. Act 1974, the Electricity at Work Regulations 1989, the Building Regulations. <b>Non-statutory</b> documents are guidance/standards that show HOW to comply — examples: BS 7671 itself, the On-Site Guide, Codes of Practice. <b>Common exam question:</b> 'Which of these is NOT a statutory instrument?' — the answer is usually BS 7671, because it is a British Standard, not a law."},
+          {ref:"EAWR 1989", topic:"What a failure to comply can lead to", detail:"BS 7671 is non-statutory, but courts treat compliance with it as evidence of meeting the legal duties in the Electricity at Work Regulations 1989. Failing to comply can lead to a <b>prohibition notice</b>, <b>prosecution</b> and a <b>fine</b> — and of course loss of reputation. The legal consequences (notice, prosecution, fine) flow from breaking the statutory law, not the standard itself."}
+        ]},
+      { num:"1.2", title:"Building Regulations",
+        body:"Electrical work in dwellings in England & Wales is also covered by the Building Regulations (Part P in England). Some work is 'notifiable' and must be certified/notified to building control (or done by a registered competent person). This sits ALONGSIDE BS 7671 — you have to satisfy both.",
+        regs:[
+          {ref:"Part P", topic:"Notifiable electrical work in dwellings", detail:"Part P (England) requires that electrical installation work in dwellings is safe. Certain work — e.g. a new circuit, a consumer unit change, or work in a special location like a bathroom — is <b>notifiable</b> to building control, or must be self-certified by a registered competent person. The OSG flags where Building Regulations apply on top of BS 7671."}
+        ]},
+      { num:"1.3", title:"Basic information required before starting",
+        body:"Before designing or installing, you must collect key facts: the type of earthing system (TN-S, TN-C-S or TT), the nominal voltage, the supply frequency, the prospective fault current, and the external earth fault loop impedance (Ze). You also confirm the maximum demand and the arrangement of circuits. Missing this information is a common cause of unsafe or non-compliant work.",
+        regs:[
+          {ref:"OSG Sec 1.3", topic:"Information needed: Ze, Ipf, earthing type, supply", detail:"You need to know: the <b>earthing arrangement</b> (TN-S / TN-C-S / TT — which decides your protection and Zs limits), the <b>nominal voltage</b> (230 V single-phase), the <b>frequency</b> (50 Hz), the <b>prospective fault current (Ipf)</b> at the origin (so your devices have adequate breaking capacity), and the <b>external loop impedance Ze</b>. These come from the distributor or by measurement."}
+        ]},
+      { num:"1.4", title:"Drawings, diagrams & symbols",
+        body:"Electricians read several kinds of drawing, and the exam tests whether you can tell them apart. A <strong>layout (location) drawing</strong> shows WHERE things go in the building. A <strong>circuit diagram</strong> shows how a circuit works electrically. A <strong>block diagram</strong> shows the main parts as simple blocks. A <strong>schematic</strong> shows the arrangement of devices (e.g. the breakers in a distribution board). You also need to recognise standard BS EN 60617 symbols (switches, socket-outlets, lamps, etc.).",
+        regs:[
+          {ref:"Drawing types", topic:"Layout vs circuit vs block vs schematic diagram", detail:"<b>Layout / location drawing:</b> a plan of the building showing where accessories and equipment are positioned (e.g. where the distribution board sits). <b>Circuit diagram:</b> shows how a circuit is connected and functions electrically. <b>Block diagram:</b> represents the system as labelled blocks joined by lines — the 'big picture'. <b>Schematic / wiring diagram:</b> shows the detailed arrangement of devices, e.g. the order of circuit breakers in a board. <b>Exam tip:</b> 'WHERE is it located?' → layout/site drawing; 'arrangement of breakers in a board' → schematic."},
+          {ref:"Scale", topic:"Working with scale on drawings", detail:"A scale of <b>1:200</b> means 1 unit on the drawing equals 200 units in real life. To find the real length, multiply the measured length by the scale number. <b>Worked example:</b> a cable measures 280 mm on a 1:200 drawing → real length = 280 mm × 200 = 56 000 mm = <b>56 m</b>. (See the Calculations section for more.)"},
+          {ref:"BS EN 60617", topic:"Standard graphical symbols", detail:"You must recognise the standard symbols — e.g. a switched socket-outlet, a one-way switch, a lamp, a transformer, a distribution board. Learning the common BS EN 60617 symbols is straightforward marks in the exam, so drill them with the flash cards."}
+        ]}
+    ]
+  },
+  {
+    id:"s2", num:"2", title:"The Electrical Supply", tag:"Earthing systems & intake",
+    intro:"Section 2 covers what arrives at the property — the supply, the intake equipment, and crucially the earthing system. You must be able to identify TN-S, TN-C-S (PME) and TT systems from a diagram of the service head, and name the equipment at the service position.",
+    chapters:[
+      { num:"2.1", title:"Earthing systems (TN-S, TN-C-S, TT)",
+        body:"The earthing system describes how the supply and the installation are connected to earth. In a <strong>TN-S</strong> system, the earth is provided by the supply cable (often the lead sheath of the service cable) and the neutral and earth are separate. In a <strong>TN-C-S (PME)</strong> system, the supply combines neutral and earth as a PEN conductor, and the installation's earth is taken from the neutral at the intake — this is the most common UK domestic arrangement. In a <strong>TT</strong> system, there is no earth from the supplier, so the installation must have its own earth electrode (a rod in the ground); TT relies on RCDs.",
+        regs:[
+          {ref:"TN-S", topic:"TN-S — earth via the supply cable sheath", detail:"Separate neutral and protective conductors all the way back to the source. The earth is provided by the supplier, typically through the metal sheath/armour of the service cable. You'll see a separate earth connection at the service head. Low external loop impedance (Ze)."},
+          {ref:"TN-C-S (PME)", topic:"TN-C-S — combined PEN at supply, split at intake", detail:"The most common UK domestic system, also called PME (Protective Multiple Earthing). The supply brings a combined neutral-and-earth (PEN) conductor; at the intake the earth terminal is linked to the incoming neutral. Very low Ze. <b>Identify it:</b> the earthing conductor connects to the supply neutral block at the service head."},
+          {ref:"TT", topic:"TT — installation has its own earth electrode", detail:"No earth is provided by the supplier — common in rural areas with overhead supplies. The installation must have its OWN earth electrode (rod). Because an electrode gives a high loop impedance, a TT system <b>relies on RCDs</b> for fault protection. <b>Identify it:</b> an earth rod/electrode and no earth wire from the supplier's cable."},
+          {ref:"Earth fault loop", topic:"What is in the earth fault loop", detail:"The earth fault loop is the path fault current takes: from the source, along the line conductor, through the fault, back via the CPC and earthing, through the supply transformer winding, and back to the line. In a <b>TN-C-S</b> system the earth return is the supply's PEN/neutral — there is NO earth electrode in the loop. <b>Exam catch:</b> 'In a TN-C-S system, which is NOT part of the earth fault loop?' → the earth electrode (TT uses an electrode, TN-C-S does not)."}
+        ]},
+      { num:"2.2", title:"Intake / service position equipment",
+        body:"At the service position (where the supply enters) you should be able to name the equipment in order: the <strong>service (cut-out) fuse</strong> belonging to the distributor, the <strong>electricity meter</strong>, then the consumer's <strong>main switch / isolator</strong> and the <strong>consumer unit</strong> containing the circuit protective devices. Everything up to and including the meter belongs to the supplier; the installation starts at the consumer's main switch (the origin).",
+        regs:[
+          {ref:"Service position", topic:"Service fuse, meter, isolator, consumer unit", detail:"In order from the incoming cable: <b>service cut-out fuse</b> (distributor's, sealed), <b>meter</b> (energy supplier's), then the consumer's <b>main switch/isolator</b> and <b>consumer unit</b>. The dividing line of ownership is the meter — beyond it the installation is the customer's responsibility. <b>Exam tip:</b> questions ask you to label these in a diagram of the service head."}
+        ]}
+    ]
+  },
+  {
+    id:"s3", num:"3", title:"Protection", tag:"Shock, overcurrent & devices",
+    intro:"Section 3 covers protecting people and the installation — protection against electric shock (basic + fault protection, ADS, RCDs), and protection against overcurrent (overload and short-circuit) using fuses and circuit breakers. The exam tests device types, fusing factors, breaking capacity and where RCDs are needed.",
+    chapters:[
+      { num:"3.1", title:"Protection against electric shock",
+        body:"Shock protection comes in two layers. <strong>Basic protection</strong> stops you touching live parts in normal use (insulation, enclosures). <strong>Fault protection</strong> protects you if a fault makes metalwork live — mainly by <strong>Automatic Disconnection of Supply (ADS)</strong>, helped by earthing, bonding and protective devices. <strong>Additional protection</strong> by a 30 mA RCD is the safety net that catches situations the first two layers miss (a damaged cable, a child, a person in the fault path).",
+        regs:[
+          {ref:"Basic + fault protection", topic:"The two layers of shock protection", detail:"<b>Basic protection</b> = insulation, barriers and enclosures keeping you away from live parts (old name 'direct contact'). <b>Fault protection</b> = protection if a fault makes exposed metal live, mainly automatic disconnection (old name 'indirect contact'). The PURPOSE of earthing and protective conductors is to <b>reduce the risk of shock when a fault occurs</b> — that exact phrase is a common multiple-choice answer."},
+          {ref:"30 mA RCD", topic:"Additional protection by RCD", detail:"A 30 mA RCD provides additional protection. It's required for socket-outlets up to 32 A, for circuits in bathrooms, for cables buried less than 50 mm in walls, and (since A2:2022) for lighting circuits in dwellings. 30 mA is chosen because it disconnects fast enough to prevent a fatal shock."}
+        ]},
+      { num:"3.2", title:"Protection against overcurrent",
+        body:"Overcurrent is too much current. An <strong>overload</strong> happens in a healthy circuit asked to carry more than its rating (too many appliances). A <strong>short-circuit / fault current</strong> happens when live conductors touch or there's an earth fault. Protective devices (fuses and circuit breakers) must disconnect before the cable overheats. The cable-and-device match follows <strong>Ib ≤ In ≤ Iz</strong>.",
+        regs:[
+          {ref:"Ib ≤ In ≤ Iz", topic:"Matching the device to the cable", detail:"<b>Ib</b> = design current (what the circuit needs to carry). <b>In</b> = the rating of the protective device. <b>Iz</b> = the current the installed cable can safely carry. The rule: design current ≤ device rating ≤ cable capacity. Pick the device first to cover Ib, then choose a cable whose Iz is at least In."},
+          {ref:"Fusing factor", topic:"Fusing factor — when a fuse is guaranteed to blow", detail:"A fuse doesn't blow at exactly its rating; it blows reliably at a higher current. <b>Fusing factor</b> = fusing current ÷ rated current. <b>Worked example:</b> a 10 A fuse with a fusing factor of 1.45 is guaranteed to clear the circuit (in the stated time) at 10 × 1.45 = <b>14.5 A</b>. This is why a cable must tolerate up to 1.45 × its rating (the I2 ≤ 1.45 Iz rule)."},
+          {ref:"BS 3036 fuse", topic:"BS 3036 rewireable fuse — pros and cons", detail:"A BS 3036 (rewireable) fuse uses a piece of fuse wire. Its big <b>disadvantage</b>: it can be re-wired with the <b>wrong size of fuse wire</b> by someone inexperienced, defeating the protection. It also has a poor (low) breaking capacity and a high fusing factor (1.9), which is why a correction factor (Cf = 0.725) is applied to cables protected by it."},
+          {ref:"Device types B/C/D", topic:"Circuit-breaker types and inrush", detail:"MCB types differ by how much current makes them trip instantly: <b>Type B</b> trips at 3–5× rating (general domestic use); <b>Type C</b> at 5–10× (loads with higher switch-on surge such as banks of fluorescent/LED lighting or motors); <b>Type D</b> at 10–20× (high inrush, e.g. transformers, welding). <b>Exam tip:</b> 'bank of fluorescent lighting' → Type C, because of the inrush current at switch-on."},
+          {ref:"Breaking capacity", topic:"Breaking capacity (kA rating)", detail:"The breaking capacity is the largest fault current a device can safely interrupt without being destroyed. It must be at least equal to the prospective fault current at that point. A rewireable BS 3036 fuse has a low breaking capacity; HBC (BS 88) fuses and MCBs are much higher."}
+        ]}
+    ]
+  },
+  {
+    id:"s4", num:"4", title:"Earthing & Bonding", tag:"Conductors & their sizes",
+    intro:"Section 4 is heavily tested. It covers the earthing conductor, circuit protective conductors (CPCs), main protective bonding and supplementary bonding — what each does, and how to size them. You must know the difference between an exposed-conductive-part and an extraneous-conductive-part, and be able to read the bonding conductor sizing tables.",
+    chapters:[
+      { num:"4.1", title:"Exposed vs extraneous conductive parts",
+        body:"This distinction is tested almost every paper. An <strong>exposed-conductive-part</strong> is metalwork that IS part of the electrical installation and could become live under a fault — e.g. the metal case of a Class I washing machine, or steel conduit. An <strong>extraneous-conductive-part</strong> is metalwork that is NOT part of the installation but could bring earth potential in from elsewhere — e.g. the building's structural steel, or metal water and gas pipes.",
+        regs:[
+          {ref:"Exposed-conductive-part", topic:"Exposed-conductive-part — examples", detail:"Metal that belongs to the installation and is normally dead but could go live under fault: a Class I appliance's metal casing, a metal back-box, steel conduit/trunking carrying circuits. It is connected back to earth by a CPC. (A plastic hairdryer case is NOT a conductive part at all.)"},
+          {ref:"Extraneous-conductive-part", topic:"Extraneous-conductive-part — examples", detail:"Metal that is NOT part of the installation but can introduce a potential (usually earth) into the building: <b>structural steelwork</b>, incoming metal water and gas pipes. These get <b>main protective bonding</b>. <b>Exam example:</b> 'Which is an extraneous-conductive-part?' → structural steelwork of the building (the washing-machine case and steel conduit are exposed-conductive-parts; the plastic hairdryer is neither)."}
+        ]},
+      { num:"4.2", title:"Types of protective conductor",
+        body:"Know the family of protective conductors and what each connects. The <strong>earthing conductor</strong> joins the main earthing terminal (MET) to the means of earthing. A <strong>circuit protective conductor (CPC)</strong> connects a circuit's exposed-conductive-parts back to the MET. A <strong>main protective bonding conductor</strong> connects incoming services (water, gas, structural steel) to the MET. A <strong>supplementary bonding conductor</strong> links exposed and extraneous parts together locally (e.g. in a bathroom).",
+        regs:[
+          {ref:"Earthing conductor", topic:"Earthing conductor", detail:"Connects the MET to the means of earthing (the supplier's earth, or an earth electrode in a TT system). It is the main link between the whole installation and earth."},
+          {ref:"CPC", topic:"Circuit protective conductor (CPC)", detail:"Runs with each circuit, connecting the exposed-conductive-parts of that circuit (e.g. socket earth terminals, metal back-boxes, appliance cases) back to the MET, giving fault current a low-resistance path so the device disconnects."},
+          {ref:"Main bonding", topic:"Main protective bonding conductor", detail:"Connects extraneous-conductive-parts (incoming metal water pipe, gas pipe, oil pipe, structural steel) to the MET, so they can't sit at a different potential to the installation's earth. Connected within 600 mm of the meter or at the point of entry."},
+          {ref:"Supplementary bonding", topic:"Supplementary bonding conductor", detail:"Local bonding that ties together simultaneously-touchable exposed and extraneous parts within a room (classically a bathroom), keeping touch voltage low during a fault. Can be omitted in a bathroom if main bonding, ADS times and 30 mA RCD protection are all satisfied."}
+        ]},
+      { num:"4.3", title:"Sizing bonding conductors",
+        body:"You must be able to read the OSG/BS 7671 tables for conductor sizes. For <strong>main protective bonding on a TN system</strong>, the conductor is generally <strong>half the size of the earthing conductor, with a minimum of 6 mm² and a maximum of 25 mm²</strong> copper. A common exam result: for a TN-S system with a 25 mm² line conductor, the earthing conductor is 16 mm², so the main bonding is half of that = <strong>10 mm²</strong>. For a PME (TN-C-S) supply, main bonding is sized from the supply neutral (Table 54.8) and is at least 10 mm².",
+        regs:[
+          {ref:"Main bonding (TN)", topic:"Main bonding size on a TN system", detail:"Rule of thumb for TN systems: main bonding = half the earthing conductor CSA, min 6 mm², max 25 mm² (copper). <b>Worked example:</b> line conductor 25 mm² → earthing conductor 16 mm² → main bonding = 16 ÷ 2 = 8, rounded up to the standard size <b>10 mm²</b>. <b>This is a classic exam question</b>, so practise reading the table."},
+          {ref:"Main bonding (PME)", topic:"Main bonding size on a PME (TN-C-S) supply", detail:"For PME supplies the bonding must be bigger because the PEN carries current. From Table 54.8 it's typically <b>10 mm²</b> for a supply neutral up to 35 mm², rising to 16 mm² and beyond for larger supplies."},
+          {ref:"CPC sizing", topic:"CPC size by selection", detail:"By the selection method: if the line conductor is ≤16 mm², the CPC equals the line conductor; if 16–35 mm², CPC = 16 mm²; if >35 mm², CPC = half the line conductor. In flat twin-and-earth cable the CPC is already built in (and is smaller than the line conductors — worth noting for fault calculations)."}
+        ]}
+    ]
+  },
+  {
+    id:"s5", num:"5", title:"Isolation & Switching", tag:"Cutting off safely",
+    intro:"Section 5 covers the four switching functions: isolation, switching off for mechanical maintenance, emergency switching, and functional switching — plus the firefighter's switch. The exam tests which function applies in a given situation and what a means of isolation must do.",
+    chapters:[
+      { num:"5.1", title:"Isolation",
+        body:"<strong>Isolation</strong> means cutting a circuit off from EVERY source of supply so it is safe to work on, and securing it against being switched back on (e.g. locking off). A means of isolation must reliably break all live conductors and give a clear indication (or visible gap) that it is open. The main switch in a consumer unit is a means of isolation for the whole installation.",
+        regs:[
+          {ref:"Isolation", topic:"Isolation — secure cut-off for safe working", detail:"Disconnects the circuit from all sources of supply, and must be securable against accidental or unauthorised re-closure (locking off + 'safe isolation' procedure with a proving unit and voltage tester). This is what you do BEFORE working on a dead circuit."}
+        ]},
+      { num:"5.2", title:"Switching off for mechanical maintenance",
+        body:"Where someone might be injured by mechanical movement (servicing a motor, fan or pump), a means of switching off must be provided and kept under the control of the person doing the work, so the equipment can't start unexpectedly.",
+        regs:[{ref:"Mech. maintenance", topic:"Switching off for mechanical maintenance", detail:"Used where there's a risk from mechanical movement, not just electricity. The switch must stay under the worker's control while they work (e.g. a lockable local isolator next to the motor)."}]},
+      { num:"5.3", title:"Emergency switching & firefighter's switch",
+        body:"<strong>Emergency switching</strong> rapidly removes a dangerous condition — the device must be readily accessible and clearly identified (often a red mushroom-head button). A <strong>firefighter's switch</strong> is required to cut off high-voltage or exterior/sign supplies (e.g. neon signs) so the fire service can make them safe.",
+        regs:[
+          {ref:"Emergency switching", topic:"Emergency switching off", detail:"A quick, obvious way to cut the supply when something dangerous is happening — readily accessible, clearly marked, and able to be operated in one action."},
+          {ref:"Firefighter's switch", topic:"Firefighter's switch", detail:"Provided for exterior installations and signs operating at high voltage (e.g. illuminated signs), positioned where the fire service can reach it, coloured and labelled to a standard so it's instantly recognisable."}
+        ]},
+      { num:"5.4", title:"Functional switching",
+        body:"<strong>Functional switching</strong> is everyday on/off control of equipment in normal use — a light switch, a thermostat, a socket switch. It doesn't have to break all poles or be lockable; it just has to control the equipment in service.",
+        regs:[{ref:"Functional switching", topic:"Functional switching", detail:"Normal operational control — turning a light or appliance on and off. Different from isolation (which is about safety and must be secure)."}]}
+    ]
+  },
+  {
+    id:"s6", num:"6", title:"Labelling & Notices", tag:"Required labels",
+    intro:"Section 6 lists the notices and labels an installation must have so it can be used and maintained safely — periodic inspection notices, RCD test notices, warning labels where bonding is present or where dangerous charges or non-standard arrangements exist.",
+    chapters:[
+      { num:"6.1", title:"Required notices",
+        body:"Common required notices include: a <strong>periodic inspection</strong> notice (when it was last inspected and when it's next due), an <strong>RCD test</strong> notice (telling the user to press the test button quarterly), a notice at the origin showing the <strong>earthing and bonding</strong> connections, and warnings where two different voltages are present or where a dangerous charge can be retained.",
+        regs:[
+          {ref:"RCD test notice", topic:"RCD quarterly test notice", detail:"Where an RCD is fitted, a durable notice must tell the user to operate the test button quarterly — RCDs are mechanical and can seize, so the user's regular test is part of keeping them reliable."},
+          {ref:"Inspection notice", topic:"Periodic inspection notice", detail:"Fixed at or near the origin, stating the date of the last inspection and the recommended date for the next, so the next person knows when an EICR is due."},
+          {ref:"Bonding label", topic:"'Safety Electrical Connection — Do Not Remove' label", detail:"Fitted at main bonding and earthing connections to warn people not to disconnect them — removing a bond could leave metalwork dangerously live during a fault."}
+        ]}
+    ]
+  },
+  {
+    id:"s7", num:"7", title:"Final Circuits & Wiring Systems", tag:"Standard circuits & cables",
+    intro:"Section 7 is the practical heart of the OSG — the standard final circuits (ring, radial, lighting, cooker, immersion heater), the cables and wiring systems used, and containment (conduit, trunking, tray, ladder, basket, busbar). Lots of mock-exam questions come from here, including circuit types, cable choice and floor areas.",
+    chapters:[
+      { num:"7.1", title:"Cables & wiring systems",
+        body:"You must recognise common cables and why they're chosen. <strong>Flat profile PVC twin-and-earth</strong> (the grey/white flat cable) is used everywhere in homes mainly because it is <strong>cheap and easy to install</strong>. <strong>SWA (steel wire armoured)</strong> is tough and used for buried/external runs. <strong>Data cable</strong> (e.g. Cat 5e/6 twisted pair) carries data. <strong>Fire-resistant cable</strong> (e.g. FP200) is used for fire alarm and emergency systems because it keeps working in a fire.",
+        regs:[
+          {ref:"Twin & earth", topic:"Flat PVC twin-and-earth — why it's used", detail:"The main reason flat-profile PVC insulated-and-sheathed cable dominates domestic and commercial work is simply that it is <b>cheap and easily installed</b>. (It is not chosen for being especially flame-, water- or impact-resistant — those are the wrong answers in the classic MCQ.)"},
+          {ref:"Data cable", topic:"Cable for data", detail:"Modern data is carried on twisted-pair data cable (e.g. Cat 5e/Cat 6) or fibre — not on standard power cable. Keep data and power segregated to avoid interference."},
+          {ref:"Fire-rated cable", topic:"Cable for fire alarm systems", detail:"Fire alarm and other safety-service wiring uses fire-resistant cable (e.g. FP200 / mineral-insulated) so the alarm keeps working long enough for people to escape."},
+          {ref:"SWA", topic:"Steel wire armoured cable", detail:"SWA is mechanically tough and resists impact and moisture, so it suits buried runs, outbuildings and industrial settings. Its steel armour can serve as the CPC."}
+        ]},
+      { num:"7.2", title:"Containment systems",
+        body:"Containment protects and supports cables. Know them by sight: <strong>conduit</strong> (round tube, steel or PVC), <strong>trunking</strong> (rectangular with a removable lid; can be segregated for power/data), <strong>cable tray</strong> (flat perforated sheet), <strong>cable ladder</strong> (open ladder for heavy cables), <strong>cable basket</strong> (wire mesh), and <strong>busbar trunking / powertrack</strong> used as a <strong>rising main</strong> in multi-storey buildings. You also need to identify conduit fittings: locknut, male bush, female bush, coupler.",
+        regs:[
+          {ref:"Containment types", topic:"Conduit, trunking, tray, ladder, basket", detail:"<b>Conduit</b> — round enclosed tube. <b>Trunking</b> — rectangular with a lid, can have internal barriers to segregate power from data. <b>Cable tray</b> — flat perforated metal base cables are tied to. <b>Cable ladder</b> — open ladder-shaped support for large/heavy cables. <b>Cable basket</b> — light wire-mesh support. Identifying these from pictures is common in the exam."},
+          {ref:"Busbar trunking", topic:"Rising main in multi-storey buildings", detail:"A <b>busbar trunking</b> system (sometimes 'powertrack') is used as the <b>rising main</b> that carries the supply up through the floors of a multi-storey building, with tap-off points on each floor. (Ducting just routes cables; modular wiring is for fast fit-out — the rising main answer is busbar trunking.)"},
+          {ref:"Conduit fittings", topic:"Locknut, male bush, female bush, coupler", detail:"<b>Coupler</b> joins two lengths of conduit. <b>Locknut</b> secures conduit to an enclosure. <b>Male bush</b> screws into the enclosure and the female bush onto it (or vice-versa) to give a smooth edge so cables aren't damaged. Recognising each part is a labelling question."}
+        ]},
+      { num:"7.3", title:"Standard final circuits",
+        body:"Learn the standard circuits and their key numbers. A <strong>ring final circuit</strong> to BS 1363 sockets uses 2.5 mm² cable, a 32 A protective device, and can serve a floor area up to <strong>100 m²</strong>. A <strong>radial circuit</strong> to BS 1363 sockets using 2.5 mm² cable and a 20 A device serves up to 50 m²; using 4 mm² cable and a 32 A device it serves up to <strong>75 m²</strong>. A <strong>fused spur</strong> from a ring is limited by the fuse in the fused connection unit (max 13 A). Know also the cooker circuit, immersion heater circuit and lighting circuits.",
+        regs:[
+          {ref:"Ring final circuit", topic:"Ring final circuit — 2.5 mm², 32 A, 100 m²", detail:"A ring of 2.5 mm² twin-and-earth, protected at 32 A, feeding BS 1363 (13 A) socket-outlets, may serve a floor area up to <b>100 m²</b>. Because it's a ring, each socket is fed from two directions, sharing the load."},
+          {ref:"Radial 32 A", topic:"Radial circuit — 4 mm², 32 A, 75 m²", detail:"A radial circuit using <b>4 mm²</b> cable and a <b>32 A</b> Type B circuit-breaker to BS 1363 sockets serves up to <b>75 m²</b>. <b>Exam example:</b> 'A radial to BS 1363 sockets has a 32 A Type B breaker — minimum live conductor CSA?' → <b>4 mm²</b>; 'maximum floor area?' → <b>75 m²</b>."},
+          {ref:"Radial 20 A", topic:"Radial circuit — 2.5 mm², 20 A, 50 m²", detail:"A radial using 2.5 mm² cable and a 20 A device serves up to 50 m². Lower rating and smaller area than the 4 mm²/32 A version."},
+          {ref:"Fused spur", topic:"Fused spur off a ring — conductor size", detail:"A fused spur is taken from a ring through a fused connection unit (FCU). The minimum live conductor CSA of the spur is <b>determined by the fuse in the FCU</b> (max 13 A), not by a fixed figure — so 1.0/1.5 mm² may be acceptable depending on the fuse. That 'determined by the fuse' option is the correct MCQ answer."},
+          {ref:"Immersion heater", topic:"Immersion heater circuit", detail:"An immersion heater is supplied on its own circuit, protected at the consumer unit, and connected via a switched flexible cord outlet near the heater using heat-resistant flex. <b>Exam catch:</b> the FALSE statement is usually 'it should be protected ONLY by a breaker at the consumer unit' — good practice also provides local control/protection near the heater."},
+          {ref:"Final vs distribution circuit", topic:"Final circuit vs distribution circuit", detail:"A <b>final circuit</b> connects directly to current-using equipment or socket-outlets (e.g. the board to a water heater element). A <b>distribution circuit</b> feeds another board/switchgear. <b>Exam example:</b> 'a circuit connecting a distribution board to a water-heater element' is a <b>final circuit</b>."},
+          {ref:"Two-way lighting", topic:"Two-way switching", detail:"Two-way switching lets one light be controlled from two places (e.g. top and bottom of stairs) using two 2-way switches and strappers between them. Converting one-way to two-way means adding a second switch and the strapping/common connections."}
+        ]}
+    ]
+  },
+  {
+    id:"s9", num:"9", title:"Inspection & Testing", tag:"Proving it's safe",
+    intro:"Section 9 covers checking a new installation is safe before use — inspection (looking) then testing (measuring), in the correct sequence — and the certificate you issue. Level 2 focuses on the purpose and order of the dead and live tests and the basic instruments used.",
+    chapters:[
+      { num:"9.1", title:"Inspection then testing — the sequence",
+        body:"First you <strong>inspect</strong> (with the power off) — checking connections, correct equipment, cable routes and labelling. Then you <strong>test</strong> in a set order so an early result doesn't make a later test dangerous: dead tests first — <strong>continuity of protective conductors, continuity of ring conductors, insulation resistance, polarity</strong> — then live tests — <strong>earth fault loop impedance and RCD operation</strong>.",
+        regs:[
+          {ref:"Test sequence", topic:"Correct order of tests", detail:"Dead tests, in order: continuity of protective conductors → continuity of ring final conductors → insulation resistance → polarity (dead). Then energise for live tests: earth fault loop impedance (Zs) → prospective fault current → RCD operation. <b>Continuity comes first</b> because a broken CPC means no fault protection."},
+          {ref:"Insulation resistance", topic:"Insulation resistance test", detail:"Checks the insulation is sound, usually at 500 V DC for a 230/400 V installation, minimum acceptable 1 MΩ (a healthy circuit reads far higher). Low readings reveal damaged or damp insulation."},
+          {ref:"Certificates", topic:"EIC / MEIWC / EICR", detail:"A new installation or new circuit gets an <b>Electrical Installation Certificate (EIC)</b>; a small addition without a new circuit gets a <b>Minor Works Certificate (MEIWC)</b>; an existing installation is reported on an <b>EICR</b>."}
+        ]}
+    ]
+  },
+  {
+    id:"s10", num:"10", title:"Special Installations & Locations", tag:"Bathrooms, outdoors & more",
+    intro:"Section 10 highlights locations needing extra care — bathrooms (zones), outdoor sockets, gardens, and similar. At Level 2 the key points are the bathroom zones, the requirement for 30 mA RCDs, and IP ratings against water.",
+    chapters:[
+      { num:"10.1", title:"Bathrooms & other wet locations",
+        body:"Bathrooms are divided into <strong>zones</strong> by how likely water contact is. <strong>Zone 0</strong> is inside the bath/shower itself; <strong>Zone 1</strong> is directly above it up to 2.25 m; <strong>Zone 2</strong> is the 0.6 m band beyond Zone 1. Equipment must have a suitable <strong>IP rating</strong> for its zone, all circuits need <strong>30 mA RCD protection</strong>, and SELV is used for the lowest-voltage fittings.",
+        regs:[
+          {ref:"Bathroom zones", topic:"Zones 0, 1, 2", detail:"<b>Zone 0</b> — inside the bath or shower basin. <b>Zone 1</b> — above it up to 2.25 m. <b>Zone 2</b> — a 0.6 m band beside Zone 1. Each zone limits what can be installed and its minimum IP rating (Zone 0 IPX7; Zones 1 & 2 IPX4)."},
+          {ref:"Bathroom RCD", topic:"30 mA RCD for all bathroom circuits", detail:"Every circuit serving a bathroom must have 30 mA RCD additional protection, because wet skin dramatically lowers the body's resistance to shock."},
+          {ref:"IP rating", topic:"IP ratings against water", detail:"The IP code's second digit is water protection (e.g. IPX4 = splashing from any direction, IPX7 = temporary immersion). Pick equipment rated for the wettest conditions of its location."}
+        ]}
+    ]
+  },
+  {
+    id:"s11", num:"11", title:"Caravans, Boats & EV Charging", tag:"Mobile & special supplies",
+    intro:"Section 11 covers caravans and similar units, and electric vehicle charging — both involve the danger of the metalwork (or the vehicle) becoming live, so PME earthing has restrictions and 30 mA RCDs with DC fault detection are required for EV points.",
+    chapters:[
+      { num:"11.1", title:"EV charging & PME restrictions",
+        body:"An EV charging point combines outdoor exposure with a person touching the vehicle for a long time, so each point needs its own <strong>30 mA RCD plus protection against DC fault current</strong>. Using <strong>PME (TN-C-S)</strong> earthing outdoors is restricted because an open PEN fault could make the car body live — an earth electrode or an open-PEN detection device is used instead.",
+        regs:[
+          {ref:"EV RCD", topic:"EV point — 30 mA RCD + DC fault detection", detail:"Each charging point needs a 30 mA RCD AND protection against smooth DC fault current — either a Type B RCD, or a Type A RCD with 6 mA DC detection built into the charger."},
+          {ref:"EV PME", topic:"PME restrictions for outdoor EV charging", detail:"PME earthing isn't generally used outdoors for EV charging because an open PEN conductor could raise the vehicle's metalwork to a dangerous voltage. An earth electrode or open-PEN/voltage-detection device is used instead."}
+        ]},
+      { num:"11.2", title:"Caravans & boats",
+        body:"Caravan pitch supplies and similar must not use PME earthing for the same open-PEN reason, each socket has its own 30 mA RCD, and flexible wiring suited to movement is used inside the unit.",
+        regs:[{ref:"Caravan supply", topic:"Caravan pitch — no PME, RCD per socket", detail:"PME is prohibited for a caravan pitch supply; each pitch socket has its own 30 mA RCD so a fault on one pitch doesn't trip a neighbour."}]}
+    ]
+  },
+  {
+    id:"s12", num:"12", title:"Prosumer's Installations", tag:"Solar, battery & EV at home",
+    intro:"Section 12 introduces the modern 'prosumer' home that both consumes and produces electricity — solar PV, battery storage and EV charging. The key idea at Level 2 is that power can now flow both ways, which affects metering, protection and safety.",
+    chapters:[
+      { num:"12.1", title:"Generation & storage at home",
+        body:"A prosumer installation generates and/or stores energy (solar panels, a battery) as well as drawing from the grid. Because current can flow back to the grid, equipment and protection must cope with two-way flow, anti-islanding protection stops the system back-feeding a dead network, and labelling warns of the second source.",
+        regs:[
+          {ref:"Prosumer basics", topic:"Two-way power flow at home", detail:"With PV and storage, the home both uses and exports electricity. Protective devices must suit current flowing both ways (this links to the new bidirectional/unidirectional device idea), and the system must not back-feed the grid when the supply is off (anti-islanding)."},
+          {ref:"Dual supply labels", topic:"Warning of a second source", detail:"Clear labels warn that the installation has more than one source of supply (grid + PV/battery) and that parts may stay live after the main switch is off — vital for anyone working on it later."}
+        ]}
+    ]
+  },
+  {
+    id:"appx", num:"A–L", title:"Appendices", tag:"The working tables",
+    intro:"The OSG appendices are where the everyday working tables live — maximum demand and diversity (Appendix A/B), cable selection and current ratings, rating (correction) factors, voltage drop, and conduit/trunking capacities. These are the tables the calculation questions come from, so knowing which appendix holds what saves time.",
+    chapters:[
+      { num:"Appx A/B", title:"Maximum demand & diversity",
+        body:"Diversity recognises that not everything runs at full power at once, so the assumed demand is less than the simple total. The diversity allowances (different for lighting, sockets, heating, cookers, etc., and different for houses vs other premises) let you size the supply realistically. <strong>Why use diversity?</strong> To get a more efficient, economical design without oversizing cables and switchgear.",
+        regs:[
+          {ref:"Diversity purpose", topic:"Why diversity factors are used", detail:"Diversity is applied because it leads to a <b>more efficient (economical) design</b> — you don't size everything for the unlikely case of every load running flat out together. (It's not about safety margins or stopping nuisance tripping — those are the wrong MCQ options.)"},
+          {ref:"Lighting diversity", topic:"Diversity for lighting", detail:"For lighting, a common allowance is <b>66%</b> (i.e. assume 66% of the total lighting load). <b>Worked example:</b> a hotel with 36 A of lighting → assumed demand = 36 × 0.66 = <b>≈24 A</b>. (See the Calculations section for the full method.)"},
+          {ref:"Max demand", topic:"Maximum demand", detail:"The greatest current the installation is likely to draw once diversity is allowed for — this sets the size of the main switch, tails and supply."}
+        ]},
+      { num:"Appx C/D", title:"Cable selection & current ratings",
+        body:"These appendices give the current-carrying capacity of cables for each installation (reference) method, and help you pick the right cable type for the conditions. You read across the table for the cable size, the method (e.g. clipped direct, in conduit, in insulation) and the number of loaded conductors.",
+        regs:[
+          {ref:"Reference methods", topic:"Installation (reference) methods", detail:"The way a cable is installed changes how well it loses heat, so it changes its current rating. Method C is 'clipped direct'; other methods cover conduit, trunking, in insulation, etc. You must use the right column for the actual installation."},
+          {ref:"Tabulated rating", topic:"Reading a tabulated current rating", detail:"<b>Worked example:</b> a single-core non-armoured 6 mm² cable, clipped direct (method C), in a 3-phase circuit has a tabulated current-carrying capacity of about <b>?</b> — you read the value from the column for that method and number of loaded conductors (the OSG/Appendix 4 table gives it directly)."}
+        ]},
+      { num:"Appx F", title:"Rating (correction) factors",
+        body:"The tabulated rating assumes ideal conditions. Real conditions reduce it, so you apply <strong>rating (correction) factors</strong>: <strong>Ca</strong> for ambient temperature, <strong>Cg</strong> for grouping with other cables, <strong>Ci</strong> for thermal insulation, and <strong>Cf</strong> (0.725) when a BS 3036 rewireable fuse protects the circuit. You divide the design current by the relevant factors to find the cable rating you need.",
+        regs:[
+          {ref:"Ca/Cg/Ci/Cf", topic:"The four correction factors", detail:"<b>Ca</b> — ambient temperature (hotter surroundings = lower rating). <b>Cg</b> — grouping (more cables bunched = lower rating). <b>Ci</b> — thermal insulation (cable in loft insulation = lower rating). <b>Cf</b> — 0.725 when a BS 3036 fuse is used. <b>Exam task:</b> match each described condition (40 °C ambient, grouped with 3 others, 200 mm in insulation, MCB) to the correct factor."}
+        ]},
+      { num:"Appx F", title:"Voltage drop",
+        body:"As current flows along a cable it loses some voltage. Voltage drop must stay within limits so equipment works: <strong>3% for lighting</strong> and <strong>5% for other circuits</strong> of the 230 V supply (that's 6.9 V and 11.5 V). You calculate it from the cable's millivolt-per-amp-per-metre (mV/A/m) figure: <strong>volt drop = (mV/A/m × design current × length) ÷ 1000</strong>.",
+        regs:[
+          {ref:"VD limits", topic:"Permitted voltage drop", detail:"Lighting: 3% of 230 V = <b>6.9 V</b>. Other (power) circuits: 5% of 230 V = <b>11.5 V</b>. <b>Exam example:</b> 'maximum permitted voltage drop of a lighting circuit, Uo 230 V?' → <b>6.9 V</b>."},
+          {ref:"VD formula", topic:"Calculating voltage drop", detail:"Volt drop = (mV/A/m × Ib × L) ÷ 1000. <b>Worked example:</b> length 20 m, current 10 A, cable 29 mV/A/m → (29 × 10 × 20) ÷ 1000 = <b>5.8 V</b>. (Full working in the Calculations section.)"}
+        ]},
+      { num:"Appx H", title:"Conduit & trunking capacity",
+        body:"You can't cram unlimited cables into a conduit or trunking — they'd overheat and be impossible to pull in. The OSG uses a 'unit' (space factor) system: each cable size has a cable factor, each conduit/trunking size has a capacity factor, and the cables fit if the total cable factor doesn't exceed the container's factor.",
+        regs:[
+          {ref:"Cable/conduit factors", topic:"Conduit & trunking 'unit' system", detail:"Each conductor has a cable factor and each conduit/trunking length+size has a capacity factor; you add the cable factors and check they fit within the container factor. <b>Exam example:</b> 'how many 4 mm² conductors fit in a short straight 25 mm conduit?' — look up the factors and divide. The factors differ for short straight runs vs longer runs with bends."}
+        ]}
+    ]
+  }
+];
+
+/* ---------- WORKED CALCULATIONS ----------
+   Each example shows the method step by step so a Level 2 learner can
+   follow the reasoning, not just the answer. */
+const CALCULATIONS = [
+  {
+    cat:"Drawings & scale",
+    title:"Length of a cable from a scale drawing",
+    question:"A cable run measured on a drawing is 280 mm. The drawing scale is 1:200. How much cable is actually needed?",
+    formula:"Real length = measured length × scale number",
+    steps:[
+      "The scale 1:200 means every 1 mm on the drawing represents 200 mm in real life.",
+      "Multiply the measured length by 200:  280 mm × 200 = 56 000 mm.",
+      "Convert to metres:  56 000 mm ÷ 1000 = 56 m."
+    ],
+    answer:"56 m",
+    tip:"Watch the units. The drawing is in mm, so the first answer is in mm — always convert to metres at the end (÷1000). A common wrong answer (5.6 m or 560 m) comes from a units slip."
+  },
+  {
+    cat:"Diversity",
+    title:"Applying diversity to a lighting load (hotel)",
+    question:"A hotel has a total current demand of 36 A on its lighting circuits. What is the assumed demand after diversity is applied?",
+    formula:"Assumed demand = total demand × diversity allowance",
+    steps:[
+      "Look up the diversity allowance for lighting. A common allowance is 66% (0.66).",
+      "Multiply the total lighting demand by the allowance:  36 A × 0.66.",
+      "36 × 0.66 = 23.76 A, which rounds to about 24 A."
+    ],
+    answer:"≈ 24 A",
+    tip:"Diversity always REDUCES the figure, because not every light is on at once. If your answer is bigger than the starting number you've multiplied by the wrong thing. Remember: the PURPOSE of diversity is a more economical design, not safety."
+  },
+  {
+    cat:"Design current",
+    title:"Design current of a lighting circuit",
+    question:"A lighting circuit in a house on a 230 V supply has 15 lighting points. What is the design current (Ib) for the circuit?",
+    formula:"Power per point (convention) = 100 W  →  Ib = total power ÷ voltage",
+    steps:[
+      "By convention each lighting point is assumed to draw at least 100 W (this is the standard assumption used in the OSG method).",
+      "Total assumed power = 15 points × 100 W = 1500 W.",
+      "Design current Ib = power ÷ voltage = 1500 W ÷ 230 V.",
+      "1500 ÷ 230 = 6.52 A, i.e. about 6.5 A."
+    ],
+    answer:"≈ 6.5 A",
+    tip:"Use Ib = P ÷ V for a resistive/lighting load on single phase. Don't be tricked by the option that just says '1500 W' — the question asks for current (amps), not power (watts)."
+  },
+  {
+    cat:"Overcurrent",
+    title:"Fusing factor — guaranteed operating current",
+    question:"A 10 A fuse has a fusing factor of 1.45. At what overload current is it guaranteed to break the circuit (within the stated time)?",
+    formula:"Fusing current = rated current × fusing factor",
+    steps:[
+      "Fusing factor = fusing current ÷ rated current, so fusing current = rating × factor.",
+      "Multiply:  10 A × 1.45 = 14.5 A."
+    ],
+    answer:"14.5 A",
+    tip:"A fuse does NOT blow at exactly its rating — it carries its rating continuously and only blows reliably at the higher 'fusing' current. This is the same 1.45 that appears in the cable rule I2 ≤ 1.45 × Iz."
+  },
+  {
+    cat:"Voltage drop",
+    title:"Voltage drop along a circuit",
+    question:"A circuit is 20 m long, carries 10 A, and the cable's voltage drop figure is 29 mV/A/m. What is the voltage drop?",
+    formula:"Volt drop = (mV/A/m × Ib × L) ÷ 1000",
+    steps:[
+      "Multiply the three values:  29 × 10 × 20 = 5800.",
+      "That answer is in millivolts (mV). Convert to volts by dividing by 1000:  5800 ÷ 1000 = 5.8 V."
+    ],
+    answer:"5.8 V",
+    tip:"The mV/A/m figure is in MILLIvolts, so you must divide by 1000 at the end to get volts. Forgetting that gives 5800 V — obviously wrong for a 230 V circuit, which is a useful sanity check."
+  },
+  {
+    cat:"Voltage drop",
+    title:"Maximum permitted voltage drop (lighting)",
+    question:"What is the maximum permitted voltage drop for a lighting circuit where Uo = 230 V?",
+    formula:"Lighting limit = 3% of Uo",
+    steps:[
+      "The limit for lighting is 3% of the nominal voltage.",
+      "3% of 230 V = 0.03 × 230 = 6.9 V.",
+      "(For other/power circuits the limit is 5% = 11.5 V.)"
+    ],
+    answer:"6.9 V (lighting); 11.5 V for power circuits",
+    tip:"Learn both percentages: 3% lighting, 5% other. Multiply by 230 to get the volts: 6.9 V and 11.5 V. Too much volt drop means lights dim and equipment may not work properly."
+  },
+  {
+    cat:"Cable rating",
+    title:"Reading a tabulated current-carrying capacity",
+    question:"A single-core, non-armoured 6 mm² cable is clipped direct to a wall as part of a 3-phase circuit. What is its tabulated current-carrying capacity?",
+    formula:"Read the value from the column for the installation method and number of loaded conductors",
+    steps:[
+      "Identify the installation method: 'clipped direct' is Reference Method C.",
+      "Identify the number of loaded conductors: a 3-phase circuit = 3 loaded conductors.",
+      "Find the row for 6 mm² and read across to the Method C / 3-phase column.",
+      "The table gives the tabulated rating (It) for that combination directly — read it off; do not calculate it."
+    ],
+    answer:"Read directly from the OSG/Appendix 4 table (Method C, 3-phase, 6 mm²)",
+    tip:"You don't calculate a tabulated rating — you LOOK IT UP. The skill is choosing the right column: method (how it's installed) and number of loaded conductors (single-phase = 2, three-phase = 3). Then apply correction factors if conditions aren't ideal."
+  },
+  {
+    cat:"Cable rating",
+    title:"Applying correction factors to find the required cable rating",
+    question:"A 32 A circuit is protected by an MCB. The cable runs through an area at 40 °C ambient (Ca = 0.87) and is grouped with 3 other cables (Cg = 0.65). What tabulated rating (It) must the cable have?",
+    formula:"It ≥ In ÷ (Ca × Cg × Ci × Cf)",
+    steps:[
+      "Because conditions reduce a cable's capacity, you size UP by dividing the device rating by the correction factors.",
+      "With an MCB there is no BS 3036 factor, so Cf = 1; assume Ci = 1 (not in insulation here).",
+      "It ≥ 32 ÷ (0.87 × 0.65) = 32 ÷ 0.5655.",
+      "It ≥ 56.6 A — so you must choose a cable whose tabulated rating is at least about 57 A, then pick the standard size at or above that."
+    ],
+    answer:"It ≥ ≈ 57 A (then select the next standard cable size up)",
+    tip:"Divide (not multiply) by the factors when finding the cable rating you NEED — the worse the conditions, the bigger the cable. A BS 3036 fuse adds Cf = 0.725, which makes the cable even bigger."
+  },
+  {
+    cat:"Containment",
+    title:"How many cables fit in a conduit (space factor)",
+    question:"How many 4 mm² conductors can be fitted into a short straight length of 25 mm conduit?",
+    formula:"Number = conduit factor ÷ cable factor (from the OSG tables)",
+    steps:[
+      "Look up the cable factor for one 4 mm² conductor (from the OSG conduit table for short straight runs).",
+      "Look up the conduit factor for a short straight 25 mm conduit.",
+      "Divide the conduit factor by the cable factor and round DOWN to a whole number of cables."
+    ],
+    answer:"Read the two factors from the OSG table, divide, round down",
+    tip:"Use the SHORT STRAIGHT run tables here (different factors apply to longer runs and runs with bends, which hold fewer cables). Always round down — you can't fit a fraction of a cable, and over-filling causes overheating and damage when pulling in."
+  },
+  {
+    cat:"Diversity",
+    title:"Diversity across a small domestic installation (method)",
+    question:"How do you apply diversity to size the main supply of a house with lighting, sockets, a cooker and a water heater?",
+    formula:"Assumed demand = sum of (each load × its diversity allowance)",
+    steps:[
+      "Work out the full-load current of each part of the installation first.",
+      "Apply the diversity allowance for each TYPE of load from the OSG table (lighting, sockets/ring circuits, cooker, water heating, etc.) — the allowances differ between household and other premises.",
+      "For a cooker, a typical household method is: the first 10 A at 100%, plus 30% of the remainder, plus 5 A if the cooker has a socket-outlet.",
+      "Add the diversified figures together to get the assumed maximum demand.",
+      "Check this demand against the supply and main switch rating (e.g. 100 A)."
+    ],
+    answer:"Add up each load after applying its own diversity allowance",
+    tip:"Diversity is applied per TYPE of load, and the allowances are different for houses vs shops/offices. Don't apply one blanket percentage to everything. The cooker '10 A + 30% of the rest (+5 A for a socket)' rule is a classic exam method."
+  }
+];
+
+/* ---------- FLASH CARDS ---------- */
+const FLASHCARDS = [
+  {topic:"Sec 1", q:"Which common document is NOT a statutory instrument (not law)?", a:"<strong>BS 7671</strong> (and the On-Site Guide). They are British Standards/guidance, not law. Statutory documents include the Health & Safety at Work etc. Act 1974, the Electricity at Work Regulations 1989 and the Building Regulations."},
+  {topic:"Sec 1", q:"What can a failure to comply with BS 7671 lead to?", a:"Although BS 7671 is non-statutory, compliance is evidence of meeting the law (EAWR 1989). Failing to comply can lead to a <strong>prohibition notice, prosecution and a fine</strong> (and loss of reputation)."},
+  {topic:"Sec 1", q:"Equipment installed should ideally comply with which document?", a:"A <strong>British or Harmonised Standard</strong> (BS / BS EN). This satisfies the BS 7671 requirement that equipment is made to a recognised standard."},
+  {topic:"Sec 1", q:"Which diagram shows the ARRANGEMENT of circuit breakers in a distribution board?", a:"A <strong>schematic / wiring diagram</strong>. A layout drawing shows where things are; a block diagram shows the big picture; a circuit diagram shows how a circuit works."},
+  {topic:"Sec 1", q:"Which diagram shows the LOCATION of a distribution board in a building?", a:"A <strong>layout (location) drawing</strong> — sometimes called a site drawing. It's a plan showing WHERE equipment is positioned."},
+  {topic:"Sec 1", q:"A scale is 1:200. A cable measures 280 mm on the drawing. How much real cable is needed?", a:"280 mm × 200 = 56 000 mm = <strong>56 m</strong>. (Multiply by the scale number, then convert mm to m by ÷1000.)"},
+  {topic:"Sec 2", q:"What earthing system has the supply earth provided by the cable sheath, with separate N and E?", a:"<strong>TN-S</strong>. The protective earth is provided by the supplier (often the lead sheath of the service cable) and is kept separate from the neutral."},
+  {topic:"Sec 2", q:"What earthing system combines neutral and earth at the supply and is most common in UK homes?", a:"<strong>TN-C-S (PME)</strong>. A combined PEN conductor is supplied, and the earth is taken from the neutral at the intake."},
+  {topic:"Sec 2", q:"What earthing system requires the installation to have its own earth electrode and relies on RCDs?", a:"<strong>TT</strong>. No earth is provided by the supplier, so a local earth rod is used; the high loop impedance means RCDs are needed for disconnection."},
+  {topic:"Sec 2", q:"In a TN-C-S system, which item is NOT part of the earth fault loop?", a:"The <strong>earth electrode</strong>. TN-C-S returns fault current via the supply neutral/PEN, so there is no earth electrode in the loop (that's a TT feature)."},
+  {topic:"Sec 2", q:"Name the equipment at the service position, in order from the incoming cable.", a:"Service (cut-out) <strong>fuse</strong> → <strong>meter</strong> → consumer's <strong>main switch/isolator</strong> → <strong>consumer unit</strong>. Everything up to the meter belongs to the supplier."},
+  {topic:"Sec 3", q:"When used for protection, what is the purpose of earthing and protective conductors?", a:"To <strong>reduce the risk of electric shock when a fault occurs</strong> in electrical equipment (by giving fault current a safe path so the device disconnects quickly)."},
+  {topic:"Sec 3", q:"What is the main disadvantage of a BS 3036 (rewireable) fuse?", a:"It can be <strong>rewired with the wrong size of fuse wire</strong> by an inexperienced person, defeating the protection. It also has a low breaking capacity and a high fusing factor (1.9)."},
+  {topic:"Sec 3", q:"Which circuit-breaker type suits a bank of fluorescent lighting?", a:"<strong>Type C</strong> (trips at 5–10× rating). The higher inrush current of fluorescent/LED lighting at switch-on would nuisance-trip a Type B."},
+  {topic:"Sec 3", q:"A 10 A fuse has a fusing factor of 1.45. At what current is it guaranteed to operate?", a:"10 × 1.45 = <strong>14.5 A</strong>. A fuse carries its rating continuously and only blows reliably at the higher fusing current."},
+  {topic:"Sec 4", q:"Give an example of an EXTRANEOUS-conductive-part.", a:"The building's <strong>structural steelwork</strong> (or incoming metal water/gas pipes). It is not part of the installation but can introduce earth potential — so it gets main bonding."},
+  {topic:"Sec 4", q:"Give an example of an EXPOSED-conductive-part.", a:"The <strong>metal case of a Class I appliance</strong> (e.g. a washing machine), or steel conduit carrying circuits. It is part of the installation and could become live under a fault — so it has a CPC."},
+  {topic:"Sec 4", q:"What is the minimum CSA of the main protective bonding for a TN-S system with a 25 mm² line conductor?", a:"<strong>10 mm²</strong>. The earthing conductor for a 25 mm² line is 16 mm²; main bonding is half of that (8 mm²) rounded up to the standard 10 mm²."},
+  {topic:"Sec 4", q:"What does a circuit protective conductor (CPC) connect?", a:"It connects a circuit's <strong>exposed-conductive-parts</strong> (socket earths, metal boxes, appliance cases) back to the main earthing terminal, giving fault current a safe path."},
+  {topic:"Sec 5", q:"What must a means of ISOLATION be able to do?", a:"Cut the circuit off from <strong>every</strong> source of supply and be <strong>secured against re-closure</strong> (locked off). It makes a circuit safe to work on."},
+  {topic:"Sec 5", q:"What is a firefighter's switch used for?", a:"To cut off <strong>high-voltage or exterior sign supplies</strong> (e.g. neon signs) so the fire service can make them safe. It's positioned and labelled so it's easy to find."},
+  {topic:"Sec 7", q:"Why is flat PVC twin-and-earth cable used so widely in homes?", a:"Because it is <strong>cheap and easy to install</strong> — not because it is especially flame-, water- or impact-resistant."},
+  {topic:"Sec 7", q:"Which wiring system provides a rising main in a multi-storey building?", a:"<strong>Busbar trunking</strong> (sometimes called powertrack). It carries the supply up through the floors with tap-off points on each level."},
+  {topic:"Sec 7", q:"A ring final circuit to BS 1363 sockets uses what cable, device and max floor area?", a:"<strong>2.5 mm² cable, a 32 A device, up to 100 m²</strong> floor area."},
+  {topic:"Sec 7", q:"A radial to BS 1363 sockets with a 32 A Type B breaker needs what minimum cable CSA and serves what area?", a:"<strong>4 mm²</strong> minimum, serving up to <strong>75 m²</strong>."},
+  {topic:"Sec 7", q:"What sets the minimum conductor size of a fused spur off a ring?", a:"It is <strong>determined by the fuse in the fused connection unit (FCU)</strong>, which is a maximum of 13 A."},
+  {topic:"Sec 7", q:"A circuit connecting a distribution board directly to a water-heater element is what kind of circuit?", a:"A <strong>final circuit</strong> (it connects directly to current-using equipment). A distribution circuit would feed another board."},
+  {topic:"Sec 9", q:"Which test is done FIRST in the dead-test sequence?", a:"<strong>Continuity of protective conductors</strong>, then continuity of ring conductors, insulation resistance and polarity — before any live tests."},
+  {topic:"Appx", q:"Why are diversity factors used when designing an installation?", a:"To give a <strong>more efficient (economical) design</strong> — not everything runs at full power at once, so the assumed demand is lower than the simple total."},
+  {topic:"Appx", q:"What are the maximum permitted voltage drops for lighting and for power circuits (230 V)?", a:"Lighting: 3% = <strong>6.9 V</strong>. Other/power circuits: 5% = <strong>11.5 V</strong>."},
+  {topic:"Appx", q:"Name the four cable correction (rating) factors.", a:"<strong>Ca</strong> ambient temperature, <strong>Cg</strong> grouping, <strong>Ci</strong> thermal insulation, <strong>Cf</strong> (0.725) for a BS 3036 fuse."},
+  {topic:"Appx", q:"What is the voltage-drop formula using the mV/A/m figure?", a:"Volt drop = <strong>(mV/A/m × Ib × length) ÷ 1000</strong>. Divide by 1000 because the figure is in millivolts."}
+];
+
+/* ---------- MULTIPLE CHOICE QUESTIONS ---------- */
+const MCQS = [
+  {topic:"Sec 1", q:"Which of these is NOT a statutory instrument?", options:["The Health and Safety at Work Act 1974","The Electricity at Work Regulations 1989","BS 7671 Requirements for Electrical Installations","The Building Regulations 2010"], correct:2, explain:"BS 7671 is a British Standard (guidance), not law. The other three are statutory. Compliance with BS 7671 is, however, evidence of meeting the statutory EAWR 1989."},
+  {topic:"Sec 1", q:"An inspection revealing a failure to comply with BS 7671 could result in all EXCEPT being the direct legal penalty for breaching the standard itself:", options:["A prohibition notice","Prosecution","A fine","Automatic loss of your licence by BS 7671"], correct:3, explain:"Prohibition notices, prosecution and fines flow from breaching the statutory law (EAWR). BS 7671 itself is a standard and doesn't issue licences — compliance with it is used as evidence in law."},
+  {topic:"Sec 1", q:"Equipment to be installed should ideally comply with the relevant:", options:["Electrical Safety Council Good Practice Guide","Act of Parliament","Code of Practice","British or Harmonised Standard"], correct:3, explain:"BS 7671 requires equipment to be made to a relevant British or Harmonised Standard (BS / BS EN)."},
+  {topic:"Sec 1", q:"Which diagram shows the arrangement of circuit breakers and control devices in a distribution board?", options:["Block diagram","Site drawing","Circuit diagram","Schematic (wiring) diagram"], correct:3, explain:"A schematic/wiring diagram shows the detailed arrangement of devices. A layout/site drawing shows location; a block diagram is the big picture."},
+  {topic:"Sec 1", q:"Which type of diagram shows the LOCATION of a distribution board within a building?", options:["Circuit diagram","Schematic diagram","Layout (location) drawing","Single-line diagram"], correct:2, explain:"A layout/location (site) drawing is a plan showing where equipment is positioned in the building."},
+  {topic:"Sec 1", q:"A cable run measures 280 mm on a 1:200 drawing. How much cable is needed?", options:["14 m","560 m","1.4 m","56 m"], correct:3, explain:"280 mm × 200 = 56 000 mm = 56 m. Multiply by the scale, then convert mm → m."},
+  {topic:"Sec 7", q:"Flat PVC twin-and-earth cable is used so widely in homes mainly because it is:", options:["Flame retardant","Water resistant","Impact resistant","Cheap and easily installed"], correct:3, explain:"Its dominance is down to low cost and ease of installation, not superior resistance properties."},
+  {topic:"Sec 7", q:"Which wiring system provides a rising main in multi-storey buildings?", options:["Powertrack tape","Ducting","Modular wiring","Busbar trunking"], correct:3, explain:"Busbar trunking carries the supply vertically through floors with tap-off points. Ducting just routes cables; modular wiring speeds up fit-out."},
+  {topic:"Sec 7", q:"A circuit connecting a distribution board to the heating element of a water heater is an example of a:", options:["Distribution circuit","Final circuit","Ring main","Spur"], correct:1, explain:"It connects directly to current-using equipment, so it is a final circuit. A distribution circuit would feed another board."},
+  {topic:"Sec 7", q:"A radial circuit to BS 1363 sockets has a 32 A Type B breaker. What is the minimum live conductor CSA?", options:["4 mm²","2.5 mm²","1.5 mm²","6 mm²"], correct:0, explain:"A 32 A radial to BS 1363 sockets needs 4 mm². (A 2.5 mm² radial is limited to 20 A.)"},
+  {topic:"Sec 7", q:"What maximum floor area can that 4 mm² / 32 A radial serve?", options:["75 m²","100 m²","25 m²","50 m²"], correct:0, explain:"A 4 mm²/32 A radial to BS 1363 sockets serves up to 75 m². (A ring serves up to 100 m²; a 2.5 mm²/20 A radial up to 50 m².)"},
+  {topic:"Sec 7", q:"The minimum live conductor CSA of a fused spur supplying BS 1363 sockets off a ring is:", options:["1 mm²","1.5 mm²","Determined by the fuse in the FCU","2.5 mm²"], correct:2, explain:"The spur is taken through a fused connection unit, so its conductor size is governed by the FCU fuse (max 13 A), not a fixed value."},
+  {topic:"Sec 7", q:"Which statement about an immersion heater circuit is NOT true?", options:["It should be protected by a fuse/breaker close to it","It should be protected ONLY by a breaker at the consumer unit","A local switch can be used as the controlling switch","It should be connected through a switched flexible cord outlet"], correct:1, explain:"It should NOT rely only on the consumer-unit breaker — good practice provides local control/protection and a switched flex outlet with heat-resistant flex near the heater."},
+  {topic:"Sec 2", q:"What type of earthing has a combined neutral-and-earth supplied, split at the intake?", options:["IT","TN-S","TT","TN-C-S"], correct:3, explain:"TN-C-S (PME) supplies a combined PEN conductor; the earth is derived from the neutral at the service position. It's the most common UK domestic system."},
+  {topic:"Sec 2", q:"In a TN-C-S system, which is NOT part of the earth fault loop?", options:["Circuit protective conductor","Line conductor of the circuit","Earth electrode","Source of electrical energy"], correct:2, explain:"TN-C-S returns fault current through the supply neutral/PEN — there is no earth electrode in the loop (an electrode is a TT feature)."},
+  {topic:"Sec 3", q:"When used for protection, the purpose of earthing and protective conductors is to:", options:["Prevent damage to supply authority equipment","Provide a spare conductor","Reduce the risk of fire on overload","Reduce the risk of shock when a fault occurs"], correct:3, explain:"They give fault current a safe path so the device disconnects quickly, reducing the risk of electric shock under fault conditions."},
+  {topic:"Sec 4", q:"Which of these is an extraneous-conductive-part?", options:["Metal casing of a washing machine","Structural steelwork of the building","Steel conduit containing shower circuits","Plastic casing of a hairdryer"], correct:1, explain:"Structural steel is not part of the installation but can introduce earth potential → extraneous. The washing-machine case and steel conduit are exposed-conductive-parts; the plastic case is neither."},
+  {topic:"Sec 4", q:"Minimum CSA of main protective bonding for a TN-S system where the line conductor is 25 mm²?", options:["6 mm²","16 mm²","10 mm²","25 mm²"], correct:2, explain:"For 25 mm² line, the earthing conductor is 16 mm²; main bonding is half of that (8 mm²) rounded up to the standard 10 mm²."},
+  {topic:"Sec 3", q:"A 10 A fuse with a fusing factor of 1.45 is guaranteed to break in one hour at an overload current of:", options:["11.45 A","14.5 A","10 A","1.45 A"], correct:1, explain:"Fusing current = rating × fusing factor = 10 × 1.45 = 14.5 A."},
+  {topic:"Sec 3", q:"What is a disadvantage of a BS 3036 fuse?", options:["Too easy to reset by inexperienced people","Breaking capacity too high","Can be rewired with the wrong sized fuse wire","Expensive to replace"], correct:2, explain:"Its main weakness is being re-wireable with the wrong fuse wire, plus a low breaking capacity and high fusing factor (1.9)."},
+  {topic:"Sec 3", q:"Which circuit-breaker type best suits a bank of fluorescent lighting?", options:["Type A","Type C","Type B","Type D"], correct:1, explain:"Type C (5–10× rating) copes with the inrush current of fluorescent/LED lighting at switch-on without nuisance tripping."},
+  {topic:"Appx", q:"Why are diversity factors used when designing an installation?", options:["To build in a safety margin","To stop nuisance tripping","They lead to a more efficient design","For more diverse use of the installation"], correct:2, explain:"Diversity reflects that not all loads run at full power together, giving a more economical, efficient design (smaller tails/supply)."},
+  {topic:"Appx", q:"A hotel has 36 A of lighting demand. The assumed demand after diversity (66%) is:", options:["24 A","36 A","27 A","32.4 A"], correct:0, explain:"36 × 0.66 = 23.76 ≈ 24 A. Diversity reduces the figure."},
+  {topic:"Appx", q:"A house lighting circuit on 230 V has 15 lighting points. The design current is about:", options:["12 A","6.5 A","1500 W","4.3 A"], correct:1, explain:"15 × 100 W = 1500 W; Ib = 1500 ÷ 230 = 6.5 A. (1500 W is power, not current.)"},
+  {topic:"Appx", q:"A single-core 6 mm² cable clipped direct in a 3-phase circuit — how do you find its current-carrying capacity?", options:["Calculate it from Ib","Look it up: Method C, 3 loaded conductors","Use the voltage-drop table","Divide 6 by the length"], correct:1, explain:"A tabulated rating is read from the table using the installation method (clipped direct = C) and number of loaded conductors (3-phase = 3)."},
+  {topic:"Appx", q:"Voltage drop in a circuit 20 m long, 10 A, cable 29 mV/A/m, is:", options:["14.5 V","5.8 V","5800 V","58 V"], correct:1, explain:"(29 × 10 × 20) ÷ 1000 = 5.8 V. Remember to ÷1000 because mV are millivolts."},
+  {topic:"Appx", q:"Maximum permitted voltage drop of a lighting circuit, Uo = 230 V:", options:["6.9 V","3 V","11.5 V","5 V"], correct:0, explain:"Lighting limit is 3% of 230 V = 6.9 V. (Power circuits: 5% = 11.5 V.)"}
+];
+
+/* ---------- KEYWORD-SPOTTING TRAINER ---------- */
+const KEYWORD_EXERCISES = [
+  {
+    q:"A drawing shows a cable run of 350 mm at a scale of 1:100. The apprentice needs to order the correct length of cable. How much should they order?",
+    keywords:["drawing","scale 1:100","length / how much cable"],
+    keywordNote:"'Scale' and 'how much cable' tell you this is a scale calculation, not a regulation lookup. The scale number is the multiplier.",
+    look:"Section 1.4 (drawings & scale) and the Calculations section. No regulation table needed — it's arithmetic.",
+    reg:"OSG Sec 1.4 (scale)",
+    answer:"Real length = 350 mm × 100 = 35 000 mm = 35 m. Always multiply by the scale number, then convert mm → m by dividing by 1000."
+  },
+  {
+    q:"An electrician at a property sees a single earthing conductor connected to the incoming supply neutral at the service head, and no separate earth from the cable and no earth rod. What earthing system is this?",
+    keywords:["service head","earth connected to the neutral","no earth rod"],
+    keywordNote:"'Earth taken from the neutral at the intake' is the fingerprint of PME. 'No earth rod' rules out TT; 'not separate' rules out TN-S.",
+    look:"Section 2.1 (earthing systems). Index under 'TN-C-S' / 'earthing systems'.",
+    reg:"OSG Sec 2.1 (TN-C-S)",
+    answer:"It is a TN-C-S (PME) system — the earth is derived from the supply neutral at the service position. TN-S would have a separate earth from the cable sheath; TT would have its own earth electrode (rod)."
+  },
+  {
+    q:"A house on a 230 V supply has a lighting circuit with 12 lighting points. The designer must work out the design current to choose the protective device. What is it?",
+    keywords:["230 V","12 lighting points","design current"],
+    keywordNote:"'Lighting points' + 'design current' signals the P ÷ V method, assuming 100 W per point.",
+    look:"Section 3 / Appendix and the Calculations section. Use Ib = P ÷ V.",
+    reg:"OSG design-current method",
+    answer:"Assume 100 W per point: 12 × 100 = 1200 W. Ib = 1200 ÷ 230 = 5.2 A. So the circuit's design current is about 5.2 A — well within a 6 A lighting breaker."
+  },
+  {
+    q:"A circuit is protected by a 10 A BS 3036 rewireable fuse. The designer is told to account for the fuse type when sizing the cable. Which correction factor applies and what is its value?",
+    keywords:["BS 3036","rewireable fuse","correction factor for cable"],
+    keywordNote:"'BS 3036 fuse' is the trigger for the special cable factor Cf. Each fuse/condition has its own factor.",
+    look:"Appendix F (rating/correction factors). Index under 'correction factors' / 'BS 3036'.",
+    reg:"OSG Appx F (Cf)",
+    answer:"The factor is Cf = 0.725, applied because a BS 3036 fuse has a high fusing factor (1.9). You divide by 0.725 when sizing the cable, which makes the required cable larger."
+  },
+  {
+    q:"An installer must confirm the minimum size of the main protective bonding conductor for a TN-S installation whose line conductor is 25 mm². What size is required?",
+    keywords:["main protective bonding","TN-S","line conductor 25 mm²"],
+    keywordNote:"'Main bonding' + a line-conductor size points to the bonding sizing table — half the earthing conductor, with min/max limits.",
+    look:"Section 4.3 and the bonding tables. Index under 'main bonding'.",
+    reg:"OSG Sec 4.3 (Table 54.8 equivalent)",
+    answer:"For a 25 mm² line conductor the earthing conductor is 16 mm²; the main bonding is half of that (8 mm²), rounded up to the standard size 10 mm²."
+  },
+  {
+    q:"A cable carrying 10 A over a 25 m run has a tabulated voltage drop of 18 mV/A/m. The lighting circuit must not drop more than 6.9 V. Does it comply?",
+    keywords:["voltage drop","mV/A/m","length","lighting limit 6.9 V"],
+    keywordNote:"'mV/A/m' + length + current is the voltage-drop formula; 'lighting' fixes the 3% (6.9 V) limit to compare against.",
+    look:"Appendix F (voltage drop) and the Calculations section.",
+    reg:"OSG Appx F (voltage drop)",
+    answer:"Volt drop = (18 × 10 × 25) ÷ 1000 = 4.5 V. That is below the 6.9 V lighting limit, so the circuit complies."
+  },
+  {
+    q:"A pictorial question shows a metal washing-machine case, structural steelwork, steel conduit and a plastic hairdryer. Which is the extraneous-conductive-part?",
+    keywords:["extraneous-conductive-part","not part of the installation","introduces earth potential"],
+    keywordNote:"'Extraneous' = NOT part of the installation but can bring in earth potential. Distinguish from 'exposed' (part of the installation).",
+    look:"Section 4.1 (exposed vs extraneous). Index/Definitions under 'extraneous-conductive-part'.",
+    reg:"OSG Sec 4.1 / Part 2",
+    answer:"The structural steelwork of the building. The washing-machine case and the steel conduit are exposed-conductive-parts (part of the installation); the plastic hairdryer case is not conductive at all."
+  },
+  {
+    q:"A shop has a total lighting demand of 50 A. The designer needs the assumed demand after diversity for sizing the supply. Using a 66% lighting allowance, what is it?",
+    keywords:["total lighting demand","diversity","assumed demand"],
+    keywordNote:"'Diversity' + 'assumed demand' = multiply by the diversity allowance for that load type. Diversity reduces the figure.",
+    look:"Appendices A/B (maximum demand & diversity) and the Calculations section.",
+    reg:"OSG Appx A/B (diversity)",
+    answer:"Assumed demand = 50 × 0.66 = 33 A. Diversity reduces the figure because not all the lighting is on at full power at once, giving a more economical design."
+  }
+];
+
+/* ---------- SEARCHABLE INDEX (keyword -> location) ---------- */
+const INDEX_ENTRIES = [
+  {term:"Statutory vs non-statutory documents", ref:"Sec 1.1", part:"Section 1"},
+  {term:"Building Regulations / Part P", ref:"Sec 1.2", part:"Section 1"},
+  {term:"Information required before starting", ref:"Sec 1.3", part:"Section 1"},
+  {term:"Drawings — layout / location", ref:"Sec 1.4", part:"Section 1"},
+  {term:"Drawings — circuit / schematic / block", ref:"Sec 1.4", part:"Section 1"},
+  {term:"Scale on drawings", ref:"Sec 1.4", part:"Section 1"},
+  {term:"Graphical symbols (BS EN 60617)", ref:"Sec 1.4", part:"Section 1"},
+  {term:"Earthing systems — TN-S", ref:"Sec 2.1", part:"Section 2"},
+  {term:"Earthing systems — TN-C-S (PME)", ref:"Sec 2.1", part:"Section 2"},
+  {term:"Earthing systems — TT", ref:"Sec 2.1", part:"Section 2"},
+  {term:"Earth fault loop — what is in it", ref:"Sec 2.1", part:"Section 2"},
+  {term:"Service position equipment (fuse, meter, isolator)", ref:"Sec 2.2", part:"Section 2"},
+  {term:"Consumer unit", ref:"Sec 2.2", part:"Section 2"},
+  {term:"Basic protection", ref:"Sec 3.1", part:"Section 3"},
+  {term:"Fault protection / ADS", ref:"Sec 3.1", part:"Section 3"},
+  {term:"Additional protection — 30 mA RCD", ref:"Sec 3.1", part:"Section 3"},
+  {term:"Overcurrent — overload & short-circuit", ref:"Sec 3.2", part:"Section 3"},
+  {term:"Ib ≤ In ≤ Iz (device/cable matching)", ref:"Sec 3.2", part:"Section 3"},
+  {term:"Fusing factor", ref:"Sec 3.2", part:"Section 3"},
+  {term:"BS 3036 rewireable fuse", ref:"Sec 3.2", part:"Section 3"},
+  {term:"Circuit-breaker types B / C / D", ref:"Sec 3.2", part:"Section 3"},
+  {term:"Breaking capacity", ref:"Sec 3.2", part:"Section 3"},
+  {term:"Exposed-conductive-part", ref:"Sec 4.1", part:"Section 4"},
+  {term:"Extraneous-conductive-part", ref:"Sec 4.1", part:"Section 4"},
+  {term:"Earthing conductor", ref:"Sec 4.2", part:"Section 4"},
+  {term:"Circuit protective conductor (CPC)", ref:"Sec 4.2", part:"Section 4"},
+  {term:"Main protective bonding conductor", ref:"Sec 4.2/4.3", part:"Section 4"},
+  {term:"Supplementary bonding", ref:"Sec 4.2", part:"Section 4"},
+  {term:"Main bonding sizing (TN / PME)", ref:"Sec 4.3", part:"Section 4"},
+  {term:"CPC sizing by selection", ref:"Sec 4.3", part:"Section 4"},
+  {term:"Isolation — secure cut-off", ref:"Sec 5.1", part:"Section 5"},
+  {term:"Switching off for mechanical maintenance", ref:"Sec 5.2", part:"Section 5"},
+  {term:"Emergency switching", ref:"Sec 5.3", part:"Section 5"},
+  {term:"Firefighter's switch", ref:"Sec 5.3", part:"Section 5"},
+  {term:"Functional switching", ref:"Sec 5.4", part:"Section 5"},
+  {term:"Notices and labels", ref:"Sec 6.1", part:"Section 6"},
+  {term:"RCD quarterly test notice", ref:"Sec 6.1", part:"Section 6"},
+  {term:"Periodic inspection notice", ref:"Sec 6.1", part:"Section 6"},
+  {term:"Cables — flat PVC twin-and-earth", ref:"Sec 7.1", part:"Section 7"},
+  {term:"Cable for data", ref:"Sec 7.1", part:"Section 7"},
+  {term:"Cable for fire alarm (fire-resistant)", ref:"Sec 7.1", part:"Section 7"},
+  {term:"SWA (steel wire armoured) cable", ref:"Sec 7.1", part:"Section 7"},
+  {term:"Containment — conduit / trunking / tray", ref:"Sec 7.2", part:"Section 7"},
+  {term:"Containment — ladder / basket", ref:"Sec 7.2", part:"Section 7"},
+  {term:"Busbar trunking / rising main", ref:"Sec 7.2", part:"Section 7"},
+  {term:"Conduit fittings (locknut, bush, coupler)", ref:"Sec 7.2", part:"Section 7"},
+  {term:"Ring final circuit (2.5 mm², 32 A, 100 m²)", ref:"Sec 7.3", part:"Section 7"},
+  {term:"Radial circuit (4 mm², 32 A, 75 m²)", ref:"Sec 7.3", part:"Section 7"},
+  {term:"Radial circuit (2.5 mm², 20 A, 50 m²)", ref:"Sec 7.3", part:"Section 7"},
+  {term:"Fused spur off a ring", ref:"Sec 7.3", part:"Section 7"},
+  {term:"Immersion heater circuit", ref:"Sec 7.3", part:"Section 7"},
+  {term:"Final circuit vs distribution circuit", ref:"Sec 7.3", part:"Section 7"},
+  {term:"Two-way switching", ref:"Sec 7.3", part:"Section 7"},
+  {term:"Inspection and testing — sequence", ref:"Sec 9.1", part:"Section 9"},
+  {term:"Insulation resistance test", ref:"Sec 9.1", part:"Section 9"},
+  {term:"Certificates (EIC / MEIWC / EICR)", ref:"Sec 9.1", part:"Section 9"},
+  {term:"Bathroom zones (0, 1, 2)", ref:"Sec 10.1", part:"Section 10"},
+  {term:"30 mA RCD in bathrooms", ref:"Sec 10.1", part:"Section 10"},
+  {term:"IP ratings (water)", ref:"Sec 10.1", part:"Section 10"},
+  {term:"EV charging — RCD & PME restrictions", ref:"Sec 11.1", part:"Section 11"},
+  {term:"Caravan / boat supplies", ref:"Sec 11.2", part:"Section 11"},
+  {term:"Prosumer installations (PV, battery)", ref:"Sec 12.1", part:"Section 12"},
+  {term:"Maximum demand & diversity", ref:"Appx A/B", part:"Appendices"},
+  {term:"Diversity — purpose of", ref:"Appx A/B", part:"Appendices"},
+  {term:"Diversity — lighting allowance (66%)", ref:"Appx A/B", part:"Appendices"},
+  {term:"Diversity — cooker (10 A + 30% + 5 A)", ref:"Appx A/B", part:"Appendices"},
+  {term:"Design current (Ib = P ÷ V)", ref:"Appx", part:"Appendices"},
+  {term:"Cable current ratings (reference methods)", ref:"Appx C/D", part:"Appendices"},
+  {term:"Reference method C (clipped direct)", ref:"Appx C/D", part:"Appendices"},
+  {term:"Correction factor — Ca (ambient temperature)", ref:"Appx F", part:"Appendices"},
+  {term:"Correction factor — Cg (grouping)", ref:"Appx F", part:"Appendices"},
+  {term:"Correction factor — Ci (thermal insulation)", ref:"Appx F", part:"Appendices"},
+  {term:"Correction factor — Cf (BS 3036 fuse, 0.725)", ref:"Appx F", part:"Appendices"},
+  {term:"Voltage drop — limits (3% / 5%)", ref:"Appx F", part:"Appendices"},
+  {term:"Voltage drop — formula (mV/A/m)", ref:"Appx F", part:"Appendices"},
+  {term:"Conduit & trunking capacity (space factor)", ref:"Appx H", part:"Appendices"},
+  {term:"Cable factor / conduit factor", ref:"Appx H", part:"Appendices"}
+];
+
+/* ---------- PART 2 — DEFINITIONS (searchable glossary) ----------
+   Plain-English explanations written for study. These paraphrase the
+   concepts; they are not the verbatim wording of BS 7671 Part 2. */
+const DEFINITIONS = [
+  {term:"AC (alternating current)", cat:"General", def:"Current that periodically reverses direction; the UK public supply is AC at 50 Hz."},
+  {term:"Accessory", cat:"Wiring", def:"A device, other than current-using equipment, associated with the wiring and accessories of an installation — e.g. a socket-outlet, switch, plug or connection unit."},
+  {term:"Ambient temperature", cat:"Wiring", def:"The temperature of the air or other medium surrounding equipment. It affects a cable's current-carrying capacity (correction factor Ca)."},
+  {term:"Arm's reach", cat:"Shock protection", def:"The zone extending from any point a person can stand to the limit a hand can reach in any direction without assistance — used when relying on placing live parts out of reach (see Fig 417)."},
+  {term:"Automatic disconnection of supply (ADS)", cat:"Shock protection", def:"The main method of fault protection: a fault to earth causes a protective device to operate and cut off the supply quickly enough to prevent a dangerous shock."},
+  {term:"Barrier", cat:"Shock protection", def:"A part providing basic protection by preventing contact with live parts from any usual direction of access."},
+  {term:"Basic insulation", cat:"Shock protection", def:"Insulation applied to live parts to provide basic protection — the everyday insulation on a conductor."},
+  {term:"Basic protection", cat:"Shock protection", def:"Protection against electric shock under normal (fault-free) conditions — stops you touching live parts (formerly 'protection against direct contact')."},
+  {term:"Bidirectional protective device", cat:"Devices", def:"NEW (A3:2024). A device the manufacturer intends to work with a supply connected to either side, or to both sets of terminals — suited to installations where power flows both ways."},
+  {term:"Bonding conductor", cat:"Earthing & bonding", def:"A protective conductor providing equipotential bonding — connecting conductive parts together to keep them at substantially the same potential."},
+  {term:"Bunched", cat:"Wiring", def:"Cables are bunched when grouped together so that heat doesn't dissipate freely; bunching reduces current-carrying capacity (grouping factor Cg)."},
+  {term:"Cable coupler", cat:"Wiring", def:"A means of connecting/disconnecting two flexible cables, comprising a connector and a plug part."},
+  {term:"Circuit", cat:"General", def:"An assembly of equipment supplied from the same origin and protected against overcurrent by the same protective device(s)."},
+  {term:"Circuit protective conductor (CPC)", cat:"Earthing & bonding", def:"A protective conductor connecting exposed-conductive-parts of equipment to the main earthing terminal, providing the path for earth fault current."},
+  {term:"Class I equipment", cat:"Shock protection", def:"Equipment relying on basic insulation PLUS an earth connection of its exposed metalwork (a CPC) for fault protection."},
+  {term:"Class II equipment", cat:"Shock protection", def:"Equipment with double or reinforced insulation and no reliance on an earth connection — the 'double-insulated' square-in-square symbol."},
+  {term:"Class III equipment", cat:"Shock protection", def:"Equipment relying on supply at SELV, where voltages are too low to cause a harmful shock."},
+  {term:"Conductor — live", cat:"General", def:"A conductor intended to be energised in normal use, including a neutral but excluding a PEN where it's acting as a protective conductor."},
+  {term:"Conduit", cat:"Wiring", def:"A part of a closed wiring system (round or otherwise) for drawing in or replacing insulated conductors or cables."},
+  {term:"Consumer unit", cat:"Devices", def:"A particular type of low-voltage switchgear assembly for a domestic installation — incoming main switch plus the final-circuit protective devices in one enclosure."},
+  {term:"Current-carrying capacity (of a conductor)", cat:"Wiring", def:"The maximum current a conductor can carry continuously under defined conditions without its temperature exceeding the specified limit — the corrected value is Iz."},
+  {term:"Current-using equipment", cat:"General", def:"Equipment that converts electrical energy into another form, such as heat, light or motion (a heater, lamp or motor)."},
+  {term:"DC (direct current)", cat:"General", def:"Current that flows in one direction only; produced by batteries, PV arrays and rectifiers."},
+  {term:"Design current (Ib)", cat:"Overcurrent", def:"The current intended to be carried by a circuit in normal service — the starting point of the Ib ≤ In ≤ Iz cable-sizing check."},
+  {term:"Disconnector (isolator)", cat:"Devices", def:"A mechanical device that provides, in the open position, an isolating distance (a secure gap) to make a circuit safe to work on."},
+  {term:"Distribution board", cat:"Devices", def:"An assembly containing protective devices fed from one or more incoming circuits, with terminals for outgoing circuits."},
+  {term:"Distribution circuit", cat:"General", def:"A circuit supplying a distribution board or switchgear (rather than current-using equipment directly) — e.g. submains between boards."},
+  {term:"Double insulation", cat:"Shock protection", def:"Insulation comprising both basic and supplementary insulation — the basis of Class II equipment."},
+  {term:"Earth", cat:"Earthing & bonding", def:"The conductive mass of the Earth, whose electric potential at any point is taken as zero."},
+  {term:"Earth electrode", cat:"Earthing & bonding", def:"A conductor (or group) in intimate contact with the ground, providing an electrical connection to earth — used on TT systems."},
+  {term:"Earth fault current", cat:"Earthing & bonding", def:"A fault current that flows to earth due to a fault of negligible impedance between a live conductor and an exposed- or extraneous-conductive-part."},
+  {term:"Earth fault loop impedance (Zs)", cat:"Earthing & bonding", def:"The total impedance of the earth fault current loop, starting and ending at the point of fault. Low enough Zs lets the device disconnect in time. Ze is the external part of the loop."},
+  {term:"Earthing", cat:"Earthing & bonding", def:"The act of connecting the exposed-conductive-parts of an installation to the means of earthing."},
+  {term:"Earthing conductor", cat:"Earthing & bonding", def:"A protective conductor connecting the main earthing terminal to the means of earthing (the supply earth or an electrode)."},
+  {term:"Electrical installation", cat:"General", def:"An assembly of associated electrical equipment having coordinated characteristics to fulfil a specific purpose — i.e. the fixed wiring beyond the origin."},
+  {term:"Emergency switching", cat:"Devices", def:"Rapidly cutting off the supply to remove an unexpected danger — the device must be readily accessible and clearly identifiable."},
+  {term:"Enclosure", cat:"Shock protection", def:"A part providing protection of equipment against external influences and basic protection in any direction."},
+  {term:"Equipotential bonding", cat:"Earthing & bonding", def:"Electrical connection keeping conductive parts at substantially the same potential, so dangerous voltage differences can't appear between them."},
+  {term:"Exposed-conductive-part", cat:"Shock protection", def:"Conductive part of equipment that can be touched and is not normally live, but may become live under a fault — e.g. a Class I appliance casing."},
+  {term:"Extraneous-conductive-part", cat:"Shock protection", def:"A conductive part NOT forming part of the installation but liable to introduce a potential, generally earth — e.g. a metal water or gas pipe, or structural steel."},
+  {term:"External influence", cat:"Wiring", def:"Any influence external to the installation that affects its design and operation — moisture, temperature, dust, impact (classified by the AD/AE/BE codes)."},
+  {term:"Fault current", cat:"Overcurrent", def:"A current resulting from a fault — e.g. a short-circuit between live conductors or an earth fault."},
+  {term:"Fault protection", cat:"Shock protection", def:"Protection against electric shock under single-fault conditions — chiefly automatic disconnection of supply (formerly 'protection against indirect contact')."},
+  {term:"FELV (functional extra-low voltage)", cat:"Voltages", def:"An extra-low-voltage system that does NOT meet all the requirements of SELV or PELV, so basic and fault protection appropriate to the primary voltage are still needed."},
+  {term:"Final circuit", cat:"General", def:"A circuit connected directly to current-using equipment or to socket-outlets — the 'last leg' of the installation."},
+  {term:"Functional earthing", cat:"Earthing & bonding", def:"Earthing for reasons other than safety — e.g. for the correct operation of equipment (as distinct from protective earthing)."},
+  {term:"Functional switching", cat:"Devices", def:"Switching intended for normal operation — turning equipment on and off in service (e.g. a light switch)."},
+  {term:"Fuse", cat:"Devices", def:"A protective device that opens a circuit by the melting of a fuse element when the current exceeds a value for a sufficient time."},
+  {term:"Generating set", cat:"Devices", def:"An assembly producing electrical energy — a generator, microgeneration source or storage system, operating standalone, as an alternative, or in parallel with the grid."},
+  {term:"Indirect contact", cat:"Shock protection", def:"Older term for contact with exposed-conductive-parts made live by a fault — now covered by 'fault protection'."},
+  {term:"Instructed person (electrically)", cat:"Persons", def:"A person adequately advised or supervised by a skilled person to enable them to perceive risks and avoid dangers electricity can create."},
+  {term:"Insulation", cat:"Shock protection", def:"Material applied to conductors to prevent the passage of current and provide protection against electric shock."},
+  {term:"Isolation", cat:"Devices", def:"Cutting off a circuit/equipment from every source of supply for safety, in a way that is secure against inadvertent reclosure."},
+  {term:"IT system", cat:"Earthing & bonding", def:"A system with no direct connection between live parts and earth (or earthed through a high impedance); exposed-conductive-parts are earthed independently."},
+  {term:"Leakage current", cat:"General", def:"Current flowing to earth or to extraneous-conductive-parts in a healthy circuit — should be small; excessive leakage trips RCDs."},
+  {term:"Line conductor", cat:"General", def:"A conductor of an AC system for the transmission of energy, other than a neutral or protective conductor (the 'live'/'phase' — brown in the UK)."},
+  {term:"Live part", cat:"Shock protection", def:"A conductor or conductive part intended to be energised in normal use, including a neutral conductor."},
+  {term:"Low voltage", cat:"Voltages", def:"Voltage normally exceeding extra-low voltage but not exceeding 1000 V AC or 1500 V DC between conductors (50–1000 V AC to earth) — the band BS 7671 mainly addresses."},
+  {term:"Luminaire", cat:"Devices", def:"Equipment that distributes, filters or transforms light from one or more lamps, including the parts to support, fix and protect the lamps."},
+  {term:"Luminaire supporting coupler (DCL)", cat:"Devices", def:"A standardised ceiling device for the mechanical support and electrical connection of a luminaire (Device for Connecting Luminaires)."},
+  {term:"Main earthing terminal (MET)", cat:"Earthing & bonding", def:"The terminal or bar provided for the connection of earthing, protective and bonding conductors to the means of earthing — the installation's single earth reference point."},
+  {term:"Maximum demand", cat:"General", def:"The greatest current likely to be drawn by an installation, assessed allowing for diversity — it sizes the supply and main equipment."},
+  {term:"Neutral conductor", cat:"General", def:"A conductor connected to the neutral point of a system that contributes to the transmission of energy (blue in the UK)."},
+  {term:"Nominal voltage", cat:"Voltages", def:"The voltage by which an installation (or part) is designated — e.g. 230 V single-phase, 400 V three-phase. Actual voltage may vary within limits."},
+  {term:"Obstacle", cat:"Shock protection", def:"A part preventing unintentional contact with live parts, but not preventing deliberate contact — only for use where access is restricted to skilled/instructed persons."},
+  {term:"Ordinary person", cat:"Persons", def:"A person who is neither a skilled person nor an instructed person — i.e. the general public, for whom the highest level of protection is assumed."},
+  {term:"Origin of an installation", cat:"General", def:"The point at which electrical energy is delivered to the installation — generally the outgoing terminals of the meter or the consumer's main switch."},
+  {term:"Overcurrent", cat:"Overcurrent", def:"A current exceeding the rated value; in a sound circuit this is an overload, in a faulty circuit it is a fault (short-circuit or earth fault) current."},
+  {term:"Overload current", cat:"Overcurrent", def:"An overcurrent occurring in a circuit that is electrically sound (no fault) — e.g. too many appliances on one circuit."},
+  {term:"PELV (protective extra-low voltage)", cat:"Voltages", def:"An extra-low-voltage system from a safety source that is electrically separated from other circuits but, unlike SELV, may have one point connected to earth."},
+  {term:"PEN conductor", cat:"Earthing & bonding", def:"A conductor combining the functions of both a protective (PE) and neutral (N) conductor — the combined part of a TN-C-S (PME) supply."},
+  {term:"Point (in wiring)", cat:"Wiring", def:"A termination of the fixed wiring intended for the connection of current-using equipment or accessories."},
+  {term:"Portable equipment", cat:"General", def:"Equipment intended to be moved while in operation, or easily moved between uses while connected to the supply."},
+  {term:"Prospective fault current (Ipf)", cat:"Overcurrent", def:"The value of fault current that would flow for a fault of negligible impedance — the protective device's breaking capacity must exceed it."},
+  {term:"Protective conductor (PE)", cat:"Earthing & bonding", def:"A conductor used for protection against electric shock, connecting exposed-conductive-parts, extraneous-conductive-parts, the MET, earth electrode or earthed point of the source."},
+  {term:"Protective multiple earthing (PME)", cat:"Earthing & bonding", def:"An earthing arrangement (TN-C-S) where the supply neutral is also used as the earth, connected to earth at multiple points along the network — common in UK housing."},
+  {term:"Reduced low voltage system", cat:"Voltages", def:"A system in which the voltage between conductors does not exceed 110 V (and 63.5 V to earth) — used for portable tools on construction sites (110 V centre-tapped)."},
+  {term:"Reinforced insulation", cat:"Shock protection", def:"A single insulation system giving protection against shock equivalent to double insulation."},
+  {term:"Residual current", cat:"Devices", def:"The vector sum of the instantaneous currents in the live conductors of a circuit — in a healthy circuit it's near zero; an imbalance indicates leakage/fault."},
+  {term:"Residual current device (RCD)", cat:"Devices", def:"A mechanical switching device designed to open its contacts when the residual current reaches a set value (e.g. 30 mA) — used for additional protection."},
+  {term:"Ring final circuit", cat:"Wiring", def:"A final circuit wired as a loop, starting and ending at the same protective device, so each point is fed from two directions (the classic UK ring main)."},
+  {term:"Safety service", cat:"General", def:"An electrical system for equipment provided to protect or warn people in danger, or essential to their safety — e.g. emergency lighting, fire alarms."},
+  {term:"SELV (separated extra-low voltage)", cat:"Voltages", def:"An extra-low-voltage system from a safety-isolating source, electrically separated from earth and from other circuits (no earth connection)."},
+  {term:"Shock current", cat:"Shock protection", def:"A current passing through a human or animal body of a magnitude that may have harmful physiological effects."},
+  {term:"Simultaneously accessible parts", cat:"Shock protection", def:"Conductors or conductive parts that can be touched at the same time — relevant to touch voltage and the need for bonding."},
+  {term:"Skilled person (electrically)", cat:"Persons", def:"A person with relevant education and experience to enable them to perceive risks and avoid dangers that electricity can create."},
+  {term:"Socket-outlet", cat:"Wiring", def:"A device with socket contacts intended for connection to a plug, and for the connection of flexible cords to the fixed wiring."},
+  {term:"Spur", cat:"Wiring", def:"A branch from a ring or radial final circuit — a fused spur has its own fuse; a non-fused spur is limited in what it may supply."},
+  {term:"Stationary equipment", cat:"General", def:"Fixed equipment, or equipment over 18 kg not provided with a carrying handle — not intended to be moved in normal use."},
+  {term:"Supplementary insulation", cat:"Shock protection", def:"Independent insulation applied in addition to basic insulation, to provide fault protection (together they form double insulation)."},
+  {term:"Supplementary equipotential bonding", cat:"Earthing & bonding", def:"Local bonding connecting simultaneously-accessible exposed- and extraneous-conductive-parts to limit touch voltage during a fault (historically in bathrooms)."},
+  {term:"Switchgear", cat:"Devices", def:"Equipment for switching, controlling and protecting circuits — the assembly of switches, fuses, circuit-breakers and associated control gear."},
+  {term:"System (TN, TT, IT)", cat:"Earthing & bonding", def:"A live conductor (or conductors) and the protective conductors, classified by how the supply and installation are earthed — TN, TT or IT."},
+  {term:"TN-S system", cat:"Earthing & bonding", def:"A TN system with separate neutral and protective conductors throughout, the earth provided via the supply cable (e.g. the cable sheath) — low Ze."},
+  {term:"TN-C-S system", cat:"Earthing & bonding", def:"A TN system where neutral and protective functions are combined (PEN) in the supply and separated within the installation — UK PME; very low Ze."},
+  {term:"TT system", cat:"Earthing & bonding", def:"A system where one point of the supply is earthed and the installation's exposed-conductive-parts are connected to an independent earth electrode — high Ze, needs RCDs."},
+  {term:"Touch voltage", cat:"Shock protection", def:"The voltage appearing between simultaneously-accessible parts during an insulation fault — kept low by ADS and bonding."},
+  {term:"Unidirectional protective device", cat:"Devices", def:"NEW (A3:2024). A device the manufacturer intends to have the supply connected to one defined set of terminals only — its line/load sides must be wired the correct way round."},
+  {term:"Voltage band I", cat:"Voltages", def:"The lower voltage band covering extra-low voltage and systems where protection against shock is provided by the low value of voltage (e.g. SELV/PELV)."},
+  {term:"Voltage band II", cat:"Voltages", def:"The band covering voltages for normal supply to installations — i.e. low voltage up to 1000 V AC, including the 230/400 V supply."},
+  {term:"Wiring system", cat:"Wiring", def:"An assembly of one or more cables or busbars and the parts that fix, support and (if necessary) enclose them — e.g. cables in conduit or on a tray."}
+];
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const app = document.getElementById('app');
+  const navBtns = Array.from(document.querySelectorAll('#nav button'));
+  const IC = {
+    book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2V5z"/><path d="M4 19a2 2 0 012-2h12"/></svg>',
+    search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>',
+    cards:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h13a1 1 0 011 1v12"/></svg>',
+    check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11"/></svg>',
+    target:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>',
+    skills:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 21l-5-2.9.9-5.5-4-3.9L9.5 8z"/></svg>',
+    calc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M8 15h2M14 11h2M14 15h2"/></svg>'
+  };
+  const norm = s => s.toLowerCase().replace(/[’'`]/g,'');
+  const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+
+  window.go = function (view, arg) {
+    navBtns.forEach(b => b.classList.toggle('active', b.dataset.view === view || (view==='section' && b.dataset.view==='sections')));
+    window.scrollTo({top:0,behavior:'smooth'});
+    ({home:renderHome,sections:renderSections,section:()=>renderSection(arg),calcs:renderCalcs,index:renderIndex,
+      definitions:renderDefinitions,flashcards:renderFlash,quiz:renderQuiz,keyword:renderKeyword,examskills:renderExam}[view]||renderHome)();
+  };
+  navBtns.forEach(b => b.addEventListener('click', () => go(b.dataset.view)));
+
+  /* HOME */
+  function renderHome(){
+    const tiles = SECTIONS.map(s=>`<div class="stile" onclick="go('section','${s.id}')"><div class="num">${s.num}</div><div class="tag">${s.tag}</div><h3>${s.title}</h3><div class="meta">${s.chapters.length} topic${s.chapters.length>1?'s':''}</div></div>`).join('');
+    const feats = [
+      ['calcs','Calculations','Worked examples — diversity, design current, voltage drop, scale and more, step by step.',IC.calc],
+      ['index','Index Finder','Search a word or phrase and jump to the right section of the On-Site Guide.',IC.search],
+      ['definitions','Definitions','101 key terms, searchable A–Z — know exactly what each word means.',IC.book],
+      ['flashcards','Flash Cards','Flip cards on the points that come up again and again, by section.',IC.cards],
+      ['quiz','Test Yourself','Exam-style multiple choice with worked answers and live scoring.',IC.check],
+      ['keyword','Keyword Trainer','Spot the trigger words, decide the section, find the answer.',IC.target],
+      ['examskills','Exam Skills','How to read a question and look things up fast in an open-book test.',IC.skills]
+    ].map(([v,t,d,i])=>`<div class="feat" onclick="go('${v}')"><div class="ic">${i}</div><h3>${t}</h3><p>${d}</p></div>`).join('');
+    app.innerHTML = `
+      <section class="hero">
+        <span class="tag">⚡ Level 2 · The electrician's companion</span>
+        <h1>Master the <em>On-Site Guide</em></h1>
+        <p>The mini-BS 7671 explained for Level 2 — detailed, beginner-friendly notes on every section, worked calculations, flash cards, exam-style questions, and a trainer that teaches you to spot the keywords and find the answer fast.</p>
+        <div class="pills"><span>12 sections + appendices</span><span>${CALCULATIONS.length} worked calcs</span><span>${FLASHCARDS.length} flash cards</span><span>${MCQS.length} MCQs</span><span>${DEFINITIONS.length} definitions</span></div>
+      </section>
+      <div class="sec-title"><span class="n">§</span>The guide, section by section</div>
+      <p class="sec-sub">Tap any section for clear, step-by-step explanations and the key points it contains — written for learners, with worked examples and exam tips.</p>
+      <div class="grid secs-grid">${tiles}</div>
+      <div class="sec-title"><span class="n">★</span>Practise & test</div>
+      <p class="sec-sub">The Level 2 exam rewards two things: knowing where to find the answer, and getting the calculations right. Drill both here.</p>
+      <div class="grid feat-grid">${feats}</div>
+      <div class="disc">This app explains the On-Site Guide in plain English for study and references section numbers. It does not reproduce the text of the Guide or BS 7671. For the definitive wording and tables, always use your own current copy.</div>`;
+  }
+
+  /* SECTIONS LIST */
+  function renderSections(){
+    const tiles = SECTIONS.map(s=>`<div class="stile" onclick="go('section','${s.id}')"><div class="num">${s.num}</div><div class="tag">${s.tag}</div><h3>${s.title}</h3><div class="meta">${s.chapters.length} topic${s.chapters.length>1?'s':''}</div></div>`).join('');
+    app.innerHTML = `<div class="crumb">Contents</div><div class="sec-title"><span class="n">§</span>Sections of the On-Site Guide</div><p class="sec-sub">Knowing which section holds what is half the skill in an open-book exam.</p><div class="grid secs-grid">${tiles}</div>`;
+  }
+
+  /* SINGLE SECTION */
+  function renderSection(id){
+    const s = SECTIONS.find(x=>x.id===id)||SECTIONS[0];
+    const chapters = s.chapters.map(c=>`
+      <div class="chapter"><span class="ch-num">${c.num}</span><h3>${c.title}</h3><div class="body">${c.body}</div>
+        <div class="regbox"><div class="lbl">Key points — tap any to learn it in detail</div>
+          ${c.regs.map(r=>`<div class="reg" onclick="this.classList.toggle('open')"><div class="reg-head"><span class="ref">${r.ref}</span><span class="what">${r.topic}</span><svg class="reg-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div><div class="reg-detail"><div class="reg-detail-inner">${r.detail}</div></div></div>`).join('')}
+        </div></div>`).join('');
+    const i = SECTIONS.indexOf(s), prev=SECTIONS[i-1], next=SECTIONS[i+1];
+    app.innerHTML = `
+      <div class="crumb"><b>Sections</b> &nbsp;›&nbsp; Section ${s.num}</div>
+      <div class="hero" style="padding:32px 34px"><span class="tag">Section ${s.num}</span><h1 style="font-size:clamp(1.7rem,3.6vw,2.6rem)">${s.title}</h1><p>${s.intro}</p></div>
+      ${chapters}
+      <div class="toolbar" style="margin-top:22px;justify-content:space-between">
+        ${prev?`<button class="btn btn-ghost" onclick="go('section','${prev.id}')">← ${prev.title}</button>`:'<span></span>'}
+        <button class="btn btn-primary" onclick="go('quiz')">Test yourself →</button>
+        ${next?`<button class="btn btn-ghost" onclick="go('section','${next.id}')">${next.title} →</button>`:'<span></span>'}
+      </div>`;
+  }
+
+  /* CALCULATIONS */
+  function renderCalcs(){
+    const cats = ['All', ...Array.from(new Set(CALCULATIONS.map(c=>c.cat)))];
+    app.innerHTML = `
+      <div class="crumb">Calculations</div>
+      <div class="sec-title"><span class="n">${IC.calc}</span>Worked Calculations</div>
+      <p class="sec-sub">The Level 2 exam always has calculation questions. Each example below shows the method <em>step by step</em> — read the question, try it yourself, then reveal the working. Filter by topic to drill a weak area.</p>
+      <div class="toolbar" id="calcChips">${cats.map((c,i)=>`<button class="chip ${i===0?'on':''}" data-c="${c}">${c}</button>`).join('')}</div>
+      <div id="calcList"></div>`;
+    function draw(cat){
+      const rows = (cat==='All')?CALCULATIONS:CALCULATIONS.filter(c=>c.cat===cat);
+      document.getElementById('calcList').innerHTML = rows.map((c,idx)=>`
+        <div class="calc-card" style="margin-bottom:18px">
+          <div class="kw-tag">${c.cat} · worked example</div>
+          <h3 style="font-family:'Barlow Condensed';font-weight:700;font-size:1.4rem;text-transform:uppercase;margin-bottom:10px">${c.title}</h3>
+          <div class="calc-q">${c.question}</div>
+          <div class="calc-formula">${c.formula}</div>
+          <button class="btn btn-ghost calc-toggle" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">Show the working →</button>
+          <div style="display:none">
+            <ol class="calc-steps">${c.steps.map(st=>`<li>${st}</li>`).join('')}</ol>
+            <div class="calc-answer"><span class="lbl">Answer</span><span class="val">${c.answer}</span></div>
+            <div class="calc-tip"><b>Exam tip:</b> ${c.tip}</div>
+          </div>
+        </div>`).join('');
+    }
+    document.querySelectorAll('#calcChips .chip').forEach(ch=>ch.addEventListener('click',()=>{
+      document.querySelectorAll('#calcChips .chip').forEach(x=>x.classList.remove('on'));ch.classList.add('on');draw(ch.dataset.c);
+    }));
+    draw('All');
+  }
+
+  /* INDEX FINDER */
+  function renderIndex(){
+    app.innerHTML = `
+      <div class="crumb">Index Finder</div>
+      <div class="sec-title"><span class="n">${IC.search}</span>Index Finder</div>
+      <p class="sec-sub">Type a word <em>or a whole phrase</em> the way it appears in a question — it matches your text as a phrase (the words together, in order). It points you to the section of the On-Site Guide.</p>
+      <div class="searchwrap">${IC.search}<input class="search-input" id="idxSearch" placeholder="e.g. ring final circuit · main protective bonding · voltage drop…" autocomplete="off"></div>
+      <div class="idx-count" id="idxCount"></div><div class="idx-list" id="idxList"></div>`;
+    const input=document.getElementById('idxSearch'),list=document.getElementById('idxList'),count=document.getElementById('idxCount');
+    const sorted=INDEX_ENTRIES.slice().sort((a,b)=>a.term.localeCompare(b.term));
+    function draw(q){
+      const raw=q.trim();
+      // Phrase search: collapse the typed text to a single normalised phrase and
+      // match it as one contiguous string (words together, in order).
+      const phrase=norm(raw).replace(/\s+/g,' ').trim();
+      const rows=sorted.filter(e=>{if(!phrase)return true;const h=norm(e.term+' '+e.ref+' '+e.part).replace(/\s+/g,' ');return h.includes(phrase);});
+      count.textContent=raw?`${rows.length} match${rows.length!==1?'es':''} for the phrase “${raw}”`:`${sorted.length} indexed terms — type a word or phrase`;
+      const re=phrase?new RegExp('('+esc(raw.replace(/\s+/g,' ').trim())+')','ig'):null;
+      list.innerHTML=rows.length?rows.map(e=>{let t=e.term;if(re)t=t.replace(re,'<span class="hl">$1</span>');return `<div class="idx-row"><span class="term">${t}</span><span class="ppart">${e.part}</span><span class="ref">${e.ref}</span></div>`;}).join(''):`<div class="idx-row"><span class="term" style="color:var(--ink-soft)">No match for that phrase. Try a shorter phrase or a single key word (e.g. “bonding”, “diversity”, “cable”).</span></div>`;
+    }
+    input.addEventListener('input',()=>draw(input.value));draw('');input.focus();
+  }
+
+  /* DEFINITIONS */
+  function renderDefinitions(){
+    const cats=Array.from(new Set(DEFINITIONS.map(d=>d.cat))).sort();
+    app.innerHTML = `
+      <div class="crumb">Definitions</div><div class="sec-title"><span class="n">A→Z</span>Definitions</div>
+      <p class="sec-sub">Know the exact meaning of a term and the mark is yours. Search a word or phrase, or tap a category. Explanations are in plain English for study.</p>
+      <div class="searchwrap">${IC.search}<input class="search-input" id="defSearch" placeholder="e.g. extraneous · fault protection · SELV · earthing system…" autocomplete="off"></div>
+      <div class="toolbar" id="defChips"><button class="chip on" data-c="All">All</button>${cats.map(c=>`<button class="chip" data-c="${c}">${c}</button>`).join('')}</div>
+      <div class="idx-count" id="defCount"></div><div id="defList"></div>`;
+    const input=document.getElementById('defSearch'),list=document.getElementById('defList'),count=document.getElementById('defCount');
+    const sorted=DEFINITIONS.slice().sort((a,b)=>a.term.localeCompare(b.term));let activeCat='All';
+    function draw(q){
+      const raw=q.trim(),tokens=norm(raw).split(/\s+/).filter(Boolean);
+      const rows=sorted.filter(d=>{if(activeCat!=='All'&&d.cat!==activeCat)return false;if(!tokens.length)return true;const h=norm(d.term+' '+d.def+' '+d.cat);return tokens.every(t=>h.includes(t));});
+      count.textContent=(raw?`${rows.length} match${rows.length!==1?'es':''} for “${raw}”`:`${rows.length} term${rows.length!==1?'s':''}`)+(activeCat!=='All'?` in ${activeCat}`:'');
+      const re=tokens.length?new RegExp('('+tokens.map(esc).join('|')+')','ig'):null;
+      let html='',last='';
+      rows.forEach(d=>{const L=d.term[0].toUpperCase();if(L!==last){if(last)html+='</div>';html+=`<div class="def-letter">${L}</div><div class="def-group">`;last=L;}
+        let term=d.term,def=d.def;if(re){term=term.replace(re,'<span class="hl">$1</span>');def=def.replace(re,'<span class="hl">$1</span>');}
+        html+=`<div class="def-row"><div class="def-head"><span class="def-term">${term}</span><span class="def-cat">${d.cat}</span></div><div class="def-text">${def}</div></div>`;});
+      if(last)html+='</div>';
+      list.innerHTML=rows.length?html:`<div class="idx-list"><div class="idx-row"><span class="term" style="color:var(--ink-soft)">No matching definition. Try a broader word.</span></div></div>`;
+    }
+    document.querySelectorAll('#defChips .chip').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('#defChips .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');activeCat=c.dataset.c;draw(input.value);}));
+    input.addEventListener('input',()=>draw(input.value));draw('');input.focus();
+  }
+
+  /* FLASH CARDS */
+  let fcSet=[],fcPos=0;
+  function renderFlash(){
+    const topics=['All',...Array.from(new Set(FLASHCARDS.map(c=>c.topic)))];
+    app.innerHTML=`<div class="crumb">Flash Cards</div><div class="sec-title"><span class="n">${IC.cards}</span>Flash Cards</div>
+      <p class="sec-sub">Tap the card to reveal the answer. Filter by section, or shuffle the whole pack.</p>
+      <div class="toolbar" id="fcChips">${topics.map((t,i)=>`<button class="chip ${i===0?'on':''}" data-t="${t}">${t}</button>`).join('')}<button class="chip" id="fcShuffle">⤮ Shuffle</button></div>
+      <div class="fc-stage"><div class="flashcard" id="flashcard"><div class="fc-inner">
+        <div class="fc-face fc-front"><div class="kicker" id="fcTopic"></div><div class="q" id="fcQ"></div><div class="fc-hint">tap to flip ↻</div></div>
+        <div class="fc-face fc-back"><div class="kicker">Answer</div><div class="a" id="fcA"></div><div class="fc-hint">tap to flip back ↻</div></div>
+      </div></div></div>
+      <div class="fc-controls"><button class="btn btn-ghost" id="fcPrev">← Prev</button><span class="fc-progress" id="fcProg"></span><button class="btn btn-primary" id="fcNext">Next →</button></div>`;
+    setFcSet('All');
+    document.getElementById('flashcard').addEventListener('click',function(){this.classList.toggle('flip');});
+    document.getElementById('fcNext').addEventListener('click',()=>moveFc(1));
+    document.getElementById('fcPrev').addEventListener('click',()=>moveFc(-1));
+    document.getElementById('fcShuffle').addEventListener('click',()=>{document.querySelectorAll('#fcChips .chip').forEach(c=>c.classList.remove('on'));fcSet=FLASHCARDS.slice().sort(()=>Math.random()-.5);fcPos=0;showFc();});
+    document.querySelectorAll('#fcChips .chip[data-t]').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('#fcChips .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');setFcSet(c.dataset.t);}));
+  }
+  function setFcSet(t){fcSet=(t==='All')?FLASHCARDS.slice():FLASHCARDS.filter(c=>c.topic===t);fcPos=0;showFc();}
+  function showFc(){const c=fcSet[fcPos];if(!c)return;const card=document.getElementById('flashcard');card.classList.remove('flip');
+    document.getElementById('fcTopic').textContent=c.topic;document.getElementById('fcQ').innerHTML=c.q;document.getElementById('fcA').innerHTML=c.a;
+    document.getElementById('fcProg').textContent=`${fcPos+1} / ${fcSet.length}`;document.getElementById('fcPrev').disabled=fcPos===0;document.getElementById('fcNext').disabled=fcPos===fcSet.length-1;}
+  function moveFc(d){const n=fcPos+d;if(n<0||n>=fcSet.length)return;fcPos=n;showFc();}
+
+  /* QUIZ */
+  let qSet=[],qPos=0,qScore=0,qAnswered=false;
+  function renderQuiz(){
+    const topics=['All',...Array.from(new Set(MCQS.map(q=>q.topic)))];
+    app.innerHTML=`<div class="crumb">Test Yourself</div><div class="sec-title"><span class="n">${IC.check}</span>Test Yourself</div>
+      <p class="sec-sub">Exam-style questions modelled on the Level 2 paper. Each answer shows a worked explanation.</p>
+      <div class="toolbar" id="qChips">${topics.map((t,i)=>`<button class="chip ${i===0?'on':''}" data-t="${t}">${t}</button>`).join('')}</div><div id="quizBody"></div>`;
+    document.querySelectorAll('#qChips .chip').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('#qChips .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');startQuiz(c.dataset.t);}));
+    startQuiz('All');
+  }
+  function startQuiz(t){qSet=((t==='All')?MCQS.slice():MCQS.filter(q=>q.topic===t)).sort(()=>Math.random()-.5);qPos=0;qScore=0;showQ();}
+  function showQ(){const body=document.getElementById('quizBody'),q=qSet[qPos];qAnswered=false;const pct=Math.round((qPos/qSet.length)*100);
+    body.innerHTML=`<div class="quiz-card"><div class="progbar"><span style="width:${pct}%"></span></div>
+      <div class="quiz-meta"><span>Q ${qPos+1} of ${qSet.length} · <b style="color:var(--teal-d)">${q.topic}</b></span><span class="scorepill">Score ${qScore}/${qPos}</span></div>
+      <div class="quiz-q">${q.q}</div><div id="opts">${q.options.map((o,i)=>`<button class="opt" data-i="${i}"><span class="ltr">${'ABCD'[i]}</span>${o}</button>`).join('')}</div>
+      <div class="explain" id="explain"></div>
+      <div class="quiz-foot"><span></span><button class="btn btn-primary" id="qNext" style="display:none">${qPos===qSet.length-1?'See results':'Next'} →</button></div></div>`;
+    document.querySelectorAll('#opts .opt').forEach(b=>b.addEventListener('click',()=>answerQ(+b.dataset.i)));
+    document.getElementById('qNext').addEventListener('click',()=>{if(qPos===qSet.length-1)showResult();else{qPos++;showQ();}});
+  }
+  function answerQ(i){if(qAnswered)return;qAnswered=true;const q=qSet[qPos];const opts=document.querySelectorAll('#opts .opt');
+    opts.forEach((b,j)=>{b.classList.add('locked');if(j===q.correct)b.classList.add('correct');if(j===i&&i!==q.correct)b.classList.add('wrong');});
+    if(i===q.correct)qScore++;const ex=document.getElementById('explain');ex.innerHTML=`<b>${i===q.correct?'✓ Correct.':'✗ Not quite.'}</b> ${q.explain}`;ex.classList.add('show');
+    document.getElementById('qNext').style.display='inline-block';document.querySelector('.scorepill').textContent=`Score ${qScore}/${qPos+1}`;}
+  function showResult(){const pct=Math.round((qScore/qSet.length)*100);let msg=pct>=80?'Exam-ready on this topic. Strong work.':pct>=55?'Solid — review the ones you missed and the sections they point to.':'Keep going — re-read the section, then try again.';
+    document.getElementById('quizBody').innerHTML=`<div class="quiz-card result"><div class="big">${pct}%</div><h3>${qScore} out of ${qSet.length}</h3><p style="color:var(--ink-soft);margin-bottom:22px">${msg}</p><button class="btn btn-primary" onclick="document.querySelector('#qChips .chip.on').click()">Try again</button> <button class="btn btn-ghost" onclick="go('calcs')">Practise calculations →</button></div>`;}
+
+  /* KEYWORD TRAINER */
+  let kwPos=0;
+  function renderKeyword(){
+    app.innerHTML=`<div class="crumb">Keyword Trainer</div><div class="sec-title"><span class="n">${IC.target}</span>Keyword Trainer</div>
+      <p class="sec-sub">Read the question and <b>try to spot the trigger words yourself first</b>, then reveal each step: keywords → which section → the answer.</p>
+      <div class="toolbar"><button class="btn btn-ghost" id="kwPrev">← Previous</button><span class="fc-progress" id="kwProg"></span><button class="btn btn-ghost" id="kwNext">Next →</button><button class="btn btn-primary" id="kwRand" style="margin-left:auto">⤮ Random</button></div>
+      <div id="kwBody"></div>`;
+    document.getElementById('kwPrev').addEventListener('click',()=>{if(kwPos>0){kwPos--;showKw();}});
+    document.getElementById('kwNext').addEventListener('click',()=>{if(kwPos<KEYWORD_EXERCISES.length-1){kwPos++;showKw();}});
+    document.getElementById('kwRand').addEventListener('click',()=>{kwPos=Math.floor(Math.random()*KEYWORD_EXERCISES.length);showKw();});
+    showKw();
+  }
+  function showKw(){const e=KEYWORD_EXERCISES[kwPos];
+    document.getElementById('kwProg').textContent=`${kwPos+1} / ${KEYWORD_EXERCISES.length}`;
+    document.getElementById('kwPrev').disabled=kwPos===0;document.getElementById('kwNext').disabled=kwPos===KEYWORD_EXERCISES.length-1;
+    const steps=[['1','Spot the keywords',`<div class="kwlist">${e.keywords.map(k=>`<span>${k}</span>`).join('')}</div><p style="margin-top:8px">${e.keywordNote}</p>`],
+      ['2','Decide where to look',`<p>${e.look}</p>`],
+      ['3','Find the reference',`<p>The relevant reference is:</p><span class="reftag">${e.reg}</span>`],
+      ['4','The answer',`<p>${e.answer}</p>`]
+    ].map(([n,t,b])=>`<div class="kw-step" onclick="this.classList.toggle('open')"><div class="kw-step-h"><div class="sn">${n}</div><div class="st">${t}</div><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div><div class="kw-step-b"><div class="inner">${b}</div></div></div>`).join('');
+    document.getElementById('kwBody').innerHTML=`<div class="kw-card"><div class="kw-tag">Exam-style question ${kwPos+1}</div><div class="kw-q">${e.q}</div><p style="font-size:.84rem;color:var(--ink-soft);margin:6px 2px 2px">Reveal each step in order:</p>${steps}</div>`;
+  }
+
+  /* EXAM SKILLS */
+  function renderExam(){
+    const steps=[
+      ['1','Read the whole question first','Read it once for meaning before reaching for the book. Level 2 questions are short — work out exactly what is being asked (a fact? a definition? a calculation?).'],
+      ['2','Spot the trigger words','Words point to a section. "Statutory", "diagram", "scale", "earthing system", "extraneous", "diversity", "voltage drop", "bonding" — each has a home in the Guide. Underline them.'],
+      ['3','Decide: lookup or calculation?','If it asks "what is…", "which is…", "name the…" it\'s usually a lookup — go to the section or the index. If it gives you numbers and units, it\'s a calculation — pick the right formula.'],
+      ['4','Use the Index, not your memory','In an open-book exam the index is faster than flicking pages. Search the main word, get the section, turn straight to it. Practise in the Index Finder.'],
+      ['5','For calculations, write the formula first','Write the formula, put the numbers in, watch the units (mm→m, mV→V), and sanity-check the answer (a 230 V circuit can\'t drop 5800 V). Show your working.']
+    ].map(([n,t,d],i)=>`<div class="method-step"><div class="mn">${n}</div><div><h3>${t}</h3><p>${d}</p></div></div>${i<4?'<div class="arrow-down">↓</div>':''}`).join('');
+    app.innerHTML=`<div class="crumb">Exam Skills</div><div class="sec-title"><span class="n">${IC.skills}</span>The Open-Book Method</div>
+      <p class="sec-sub">The Level 2 exam is open-book and timed. You're tested on <em>finding</em> the answer quickly and getting the <em>calculations</em> right — not on memorising the whole Guide. Here's the method.</p>
+      ${steps}
+      <div class="callout"><b>The keyword habit.</b> Most lost marks come from searching the wrong section. Build the reflex: see a trigger word → name the section → confirm in the Index. Drill it in the <a href="#" onclick="go('keyword');return false" style="color:var(--teal-d);font-weight:700">Keyword Trainer</a>.</div>
+      <div class="callout" style="background:#eef4f7;border-color:var(--deep-2);border-left-color:var(--deep-2)"><b>Units win marks.</b> Most calculation slips are unit errors: drawings in mm (×scale, then ÷1000 for metres), voltage-drop figures in mV (÷1000 for volts), and diversity always makes a number SMALLER. A quick sanity check catches the silly ones.</div>
+      <div class="toolbar" style="margin-top:22px"><button class="btn btn-primary" onclick="go('keyword')">Start the Keyword Trainer →</button><button class="btn btn-ghost" onclick="go('calcs')">Practise calculations</button></div>`;
+  }
+
+  go('home');
+});
+
+/* COPY / PRINT PROTECTION */
+(function(){"use strict";
+  document.addEventListener('contextmenu',e=>{e.preventDefault();return false;},false);
+  ['copy','cut','dragstart','selectstart'].forEach(evt=>document.addEventListener(evt,e=>{const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'))return;e.preventDefault();return false;},false));
+  document.addEventListener('keydown',e=>{const k=(e.key||'').toLowerCase();const f=e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA');
+    if(e.keyCode===123){e.preventDefault();return false;}
+    if((e.ctrlKey||e.metaKey)&&['u','s','p','c','x'].indexOf(k)!==-1){if(f&&(k==='c'||k==='x'))return;e.preventDefault();return false;}
+    if((e.ctrlKey||e.metaKey)&&e.shiftKey&&['i','j','c'].indexOf(k)!==-1){e.preventDefault();return false;}
+  },false);
+})();
+
+</script>
+</body>
+</html>
