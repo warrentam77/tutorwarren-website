@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resistance, Capacitance &amp; 3-Phase Circuits | tutorwarren.com</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--br:#5c3d2e;--brm:#6d4c3d;--brl:#8b6f5e;--acc:#2980b9;--lb:#3498db;--pb:#e8f4fd;--vp:#f5f0eb;--wh:#fff;--tx:#1a1a2e;--tl:#5a5a6e;--gn:#27ae60;--rd:#c0392b;--or:#e67e22;--pu:#6c3483;--go:#d4a017;--rad:12px}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--vp);color:var(--tx);line-height:1.75;font-size:17px;-webkit-user-select:none;user-select:none}
+body::before{content:'tutorwarren.com';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:5vw;font-weight:800;color:rgba(92,61,46,.04);pointer-events:none;z-index:0;white-space:nowrap}
+@media print{body{display:none!important}}
+.hdr{background:linear-gradient(135deg,var(--br),var(--brm),var(--brl));color:var(--wh);padding:32px 20px 26px;text-align:center;position:relative}
+.hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--acc),var(--lb),var(--acc))}
+.hdr .brand{font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;opacity:.65;margin-bottom:8px}
+.hdr h1{font-size:clamp(20px,4vw,32px);font-weight:800;line-height:1.2;margin-bottom:6px}
+.hdr .sub{font-size:14px;opacity:.85}
+.hdr .tag{display:inline-block;margin-top:10px;background:rgba(255,255,255,.12);border-radius:20px;padding:4px 16px;font-size:12px}
+.nav{background:var(--wh);border-bottom:1px solid #ddd;padding:10px 14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;align-items:center}
+.nav-links{flex:1;overflow-x:auto;white-space:nowrap}
+.nav a{display:inline-block;padding:5px 12px;margin:2px;border-radius:18px;font-size:11px;font-weight:600;color:var(--brm);text-decoration:none;background:#f0e8df;transition:.2s}
+.nav a:hover{background:var(--acc);color:var(--wh)}
+.home-btn{flex-shrink:0;margin-left:8px;padding:5px 14px;border-radius:18px;font-size:12px;font-weight:700;color:var(--wh);background:var(--br);text-decoration:none;transition:.2s;white-space:nowrap}
+.home-btn:hover{background:var(--brl)}
+.wrap{max-width:920px;margin:0 auto;padding:18px 14px 60px;position:relative;z-index:1}
+.card{background:var(--wh);border-radius:var(--rad);box-shadow:0 2px 14px rgba(0,0,0,.06);margin-bottom:24px;overflow:hidden;border:1px solid #e0d8cf}
+.card-hdr{background:linear-gradient(135deg,var(--br),var(--brm));color:var(--wh);padding:14px 20px;cursor:pointer;display:flex;align-items:center;gap:10px}
+.card-hdr:hover{filter:brightness(1.1)}
+.card-num{background:rgba(255,255,255,.15);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.card-hdr h2{font-size:clamp(14px,2.6vw,18px);font-weight:700;flex:1}
+.card-tog{font-size:18px;transition:transform .3s;flex-shrink:0}
+.card.collapsed .card-body{display:none}
+.card.collapsed .card-tog{transform:rotate(-90deg)}
+.card-body{padding:20px}
+h3{color:var(--brm);font-size:16px;font-weight:700;margin:24px 0 10px;padding-bottom:4px;border-bottom:2px solid var(--pb)}
+h3:first-child{margin-top:0}
+p{margin-bottom:12px}
+.key{background:linear-gradient(135deg,#fef9e7,#fdebd0);border-left:4px solid var(--go);border-radius:0 8px 8px 0;padding:13px 16px;margin:14px 0;font-weight:500;font-size:15px}
+.key strong{color:var(--brm)}
+.tip{background:linear-gradient(135deg,#e8f8f5,#d5f5e3);border-left:4px solid var(--gn);border-radius:0 8px 8px 0;padding:13px 16px;margin:14px 0;font-size:15px}
+.tip .lbl{font-weight:700;color:var(--gn);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.elec{background:linear-gradient(135deg,var(--pb),#dceefb);border-left:4px solid var(--acc);border-radius:0 8px 8px 0;padding:13px 16px;margin:14px 0;font-size:15px}
+.elec .lbl{font-weight:700;color:var(--acc);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.warn{background:linear-gradient(135deg,#fdf2e9,#fdebd0);border-left:4px solid var(--or);border-radius:0 8px 8px 0;padding:13px 16px;margin:14px 0;font-size:15px}
+.warn .lbl{font-weight:700;color:var(--or);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.wex{background:var(--vp);border:2px solid #c8d4c0;border-radius:10px;margin:16px 0;overflow:hidden}
+.wex .wh{background:var(--brl);color:var(--wh);padding:8px 14px;font-weight:700;font-size:13px}
+.wex .wh.extra{background:var(--pu)}
+.wex .wb{padding:14px}
+.step{display:flex;gap:9px;margin-bottom:9px;align-items:flex-start}
+.sn{background:var(--acc);color:var(--wh);min-width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.sn.pur{background:var(--pu)}
+.sc{flex:1;font-size:15px}
+.math{background:#f7f5f2;border:1px solid #e0d8cf;border-radius:8px;padding:10px 14px;margin:8px 0;font-family:'Courier New',monospace;font-size:15px;line-height:2;text-align:center;overflow-x:auto}
+.dia{text-align:center;margin:16px 0;overflow-x:auto}
+.dia svg{max-width:100%;height:auto}
+.dia-cap{font-size:11px;color:var(--tl);font-style:italic;margin-top:5px;text-align:center}
+.tbl{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+.tbl th{background:var(--brm);color:var(--wh);padding:8px 10px;text-align:left;font-weight:600}
+.tbl td{padding:8px 10px;border-bottom:1px solid #e2ddd6}
+.tbl tr:nth-child(even) td{background:#faf7f3}
+
+/* Flash cards */
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:16px 0}
+.fc{perspective:800px;height:160px;cursor:pointer}
+.fc-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.fc.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-front,.fc-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:14px;text-align:center;font-size:14px;font-weight:600;line-height:1.5}
+.fc-front{background:linear-gradient(135deg,var(--br),var(--brm));color:var(--wh)}
+.fc-back{background:linear-gradient(135deg,#e8f8f5,#d5f5e3);color:#1a5c3a;transform:rotateY(180deg);border:2px solid var(--gn)}
+.fc-label{position:absolute;top:6px;right:10px;font-size:10px;opacity:.6}
+
+/* MCQ */
+.mcq-section{margin-top:24px;border-top:3px solid var(--brl);padding-top:16px}
+.mcq-section h3{color:var(--br);border-bottom:3px solid var(--brl);margin-bottom:12px}
+.score-bar{background:#f0ece6;border-radius:8px;padding:8px 12px;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.score-bar .st{font-weight:700;font-size:13px;color:var(--br)}
+.score-bar .sf-w{flex:1;min-width:80px;height:10px;background:#ddd;border-radius:6px;overflow:hidden}
+.score-bar .sf{height:100%;background:var(--gn);border-radius:6px;transition:width .4s;width:0}
+.score-bar .sp{font-weight:700;font-size:12px;color:var(--gn);min-width:32px}
+.mcq-item{background:var(--wh);border:2px solid #e0e0e0;border-radius:10px;margin-bottom:12px;overflow:hidden;transition:border-color .3s}
+.mcq-item.correct{border-color:var(--gn)}.mcq-item.incorrect{border-color:var(--rd)}
+.mcq-q{padding:10px 14px;font-weight:600;font-size:14px;background:#faf8f5;border-bottom:1px solid #eee;display:flex;gap:7px}
+.mcq-q .qn{background:var(--brl);color:var(--wh);min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.mcq-opts{padding:8px 14px}
+.mcq-o{display:flex;align-items:center;gap:8px;padding:8px 10px;margin-bottom:4px;border-radius:7px;cursor:pointer;border:2px solid transparent;transition:.2s;font-size:14px}
+.mcq-o:hover{background:var(--pb)}
+.mcq-o.selected{border-color:var(--acc);background:var(--pb)}
+.mcq-o.right{border-color:var(--gn);background:#e8f8f5}
+.mcq-o.wrong{border-color:var(--rd);background:#fdedec}
+.mcq-o.show-correct{border-color:var(--gn);background:#e8f8f5}
+.mcq-o.disabled{pointer-events:none;opacity:.85}
+.mcq-o .ol{width:24px;height:24px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;transition:.2s}
+.mcq-o.selected .ol{background:var(--acc);color:var(--wh)}
+.mcq-o.right .ol{background:var(--gn);color:var(--wh)}
+.mcq-o.wrong .ol{background:var(--rd);color:var(--wh)}
+.mcq-o.show-correct .ol{background:var(--gn);color:var(--wh)}
+.mcq-fb{display:none;padding:10px 14px;font-size:13px;line-height:1.5;border-top:1px solid #eee}
+.mcq-fb.show{display:block}.mcq-fb.ok{background:#e8f8f5;color:#1a5c3a}.mcq-fb.no{background:#fdedec;color:#922b21}
+.mcq-fb strong{display:block;margin-bottom:2px}
+.btn-c{display:inline-block;background:var(--br);color:var(--wh);border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;margin:4px 4px 4px 0;transition:.2s}
+.btn-c:hover{filter:brightness(1.2)}
+.btn-r{display:inline-block;background:#aaa;color:var(--wh);border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;transition:.2s}
+.btn-r:hover{background:#888}
+
+.ftr{background:var(--br);color:rgba(255,255,255,.7);text-align:center;padding:20px 16px;font-size:12px}
+.ftr strong{color:var(--wh)}
+.btt{position:fixed;bottom:20px;right:20px;background:var(--acc);color:var(--wh);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:17px;font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
+.btt.visible{opacity:1;pointer-events:auto}
+@media(max-width:600px){.card-body{padding:14px}.math{font-size:13px}body{font-size:16px}.fc-grid{grid-template-columns:1fr}}
+body{-webkit-touch-callout:none}
+</style>
+</head>
+<body oncontextmenu="return false">
+
+<header class="hdr">
+<div class="brand">tutorwarren.com</div>
+<h1>Resistance, Capacitance &amp; Three-Phase Circuits</h1>
+<p class="sub">Series, parallel &amp; combined circuits &bull; Star &amp; delta connections &bull; Balanced &amp; unbalanced loads</p>
+<span class="tag">EAL Level 3 &bull; Unit ELEC3/008 &bull; Chapter 6</span>
+</header>
+
+<nav class="nav" id="topNav">
+<div class="nav-links">
+<a href="#s1">R in Series</a><a href="#s2">R in Parallel</a><a href="#s3">R Combined</a>
+<a href="#s4">C in Series</a><a href="#s5">C in Parallel</a><a href="#s6">C Combined</a>
+<a href="#s7">Star &amp; Delta</a><a href="#s8">3-Phase Calcs</a><a href="#s9">Balanced Load</a>
+<a href="#s10">Unbalanced &amp; Neutral</a><a href="#s11">Reactance</a><a href="#s12">Impedance &amp; PF</a><a href="#s13">Resistivity</a><a href="#s14">Flash Cards</a><a href="#s15">Quiz</a>
+</div>
+<a href="https://tutorwarren.com/index.html" class="home-btn">&#8962; Home</a>
+</nav>
+
+<div class="wrap">
+
+<!-- S1: RESISTANCE IN SERIES -->
+<div class="card" id="s1"><div class="card-hdr" onclick="tog(this)"><div class="card-num">1</div><h2>Resistance in Series</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p>When resistors are connected <strong>in series</strong>, the same current flows through each one. The total resistance is simply the sum of all individual resistances.</p>
+<div class="key"><strong>R<sub>T</sub> = R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub></strong><br>The total resistance is always <strong>greater</strong> than the largest individual resistor.</div>
+<div class="dia"><svg viewBox="0 0 520 120" xmlns="http://www.w3.org/2000/svg" style="max-width:520px"><g font-family="Inter,sans-serif">
+<line x1="20" y1="60" x2="80" y2="60" stroke="#666" stroke-width="2"/>
+<rect x="80" y="42" width="80" height="36" rx="4" fill="none" stroke="#2980b9" stroke-width="2.5"/><text x="120" y="66" text-anchor="middle" fill="#2980b9" font-size="14" font-weight="700">R₁</text>
+<line x1="160" y1="60" x2="190" y2="60" stroke="#666" stroke-width="2"/>
+<rect x="190" y="42" width="80" height="36" rx="4" fill="none" stroke="#27ae60" stroke-width="2.5"/><text x="230" y="66" text-anchor="middle" fill="#27ae60" font-size="14" font-weight="700">R₂</text>
+<line x1="270" y1="60" x2="300" y2="60" stroke="#666" stroke-width="2"/>
+<rect x="300" y="42" width="80" height="36" rx="4" fill="none" stroke="#c0392b" stroke-width="2.5"/><text x="340" y="66" text-anchor="middle" fill="#c0392b" font-size="14" font-weight="700">R₃</text>
+<line x1="380" y1="60" x2="440" y2="60" stroke="#666" stroke-width="2"/>
+<text x="20" y="40" fill="#666" font-size="11">+</text><text x="440" y="40" fill="#666" font-size="11" text-anchor="end">&minus;</text>
+<text x="230" y="100" text-anchor="middle" fill="#888" font-size="12">Same current I flows through all resistors</text>
+<path d="M 50,55 l 8,5 l -8,5" fill="none" stroke="#e67e22" stroke-width="2"/><text x="42" y="50" fill="#e67e22" font-size="11" font-weight="600">I</text>
+</g></svg></div>
+<p><strong>Key rules in series:</strong> Current is the same throughout. The supply voltage divides across each resistor: V<sub>T</sub> = V<sub>1</sub> + V<sub>2</sub> + V<sub>3</sub>.</p>
+
+<div class="wex"><div class="wh">Textbook Example</div><div class="wb">
+<p><strong>Three 6 &Omega; resistors in series across a 12 V battery.</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc">R<sub>T</sub> = 6 + 6 + 6 = <strong>18 &Omega;</strong></div></div>
+<div class="step"><div class="sn">2</div><div class="sc">I = V/R = 12/18 = <strong>0.67 A</strong></div></div>
+<div class="step"><div class="sn">3</div><div class="sc">V across each: V = IR = 0.67 &times; 6 = <strong>4 V</strong> each (and 4+4+4 = 12 V &#9989;)</div></div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Extra Example</div><div class="wb">
+<p><strong>R<sub>1</sub> = 10 &Omega;, R<sub>2</sub> = 22 &Omega;, R<sub>3</sub> = 47 &Omega; across 24 V.</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc">R<sub>T</sub> = 10 + 22 + 47 = <strong>79 &Omega;</strong></div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">I = 24/79 = <strong>0.304 A</strong></div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">V<sub>1</sub> = 0.304 &times; 10 = 3.04 V, V<sub>2</sub> = 0.304 &times; 22 = 6.69 V, V<sub>3</sub> = 0.304 &times; 47 = 14.29 V</div></div>
+<div class="step"><div class="sn pur">4</div><div class="sc">Check: 3.04 + 6.69 + 14.29 = 24.02 V &asymp; 24 V &#9989;</div></div>
+</div></div>
+<div class="mcq-section" id="quiz-s1"></div>
+</div></div>
+
+<!-- S2: RESISTANCE IN PARALLEL -->
+<div class="card" id="s2"><div class="card-hdr" onclick="tog(this)"><div class="card-num">2</div><h2>Resistance in Parallel</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p>When resistors are in <strong>parallel</strong>, the same voltage appears across each one. The total current divides between the branches.</p>
+<div class="key"><strong>1/R<sub>T</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub></strong><br>The total resistance is always <strong>less</strong> than the smallest individual resistor.<br><br><strong>Two resistors shortcut:</strong> R<sub>T</sub> = (R<sub>1</sub> &times; R<sub>2</sub>) / (R<sub>1</sub> + R<sub>2</sub>) &mdash; "product over sum"</div>
+<div class="dia"><svg viewBox="0 0 420 180" xmlns="http://www.w3.org/2000/svg" style="max-width:420px"><g font-family="Inter,sans-serif">
+<line x1="20" y1="90" x2="80" y2="90" stroke="#666" stroke-width="2"/>
+<line x1="80" y1="30" x2="80" y2="150" stroke="#666" stroke-width="2"/>
+<line x1="80" y1="30" x2="140" y2="30" stroke="#666" stroke-width="1.5"/>
+<line x1="80" y1="90" x2="140" y2="90" stroke="#666" stroke-width="1.5"/>
+<line x1="80" y1="150" x2="140" y2="150" stroke="#666" stroke-width="1.5"/>
+<rect x="140" y="14" width="70" height="32" rx="3" fill="none" stroke="#2980b9" stroke-width="2"/><text x="175" y="36" text-anchor="middle" fill="#2980b9" font-size="13" font-weight="700">R₁</text>
+<rect x="140" y="74" width="70" height="32" rx="3" fill="none" stroke="#27ae60" stroke-width="2"/><text x="175" y="96" text-anchor="middle" fill="#27ae60" font-size="13" font-weight="700">R₂</text>
+<rect x="140" y="134" width="70" height="32" rx="3" fill="none" stroke="#c0392b" stroke-width="2"/><text x="175" y="156" text-anchor="middle" fill="#c0392b" font-size="13" font-weight="700">R₃</text>
+<line x1="210" y1="30" x2="270" y2="30" stroke="#666" stroke-width="1.5"/>
+<line x1="210" y1="90" x2="270" y2="90" stroke="#666" stroke-width="1.5"/>
+<line x1="210" y1="150" x2="270" y2="150" stroke="#666" stroke-width="1.5"/>
+<line x1="270" y1="30" x2="270" y2="150" stroke="#666" stroke-width="2"/>
+<line x1="270" y1="90" x2="340" y2="90" stroke="#666" stroke-width="2"/>
+<text x="175" y="178" text-anchor="middle" fill="#888" font-size="11">Same voltage V across all branches</text>
+</g></svg></div>
+
+<div class="wex"><div class="wh">Textbook Example</div><div class="wb">
+<p><strong>Three 6 &Omega; resistors in parallel across 12 V.</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc">1/R<sub>T</sub> = 1/6 + 1/6 + 1/6 = 3/6 = 0.5</div></div>
+<div class="step"><div class="sn">2</div><div class="sc">R<sub>T</sub> = 1/0.5 = <strong>2 &Omega;</strong></div></div>
+<div class="step"><div class="sn">3</div><div class="sc">I<sub>T</sub> = V/R<sub>T</sub> = 12/2 = <strong>6 A</strong></div></div>
+<div class="step"><div class="sn">4</div><div class="sc">Each branch: I = 12/6 = <strong>2 A</strong> (and 2+2+2 = 6 A &#9989;)</div></div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Extra Example &mdash; Product Over Sum</div><div class="wb">
+<p><strong>R<sub>1</sub> = 20 &Omega; and R<sub>2</sub> = 30 &Omega; in parallel.</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc">R<sub>T</sub> = (20 &times; 30) / (20 + 30) = 600 / 50 = <strong>12 &Omega;</strong></div></div>
+<p>Notice: 12 &Omega; is less than the smallest resistor (20 &Omega;) &#9989;</p>
+</div></div>
+<div class="mcq-section" id="quiz-s2"></div>
+</div></div>
+
+<!-- S3: COMBINED R -->
+<div class="card" id="s3"><div class="card-hdr" onclick="tog(this)"><div class="card-num">3</div><h2>Combined Series-Parallel Resistance</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p>Real circuits often mix series and parallel. The trick is to <strong>simplify step by step</strong> &mdash; solve the parallel groups first, then add them in series.</p>
+<div class="dia"><svg viewBox="0 0 480 160" xmlns="http://www.w3.org/2000/svg" style="max-width:480px"><g font-family="Inter,sans-serif">
+<line x1="20" y1="80" x2="60" y2="80" stroke="#666" stroke-width="2"/>
+<rect x="60" y="64" width="60" height="32" rx="3" fill="none" stroke="#2980b9" stroke-width="2"/><text x="90" y="85" text-anchor="middle" fill="#2980b9" font-size="12" font-weight="700">R₁=4Ω</text>
+<line x1="120" y1="80" x2="160" y2="80" stroke="#666" stroke-width="2"/>
+<line x1="160" y1="40" x2="160" y2="120" stroke="#666" stroke-width="2"/>
+<line x1="160" y1="40" x2="200" y2="40" stroke="#666" stroke-width="1.5"/>
+<line x1="160" y1="120" x2="200" y2="120" stroke="#666" stroke-width="1.5"/>
+<rect x="200" y="24" width="70" height="32" rx="3" fill="none" stroke="#27ae60" stroke-width="2"/><text x="235" y="46" text-anchor="middle" fill="#27ae60" font-size="12" font-weight="700">R₂=12Ω</text>
+<rect x="200" y="104" width="70" height="32" rx="3" fill="none" stroke="#c0392b" stroke-width="2"/><text x="235" y="126" text-anchor="middle" fill="#c0392b" font-size="12" font-weight="700">R₃=6Ω</text>
+<line x1="270" y1="40" x2="310" y2="40" stroke="#666" stroke-width="1.5"/>
+<line x1="270" y1="120" x2="310" y2="120" stroke="#666" stroke-width="1.5"/>
+<line x1="310" y1="40" x2="310" y2="120" stroke="#666" stroke-width="2"/>
+<line x1="310" y1="80" x2="350" y2="80" stroke="#666" stroke-width="2"/>
+<rect x="350" y="64" width="60" height="32" rx="3" fill="none" stroke="#6c3483" stroke-width="2"/><text x="380" y="85" text-anchor="middle" fill="#6c3483" font-size="12" font-weight="700">R₄=2Ω</text>
+<line x1="410" y1="80" x2="450" y2="80" stroke="#666" stroke-width="2"/>
+</g></svg><div class="dia-cap">R₁ in series with (R₂ ∥ R₃), then in series with R₄</div></div>
+
+<div class="wex"><div class="wh extra">Worked Example</div><div class="wb">
+<p><strong>R₁ = 4 Ω in series with R₂ (12 Ω) ∥ R₃ (6 Ω), then R₄ = 2 Ω in series. Supply = 24 V.</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc"><strong>Parallel first:</strong> R₂∥R₃ = (12&times;6)/(12+6) = 72/18 = <strong>4 &Omega;</strong></div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc"><strong>Then series:</strong> R<sub>T</sub> = 4 + 4 + 2 = <strong>10 &Omega;</strong></div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">I = 24/10 = <strong>2.4 A</strong></div></div>
+<div class="step"><div class="sn pur">4</div><div class="sc">V across R₁ = 2.4 &times; 4 = 9.6 V; V across parallel = 2.4 &times; 4 = 9.6 V; V across R₄ = 2.4 &times; 2 = 4.8 V</div></div>
+<div class="step"><div class="sn pur">5</div><div class="sc">Check: 9.6 + 9.6 + 4.8 = 24 V &#9989;</div></div>
+</div></div>
+<div class="mcq-section" id="quiz-s3"></div>
+</div></div>
+
+<!-- S4: CAPACITANCE IN SERIES -->
+<div class="card" id="s4"><div class="card-hdr" onclick="tog(this)"><div class="card-num">4</div><h2>Capacitance in Series</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<div class="warn"><div class="lbl">&#9888; Key Difference from Resistors</div>Capacitors in <strong>series</strong> use the <strong>reciprocal</strong> formula (like resistors in parallel)!<br>Capacitors in <strong>parallel</strong> simply add up (like resistors in series)!</div>
+<div class="key"><strong>1/C<sub>T</sub> = 1/C<sub>1</sub> + 1/C<sub>2</sub> + 1/C<sub>3</sub></strong><br>Total capacitance in series is always <strong>less</strong> than the smallest capacitor.</div>
+<div class="dia"><svg viewBox="0 0 460 100" xmlns="http://www.w3.org/2000/svg" style="max-width:460px"><g font-family="Inter,sans-serif">
+<line x1="20" y1="50" x2="80" y2="50" stroke="#666" stroke-width="2"/>
+<line x1="80" y1="25" x2="80" y2="75" stroke="#2980b9" stroke-width="3"/><line x1="92" y1="25" x2="92" y2="75" stroke="#2980b9" stroke-width="3"/>
+<text x="86" y="92" text-anchor="middle" fill="#2980b9" font-size="12" font-weight="600">C₁</text>
+<line x1="92" y1="50" x2="170" y2="50" stroke="#666" stroke-width="2"/>
+<line x1="170" y1="25" x2="170" y2="75" stroke="#27ae60" stroke-width="3"/><line x1="182" y1="25" x2="182" y2="75" stroke="#27ae60" stroke-width="3"/>
+<text x="176" y="92" text-anchor="middle" fill="#27ae60" font-size="12" font-weight="600">C₂</text>
+<line x1="182" y1="50" x2="260" y2="50" stroke="#666" stroke-width="2"/>
+<line x1="260" y1="25" x2="260" y2="75" stroke="#c0392b" stroke-width="3"/><line x1="272" y1="25" x2="272" y2="75" stroke="#c0392b" stroke-width="3"/>
+<text x="266" y="92" text-anchor="middle" fill="#c0392b" font-size="12" font-weight="600">C₃</text>
+<line x1="272" y1="50" x2="340" y2="50" stroke="#666" stroke-width="2"/>
+</g></svg></div>
+
+<div class="wex"><div class="wh extra">Worked Example</div><div class="wb">
+<p><strong>C₁ = 10 &mu;F, C₂ = 20 &mu;F, C₃ = 30 &mu;F in series.</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc">1/C<sub>T</sub> = 1/10 + 1/20 + 1/30 = 6/60 + 3/60 + 2/60 = 11/60</div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">C<sub>T</sub> = 60/11 = <strong>5.45 &mu;F</strong> (less than the smallest &#9989;)</div></div>
+</div></div>
+<div class="mcq-section" id="quiz-s4"></div>
+</div></div>
+
+<!-- S5: CAPACITANCE IN PARALLEL -->
+<div class="card" id="s5"><div class="card-hdr" onclick="tog(this)"><div class="card-num">5</div><h2>Capacitance in Parallel</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<div class="key"><strong>C<sub>T</sub> = C<sub>1</sub> + C<sub>2</sub> + C<sub>3</sub></strong><br>Simply add them up! Total is always <strong>greater</strong> than the largest capacitor.</div>
+<div class="wex"><div class="wh extra">Worked Example</div><div class="wb">
+<p><strong>C₁ = 10 &mu;F, C₂ = 47 &mu;F, C₃ = 100 &mu;F in parallel.</strong></p>
+<div class="math">C<sub>T</sub> = 10 + 47 + 100 = <strong>157 &mu;F</strong></div>
+</div></div>
+<div class="tip"><div class="lbl">&#9889; Memory Trick</div>Capacitors are the <strong>opposite of resistors</strong>: series uses reciprocal (like R parallel), parallel just adds (like R series).</div>
+<div class="mcq-section" id="quiz-s5"></div>
+</div></div>
+
+<!-- S6: COMBINED C -->
+<div class="card" id="s6"><div class="card-hdr" onclick="tog(this)"><div class="card-num">6</div><h2>Combined Series-Parallel Capacitance</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p>Just like resistors, simplify step by step: solve parallel groups first (add them), then combine in series (reciprocal).</p>
+<div class="wex"><div class="wh extra">Worked Example</div><div class="wb">
+<p><strong>C₁ = 20 &mu;F in series with (C₂ = 30 &mu;F ∥ C₃ = 10 &mu;F).</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc"><strong>Parallel first:</strong> C₂∥C₃ = 30 + 10 = <strong>40 &mu;F</strong></div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc"><strong>Then series:</strong> 1/C<sub>T</sub> = 1/20 + 1/40 = 2/40 + 1/40 = 3/40</div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">C<sub>T</sub> = 40/3 = <strong>13.33 &mu;F</strong></div></div>
+</div></div>
+<div class="mcq-section" id="quiz-s6"></div>
+</div></div>
+
+<!-- S7: STAR & DELTA -->
+<div class="card" id="s7"><div class="card-hdr" onclick="tog(this)"><div class="card-num">7</div><h2>Star &amp; Delta Connections</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p>Three-phase generators produce three separate AC voltages 120&deg; apart. These windings can be connected in two ways:</p>
+<div class="dia"><svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" style="max-width:600px"><g font-family="Inter,sans-serif">
+<!-- Star -->
+<text x="150" y="20" text-anchor="middle" fill="#5c3d2e" font-size="15" font-weight="800">STAR (Y)</text>
+<circle cx="150" cy="140" r="5" fill="#e67e22"/>
+<text x="150" y="166" text-anchor="middle" fill="#e67e22" font-size="11" font-weight="700">Star point (N)</text>
+<line x1="150" y1="140" x2="150" y2="45" stroke="#2980b9" stroke-width="2.5"/><text x="160" y="55" fill="#2980b9" font-size="12" font-weight="600">L1</text>
+<line x1="150" y1="140" x2="68" y2="195" stroke="#27ae60" stroke-width="2.5"/><text x="55" y="195" fill="#27ae60" font-size="12" font-weight="600">L2</text>
+<line x1="150" y1="140" x2="232" y2="195" stroke="#c0392b" stroke-width="2.5"/><text x="240" y="195" fill="#c0392b" font-size="12" font-weight="600">L3</text>
+<text x="150" y="210" text-anchor="middle" fill="#888" font-size="11">V<tspan font-size="8" dy="1">L</tspan><tspan dy="-1"> = √3 × V</tspan><tspan font-size="8" dy="1">P</tspan></text>
+<text x="150" y="226" text-anchor="middle" fill="#888" font-size="11">I<tspan font-size="8" dy="1">L</tspan><tspan dy="-1"> = I</tspan><tspan font-size="8" dy="1">P</tspan></text>
+<text x="150" y="248" text-anchor="middle" fill="#5c3d2e" font-size="11" font-weight="700">4-wire system</text>
+
+<!-- Delta -->
+<text x="450" y="20" text-anchor="middle" fill="#5c3d2e" font-size="15" font-weight="800">DELTA (Δ)</text>
+<polygon points="450,45 370,195 530,195" fill="none" stroke="#6c3483" stroke-width="2.5"/>
+<text x="400" y="125" fill="#2980b9" font-size="12" font-weight="600">L1</text>
+<text x="500" y="125" fill="#27ae60" font-size="12" font-weight="600">L2</text>
+<text x="450" y="208" fill="#c0392b" font-size="12" font-weight="600">L3</text>
+<text x="450" y="228" text-anchor="middle" fill="#888" font-size="11">V<tspan font-size="8" dy="1">L</tspan><tspan dy="-1"> = V</tspan><tspan font-size="8" dy="1">P</tspan></text>
+<text x="450" y="244" text-anchor="middle" fill="#888" font-size="11">I<tspan font-size="8" dy="1">L</tspan><tspan dy="-1"> = √3 × I</tspan><tspan font-size="8" dy="1">P</tspan></text>
+</g></svg></div>
+
+<table class="tbl"><thead><tr><th>Property</th><th>Star (Y)</th><th>Delta (&Delta;)</th></tr></thead><tbody>
+<tr><td><strong>Line voltage</strong></td><td>V<sub>L</sub> = &radic;3 &times; V<sub>P</sub></td><td>V<sub>L</sub> = V<sub>P</sub></td></tr>
+<tr><td><strong>Line current</strong></td><td>I<sub>L</sub> = I<sub>P</sub></td><td>I<sub>L</sub> = &radic;3 &times; I<sub>P</sub></td></tr>
+<tr><td><strong>Neutral</strong></td><td>Available (4th wire)</td><td>Not available (3-wire)</td></tr>
+<tr><td><strong>Voltages available</strong></td><td>230 V &amp; 400 V</td><td>400 V only</td></tr>
+<tr><td><strong>Typical use</strong></td><td>Distribution (homes/commercial)</td><td>Motors, transmission</td></tr>
+</tbody></table>
+<div class="key"><strong>&radic;3 = 1.732</strong> &mdash; this is the constant for all three-phase calculations.</div>
+<div class="mcq-section" id="quiz-s7"></div>
+</div></div>
+
+<!-- S8: 3-PHASE CALCULATIONS -->
+<div class="card" id="s8"><div class="card-hdr" onclick="tog(this)"><div class="card-num">8</div><h2>Three-Phase Calculations</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<div class="key"><strong>Three-phase power: P = &radic;3 &times; V<sub>L</sub> &times; I<sub>L</sub> &times; cos &phi;</strong><br>This works for BOTH star and delta connections.</div>
+
+<div class="wex"><div class="wh">Textbook Example 1 &mdash; Star</div><div class="wb">
+<p><strong>Balanced star load, 10 &Omega;/phase, 400 V supply, unity PF.</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc">V<sub>P</sub> = V<sub>L</sub> / &radic;3 = 400 / 1.732 = <strong>230.9 V</strong></div></div>
+<div class="step"><div class="sn">2</div><div class="sc">I<sub>P</sub> = V<sub>P</sub> / R = 230.9 / 10 = <strong>23.09 A</strong> (= I<sub>L</sub> in star)</div></div>
+<div class="step"><div class="sn">3</div><div class="sc">P = &radic;3 &times; 400 &times; 23.09 &times; 1 = <strong>16 kW</strong></div></div>
+</div></div>
+
+<div class="wex"><div class="wh">Textbook Example 2 &mdash; Delta</div><div class="wb">
+<p><strong>20 kW balanced delta, 400 V, PF = 0.8.</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc">I<sub>L</sub> = P / (&radic;3 &times; V<sub>L</sub> &times; cos &phi;) = 20000 / (1.732 &times; 400 &times; 0.8) = <strong>36.08 A</strong></div></div>
+<div class="step"><div class="sn">2</div><div class="sc">I<sub>P</sub> = I<sub>L</sub> / &radic;3 = 36.08 / 1.732 = <strong>20.83 A</strong></div></div>
+</div></div>
+
+<div class="wex"><div class="wh">Textbook Example 3 &mdash; Star vs Delta with Impedance</div><div class="wb">
+<p><strong>Three loads: R = 30 &Omega;, X<sub>L</sub> = 40 &Omega; each, 400 V supply.</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc">Z = &radic;(30&sup2; + 40&sup2;) = &radic;2500 = <strong>50 &Omega;</strong></div></div>
+<div class="step"><div class="sn">2</div><div class="sc"><strong>Star:</strong> V<sub>P</sub> = 400/1.732 = 230.9 V. I<sub>P</sub> = 230.9/50 = <strong>4.62 A</strong> = I<sub>L</sub></div></div>
+<div class="step"><div class="sn">3</div><div class="sc"><strong>Delta:</strong> V<sub>P</sub> = 400 V. I<sub>P</sub> = 400/50 = 8 A. I<sub>L</sub> = 1.732 &times; 8 = <strong>13.86 A</strong></div></div>
+</div></div>
+<div class="mcq-section" id="quiz-s8"></div>
+</div></div>
+
+<!-- S9: BALANCED LOAD -->
+<div class="card" id="s9"><div class="card-hdr" onclick="tog(this)"><div class="card-num">9</div><h2>Why Balanced Loads Matter</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p>A <strong>balanced three-phase load</strong> means every phase carries the same current. When balanced:</p>
+<div class="tip"><div class="lbl">&#9889; Benefits of Balanced Loads</div>
+<strong>1.</strong> The neutral current is <strong>zero</strong> &mdash; the three currents cancel by phasor addition<br>
+<strong>2.</strong> All line conductors can be the <strong>same size</strong><br>
+<strong>3.</strong> <strong>Maximum efficiency</strong> from generators and transformers<br>
+<strong>4.</strong> <strong>No voltage imbalance</strong> at the loads<br>
+<strong>5.</strong> <strong>Reduced losses</strong> in cables and switchgear
+</div>
+<div class="elec"><div class="lbl">&#9889; Real-World Importance</div>
+Distribution boards should have single-phase loads spread evenly across L1, L2 and L3. If one phase carries significantly more current, the neutral carries the <strong>difference</strong>, cables overheat, and voltages become unequal. BS 7671 requires that every effort is made to balance loads.
+</div>
+<div class="mcq-section" id="quiz-s9"></div>
+</div></div>
+
+<!-- S10: UNBALANCED & NEUTRAL CURRENT -->
+<div class="card" id="s10"><div class="card-hdr" onclick="tog(this)"><div class="card-num">10</div><h2>Unbalanced Loads &amp; Neutral Current</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p>When the three phase currents are <strong>not equal</strong>, the system is <strong>unbalanced</strong> and a current flows in the neutral conductor. This is found using the formula:</p>
+<div class="key"><strong>I<sub>N</sub> = &radic;(I<sub>A</sub>&sup2; + I<sub>B</sub>&sup2; + I<sub>C</sub>&sup2; &minus; I<sub>A</sub>I<sub>B</sub> &minus; I<sub>B</sub>I<sub>C</sub> &minus; I<sub>A</sub>I<sub>C</sub>)</strong><br><br>Where I<sub>A</sub>, I<sub>B</sub>, I<sub>C</sub> are the three phase currents.</div>
+
+<div class="wex"><div class="wh">Textbook Example</div><div class="wb">
+<p><strong>I<sub>A</sub> = 20 A, I<sub>B</sub> = 15 A, I<sub>C</sub> = 10 A. Find I<sub>N</sub>.</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc">I<sub>A</sub>&sup2; = 400, I<sub>B</sub>&sup2; = 225, I<sub>C</sub>&sup2; = 100</div></div>
+<div class="step"><div class="sn">2</div><div class="sc">I<sub>A</sub>I<sub>B</sub> = 300, I<sub>B</sub>I<sub>C</sub> = 150, I<sub>A</sub>I<sub>C</sub> = 200</div></div>
+<div class="step"><div class="sn">3</div><div class="sc">I<sub>N</sub> = &radic;(400 + 225 + 100 &minus; 300 &minus; 150 &minus; 200)</div></div>
+<div class="step"><div class="sn">4</div><div class="sc">I<sub>N</sub> = &radic;(725 &minus; 650) = &radic;75 = <strong>8.66 A</strong></div></div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Extra Example &mdash; Heavily Unbalanced</div><div class="wb">
+<p><strong>I<sub>A</sub> = 30 A, I<sub>B</sub> = 10 A, I<sub>C</sub> = 25 A.</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc">Squares: 900 + 100 + 625 = 1625</div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">Products: (30&times;10) + (10&times;25) + (30&times;25) = 300 + 250 + 750 = 1300</div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">I<sub>N</sub> = &radic;(1625 &minus; 1300) = &radic;325 = <strong>18.03 A</strong></div></div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Extra Example &mdash; Balanced Check</div><div class="wb">
+<p><strong>I<sub>A</sub> = I<sub>B</sub> = I<sub>C</sub> = 15 A (balanced).</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc">Squares: 225 + 225 + 225 = 675</div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">Products: 225 + 225 + 225 = 675</div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">I<sub>N</sub> = &radic;(675 &minus; 675) = &radic;0 = <strong>0 A</strong> &#9989; (proves balanced = zero neutral current)</div></div>
+</div></div>
+
+<div class="warn"><div class="lbl">&#9888; Why This Matters</div>
+If the neutral conductor is undersized or disconnected in an unbalanced system, the star point voltage shifts. This causes <strong>overvoltage on lightly loaded phases</strong> (damaging equipment) and <strong>undervoltage on heavily loaded phases</strong>. This is why BS 7671 requires the neutral to be the same size as the line conductors in single-phase circuits and properly rated in three-phase systems.
+</div>
+<div class="mcq-section" id="quiz-s10"></div>
+</div></div>
+
+<!-- S11: REACTANCE -->
+<div class="card" id="s11"><div class="card-hdr" onclick="tog(this)"><div class="card-num">11</div><h2>Capacitive Reactance &amp; Inductive Reactance</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p>In AC circuits, inductors and capacitors oppose the flow of current &mdash; but unlike resistance, this opposition depends on <strong>frequency</strong>. This frequency-dependent opposition is called <strong>reactance</strong>, measured in <strong>ohms (&Omega;)</strong>.</p>
+
+<h3>Inductive Reactance (X<sub>L</sub>)</h3>
+<p>An inductor opposes changes in current. The faster the current changes (higher frequency), the more it opposes. A coil with more inductance also opposes more.</p>
+<div class="key"><strong>X<sub>L</sub> = 2&pi;fL</strong><br><br>
+Where: X<sub>L</sub> = inductive reactance (&Omega;), f = frequency (Hz), L = inductance (Henrys, H)<br>
+2&pi; = 2 &times; 3.142 = 6.284</div>
+
+<div class="wex"><div class="wh">Textbook Example</div><div class="wb">
+<p><strong>A coil of 0.15 H on a 50 Hz supply. Find X<sub>L</sub>.</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc">X<sub>L</sub> = 2&pi;fL = 2 &times; 3.142 &times; 50 &times; 0.15</div></div>
+<div class="step"><div class="sn">2</div><div class="sc">X<sub>L</sub> = 6.284 &times; 50 &times; 0.15 = <strong>47.1 &Omega;</strong></div></div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Extra Example</div><div class="wb">
+<p><strong>A 0.5 H inductor on a 60 Hz supply (US frequency). Find X<sub>L</sub>.</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc">X<sub>L</sub> = 2 &times; 3.142 &times; 60 &times; 0.5</div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">X<sub>L</sub> = 6.284 &times; 30 = <strong>188.5 &Omega;</strong></div></div>
+<p>Notice: higher frequency = higher reactance. The inductor opposes more at 60 Hz than it would at 50 Hz.</p>
+</div></div>
+
+<h3>Capacitive Reactance (X<sub>C</sub>)</h3>
+<p>A capacitor opposes changes in voltage. Unlike an inductor, a capacitor opposes <strong>less</strong> at higher frequencies (it lets more AC through).</p>
+<div class="key"><strong>X<sub>C</sub> = 1 / (2&pi;fC)</strong><br><br>
+Where: X<sub>C</sub> = capacitive reactance (&Omega;), f = frequency (Hz), C = capacitance (Farads, F)<br>
+Remember: C is usually given in &mu;F &mdash; convert to Farads first! (divide by 1,000,000 or use &times; 10<sup>&minus;6</sup>)</div>
+
+<div class="wex"><div class="wh">Textbook Example</div><div class="wb">
+<p><strong>A 60 &mu;F capacitor on a 50 Hz supply. Find X<sub>C</sub>.</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc">Convert: 60 &mu;F = 60 &times; 10<sup>&minus;6</sup> F = 0.00006 F</div></div>
+<div class="step"><div class="sn">2</div><div class="sc">X<sub>C</sub> = 1 / (2 &times; 3.142 &times; 50 &times; 0.00006)</div></div>
+<div class="step"><div class="sn">3</div><div class="sc">X<sub>C</sub> = 1 / 0.01885 = <strong>53.05 &Omega;</strong></div></div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Extra Example</div><div class="wb">
+<p><strong>An 8 &mu;F power factor correction capacitor on 50 Hz. Find X<sub>C</sub>.</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc">C = 8 &times; 10<sup>&minus;6</sup> F</div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">X<sub>C</sub> = 1 / (2 &times; 3.142 &times; 50 &times; 8 &times; 10<sup>&minus;6</sup>)</div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">X<sub>C</sub> = 1 / 0.002513 = <strong>397.9 &Omega;</strong></div></div>
+<p>Small capacitors have very high reactance &mdash; they strongly oppose low-frequency AC.</p>
+</div></div>
+
+<table class="tbl"><thead><tr><th>Property</th><th>Inductive Reactance X<sub>L</sub></th><th>Capacitive Reactance X<sub>C</sub></th></tr></thead><tbody>
+<tr><td><strong>Formula</strong></td><td>X<sub>L</sub> = 2&pi;fL</td><td>X<sub>C</sub> = 1 / (2&pi;fC)</td></tr>
+<tr><td><strong>Unit</strong></td><td>Ohms (&Omega;)</td><td>Ohms (&Omega;)</td></tr>
+<tr><td><strong>Frequency &uarr;</strong></td><td>X<sub>L</sub> increases</td><td>X<sub>C</sub> decreases</td></tr>
+<tr><td><strong>At DC (f=0)</strong></td><td>X<sub>L</sub> = 0 (short circuit)</td><td>X<sub>C</sub> = &infin; (open circuit)</td></tr>
+<tr><td><strong>Phase</strong></td><td>Current lags voltage by 90&deg;</td><td>Current leads voltage by 90&deg;</td></tr>
+</tbody></table>
+
+<div class="tip"><div class="lbl">&#9889; CIVIL Memory Aid</div>
+<strong>C</strong>apacitor: <strong>I</strong> before <strong>V</strong> (current leads voltage)<br>
+Inductor (<strong>L</strong>): <strong>V</strong> before <strong>I</strong> (voltage leads current, i.e. current lags)
+</div>
+<div class="mcq-section" id="quiz-s11"></div>
+</div></div>
+
+<!-- S12: IMPEDANCE & POWER FACTOR -->
+<div class="card" id="s12"><div class="card-hdr" onclick="tog(this)"><div class="card-num">12</div><h2>Impedance, Power Factor &amp; the Impedance Triangle</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p><strong>Impedance (Z)</strong> is the total opposition to current flow in an AC circuit. It combines resistance (R) and reactance (X) &mdash; but because R and X are 90&deg; out of phase, we cannot simply add them. We must use <strong>Pythagoras' theorem</strong>.</p>
+
+<h3>Key Terms and Units</h3>
+<table class="tbl"><thead><tr><th>Term</th><th>Symbol</th><th>Unit</th><th>What It Is</th></tr></thead><tbody>
+<tr><td>Resistance</td><td>R</td><td>Ohms (&Omega;)</td><td>Opposition from resistive elements (heat-producing)</td></tr>
+<tr><td>Inductive Reactance</td><td>X<sub>L</sub></td><td>Ohms (&Omega;)</td><td>Opposition from inductors (frequency-dependent)</td></tr>
+<tr><td>Capacitive Reactance</td><td>X<sub>C</sub></td><td>Ohms (&Omega;)</td><td>Opposition from capacitors (frequency-dependent)</td></tr>
+<tr><td>Impedance</td><td>Z</td><td>Ohms (&Omega;)</td><td>Total AC opposition (combines R and X)</td></tr>
+<tr><td>Phase Angle</td><td>&phi;</td><td>Degrees (&deg;)</td><td>Angle between voltage and current</td></tr>
+<tr><td>Power Factor</td><td>cos &phi;</td><td>No unit (0 to 1)</td><td>Ratio of useful power to total power</td></tr>
+<tr><td>True Power</td><td>P</td><td>Watts (W)</td><td>Useful power doing real work</td></tr>
+<tr><td>Reactive Power</td><td>Q</td><td>VAr</td><td>Power stored and returned (not useful)</td></tr>
+<tr><td>Apparent Power</td><td>S</td><td>VA</td><td>Total power drawn from supply</td></tr>
+</tbody></table>
+
+<h3>The Impedance Triangle &mdash; Pythagoras Applied</h3>
+<div class="key"><strong>Z = &radic;(R&sup2; + X&sup2;)</strong><br><br>
+Where X = X<sub>L</sub> (inductive) or X<sub>C</sub> (capacitive), or X = X<sub>L</sub> &minus; X<sub>C</sub> if both are present.</div>
+
+<div class="dia"><svg viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg" style="max-width:520px"><g font-family="Inter,sans-serif">
+<polygon points="50,180 320,180 320,40" fill="rgba(41,128,185,0.08)" stroke="#2980b9" stroke-width="2.5"/>
+<rect x="300" y="160" width="20" height="20" fill="none" stroke="#888" stroke-width="1"/>
+<text x="185" y="202" text-anchor="middle" fill="#27ae60" font-size="16" font-weight="800">R (resistance)</text>
+<text x="340" y="115" fill="#c0392b" font-size="16" font-weight="800">X</text>
+<text x="340" y="135" fill="#c0392b" font-size="13">(reactance)</text>
+<text x="155" y="100" fill="#6c3483" font-size="18" font-weight="800">Z</text>
+<text x="155" y="118" fill="#6c3483" font-size="13">(impedance)</text>
+<path d="M 120,180 A 70,70 0 0,0 108,148" fill="none" stroke="#e67e22" stroke-width="2.5"/>
+<text x="118" y="166" fill="#e67e22" font-size="15" font-weight="700">&phi;</text>
+<!-- Formulas -->
+<text x="400" y="50" fill="#5c3d2e" font-size="13" font-weight="700">Z&sup2; = R&sup2; + X&sup2;</text>
+<text x="400" y="75" fill="#5c3d2e" font-size="13" font-weight="700">cos &phi; = R / Z</text>
+<text x="400" y="100" fill="#5c3d2e" font-size="13" font-weight="700">sin &phi; = X / Z</text>
+<text x="400" y="125" fill="#5c3d2e" font-size="13" font-weight="700">tan &phi; = X / R</text>
+</g></svg>
+<div class="dia-cap">The impedance triangle: R along the base, X vertical, Z is the hypotenuse. Pythagoras finds Z; trigonometry finds &phi;.</div>
+</div>
+
+<h3>Power Factor from the Impedance Triangle</h3>
+<div class="key"><strong>Power Factor = cos &phi; = R / Z</strong><br><br>
+PF = 1.0 (unity) &rarr; purely resistive, all power is useful<br>
+PF = 0 &rarr; purely reactive, no useful power<br>
+PF &lt; 1.0 lagging &rarr; inductive load (motors) &mdash; current lags voltage<br>
+PF &lt; 1.0 leading &rarr; capacitive load &mdash; current leads voltage</div>
+
+<div class="wex"><div class="wh">Textbook Example &mdash; RL Circuit</div><div class="wb">
+<p><strong>R = 50 &Omega; in series with a coil of X<sub>L</sub> = 47.1 &Omega;, supply = 100 V.</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc"><strong>Impedance:</strong> Z = &radic;(50&sup2; + 47.1&sup2;) = &radic;(2500 + 2218) = &radic;4718 = <strong>68.69 &Omega;</strong></div></div>
+<div class="step"><div class="sn">2</div><div class="sc"><strong>Current:</strong> I = V / Z = 100 / 68.69 = <strong>1.46 A</strong></div></div>
+<div class="step"><div class="sn">3</div><div class="sc"><strong>Power factor:</strong> cos &phi; = R / Z = 50 / 68.69 = <strong>0.728 lagging</strong></div></div>
+<div class="step"><div class="sn">4</div><div class="sc"><strong>Phase angle:</strong> &phi; = cos<sup>&minus;1</sup>(0.728) = <strong>43.3&deg;</strong></div></div>
+</div></div>
+
+<div class="wex"><div class="wh">Textbook Example &mdash; RC Circuit</div><div class="wb">
+<p><strong>R = 100 &Omega; in series with X<sub>C</sub> = 53.05 &Omega;, supply = 230 V.</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc">Z = &radic;(100&sup2; + 53.05&sup2;) = &radic;(10000 + 2814) = &radic;12814 = <strong>113.2 &Omega;</strong></div></div>
+<div class="step"><div class="sn">2</div><div class="sc">I = 230 / 113.2 = <strong>2.03 A</strong></div></div>
+<div class="step"><div class="sn">3</div><div class="sc">PF = 100 / 113.2 = <strong>0.883 leading</strong></div></div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Extra Example &mdash; Full Power Calculation</div><div class="wb">
+<p><strong>R = 30 &Omega;, X<sub>L</sub> = 40 &Omega;, supply = 250 V. Find Z, I, PF and all three powers.</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc">Z = &radic;(30&sup2; + 40&sup2;) = &radic;(900 + 1600) = &radic;2500 = <strong>50 &Omega;</strong></div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">I = 250 / 50 = <strong>5 A</strong></div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">PF = cos &phi; = 30 / 50 = <strong>0.6 lagging</strong></div></div>
+<div class="step"><div class="sn pur">4</div><div class="sc">&phi; = cos<sup>&minus;1</sup>(0.6) = <strong>53.13&deg;</strong></div></div>
+<div class="step"><div class="sn pur">5</div><div class="sc"><strong>True Power:</strong> P = VI cos &phi; = 250 &times; 5 &times; 0.6 = <strong>750 W</strong></div></div>
+<div class="step"><div class="sn pur">6</div><div class="sc"><strong>Reactive Power:</strong> Q = VI sin &phi; = 250 &times; 5 &times; 0.8 = <strong>1000 VAr</strong></div></div>
+<div class="step"><div class="sn pur">7</div><div class="sc"><strong>Apparent Power:</strong> S = VI = 250 &times; 5 = <strong>1250 VA</strong></div></div>
+<div class="step"><div class="sn pur">8</div><div class="sc"><strong>Check:</strong> S&sup2; = P&sup2; + Q&sup2; &rarr; 1250&sup2; = 750&sup2; + 1000&sup2; &rarr; 1,562,500 = 1,562,500 &#9989;</div></div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Extra Example &mdash; RLC Circuit</div><div class="wb">
+<p><strong>R = 12 &Omega;, X<sub>L</sub> = 20 &Omega;, X<sub>C</sub> = 15 &Omega;, supply = 100 V.</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc"><strong>Net reactance:</strong> X = X<sub>L</sub> &minus; X<sub>C</sub> = 20 &minus; 15 = <strong>5 &Omega;</strong> (inductive, because X<sub>L</sub> &gt; X<sub>C</sub>)</div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">Z = &radic;(12&sup2; + 5&sup2;) = &radic;(144 + 25) = &radic;169 = <strong>13 &Omega;</strong></div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">I = 100 / 13 = <strong>7.69 A</strong></div></div>
+<div class="step"><div class="sn pur">4</div><div class="sc">PF = 12 / 13 = <strong>0.923 lagging</strong></div></div>
+</div></div>
+
+<div class="warn"><div class="lbl">&#9888; Common Exam Mistake</div>
+Never add R and X directly! R = 30 &Omega; and X = 40 &Omega; does NOT give Z = 70 &Omega;. You <strong>must</strong> use Pythagoras because R and X are 90&deg; apart. Z = &radic;(30&sup2; + 40&sup2;) = 50 &Omega;.
+</div>
+<div class="mcq-section" id="quiz-s12"></div>
+</div></div>
+
+<!-- S13: RESISTIVITY -->
+<div class="card" id="s13"><div class="card-hdr" onclick="tog(this)"><div class="card-num">13</div><h2>Resistivity &mdash; Why Cable Size Matters</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p>Every material has a natural opposition to current flow called <strong>resistivity</strong>. Copper is an excellent conductor with very low resistivity. The resistance of a cable depends on three things: the material, its length, and its cross-sectional area.</p>
+
+<div class="key"><strong>R = &rho;L / A</strong><br><br>
+Where:<br>
+R = resistance of the conductor (&Omega;)<br>
+&rho; (rho) = resistivity of the material (&Omega;m &mdash; ohm metres)<br>
+L = length of the conductor (m)<br>
+A = cross-sectional area (m&sup2;)<br><br>
+<strong>Copper resistivity: &rho; = 17.2 &times; 10<sup>&minus;9</sup> &Omega;m</strong> (or 1.72 &times; 10<sup>&minus;8</sup> &Omega;m)</div>
+
+<h3>What Affects Conductor Resistance?</h3>
+<table class="tbl"><thead><tr><th>Factor</th><th>Effect on Resistance</th><th>Why</th></tr></thead><tbody>
+<tr><td><strong>Length &uarr;</strong></td><td>Resistance increases</td><td>Electrons travel further, more collisions</td></tr>
+<tr><td><strong>Area &uarr;</strong></td><td>Resistance decreases</td><td>More room for electrons to flow</td></tr>
+<tr><td><strong>Resistivity &uarr;</strong></td><td>Resistance increases</td><td>Material opposes current more (e.g. steel vs copper)</td></tr>
+<tr><td><strong>Temperature &uarr;</strong></td><td>Resistance increases (conductors)</td><td>Atoms vibrate more, impeding electron flow</td></tr>
+</tbody></table>
+
+<div class="wex"><div class="wh">Worked Example 1 &mdash; Finding Resistance</div><div class="wb">
+<p><strong>Find the resistance of 100 m of 2.5 mm&sup2; copper cable. (&rho; = 17.2 &times; 10<sup>&minus;9</sup> &Omega;m)</strong></p>
+<div class="step"><div class="sn">1</div><div class="sc"><strong>Convert area to m&sup2;:</strong> 2.5 mm&sup2; = 2.5 &times; 10<sup>&minus;6</sup> m&sup2;</div></div>
+<div class="step"><div class="sn">2</div><div class="sc">R = &rho;L / A = (17.2 &times; 10<sup>&minus;9</sup> &times; 100) / (2.5 &times; 10<sup>&minus;6</sup>)</div></div>
+<div class="step"><div class="sn">3</div><div class="sc">R = (1.72 &times; 10<sup>&minus;6</sup>) / (2.5 &times; 10<sup>&minus;6</sup>)</div></div>
+<div class="step"><div class="sn">4</div><div class="sc">R = <strong>0.688 &Omega;</strong></div></div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Understanding the Maths &mdash; Moving Powers of 10 Between Numerator and Denominator</div><div class="wb">
+<p>In Step 3 above we divided (1.72 &times; 10<sup>&minus;6</sup>) by (2.5 &times; 10<sup>&minus;6</sup>). Many students find dividing with negative powers confusing. Here's the key rule:</p>
+<div class="key"><strong>When you move a power of 10 from the bottom (denominator) to the top (numerator), the sign of the exponent flips.</strong><br><br>
+10<sup>&minus;6</sup> in the denominator &rarr; becomes 10<sup>+6</sup> in the numerator<br>
+10<sup>&minus;9</sup> in the denominator &rarr; becomes 10<sup>+9</sup> in the numerator<br><br>
+This works the other way too: 10<sup>+3</sup> moved from top to bottom becomes 10<sup>&minus;3</sup>.</div>
+
+<p><strong>Let's prove it with a simple example:</strong></p>
+<div class="math">
+<strong>What is 1 &divide; 10<sup>&minus;6</sup> ?</strong>
+</div>
+<div class="step"><div class="sn pur">1</div><div class="sc">Dividing by 10<sup>&minus;6</sup> is the same as <strong>multiplying by 10<sup>+6</sup></strong> (the sign flips)</div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">So: 1 &divide; 10<sup>&minus;6</sup> = 1 &times; 10<sup>6</sup> = <strong>1,000,000</strong> &#9989;</div></div>
+<p style="margin-top:8px">It's that simple &mdash; whenever you divide by a negative power, just <strong>multiply by the positive power</strong> instead. No long division needed.</p>
+
+<p style="margin-top:14px"><strong>Now let's apply this to the resistivity calculation from Step 2 above:</strong></p>
+<div class="math">
+R = (17.2 &times; 10<sup>&minus;9</sup> &times; 100) / (2.5 &times; 10<sup>&minus;6</sup>)
+</div>
+<div class="step"><div class="sn pur">1</div><div class="sc">Numerator: 17.2 &times; 10<sup>&minus;9</sup> &times; 100 = 17.2 &times; 10<sup>&minus;9</sup> &times; 10<sup>2</sup> = 17.2 &times; 10<sup>&minus;7</sup></div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">Now we have: R = (17.2 &times; 10<sup>&minus;7</sup>) / (2.5 &times; 10<sup>&minus;6</sup>)</div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">Move the 10<sup>&minus;6</sup> from the denominator to the numerator &mdash; it becomes 10<sup>+6</sup>:</div></div>
+<div class="step"><div class="sn pur">4</div><div class="sc">R = (17.2 &times; 10<sup>&minus;7</sup> &times; 10<sup>+6</sup>) / 2.5</div></div>
+<div class="step"><div class="sn pur">5</div><div class="sc">Combine the powers: 10<sup>&minus;7</sup> &times; 10<sup>+6</sup> = 10<sup>&minus;7+6</sup> = 10<sup>&minus;1</sup></div></div>
+<div class="step"><div class="sn pur">6</div><div class="sc">R = (17.2 &times; 10<sup>&minus;1</sup>) / 2.5 = 1.72 / 2.5 = <strong>0.688 &Omega;</strong> &#9989;</div></div>
+
+<div class="tip"><div class="lbl">&#9889; The Quick Rule</div>
+<strong>Dividing powers of 10:</strong> subtract the indices.<br>
+10<sup>&minus;7</sup> &divide; 10<sup>&minus;6</sup> = 10<sup>&minus;7&minus;(&minus;6)</sup> = 10<sup>&minus;7+6</sup> = 10<sup>&minus;1</sup><br><br>
+<strong>Remember:</strong> subtracting a negative is the same as adding!<br>
+&minus;7 &minus; (&minus;6) = &minus;7 + 6 = &minus;1
+</div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Worked Example 2 &mdash; Finding Required Cable Size</div><div class="wb">
+<p><strong>A circuit must have a maximum cable resistance of 0.5 &Omega; over 50 m. What minimum CSA is needed?</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc"><strong>Rearrange:</strong> A = &rho;L / R</div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">A = (17.2 &times; 10<sup>&minus;9</sup> &times; 50) / 0.5</div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">A = 8.6 &times; 10<sup>&minus;7</sup> / 0.5 = 1.72 &times; 10<sup>&minus;6</sup> m&sup2;</div></div>
+<div class="step"><div class="sn pur">4</div><div class="sc">Convert: 1.72 &times; 10<sup>&minus;6</sup> m&sup2; = <strong>1.72 mm&sup2;</strong></div></div>
+<div class="step"><div class="sn pur">5</div><div class="sc">Next standard cable size up = <strong>2.5 mm&sup2;</strong></div></div>
+</div></div>
+
+<div class="wex"><div class="wh extra">Worked Example 3 &mdash; Finding Resistivity</div><div class="wb">
+<p><strong>A 200 m cable of 4 mm&sup2; has a measured resistance of 0.86 &Omega;. What is the resistivity?</strong></p>
+<div class="step"><div class="sn pur">1</div><div class="sc"><strong>Rearrange:</strong> &rho; = RA / L</div></div>
+<div class="step"><div class="sn pur">2</div><div class="sc">&rho; = (0.86 &times; 4 &times; 10<sup>&minus;6</sup>) / 200</div></div>
+<div class="step"><div class="sn pur">3</div><div class="sc">&rho; = 3.44 &times; 10<sup>&minus;6</sup> / 200 = <strong>1.72 &times; 10<sup>&minus;8</sup> &Omega;m</strong></div></div>
+<p>This confirms the cable is copper (&rho; = 1.72 &times; 10<sup>&minus;8</sup> &Omega;m) &#9989;</p>
+</div></div>
+
+<div class="elec"><div class="lbl">&#9889; Why Electricians Need This</div>
+Resistivity calculations are essential for <strong>volt drop calculations</strong>. The longer the cable run or the smaller the CSA, the higher the resistance, and the greater the volt drop. BS 7671 limits volt drop to 3% for lighting and 5% for power circuits. If the calculated volt drop is too high, you must increase the cable size.
+</div>
+<div class="mcq-section" id="quiz-s13"></div>
+</div></div>
+
+<!-- S14: FLASH CARDS -->
+<div class="card" id="s14"><div class="card-hdr" onclick="tog(this)"><div class="card-num">14</div><h2>Flash Cards &mdash; Click to Flip</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body">
+<p>Click any card to reveal the answer on the back.</p>
+<div class="fc-grid" id="flashcards"></div>
+</div></div>
+
+<!-- S15: QUIZ -->
+<div class="card" id="s15"><div class="card-hdr" onclick="tog(this)"><div class="card-num">15</div><h2>Test Yourself &mdash; 20 Questions</h2><span class="card-tog">&#9660;</span></div>
+<div class="card-body"><div class="mcq-section" id="quiz-master"></div></div></div>
+
+</div>
+
+<footer class="ftr"><p><strong>tutorwarren.com</strong> &bull; Resistance, Capacitance &amp; Three-Phase Circuits</p><p>EAL Level 3 &bull; Unit ELEC3/008 &bull; Chapter 6</p><p style="margin-top:5px;opacity:.6">&copy; 2026 tutorwarren.com &bull; All rights reserved</p></footer>
+<a href="#topNav" class="btt" id="btt">&uarr;</a>
+
+<script>
+function tog(h){h.closest('.card').classList.toggle('collapsed')}
+window.addEventListener('scroll',()=>{document.getElementById('btt').classList.toggle('visible',window.scrollY>400)});
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('copy',e=>e.preventDefault());
+
+// ===== FLASH CARD DATA =====
+const fcData=[
+{f:"Formula for total resistance in SERIES?",b:"R<sub>T</sub> = R₁ + R₂ + R₃\n(Just add them up)"},
+{f:"Formula for total resistance in PARALLEL?",b:"1/R<sub>T</sub> = 1/R₁ + 1/R₂ + 1/R₃\n(Reciprocal formula)"},
+{f:"Product over sum shortcut for 2 resistors in parallel?",b:"R<sub>T</sub> = (R₁ × R₂) ÷ (R₁ + R₂)"},
+{f:"In a series circuit, what stays the same?",b:"CURRENT is the same through all components"},
+{f:"In a parallel circuit, what stays the same?",b:"VOLTAGE is the same across all branches"},
+{f:"Is total series resistance MORE or LESS than the largest?",b:"Always MORE (greater) than the largest individual value"},
+{f:"Is total parallel resistance MORE or LESS than the smallest?",b:"Always LESS than the smallest individual value"},
+{f:"Formula for capacitors in SERIES?",b:"1/C<sub>T</sub> = 1/C₁ + 1/C₂ + 1/C₃\n(Opposite to resistors!)"},
+{f:"Formula for capacitors in PARALLEL?",b:"C<sub>T</sub> = C₁ + C₂ + C₃\n(Just add them — opposite to resistors!)"},
+{f:"Capacitors in series: is total MORE or LESS?",b:"Always LESS than the smallest (like R in parallel)"},
+{f:"Capacitors in parallel: is total MORE or LESS?",b:"Always MORE than the largest (like R in series)"},
+{f:"What is √3 as a decimal?",b:"1.732\nThe constant for all 3-phase calculations"},
+{f:"Star connection: V<sub>L</sub> = ?",b:"V<sub>L</sub> = √3 × V<sub>P</sub>\n= 1.732 × 230 = 400 V"},
+{f:"Star connection: I<sub>L</sub> = ?",b:"I<sub>L</sub> = I<sub>P</sub>\n(Line current equals phase current in star)"},
+{f:"Delta connection: V<sub>L</sub> = ?",b:"V<sub>L</sub> = V<sub>P</sub>\n(Line voltage equals phase voltage in delta)"},
+{f:"Delta connection: I<sub>L</sub> = ?",b:"I<sub>L</sub> = √3 × I<sub>P</sub>\n(Line current = 1.732 × phase current)"},
+{f:"3-phase power formula?",b:"P = √3 × V<sub>L</sub> × I<sub>L</sub> × cos φ\nWorks for BOTH star and delta"},
+{f:"What happens to neutral current when loads are balanced?",b:"Neutral current = ZERO\nThe three phase currents cancel out"},
+{f:"Formula for neutral current (unbalanced)?",b:"I<sub>N</sub> = √(I<sub>A</sub>² + I<sub>B</sub>² + I<sub>C</sub>² − I<sub>A</sub>·I<sub>B</sub> − I<sub>B</sub>·I<sub>C</sub> − I<sub>A</sub>·I<sub>C</sub>)"},
+{f:"Why must loads be balanced?",b:"Equal cable sizing, zero neutral current, maximum efficiency, no voltage imbalance"},
+{f:"Star gives how many voltages?",b:"Two: 230 V (line-neutral) and 400 V (line-line)"},
+{f:"Delta is used for?",b:"Motors, transformers, power transmission (no neutral needed — balanced loads)"},
+{f:"What does PF = 1 (unity) mean?",b:"Voltage and current are in phase — purely resistive, all power is useful"},
+{f:"What risk does a broken neutral cause?",b:"Star point shifts → overvoltage on light phases, undervoltage on heavy phases → equipment damage"},
+{f:"Three 6 Ω resistors in series = ?",b:"R<sub>T</sub> = 6 + 6 + 6 = 18 Ω"},
+{f:"Three 6 Ω resistors in parallel = ?",b:"1/R<sub>T</sub> = 3/6 = 0.5\nR<sub>T</sub> = 2 Ω"},
+{f:"V<sub>P</sub> in a star system with V<sub>L</sub> = 400 V?",b:"V<sub>P</sub> = 400 ÷ 1.732 = 230.9 V"},
+{f:"I<sub>L</sub> in delta if I<sub>P</sub> = 8 A?",b:"I<sub>L</sub> = √3 × 8 = 1.732 × 8 = 13.86 A"},
+{f:"What unit is capacitance measured in?",b:"Farads (F)\nUsually µF, nF or pF in practice"},
+{f:"Two resistors: 20 Ω and 30 Ω in parallel = ?",b:"(20 × 30) ÷ (20 + 30) = 600 ÷ 50 = 12 Ω"},
+{f:"Formula for inductive reactance?",b:"X<sub>L</sub> = 2πfL<br>Measured in Ohms (Ω)"},
+{f:"Formula for capacitive reactance?",b:"X<sub>C</sub> = 1 / (2πfC)<br>Measured in Ohms (Ω)"},
+{f:"As frequency increases, X<sub>L</sub> does what?",b:"X<sub>L</sub> INCREASES<br>(Inductors oppose more at higher frequency)"},
+{f:"As frequency increases, X<sub>C</sub> does what?",b:"X<sub>C</sub> DECREASES<br>(Capacitors let more AC through at higher frequency)"},
+{f:"How do you find impedance Z?",b:"Z = √(R² + X²)<br>Using Pythagoras' theorem!"},
+{f:"Why can't you just add R + X to get Z?",b:"Because R and X are 90° out of phase.<br>You must use Pythagoras: Z = √(R² + X²)"},
+{f:"Power factor formula from impedance triangle?",b:"PF = cos φ = R ÷ Z"},
+{f:"What are the three types of power?",b:"True Power P (Watts)<br>Reactive Power Q (VAr)<br>Apparent Power S (VA)"},
+{f:"Formula for resistivity?",b:"R = ρL / A<br>ρ = resistivity, L = length, A = area"},
+{f:"Resistivity of copper?",b:"ρ = 17.2 × 10⁻⁹ Ωm<br>(or 1.72 × 10⁻⁸ Ωm)"},
+{f:"If cable length doubles, resistance does what?",b:"DOUBLES<br>R is directly proportional to length"},
+{f:"If cable CSA doubles, resistance does what?",b:"HALVES<br>R is inversely proportional to area"},
+{f:"Rearrange R = ρL/A to find A",b:"A = ρL / R"},
+{f:"What does CIVIL mean?",b:"Capacitor: I before V (leads)<br>Inductor L: V before I (lags)"},
+];
+
+function buildFlashcards(){
+const g=document.getElementById('flashcards');if(!g)return;
+let h='';fcData.forEach((c,i)=>{
+h+='<div class="fc" onclick="this.classList.toggle(\'flipped\')"><div class="fc-inner"><div class="fc-front"><span class="fc-label">Q'+(i+1)+'</span>'+c.f+'</div><div class="fc-back"><span class="fc-label">Answer</span>'+c.b.replace(/\n/g,'<br>')+'</div></div></div>';
+});g.innerHTML=h;
+}
+
+// ===== MCQ DATA =====
+const quizData={
+s1:[
+{q:"Three resistors of 10 Ω, 20 Ω and 30 Ω are in series. R<sub>T</sub> = ?",o:["60 Ω","5 Ω","20 Ω","600 Ω"],a:0,e:"Series: R<sub>T</sub> = 10 + 20 + 30 = 60 Ω."},
+{q:"In a series circuit, which quantity is the same through all components?",o:["Current","Voltage","Resistance","Power"],a:0,e:"In series, current is common throughout."},
+{q:"5 Ω and 15 Ω in series across 40 V. Current = ?",o:["2 A","8 A","0.5 A","3 A"],a:0,e:"R<sub>T</sub> = 20 Ω. I = 40/20 = 2 A."},
+],
+s2:[
+{q:"Two 10 Ω resistors in parallel. R<sub>T</sub> = ?",o:["5 Ω","20 Ω","10 Ω","100 Ω"],a:0,e:"Product/sum: (10×10)/(10+10) = 100/20 = 5 Ω."},
+{q:"In parallel, which quantity is the same across all branches?",o:["Voltage","Current","Resistance","Power"],a:0,e:"In parallel, voltage is common to all branches."},
+{q:"Total parallel resistance is always:",o:["Less than the smallest","Greater than the largest","Equal to the sum","Zero"],a:0,e:"Parallel resistance is always less than the smallest individual value."},
+],
+s3:[
+{q:"R₁=5Ω in series with (R₂=10Ω ∥ R₃=10Ω). R<sub>T</sub> = ?",o:["10 Ω","25 Ω","5 Ω","15 Ω"],a:0,e:"Parallel: 10∥10 = 5 Ω. Series: 5+5 = 10 Ω."},
+],
+s4:[
+{q:"Two 10 µF capacitors in series. C<sub>T</sub> = ?",o:["5 µF","20 µF","10 µF","100 µF"],a:0,e:"Series: 1/C<sub>T</sub> = 1/10 + 1/10 = 2/10. C<sub>T</sub> = 5 µF."},
+{q:"Capacitors in series use which formula?",o:["Reciprocal (like R parallel)","Simple addition","Product only","Subtraction"],a:0,e:"C in series uses reciprocal formula — opposite of resistors!"},
+],
+s5:[
+{q:"Three capacitors: 10, 20, 30 µF in parallel. C<sub>T</sub> = ?",o:["60 µF","5 µF","20 µF","6 µF"],a:0,e:"Parallel capacitors add up: 10 + 20 + 30 = 60 µF."},
+],
+s6:[
+{q:"C₁=40µF in series with (C₂=20µF ∥ C₃=20µF). C<sub>T</sub> = ?",o:["20 µF","80 µF","40 µF","10 µF"],a:0,e:"Parallel: 20+20=40µF. Series: (40×40)/(40+40) = 1600/80 = 20 µF."},
+],
+s7:[
+{q:"In a star connection, V<sub>L</sub> = ?",o:["√3 × V<sub>P</sub>","V<sub>P</sub>","V<sub>P</sub> ÷ √3","3 × V<sub>P</sub>"],a:0,e:"Star: V<sub>L</sub> = √3 × V<sub>P</sub> = 1.732 × 230 ≈ 400 V."},
+{q:"In a delta connection, I<sub>L</sub> = ?",o:["√3 × I<sub>P</sub>","I<sub>P</sub>","I<sub>P</sub> ÷ √3","3 × I<sub>P</sub>"],a:0,e:"Delta: I<sub>L</sub> = √3 × I<sub>P</sub>."},
+{q:"Which connection provides a neutral?",o:["Star","Delta","Both","Neither"],a:0,e:"Star has a 4th wire (neutral) connected to the star point."},
+],
+s8:[
+{q:"3-phase power formula is:",o:["P = √3 × V<sub>L</sub> × I<sub>L</sub> × cos φ","P = 3 × V × I","P = V × I","P = V²/R"],a:0,e:"P = √3 × V<sub>L</sub> × I<sub>L</sub> × cos φ works for both star and delta."},
+{q:"Star, 400V, 10Ω/phase, unity PF. Phase voltage = ?",o:["230.9 V","400 V","115 V","692 V"],a:0,e:"V<sub>P</sub> = V<sub>L</sub>/√3 = 400/1.732 = 230.9 V."},
+],
+s9:[
+{q:"In a balanced 3-phase system, neutral current is:",o:["Zero","Equal to line current","√3 × I<sub>L</sub>","Half of I<sub>L</sub>"],a:0,e:"When balanced, the three phase currents cancel to zero in the neutral."},
+{q:"Why should loads be balanced?",o:["All of the below","Equal cable sizes","Zero neutral current","Maximum efficiency"],a:0,e:"Balanced loads give equal cables, zero neutral current, max efficiency and no voltage imbalance."},
+],
+s10:[
+{q:"I<sub>A</sub>=20A, I<sub>B</sub>=20A, I<sub>C</sub>=20A. Neutral current = ?",o:["0 A","20 A","34.6 A","60 A"],a:0,e:"All equal = balanced. I<sub>N</sub> = √(1200-1200) = 0 A."},
+{q:"I<sub>A</sub>=20A, I<sub>B</sub>=15A, I<sub>C</sub>=10A. Neutral current ≈ ?",o:["8.66 A","15 A","5 A","45 A"],a:0,e:"I<sub>N</sub> = √(400+225+100−300−150−200) = √75 = 8.66 A."},
+{q:"A broken neutral in an unbalanced system causes:",o:["Dangerous voltage imbalance","Nothing","Lower bills","Better PF"],a:0,e:"The star point shifts causing overvoltage on light phases and undervoltage on heavy phases."},
+],
+s11:[
+{q:"X<sub>L</sub> = 2πfL. A 0.1 H coil at 50 Hz. X<sub>L</sub> = ?",o:["31.42 Ω","50 Ω","0.1 Ω","314.2 Ω"],a:0,e:"X_L = 2 × 3.142 × 50 × 0.1 = 31.42 Ω."},
+{q:"As frequency increases, inductive reactance:",o:["Increases","Decreases","Stays the same","Becomes zero"],a:0,e:"X_L = 2πfL — directly proportional to frequency."},
+{q:"X<sub>C</sub> = 1/(2πfC). A 100 µF cap at 50 Hz. X<sub>C</sub> ≈ ?",o:["31.83 Ω","50 Ω","100 Ω","0.03 Ω"],a:0,e:"X_C = 1/(6.284 × 50 × 0.0001) = 1/0.03142 = 31.83 Ω."},
+{q:"As frequency increases, capacitive reactance:",o:["Decreases","Increases","Stays the same","Doubles"],a:0,e:"X_C = 1/(2πfC) — inversely proportional to frequency."},
+{q:"At DC (f = 0), a capacitor acts as:",o:["An open circuit (X_C = ∞)","A short circuit","A resistor","An inductor"],a:0,e:"At f=0, X_C = 1/(2π×0×C) = infinity — no current flows."},
+],
+s12:[
+{q:"R = 30 Ω, X = 40 Ω. Impedance Z = ?",o:["50 Ω","70 Ω","10 Ω","1200 Ω"],a:0,e:"Z = √(900+1600) = √2500 = 50 Ω (Pythagoras)."},
+{q:"Why can't you add R + X to find Z?",o:["R and X are 90° out of phase","Different units","They cancel","R is always bigger"],a:0,e:"R and X are at 90° — must use Pythagoras."},
+{q:"Z = 50 Ω, R = 40 Ω. Power factor = ?",o:["0.8","0.6","1.0","0.5"],a:0,e:"PF = cos φ = R/Z = 40/50 = 0.8."},
+{q:"True power is measured in:",o:["Watts (W)","VA","VAr","Ohms"],a:0,e:"True power is measured in Watts — useful work."},
+{q:"Apparent power is measured in:",o:["VA","Watts","VAr","Amps"],a:0,e:"Apparent power S = V × I, measured in VA."},
+],
+s13:[
+{q:"R = ρL/A: if length doubles, resistance:",o:["Doubles","Halves","Same","Quadruples"],a:0,e:"R is directly proportional to L."},
+{q:"R = ρL/A: if CSA doubles, resistance:",o:["Halves","Doubles","Same","Quadruples"],a:0,e:"R is inversely proportional to A."},
+{q:"Resistivity of copper ≈ ?",o:["17.2 × 10⁻⁹ Ωm","17.2 Ωm","1.72 Ω","172 Ωm"],a:0,e:"Copper ρ = 17.2 × 10⁻⁹ Ωm."},
+{q:"100 m of 2.5 mm² copper. R ≈ ?",o:["0.69 Ω","6.9 Ω","69 Ω","0.069 Ω"],a:0,e:"R = (17.2×10⁻⁹ × 100)/(2.5×10⁻⁶) = 0.688 Ω."},
+{q:"Rearrange R = ρL/A to find A:",o:["A = ρL / R","A = RL / ρ","A = R / ρL","A = ρR / L"],a:0,e:"Multiply both sides by A, divide by R: A = ρL/R."},
+],
+master:[
+{q:"4Ω, 6Ω, 10Ω in series. R<sub>T</sub> = ?",o:["20 Ω","1.96 Ω","240 Ω","6.67 Ω"],a:0,e:"Series: 4+6+10 = 20 Ω."},
+{q:"4Ω and 12Ω in parallel. R<sub>T</sub> = ?",o:["3 Ω","16 Ω","8 Ω","48 Ω"],a:0,e:"(4×12)/(4+12) = 48/16 = 3 Ω."},
+{q:"10µF and 40µF in series. C<sub>T</sub> = ?",o:["8 µF","50 µF","30 µF","400 µF"],a:0,e:"(10×40)/(10+40) = 400/50 = 8 µF."},
+{q:"10µF and 40µF in parallel. C<sub>T</sub> = ?",o:["50 µF","8 µF","400 µF","30 µF"],a:0,e:"Parallel caps add: 10+40 = 50 µF."},
+{q:"√3 equals approximately:",o:["1.732","1.414","3.142","2.236"],a:0,e:"√3 = 1.732 — the three-phase constant."},
+{q:"Star: V<sub>L</sub> = 400V. V<sub>P</sub> = ?",o:["230.9 V","400 V","692 V","133 V"],a:0,e:"V<sub>P</sub> = 400/1.732 = 230.9 V."},
+{q:"Delta: I<sub>P</sub> = 12A. I<sub>L</sub> = ?",o:["20.78 A","12 A","6.93 A","36 A"],a:0,e:"I<sub>L</sub> = √3 × 12 = 1.732 × 12 = 20.78 A."},
+{q:"Which connection is used for motors?",o:["Delta","Star","Series","Parallel"],a:0,e:"Delta — motor windings are balanced, no neutral needed."},
+{q:"Balanced 3-phase: neutral current?",o:["0 A","Equal to phase current","√3 × I","Maximum"],a:0,e:"Three equal currents 120° apart cancel to zero."},
+{q:"Series R is always ___ than the largest value:",o:["Greater","Less","Equal","Half"],a:0,e:"Series resistance always adds up — result is greater than any single value."},
+{q:"Parallel R is always ___ than the smallest value:",o:["Less","Greater","Equal","Double"],a:0,e:"Parallel resistance is always less than the smallest branch."},
+{q:"Capacitors in series behave like resistors in:",o:["Parallel","Series","Neither","Combined"],a:0,e:"Capacitors are opposite — C series uses the reciprocal formula like R parallel."},
+{q:"3-phase power at 400V, 25A, PF=0.85:",o:["14.72 kW","10 kW","8.5 kW","17.32 kW"],a:0,e:"P = 1.732 × 400 × 25 × 0.85 = 14,722 W ≈ 14.72 kW."},
+{q:"Star gives which two voltages?",o:["230V and 400V","400V and 690V","110V and 230V","415V and 240V"],a:0,e:"Star: 230V (phase) and 400V (line). V<sub>L</sub> = √3 × V<sub>P</sub>."},
+{q:"I<sub>A</sub>=30A, I<sub>B</sub>=10A, I<sub>C</sub>=25A. I<sub>N</sub> ≈ ?",o:["18.03 A","21.67 A","5 A","65 A"],a:0,e:"I<sub>N</sub> = √(900+100+625−300−250−750) = √325 = 18.03 A."},
+{q:"What is the unit of capacitance?",o:["Farad (F)","Ohm (Ω)","Henry (H)","Coulomb (C)"],a:0,e:"Capacitance is measured in Farads (F)."},
+{q:"Three 30Ω resistors in parallel. R<sub>T</sub> = ?",o:["10 Ω","90 Ω","30 Ω","0.1 Ω"],a:0,e:"For n identical resistors: R<sub>T</sub> = R/n = 30/3 = 10 Ω."},
+{q:"PF of 1.0 means:",o:["V and I in phase (unity)","V leads I by 90°","No power","Maximum reactive power"],a:0,e:"Unity PF means voltage and current are in phase — purely resistive."},
+{q:"Star: if V<sub>P</sub>=230V, what is V<sub>L</sub>?",o:["398.4 V","230 V","460 V","132.8 V"],a:0,e:"V<sub>L</sub> = √3 × 230 = 1.732 × 230 = 398.4 V ≈ 400 V."},
+{q:"Why is delta not used for distribution to homes?",o:["No neutral available for single-phase","Too expensive","Lower voltage","Higher current"],a:0,e:"Delta has no neutral, so you can't derive 230V single-phase supplies for domestic use."},
+]};
+
+// ===== MCQ ENGINE =====
+function buildQuiz(){
+for(const[sid,qs]of Object.entries(quizData)){
+const c=document.getElementById('quiz-'+sid);if(!c)continue;
+let h='<h3>📝 Test Yourself</h3><div class="score-bar" id="sc-'+sid+'"><span class="st">Score: <span class="sv">0</span>/'+qs.length+'</span><div class="sf-w"><div class="sf" id="fl-'+sid+'"></div></div><span class="sp" id="pc-'+sid+'">0%</span></div>';
+qs.forEach((q,i)=>{const qid=sid+'-q'+i;h+='<div class="mcq-item" id="it-'+qid+'"><div class="mcq-q"><div class="qn">'+(i+1)+'</div><div>'+q.q+'</div></div><div class="mcq-opts" id="op-'+qid+'">';const L='ABCD';q.o.forEach((o,j)=>{h+='<div class="mcq-o" data-qid="'+qid+'" data-idx="'+j+'" onclick="selO(this)"><div class="ol">'+L[j]+'</div><div>'+o+'</div></div>'});h+='</div><div class="mcq-fb" id="fb-'+qid+'"></div></div>'});
+h+='<div style="margin-top:10px"><button class="btn-c" onclick="chkQ(\''+sid+'\')">Check Answers</button><button class="btn-r" onclick="rstQ(\''+sid+'\')">Reset</button></div>';
+c.innerHTML=h;}
+}
+function selO(el){if(el.classList.contains('disabled'))return;document.querySelectorAll('#op-'+el.dataset.qid+' .mcq-o').forEach(o=>o.classList.remove('selected'));el.classList.add('selected')}
+function chkQ(sid){const qs=quizData[sid];let s=0;qs.forEach((q,i)=>{const qid=sid+'-q'+i,ops=document.querySelectorAll('#op-'+qid+' .mcq-o'),fb=document.getElementById('fb-'+qid),it=document.getElementById('it-'+qid);let sel=-1;ops.forEach((o,j)=>{o.classList.add('disabled');if(o.classList.contains('selected'))sel=j});if(sel===q.a){s++;ops[sel].classList.add('right');it.classList.add('correct');fb.className='mcq-fb show ok';fb.innerHTML='<strong>✓ Correct!</strong> '+q.e}else{if(sel>=0)ops[sel].classList.add('wrong');ops[q.a].classList.add('show-correct');it.classList.add('incorrect');fb.className='mcq-fb show no';fb.innerHTML='<strong>✗ Incorrect.</strong> '+q.e}});const p=Math.round(s/qs.length*100);document.querySelector('#sc-'+sid+' .sv').textContent=s;document.getElementById('fl-'+sid).style.width=p+'%';const pe=document.getElementById('pc-'+sid);pe.textContent=p+'%';pe.style.color=p>=70?'#27ae60':p>=40?'#e67e22':'#c0392b'}
+function rstQ(sid){const qs=quizData[sid];qs.forEach((q,i)=>{const qid=sid+'-q'+i;document.querySelectorAll('#op-'+qid+' .mcq-o').forEach(o=>o.className='mcq-o');document.getElementById('fb-'+qid).className='mcq-fb';document.getElementById('fb-'+qid).innerHTML='';document.getElementById('it-'+qid).className='mcq-item'});document.querySelector('#sc-'+sid+' .sv').textContent='0';document.getElementById('fl-'+sid).style.width='0%';const pe=document.getElementById('pc-'+sid);pe.textContent='0%';pe.style.color='#27ae60'}
+document.addEventListener('DOMContentLoaded',()=>{buildQuiz();buildFlashcards()});
+</script>
+</body>
+</html>
