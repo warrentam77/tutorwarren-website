@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lighting Laws, Lamps &amp; Luminaires – tutorwarren.com</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f0f4f8;color:#1a1a2e;line-height:1.7;-webkit-user-select:none;user-select:none;}
+@media print{body{display:none;}}
+
+/* WATERMARK */
+body::before{content:'tutorwarren.com';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:5rem;font-weight:900;color:rgba(10,25,80,0.04);pointer-events:none;z-index:0;white-space:nowrap;}
+
+.home-btn{position:absolute;top:14px;right:18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);color:#fff;text-decoration:none;padding:6px 16px;border-radius:20px;font-size:.82rem;font-weight:600;letter-spacing:.5px;transition:.2s;z-index:10;}
+.home-btn:hover{background:rgba(255,255,255,.3);}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#0a1950 0%,#1a3a8a 50%,#2563eb 100%);color:#fff;padding:2.5rem 2rem 2rem;text-align:center;position:relative;overflow:hidden;}
+.header::after{content:'';position:absolute;bottom:-30px;left:0;right:0;height:60px;background:#f0f4f8;border-radius:50% 50% 0 0;}
+.header h1{font-size:2rem;font-weight:800;letter-spacing:1px;margin-bottom:.3rem;}
+.header .subtitle{font-size:1rem;opacity:.85;font-weight:400;}
+.header .badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 16px;font-size:.75rem;margin-top:.8rem;letter-spacing:.5px;}
+.brand{font-size:.8rem;margin-top:1rem;opacity:.7;}
+
+/* NAV */
+.nav-bar{background:#fff;border-bottom:3px solid #2563eb;padding:.8rem 1rem;position:sticky;top:0;z-index:100;display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.nav-bar button{background:#e8eef6;border:none;padding:6px 14px;border-radius:16px;font-size:.78rem;cursor:pointer;color:#1a3a8a;font-weight:600;transition:.2s;}
+.nav-bar button:hover,.nav-bar button.active{background:#2563eb;color:#fff;}
+
+/* MAIN */
+.container{max-width:960px;margin:0 auto;padding:1.5rem 1rem 3rem;}
+
+/* SECTIONS */
+.section{background:#fff;border-radius:14px;margin-bottom:1.8rem;padding:2rem 1.8rem;box-shadow:0 2px 12px rgba(0,0,0,.06);border-left:5px solid #2563eb;position:relative;}
+.section h2{font-size:1.45rem;color:#0a1950;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid #e8eef6;}
+.section h3{font-size:1.15rem;color:#1a3a8a;margin:1.2rem 0 .6rem;padding-left:.6rem;border-left:3px solid #2563eb;}
+.section h4{font-size:1rem;color:#2563eb;margin:1rem 0 .4rem;}
+
+/* DEFINITION BOXES */
+.def-box{background:linear-gradient(135deg,#eef2ff,#e0e7ff);border:1px solid #c7d2fe;border-radius:10px;padding:1rem 1.2rem;margin:1rem 0;position:relative;}
+.def-box .def-label{display:inline-block;background:#2563eb;color:#fff;font-size:.7rem;font-weight:700;padding:2px 10px;border-radius:10px;position:absolute;top:-10px;left:12px;text-transform:uppercase;letter-spacing:1px;}
+.def-box p{margin-top:.3rem;}
+.def-box .symbol{font-weight:700;color:#0a1950;font-size:1.1rem;}
+.def-box .unit{color:#2563eb;font-weight:600;}
+
+/* KEY FACT */
+.key-fact{background:#fef3c7;border:1px solid #fbbf24;border-radius:10px;padding:1rem 1.2rem;margin:1rem 0;}
+.key-fact::before{content:'⚡ Key Fact';font-weight:700;color:#92400e;font-size:.8rem;display:block;margin-bottom:.3rem;}
+
+/* FORMULA BOX */
+.formula{background:#0a1950;color:#fff;border-radius:10px;padding:1.2rem 1.5rem;margin:1rem 0;text-align:center;font-size:1.2rem;font-family:'Courier New',monospace;letter-spacing:1px;position:relative;}
+.formula .label{position:absolute;top:8px;left:12px;font-size:.65rem;background:#2563eb;padding:2px 8px;border-radius:8px;font-family:'Segoe UI',sans-serif;letter-spacing:.5px;}
+
+/* SVG DIAGRAMS */
+.diagram-wrap{margin:1.5rem 0;text-align:center;}
+.diagram-wrap svg{max-width:100%;height:auto;}
+.diagram-caption{font-size:.82rem;color:#64748b;margin-top:.5rem;font-style:italic;}
+
+/* TABLES */
+.data-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.88rem;}
+.data-table thead{background:#0a1950;color:#fff;}
+.data-table th{padding:10px 12px;text-align:left;font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;}
+.data-table td{padding:8px 12px;border-bottom:1px solid #e2e8f0;}
+.data-table tbody tr:nth-child(even){background:#f8fafc;}
+.data-table tbody tr:hover{background:#eef2ff;}
+
+/* WORKED EXAMPLES */
+.example{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:1.2rem 1.5rem;margin:1.2rem 0;}
+.example .ex-title{font-weight:700;color:#166534;font-size:.9rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;}
+.example .ex-title::before{content:'📐';}
+.step{margin:.4rem 0;padding-left:1rem;border-left:2px solid #86efac;}
+.step .label{font-weight:600;color:#166534;}
+.result{background:#dcfce7;padding:.5rem 1rem;border-radius:8px;margin-top:.6rem;font-weight:600;color:#166534;}
+
+/* LAMP CARDS */
+.lamp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin:1.2rem 0;}
+.lamp-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.2rem;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:.2s;}
+.lamp-card:hover{box-shadow:0 4px 16px rgba(37,99,235,.12);border-color:#93c5fd;}
+.lamp-card h4{color:#0a1950;margin-bottom:.5rem;font-size:1rem;}
+.lamp-card .specs{font-size:.82rem;color:#64748b;}
+.lamp-card .specs span{display:block;margin:2px 0;}
+.lamp-card .tag{display:inline-block;background:#dbeafe;color:#1e40af;font-size:.7rem;padding:2px 8px;border-radius:8px;margin-top:.5rem;font-weight:600;}
+
+/* TABS */
+.tab-group{margin:1.5rem 0;}
+.tab-buttons{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:0;}
+.tab-btn{background:#e8eef6;border:none;padding:8px 18px;font-size:.85rem;cursor:pointer;border-radius:8px 8px 0 0;color:#1a3a8a;font-weight:600;transition:.2s;}
+.tab-btn.active{background:#0a1950;color:#fff;}
+.tab-content{display:none;background:#fff;border:2px solid #0a1950;border-top:none;border-radius:0 0 10px 10px;padding:1.5rem;}
+.tab-content.active{display:block;}
+
+/* FLASH CARDS */
+#flashcard-section .fc-controls{display:flex;gap:.8rem;align-items:center;justify-content:center;margin:1rem 0;flex-wrap:wrap;}
+#flashcard-section .fc-controls button{background:#2563eb;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-size:.9rem;cursor:pointer;font-weight:600;transition:.2s;}
+#flashcard-section .fc-controls button:hover{background:#1d4ed8;}
+.fc-counter{font-weight:700;color:#0a1950;font-size:1rem;min-width:60px;text-align:center;}
+.flashcard{min-height:220px;background:linear-gradient(135deg,#0a1950,#1a3a8a);color:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;cursor:pointer;font-size:1.1rem;line-height:1.6;position:relative;transition:transform .5s;transform-style:preserve-3d;box-shadow:0 4px 20px rgba(10,25,80,.2);}
+.flashcard.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:2rem;backface-visibility:hidden;border-radius:14px;}
+.fc-front{background:linear-gradient(135deg,#0a1950,#1a3a8a);}
+.fc-back{background:linear-gradient(135deg,#166534,#22c55e);transform:rotateY(180deg);color:#fff;}
+.fc-hint{position:absolute;bottom:10px;font-size:.7rem;opacity:.6;}
+.fc-category{position:absolute;top:10px;left:14px;font-size:.65rem;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:8px;text-transform:uppercase;letter-spacing:1px;}
+
+/* MCQ */
+#mcq-section .mcq-box{background:#fff;border:2px solid #e2e8f0;border-radius:12px;padding:1.5rem;margin-bottom:1rem;}
+.mcq-box .q-num{font-size:.75rem;color:#2563eb;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem;}
+.mcq-box .q-text{font-size:1.05rem;font-weight:600;color:#0a1950;margin-bottom:1rem;}
+.mcq-options{display:flex;flex-direction:column;gap:.5rem;}
+.mcq-opt{display:block;background:#f8fafc;border:2px solid #e2e8f0;border-radius:8px;padding:10px 14px;cursor:pointer;font-size:.92rem;transition:.2s;text-align:left;}
+.mcq-opt:hover{border-color:#93c5fd;background:#eef2ff;}
+.mcq-opt.correct{background:#dcfce7;border-color:#22c55e;color:#166534;font-weight:600;}
+.mcq-opt.wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b;}
+.mcq-opt.disabled{pointer-events:none;opacity:.7;}
+.mcq-explain{margin-top:.8rem;padding:1rem;background:#eef2ff;border-radius:8px;font-size:.9rem;display:none;border-left:4px solid #2563eb;}
+.mcq-nav{display:flex;gap:.8rem;justify-content:center;margin:1rem 0;align-items:center;flex-wrap:wrap;}
+.mcq-nav button{background:#2563eb;color:#fff;border:none;padding:8px 20px;border-radius:8px;font-size:.9rem;cursor:pointer;font-weight:600;}
+.mcq-nav button:hover{background:#1d4ed8;}
+.mcq-score{font-weight:700;color:#0a1950;}
+
+/* FOOTER */
+.footer{text-align:center;padding:2rem 1rem;color:#64748b;font-size:.8rem;}
+.footer a{color:#2563eb;text-decoration:none;}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .header h1{font-size:1.4rem;}
+  .section{padding:1.2rem 1rem;}
+  .formula{font-size:1rem;padding:1rem;}
+  .lamp-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body oncontextmenu="return false">
+
+<!-- HEADER -->
+<div class="header">
+  <a href="https://tutorwarren.com/index.html" class="home-btn">⌂ Home</a>
+  <div class="badge">EAL Level 3 — Unit ELEC3/008 — Assessment Criteria 4.1 – 4.4</div>
+  <h1>Lighting Laws, Lamps &amp; Luminaires</h1>
+  <p class="subtitle">Principles of Electrical Science — Chapter 6</p>
+  <p class="brand">tutorwarren.com</p>
+</div>
+
+<!-- NAV -->
+<div class="nav-bar" id="navbar">
+  <button onclick="scrollTo_('definitions')" class="active">Definitions</button>
+  <button onclick="scrollTo_('laws')">Illumination Laws</button>
+  <button onclick="scrollTo_('examples')">Worked Examples</button>
+  <button onclick="scrollTo_('lumen-method')">Lumen Method</button>
+  <button onclick="scrollTo_('lamps')">Lamp Types</button>
+  <button onclick="scrollTo_('discharge')">Discharge Lamps</button>
+  <button onclick="scrollTo_('led')">LED Lamps</button>
+  <button onclick="scrollTo_('circuits')">Control Circuits</button>
+  <button onclick="scrollTo_('stroboscopic')">Stroboscopic Effect</button>
+  <button onclick="scrollTo_('maintenance')">Maintenance</button>
+  <button onclick="scrollTo_('power-consumption')">Power &amp; kWh</button>
+  <button onclick="scrollTo_('flashcards')">Flash Cards</button>
+  <button onclick="scrollTo_('mcq')">MCQ Quiz</button>
+</div>
+
+<div class="container">
+
+<!-- ===================== SECTION 1: DEFINITIONS ===================== -->
+<div class="section" id="definitions">
+  <h2>1. Key Lighting Definitions</h2>
+  <p>Good lighting is essential in all building interiors — it helps work to be done efficiently and safely and plays an important part in creating pleasant, comfortable surroundings. Before studying lighting technology, we must define the fundamental quantities.</p>
+
+  <div class="def-box">
+    <span class="def-label">Definition</span>
+    <p><span class="symbol">Luminous Intensity (I)</span> — The illuminating power of a light source to radiate luminous flux in a particular direction. The earliest unit was <em>candle power</em> (based on a wax candle). The SI unit is the <span class="unit">candela (cd)</span>.</p>
+  </div>
+
+  <div class="def-box">
+    <span class="def-label">Definition</span>
+    <p><span class="symbol">Luminous Flux (F)</span> — The total flow of light radiated from a source in all directions. The SI unit is the <span class="unit">lumen (lm)</span>. One lumen is the light flux emitted within a unit solid angle (cone) from a point source of 1 candela.</p>
+  </div>
+
+  <div class="def-box">
+    <span class="def-label">Definition</span>
+    <p><span class="symbol">Illuminance (E)</span> — A measure of the light falling on (incident upon) a surface. The SI unit is the <span class="unit">lux (lx)</span>. 1 lux = 1 lumen falling on an area of 1 m².</p>
+  </div>
+
+  <div class="def-box">
+    <span class="def-label">Definition</span>
+    <p><span class="symbol">Luminance (L)</span> — A measure of the brightness of a surface — the light reflected from or emitted by a surface towards the eye. Units vary: for diffusing surfaces (e.g. matt white paint) the unit is <span class="unit">lumen per m²</span>; for polished surfaces (e.g. reflectors) it is <span class="unit">candela per m²</span>.</p>
+  </div>
+
+  <div class="def-box">
+    <span class="def-label">Definition</span>
+    <p><span class="symbol">Lamp Efficacy</span> — The ratio of luminous flux output (lumens) to electrical power consumed (watts). Measured in <span class="unit">lumens per watt (lm/W)</span>. The higher the efficacy, the more efficiently the lamp converts electricity into light.</p>
+  </div>
+
+  <div class="def-box">
+    <span class="def-label">Definition</span>
+    <p><span class="symbol">Colour Rendering</span> — The ability of a light source to reproduce the natural colours of objects as they would appear in daylight. A lamp can only show a colour if it emits light at that colour's frequency.</p>
+  </div>
+
+  <div class="def-box">
+    <span class="def-label">Definition</span>
+    <p><span class="symbol">Luminaire</span> — The modern term for the complete light fitting — the equipment that supports and surrounds the lamp and may control the distribution of light. The 18th Edition IET Regulations (411.3.4) require all luminaire circuits in domestic premises to be protected by a 30 mA RCD.</p>
+  </div>
+
+  <!-- Diagram: Relationship between quantities -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/></radialGradient>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#2563eb"/></marker>
+      </defs>
+      <rect x="0" y="0" width="700" height="320" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="350" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1950">Relationship Between Lighting Quantities</text>
+      <!-- Lamp -->
+      <circle cx="350" cy="100" r="40" fill="url(#glow)"/>
+      <circle cx="350" cy="100" r="18" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+      <text x="350" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">LAMP</text>
+      <!-- Luminous Intensity -->
+      <line x1="350" y1="140" x2="350" y2="200" stroke="#2563eb" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="415" y="175" font-size="11" fill="#1a3a8a" font-weight="600">Luminous Intensity (I)</text>
+      <text x="415" y="190" font-size="10" fill="#64748b">unit: candela (cd)</text>
+      <!-- Flux left -->
+      <line x1="310" y1="100" x2="180" y2="100" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+      <text x="100" y="85" font-size="11" fill="#991b1b" font-weight="600">Luminous Flux (F)</text>
+      <text x="100" y="100" font-size="10" fill="#64748b">unit: lumen (lm)</text>
+      <text x="100" y="115" font-size="10" fill="#64748b">total light output</text>
+      <!-- Flux right -->
+      <line x1="390" y1="100" x2="520" y2="100" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+      <text x="530" y="85" font-size="11" fill="#991b1b" font-weight="600">Luminous Flux (F)</text>
+      <text x="530" y="100" font-size="10" fill="#64748b">radiates in all</text>
+      <text x="530" y="115" font-size="10" fill="#64748b">directions</text>
+      <!-- Surface -->
+      <rect x="250" y="210" width="200" height="50" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="350" y="232" text-anchor="middle" font-size="11" font-weight="600" fill="#1e40af">WORKING SURFACE</text>
+      <text x="350" y="248" text-anchor="middle" font-size="10" fill="#1e40af">Area (m²)</text>
+      <!-- Illuminance -->
+      <text x="250" y="285" font-size="12" font-weight="700" fill="#166534">Illuminance (E) = light falling on surface</text>
+      <text x="250" y="302" font-size="11" fill="#166534">Unit: lux (lx) = 1 lumen / 1 m²</text>
+      <!-- Luminance -->
+      <line x1="450" y1="210" x2="530" y2="160" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="535" y="160" font-size="11" fill="#7c3aed" font-weight="600">Luminance (L)</text>
+      <text x="535" y="175" font-size="10" fill="#64748b">reflected light → eye</text>
+      <!-- Efficacy -->
+      <rect x="40" y="255" width="170" height="50" rx="8" fill="#fef3c7" stroke="#fbbf24" stroke-width="1"/>
+      <text x="125" y="275" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Lamp Efficacy</text>
+      <text x="125" y="292" text-anchor="middle" font-size="10" fill="#92400e">= lumens / watts (lm/W)</text>
+    </svg>
+    <p class="diagram-caption">Figure 1 — How the key lighting quantities relate to the lamp, the surface and the observer's eye.</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 2: ILLUMINATION LAWS ===================== -->
+<div class="section" id="laws">
+  <h2>2. Illumination Laws</h2>
+
+  <h3>The Inverse Square Law</h3>
+  <p>Rays of light falling upon a surface from a distance <em>d</em> will illuminate that surface with a certain illuminance. If the distance is doubled, the same luminous flux spreads over four times the area — so the illuminance falls to one quarter. This relationship is the <strong>Inverse Square Law</strong>.</p>
+
+  <div class="formula">
+    <span class="label">INVERSE SQUARE LAW</span>
+    E = I / d² (lux)
+  </div>
+
+  <p>Where: <strong>E</strong> = illuminance (lx), <strong>I</strong> = luminous intensity (cd), <strong>d</strong> = distance from source to surface (m).</p>
+
+  <!-- SVG: Inverse Square Law -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="680" height="340" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="340" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1950">The Inverse Square Law</text>
+      <!-- Light source -->
+      <circle cx="80" cy="180" r="14" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+      <text x="80" y="184" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">1 cd</text>
+      <!-- Rays -->
+      <line x1="94" y1="172" x2="600" y2="60" stroke="#fbbf24" stroke-width="1" opacity=".5"/>
+      <line x1="94" y1="180" x2="600" y2="180" stroke="#fbbf24" stroke-width="1" opacity=".5"/>
+      <line x1="94" y1="188" x2="600" y2="300" stroke="#fbbf24" stroke-width="1" opacity=".5"/>
+      <!-- 1m square -->
+      <rect x="190" y="155" width="50" height="50" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+      <text x="215" y="183" text-anchor="middle" font-size="9" font-weight="700" fill="#166534">1 m²</text>
+      <text x="215" y="222" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">1 lx</text>
+      <!-- 2m square -->
+      <rect x="330" y="130" width="100" height="100" fill="#dbeafe" stroke="#2563eb" stroke-width="2" opacity=".6"/>
+      <text x="380" y="183" text-anchor="middle" font-size="9" font-weight="700" fill="#1e40af">4 m²</text>
+      <text x="380" y="250" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af">¼ lx</text>
+      <!-- 3m square -->
+      <rect x="500" y="105" width="150" height="150" fill="#fef3c7" stroke="#fbbf24" stroke-width="2" opacity=".5"/>
+      <text x="575" y="183" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">9 m²</text>
+      <text x="575" y="275" text-anchor="middle" font-size="10" font-weight="600" fill="#92400e">1/9 lx</text>
+      <!-- Distance labels -->
+      <line x1="80" y1="300" x2="215" y2="300" stroke="#0a1950" stroke-width="1.5"/>
+      <text x="148" y="318" text-anchor="middle" font-size="11" fill="#0a1950" font-weight="600">1 m</text>
+      <line x1="80" y1="308" x2="380" y2="308" stroke="#0a1950" stroke-width="1.5"/>
+      <text x="230" y="326" text-anchor="middle" font-size="11" fill="#0a1950" font-weight="600">2 m</text>
+    </svg>
+    <p class="diagram-caption">Figure 2 — The inverse square law: double the distance = ¼ the illuminance.</p>
+  </div>
+
+  <div class="key-fact">
+    If a lamp's distance to a surface is doubled, its illuminance is reduced by a factor of 4 (not 2). If trebled, the illuminance falls to 1/9.
+  </div>
+
+  <h3>The Cosine Law</h3>
+  <p>When a surface is tilted at an angle <em>θ</em> to the perpendicular rays of light, the same flux is spread over a larger area. The illuminance is reduced by the factor cos θ.</p>
+
+  <div class="formula">
+    <span class="label">COSINE LAW</span>
+    E = (I × cos θ) / d² (lux)
+  </div>
+
+  <!-- SVG: Cosine Law -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#2563eb"/></marker></defs>
+      <rect x="0" y="0" width="600" height="280" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="300" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1950">The Cosine Law</text>
+      <!-- Lamp -->
+      <circle cx="300" cy="55" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+      <text x="300" y="59" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">I</text>
+      <!-- Vertical distance -->
+      <line x1="300" y1="67" x2="300" y2="200" stroke="#0a1950" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="312" y="140" font-size="11" fill="#0a1950" font-weight="600">h</text>
+      <!-- Point A directly below -->
+      <circle cx="300" cy="210" r="5" fill="#22c55e"/>
+      <text x="300" y="235" text-anchor="middle" font-size="11" font-weight="600" fill="#166534">A (directly below)</text>
+      <text x="300" y="250" text-anchor="middle" font-size="10" fill="#166534">E = I / d²</text>
+      <!-- Point B to side -->
+      <circle cx="460" cy="210" r="5" fill="#2563eb"/>
+      <text x="460" y="235" text-anchor="middle" font-size="11" font-weight="600" fill="#1e40af">B (at angle θ)</text>
+      <text x="460" y="250" text-anchor="middle" font-size="10" fill="#1e40af">E = I cos θ / d²</text>
+      <!-- Hypotenuse -->
+      <line x1="300" y1="55" x2="460" y2="210" stroke="#2563eb" stroke-width="2"/>
+      <text x="395" y="120" font-size="12" font-weight="600" fill="#2563eb">d</text>
+      <!-- Horizontal -->
+      <line x1="300" y1="210" x2="460" y2="210" stroke="#64748b" stroke-width="1.5"/>
+      <text x="380" y="206" text-anchor="middle" font-size="10" fill="#64748b">horizontal distance</text>
+      <!-- Angle -->
+      <path d="M300,80 Q300,90 310,95" fill="none" stroke="#ef4444" stroke-width="1.5"/>
+      <text x="318" y="92" font-size="11" fill="#ef4444" font-weight="600">θ</text>
+      <!-- Surface line -->
+      <line x1="220" y1="210" x2="540" y2="210" stroke="#94a3b8" stroke-width="2"/>
+    </svg>
+    <p class="diagram-caption">Figure 3 — The cosine law: light at an angle θ produces less illuminance than light directly below.</p>
+  </div>
+
+  <div class="key-fact">
+    Use the <strong>inverse square law</strong> (E = I/d²) for the point directly below the lamp. Use the <strong>cosine law</strong> (E = I cos θ / d²) for any point offset at an angle.
+  </div>
+</div>
+
+<!-- ===================== SECTION 3: WORKED EXAMPLES ===================== -->
+<div class="section" id="examples">
+  <h2>3. Worked Examples — Illumination Calculations</h2>
+
+  <div class="example">
+    <div class="ex-title">Example 1 — Inverse Square Law (Direct)</div>
+    <p>A lamp of luminous intensity <strong>1000 cd</strong> is suspended <strong>2 m</strong> above a laboratory bench. Calculate the illuminance directly below the lamp.</p>
+    <div class="step"><span class="label">Formula:</span> E = I / d²</div>
+    <div class="step"><span class="label">Substitute:</span> E = 1000 / (2)² = 1000 / 4</div>
+    <div class="result">E = 250 lux</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 2 — Cosine Law (Offset Point)</div>
+    <p>A street lantern has a <strong>2000 cd</strong> light source suspended <strong>4 m</strong> above the ground. Determine the illuminance (a) directly below the lamp and (b) at a point <strong>3 m</strong> to one side.</p>
+    <h4>(a) Directly below — Point A:</h4>
+    <div class="step"><span class="label">Formula:</span> E = I / d²</div>
+    <div class="step"><span class="label">Substitute:</span> E = 2000 / (4)² = 2000 / 16</div>
+    <div class="result">E<sub>A</sub> = 125 lux</div>
+    <h4 style="margin-top:1rem;">(b) At point B, 3 m to one side:</h4>
+    <div class="step"><span class="label">Step 1 — Find distance d (Pythagoras):</span><br> d = √(4² + 3²) = √(16 + 9) = √25 = <strong>5 m</strong></div>
+    <div class="step"><span class="label">Step 2 — Find cos θ:</span><br> cos θ = adjacent / hypotenuse = 4 / 5 = <strong>0.8</strong></div>
+    <div class="step"><span class="label">Step 3 — Apply cosine law:</span><br> E = (I × cos θ) / d² = (2000 × 0.8) / 5² = 1600 / 25</div>
+    <div class="result">E<sub>B</sub> = 64 lux</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 3 — Finding Intensity and Distance</div>
+    <p>A discharge lamp is suspended <strong>4 m</strong> above a bench. The illuminance directly below is <strong>300 lx</strong>. Find (a) the luminous intensity and (b) the distance along the bench where the illuminance falls to <strong>153.6 lx</strong>.</p>
+    <h4>(a) Find I:</h4>
+    <div class="step"><span class="label">Rearrange:</span> I = E × d²</div>
+    <div class="step"><span class="label">Substitute:</span> I = 300 × 4² = 300 × 16</div>
+    <div class="result">I = 4800 cd</div>
+    <h4 style="margin-top:1rem;">(b) Find horizontal distance x where E = 153.6 lx:</h4>
+    <div class="step"><span class="label">Use cosine law rearranged:</span><br> E = (I × cos θ) / d² where cos θ = h/d = 4/d</div>
+    <div class="step"><span class="label">Substitute:</span> 153.6 = (4800 × 4/d) / d² = 19200 / d³</div>
+    <div class="step"><span class="label">Rearrange:</span> d³ = 19200 / 153.6 = 125, so d = ∛125 = <strong>5 m</strong></div>
+    <div class="step"><span class="label">Find x (Pythagoras):</span> x = √(5² − 4²) = √(25 − 16) = √9</div>
+    <div class="result">x = 3 m along the bench</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 4 — Quick Practice</div>
+    <p>A lamp of <strong>800 cd</strong> is mounted <strong>5 m</strong> above a factory floor. What is the illuminance directly below?</p>
+    <div class="step"><span class="label">E =</span> 800 / 5² = 800 / 25</div>
+    <div class="result">E = 32 lux</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 5 — Cosine Law Practice</div>
+    <p>Using the lamp from Example 4 (800 cd, 5 m height), find the illuminance at a point <strong>4 m</strong> horizontally from the base.</p>
+    <div class="step"><span class="label">Find d:</span> d = √(5² + 4²) = √(25 + 16) = √41 ≈ <strong>6.40 m</strong></div>
+    <div class="step"><span class="label">Find cos θ:</span> cos θ = 5 / 6.40 ≈ <strong>0.781</strong></div>
+    <div class="step"><span class="label">Apply:</span> E = (800 × 0.781) / 6.40² = 624.8 / 41</div>
+    <div class="result">E ≈ 15.24 lux</div>
+  </div>
+
+  <!-- IES Table -->
+  <h3>Recommended Illuminance Levels (IES)</h3>
+  <table class="data-table">
+    <thead><tr><th>Task</th><th>Working Situation</th><th>Illuminance (lx)</th></tr></thead>
+    <tbody>
+      <tr><td>Casual vision</td><td>Storage rooms, stairs, washrooms</td><td>100</td></tr>
+      <tr><td>Rough assembly</td><td>Workshops, garages</td><td>300</td></tr>
+      <tr><td>Reading / writing / drawing</td><td>Classrooms, offices</td><td>500</td></tr>
+      <tr><td>Fine assembly</td><td>Electronic component assembly</td><td>1000</td></tr>
+      <tr><td>Minute assembly</td><td>Watch making</td><td>3000</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===================== SECTION 4: LUMEN METHOD ===================== -->
+<div class="section" id="lumen-method">
+  <h2>4. The Lumen Method</h2>
+  <p>The inverse square law is suitable for outdoor schemes with no reflecting surfaces. For <strong>interior lighting</strong>, light reflected from walls and ceilings adds secondary illumination. The most widely used method for interior design is the <strong>Lumen Method</strong>.</p>
+
+  <div class="formula">
+    <span class="label">LUMEN METHOD</span>
+    Number of luminaires = (E × A) / (F × UF × LLF)
+  </div>
+
+  <p>Where:</p>
+  <div style="margin-left:1rem;">
+    <p><strong>E</strong> = required illuminance (lx) — from IES code or architect's specification</p>
+    <p><strong>A</strong> = total working area (m²)</p>
+    <p><strong>F</strong> = lumen output of each luminaire (lm) — from manufacturer's data</p>
+    <p><strong>UF</strong> = Utilisation Factor (always &lt; 1, typically 0.9) — accounts for light absorbed by surfaces</p>
+    <p><strong>LLF</strong> = Light Loss Factor (typically 0.8–0.9) — accounts for dirt, ageing and lamp depreciation</p>
+  </div>
+
+  <div class="key-fact">
+    The LLF combines four separate losses: Luminaire Dirt Depreciation (LDD), Room Dirt Depreciation (RDD), Lamp Failure Factor (LFF), and Lamp Lumen Depreciation (LLD). Always use the manufacturer's <em>initial lamp lumens</em> because the LLF already accounts for depreciation over time.
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 6 — Lumen Method Calculation</div>
+    <p>An electronic workshop measuring <strong>9 m × 8 m × 3 m</strong> requires illumination of <strong>550 lx</strong> at bench level. Each luminaire uses one 1500 mm 65 W natural tube with an initial output of <strong>3700 lumens</strong>. UF = 0.9, LLF = 0.8. How many luminaires are needed?</p>
+    <div class="step"><span class="label">Formula:</span> N = (E × A) / (F × UF × LLF)</div>
+    <div class="step"><span class="label">Substitute:</span> N = (550 × 9 × 8) / (3700 × 0.9 × 0.8)</div>
+    <div class="step"><span class="label">Calculate:</span> N = 39,600 / 2,664 = 14.86</div>
+    <div class="result">15 luminaires required (always round up)</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 7 — Lumen Method Practice</div>
+    <p>A classroom measures <strong>12 m × 8 m</strong> and requires <strong>500 lx</strong>. Each luminaire provides <strong>5100 lumens</strong> (white tube). UF = 0.85, LLF = 0.8. How many luminaires?</p>
+    <div class="step"><span class="label">N =</span> (500 × 12 × 8) / (5100 × 0.85 × 0.8)</div>
+    <div class="step"><span class="label">N =</span> 48,000 / 3,468 = 13.84</div>
+    <div class="result">14 luminaires required</div>
+  </div>
+
+  <!-- Tube characteristics table -->
+  <h3>Characteristics of a 1500 mm 65 W Bi-Pin Fluorescent Tube</h3>
+  <table class="data-table">
+    <thead><tr><th>Tube Colour</th><th>Initial Lumens</th><th>Design Lumens</th><th>Colour Rendering</th><th>Appearance</th></tr></thead>
+    <tbody>
+      <tr><td>Artificial daylight</td><td>2600</td><td>2100</td><td>Excellent</td><td>Cool</td></tr>
+      <tr><td>De luxe natural</td><td>2900</td><td>2500</td><td>Very good</td><td>Intermediate</td></tr>
+      <tr><td>De luxe warm white</td><td>3500</td><td>3200</td><td>Good</td><td>Warm</td></tr>
+      <tr><td>Natural</td><td>3700</td><td>3400</td><td>Good</td><td>Intermediate</td></tr>
+      <tr><td>Daylight</td><td>4800</td><td>4450</td><td>Fair</td><td>Cool</td></tr>
+      <tr><td>Warm white</td><td>4950</td><td>4600</td><td>Fair</td><td>Warm</td></tr>
+      <tr><td>White</td><td>5100</td><td>4750</td><td>Fair</td><td>Warm</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.82rem;color:#64748b;margin-top:.3rem;">Initial lumens measured after 100 hours. Design lumens measured after 2000 hours. Rated life: 7500 hours. Efficacy: 30–70 lm/W.</p>
+</div>
+
+<!-- ===================== SECTION 5: LAMP TYPES ===================== -->
+<div class="section" id="lamps">
+  <h2>5. Classification of Lamps</h2>
+  <p>Lamps are broadly classified into two families based on how they create light:</p>
+
+  <!-- SVG: Lamp family tree -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="280" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="350" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1950">Classification of Lamp Types</text>
+      <!-- Root -->
+      <rect x="270" y="42" width="160" height="36" rx="8" fill="#0a1950"/>
+      <text x="350" y="65" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">ELECTRIC LAMPS</text>
+      <!-- Branch lines -->
+      <line x1="310" y1="78" x2="150" y2="115" stroke="#0a1950" stroke-width="2"/>
+      <line x1="390" y1="78" x2="550" y2="115" stroke="#0a1950" stroke-width="2"/>
+      <!-- Incandescent -->
+      <rect x="50" y="110" width="200" height="36" rx="8" fill="#ef4444"/>
+      <text x="150" y="133" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">INCANDESCENT (Heat)</text>
+      <!-- Discharge -->
+      <rect x="450" y="110" width="200" height="36" rx="8" fill="#2563eb"/>
+      <text x="550" y="133" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">DISCHARGE (Gas/Vapour)</text>
+      <!-- Incandescent children -->
+      <line x1="100" y1="146" x2="80" y2="175" stroke="#ef4444" stroke-width="1.5"/>
+      <line x1="200" y1="146" x2="220" y2="175" stroke="#ef4444" stroke-width="1.5"/>
+      <rect x="20" y="175" width="120" height="28" rx="6" fill="#fee2e2" stroke="#ef4444"/>
+      <text x="80" y="194" text-anchor="middle" font-size="10" font-weight="600" fill="#991b1b">GLS Filament</text>
+      <rect x="160" y="175" width="120" height="28" rx="6" fill="#fee2e2" stroke="#ef4444"/>
+      <text x="220" y="194" text-anchor="middle" font-size="10" font-weight="600" fill="#991b1b">Tungsten Halogen</text>
+      <!-- Discharge children -->
+      <line x1="480" y1="146" x2="420" y2="175" stroke="#2563eb" stroke-width="1.5"/>
+      <line x1="550" y1="146" x2="550" y2="175" stroke="#2563eb" stroke-width="1.5"/>
+      <line x1="620" y1="146" x2="660" y2="175" stroke="#2563eb" stroke-width="1.5"/>
+      <rect x="360" y="175" width="120" height="28" rx="6" fill="#dbeafe" stroke="#2563eb"/>
+      <text x="420" y="194" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af">Fluorescent / CFL</text>
+      <rect x="490" y="175" width="120" height="28" rx="6" fill="#dbeafe" stroke="#2563eb"/>
+      <text x="550" y="194" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af">Mercury Vapour</text>
+      <rect x="620" y="175" width="80" height="28" rx="6" fill="#dbeafe" stroke="#2563eb"/>
+      <text x="660" y="194" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af">Sodium</text>
+      <!-- LED separate -->
+      <rect x="280" y="230" width="140" height="36" rx="8" fill="#22c55e"/>
+      <text x="350" y="253" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">LED (Semiconductor)</text>
+      <line x1="350" y1="78" x2="350" y2="230" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4,3"/>
+    </svg>
+    <p class="diagram-caption">Figure 4 — Family tree of electric lamp types.</p>
+  </div>
+
+  <h3>GLS (General Lighting Service) Lamps</h3>
+  <p>GLS lamps produce light by the <strong>heating effect</strong> of an electric current. A fine tungsten wire is coiled and coiled again (<em>coiled-coil</em>) to form the incandescent filament. This arrangement reduces filament cooling and increases light output by allowing a higher operating temperature. Most electricity is converted to heat, with only a small proportion producing light.</p>
+
+  <div class="lamp-grid">
+    <div class="lamp-card">
+      <h4>GLS Filament Lamp</h4>
+      <div class="specs">
+        <span><strong>Efficacy:</strong> 14 lm/W</span>
+        <span><strong>Life:</strong> 1000 hours</span>
+        <span><strong>Colour rendering:</strong> Fairly good</span>
+        <span><strong>Light colour:</strong> Warm white to yellow</span>
+        <span><strong>How it works:</strong> Heating a tungsten filament until white-hot (incandescence)</span>
+      </div>
+      <span class="tag">Incandescent</span>
+    </div>
+  </div>
+
+  <h3>Tungsten Halogen Lamps &amp; the Halogen Cycle</h3>
+  <p>Standard GLS lamps suffer from tungsten evaporation — the filament gets thinner, the bulb wall darkens, and eventually the filament fails. The tungsten halogen lamp overcomes this with a clever <strong>regeneration cycle</strong>.</p>
+  <p>The glass envelope contains a trace of halogen gas (iodine, chlorine, bromine or fluorine). Evaporated tungsten combines with the halogen near the cooler bulb wall, forming a tungsten halide compound. This drifts back towards the hot filament where it breaks apart, redepositing the tungsten onto the filament and releasing the halogen for another cycle.</p>
+
+  <!-- SVG: Halogen Cycle -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="600" height="300" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="300" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1950">The Halogen Regeneration Cycle</text>
+      <!-- Bulb outline -->
+      <ellipse cx="300" cy="155" rx="180" ry="100" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="300" y="268" text-anchor="middle" font-size="10" fill="#64748b">Small quartz glass envelope</text>
+      <!-- Filament -->
+      <rect x="270" y="130" width="60" height="20" rx="4" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+      <text x="300" y="145" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">Filament</text>
+      <text x="300" y="120" text-anchor="middle" font-size="9" fill="#ef4444">Very hot (~3000°C)</text>
+      <!-- Step 1: Tungsten evaporates -->
+      <path d="M330,135 Q380,100 420,120" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arr2)"/>
+      <text x="420" y="100" font-size="9" fill="#ef4444" font-weight="600">① Tungsten</text>
+      <text x="420" y="113" font-size="9" fill="#ef4444">evaporates</text>
+      <!-- Step 2: Combines near wall -->
+      <circle cx="460" cy="155" r="24" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="460" y="152" text-anchor="middle" font-size="8" font-weight="600" fill="#1e40af">W + I₂</text>
+      <text x="460" y="164" text-anchor="middle" font-size="7" fill="#1e40af">→ WI₂</text>
+      <text x="520" y="140" font-size="9" fill="#2563eb" font-weight="600">② Combines with</text>
+      <text x="520" y="153" font-size="9" fill="#2563eb">halogen near wall</text>
+      <text x="520" y="166" font-size="8" fill="#64748b">(≈250°C zone)</text>
+      <!-- Step 3: Drifts back -->
+      <path d="M436,155 Q400,190 340,155" fill="none" stroke="#22c55e" stroke-width="2" marker-end="url(#arr2)"/>
+      <text x="350" y="210" font-size="9" fill="#22c55e" font-weight="600">③ WI₂ drifts back</text>
+      <!-- Step 4: Re-deposits -->
+      <text x="180" y="150" font-size="9" fill="#7c3aed" font-weight="600">④ W redeposits</text>
+      <text x="180" y="163" font-size="9" fill="#7c3aed">on filament</text>
+      <text x="180" y="176" font-size="8" fill="#64748b">Halogen freed for</text>
+      <text x="180" y="188" font-size="8" fill="#64748b">next cycle</text>
+      <path d="M270,140 Q230,150 210,145" fill="none" stroke="#7c3aed" stroke-width="2"/>
+      <!-- Result -->
+      <rect x="180" y="230" width="240" height="30" rx="6" fill="#dcfce7" stroke="#22c55e"/>
+      <text x="300" y="250" text-anchor="middle" font-size="10" font-weight="700" fill="#166534">No bulb blackening • Extended life</text>
+    </svg>
+    <p class="diagram-caption">Figure 5 — The halogen regeneration cycle prevents bulb blackening and extends lamp life.</p>
+  </div>
+
+  <div class="lamp-grid">
+    <div class="lamp-card">
+      <h4>Tungsten Halogen Lamp</h4>
+      <div class="specs">
+        <span><strong>Efficacy:</strong> 20 lm/W</span>
+        <span><strong>Life:</strong> 2000 hours</span>
+        <span><strong>Colour rendering:</strong> Good</span>
+        <span><strong>Light colour:</strong> Very white, intense</span>
+        <span><strong>Caution:</strong> Never touch with bare hands — grease causes cracking</span>
+      </div>
+      <span class="tag">Incandescent — Halogen Cycle</span>
+    </div>
+    <div class="lamp-card">
+      <h4>Tungsten Halogen Dichroic Spot</h4>
+      <div class="specs">
+        <span><strong>Efficacy:</strong> 20 lm/W</span>
+        <span><strong>Life:</strong> 2000 hours</span>
+        <span><strong>Available as:</strong> 12 V bi-pin (20/35/50 W), 230 V GU10/GZ10 (20/35/50 W)</span>
+        <span><strong>Application:</strong> Commercial &amp; domestic spotlighting</span>
+      </div>
+      <span class="tag">Incandescent — Dichroic</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECTION 6: DISCHARGE LAMPS ===================== -->
+<div class="section" id="discharge">
+  <h2>6. Discharge Lamps</h2>
+  <p>Discharge lamps do <strong>not</strong> use an incandescent filament. Instead, light is produced by the <strong>excitation of a gas or metallic vapour</strong> contained within a glass envelope. A voltage applied to two electrodes sealed into the tube excites the gas and produces light directly. The colour depends on the gas or vapour used:</p>
+
+  <div class="lamp-grid">
+    <div class="lamp-card" style="border-left:4px solid #ef4444;">
+      <h4>Gases</h4>
+      <div class="specs">
+        <span>Neon → <strong style="color:#ef4444;">Red</strong></span>
+        <span>Argon → <strong style="color:#22c55e;">Green/Blue</strong></span>
+        <span>Hydrogen → <strong style="color:#ec4899;">Pink</strong></span>
+        <span>Helium → <strong style="color:#fbbf24;">Ivory</strong></span>
+      </div>
+    </div>
+    <div class="lamp-card" style="border-left:4px solid #2563eb;">
+      <h4>Metallic Vapours</h4>
+      <div class="specs">
+        <span>Mercury → <strong style="color:#3b82f6;">Blue</strong></span>
+        <span>Sodium → <strong style="color:#f59e0b;">Yellow</strong></span>
+        <span>Magnesium → <strong style="color:#22c55e;">Grass Green</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <h3>Fluorescent Lamps</h3>
+  <p>Fluorescent lamps are linear arc tubes, internally coated with <strong>fluorescent phosphor powder</strong>, containing low-pressure mercury vapour and argon gas.</p>
+
+  <!-- SVG: Fluorescent Lamp Construction -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="220" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="350" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1950">Fluorescent Lamp Construction</text>
+      <!-- Tube -->
+      <rect x="80" y="70" width="540" height="50" rx="25" fill="#e0e7ff" stroke="#2563eb" stroke-width="2"/>
+      <!-- Phosphor coating label -->
+      <rect x="90" y="75" width="520" height="40" rx="20" fill="#c7d2fe" opacity=".4"/>
+      <!-- Gas fill -->
+      <text x="350" y="100" text-anchor="middle" font-size="10" fill="#1e40af">Argon gas + mercury vapour (low pressure)</text>
+      <!-- Left electrode -->
+      <circle cx="105" cy="95" r="10" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="105" y="99" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">C</text>
+      <!-- Right electrode -->
+      <circle cx="595" cy="95" r="10" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="595" y="99" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">C</text>
+      <!-- Left cap -->
+      <rect x="55" y="78" width="30" height="34" rx="4" fill="#94a3b8"/>
+      <text x="70" y="100" text-anchor="middle" font-size="7" fill="#fff" font-weight="600">Pin</text>
+      <!-- Right cap -->
+      <rect x="615" y="78" width="30" height="34" rx="4" fill="#94a3b8"/>
+      <text x="630" y="100" text-anchor="middle" font-size="7" fill="#fff" font-weight="600">Pin</text>
+      <!-- Labels -->
+      <line x1="105" y1="75" x2="105" y2="50" stroke="#64748b" stroke-width="1"/>
+      <text x="105" y="45" text-anchor="middle" font-size="9" fill="#64748b">Cathode (electron emitter)</text>
+      <line x1="350" y1="70" x2="350" y2="43" stroke="#7c3aed" stroke-width="1"/>
+      <text x="350" y="40" text-anchor="middle" font-size="9" fill="#7c3aed" font-weight="600">Phosphor coating on inside of glass</text>
+      <!-- Process arrows -->
+      <text x="160" y="145" font-size="9" fill="#ef4444" font-weight="600">① Current → electrons ionise mercury/argon</text>
+      <text x="160" y="162" font-size="9" fill="#7c3aed" font-weight="600">② Produces invisible UV light + some blue light</text>
+      <text x="160" y="179" font-size="9" fill="#22c55e" font-weight="600">③ UV hits phosphor coating → converts to visible light</text>
+      <text x="160" y="200" font-size="9" fill="#64748b">Almost all the visible light comes from the phosphor, not the arc itself</text>
+    </svg>
+    <p class="diagram-caption">Figure 6 — How a fluorescent lamp creates visible light through UV conversion.</p>
+  </div>
+
+  <h3>Compact Fluorescent Lamps (CFLs)</h3>
+  <p>CFLs are miniature fluorescent lamps designed to replace ordinary GLS lamps. Available in stick, spiral and double-D shapes to fit existing fittings. They use the same discharge principle but are much more compact and energy-efficient.</p>
+
+  <h3>High-Pressure Mercury Vapour Lamp (MBF)</h3>
+  <p>The discharge takes place in a quartz glass arc tube inside an outer bulb coated with fluorescent powder. Contains mercury vapour and argon gas. Takes 5–7 minutes to reach full brightness. If switched off, it cannot restrike until the pressure drops (another ~5 minutes).</p>
+  <div class="lamp-grid">
+    <div class="lamp-card">
+      <h4>Mercury Vapour (MBF)</h4>
+      <div class="specs">
+        <span><strong>Efficacy:</strong> 38–56 lm/W</span>
+        <span><strong>Life:</strong> 7500 hours</span>
+        <span><strong>Colour rendering:</strong> Fairly good (cold appearance)</span>
+        <span><strong>Applications:</strong> Street lighting, shopping centres, area floodlighting</span>
+        <span><strong>Warm-up:</strong> 5–7 minutes to full brightness</span>
+      </div>
+      <span class="tag">Discharge — Mercury</span>
+    </div>
+  </div>
+
+  <h3>Low-Pressure Sodium Lamp (SOX)</h3>
+  <p>The discharge takes place in a U-shaped arc tube of special sodium-resistant glass, encased in a clear glass outer bulb. Cannot start in sodium alone — neon gas starts the initial red discharge which heats the sodium over 6–11 minutes until the lamp turns bright yellow. Must be operated horizontally.</p>
+  <div class="lamp-grid">
+    <div class="lamp-card">
+      <h4>Low-Pressure Sodium (SOX)</h4>
+      <div class="specs">
+        <span><strong>Efficacy:</strong> 61–160 lm/W (very high)</span>
+        <span><strong>Life:</strong> 6000 hours</span>
+        <span><strong>Colour rendering:</strong> Very poor (yellow only)</span>
+        <span><strong>Position:</strong> Horizontal or within 20° of horizontal</span>
+        <span><strong>Applications:</strong> Street and motorway lighting</span>
+      </div>
+      <span class="tag">Discharge — Sodium LP</span>
+    </div>
+  </div>
+
+  <div class="key-fact">
+    The SOX lamp has the highest efficacy of all discharge lamps because sodium light's wavelength is close to the peak sensitivity of the human eye. However, its colour rendering is very poor — everything looks yellow.
+  </div>
+
+  <h3>High-Pressure Sodium Lamp (SON)</h3>
+  <p>The discharge occurs in a sintered aluminium oxide arc tube (the only material that can withstand sodium at high pressure). An electronic pulse igniter (2 kV+) starts the lamp. Takes ~5–7 minutes to reach full brightness. Produces a pleasant golden-white light.</p>
+  <div class="lamp-grid">
+    <div class="lamp-card">
+      <h4>High-Pressure Sodium (SON)</h4>
+      <div class="specs">
+        <span><strong>Efficacy:</strong> 100–120 lm/W</span>
+        <span><strong>Life:</strong> 6000 hours</span>
+        <span><strong>Colour rendering:</strong> Fair (warm, golden)</span>
+        <span><strong>Position:</strong> Universal</span>
+        <span><strong>Applications:</strong> Food halls, hotel receptions, factories, airports, car parks</span>
+      </div>
+      <span class="tag">Discharge — Sodium HP</span>
+    </div>
+  </div>
+
+  <h3>Lamp Comparison Summary</h3>
+  <table class="data-table">
+    <thead><tr><th>Lamp Type</th><th>Efficacy (lm/W)</th><th>Rated Life (h)</th><th>Colour Rendering</th><th>Warm-up</th></tr></thead>
+    <tbody>
+      <tr><td>GLS Filament</td><td>14</td><td>1000</td><td>Fairly good</td><td>Instant</td></tr>
+      <tr><td>Tungsten Halogen</td><td>20</td><td>2000</td><td>Good</td><td>Instant</td></tr>
+      <tr><td>Fluorescent Tube</td><td>30–70</td><td>7500</td><td>Fair to Excellent</td><td>Seconds</td></tr>
+      <tr><td>Mercury Vapour (MBF)</td><td>38–56</td><td>7500</td><td>Fairly good</td><td>5–7 min</td></tr>
+      <tr><td>LP Sodium (SOX)</td><td>61–160</td><td>6000</td><td>Very poor</td><td>6–11 min</td></tr>
+      <tr><td>HP Sodium (SON)</td><td>100–120</td><td>6000</td><td>Fair</td><td>5–7 min</td></tr>
+      <tr><td>LED</td><td>80–150+</td><td>25,000–50,000+</td><td>Good</td><td>Instant</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===================== SECTION 7: LED ===================== -->
+<div class="section" id="led">
+  <h2>7. LED Lamps</h2>
+  <p>A light emitting diode (LED) is a very small semiconductor source of illumination. It is a P-N junction diode that emits photons of light when activated — a process called <strong>electroluminescence</strong>.</p>
+
+  <!-- SVG: LED Principle -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 600 230" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="600" height="230" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="300" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1950">LED — Light Emitting Diode Principle</text>
+      <!-- P-N Junction -->
+      <rect x="160" y="80" width="120" height="80" rx="4" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+      <text x="220" y="125" text-anchor="middle" font-size="16" font-weight="800" fill="#991b1b">P</text>
+      <text x="220" y="145" text-anchor="middle" font-size="9" fill="#991b1b">Holes (+)</text>
+      <rect x="280" y="80" width="120" height="80" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+      <text x="340" y="125" text-anchor="middle" font-size="16" font-weight="800" fill="#1e40af">N</text>
+      <text x="340" y="145" text-anchor="middle" font-size="9" fill="#1e40af">Electrons (−)</text>
+      <!-- Junction line -->
+      <line x1="280" y1="80" x2="280" y2="160" stroke="#fbbf24" stroke-width="3"/>
+      <text x="280" y="175" text-anchor="middle" font-size="9" font-weight="600" fill="#92400e">P-N Junction</text>
+      <!-- Photon emission -->
+      <line x1="280" y1="95" x2="280" y2="55" stroke="#fbbf24" stroke-width="2"/>
+      <text x="280" y="50" text-anchor="middle" font-size="20">💡</text>
+      <text x="370" y="55" font-size="10" fill="#166534" font-weight="600">Photons of light emitted</text>
+      <text x="370" y="70" font-size="10" fill="#166534">(electroluminescence)</text>
+      <!-- Battery -->
+      <line x1="100" y1="120" x2="160" y2="120" stroke="#0a1950" stroke-width="2"/>
+      <line x1="400" y1="120" x2="460" y2="120" stroke="#0a1950" stroke-width="2"/>
+      <text x="80" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#0a1950">+</text>
+      <text x="480" y="125" text-anchor="middle" font-size="12" font-weight="700" fill="#0a1950">−</text>
+      <!-- Colour temperature scale -->
+      <rect x="100" y="195" width="400" height="20" rx="4" fill="none" stroke="#e2e8f0"/>
+      <rect x="100" y="195" width="130" height="20" rx="4" fill="#fbbf24" opacity=".6"/>
+      <rect x="230" y="195" width="130" height="20" fill="#fff3cd" opacity=".6"/>
+      <rect x="360" y="195" width="140" height="20" rx="4" fill="#e0f2fe" opacity=".6"/>
+      <text x="165" y="209" text-anchor="middle" font-size="8" font-weight="600">2700K Warm</text>
+      <text x="295" y="209" text-anchor="middle" font-size="8" font-weight="600">3000K Neutral</text>
+      <text x="430" y="209" text-anchor="middle" font-size="8" font-weight="600">4000K+ Cool White</text>
+    </svg>
+    <p class="diagram-caption">Figure 7 — LED principle: electrons crossing the P-N junction release photons of light. Colour temperature measured in Kelvin.</p>
+  </div>
+
+  <p><strong>Advantages of LED lamps:</strong> Very low energy consumption, very long life (25,000–50,000+ hours), small size, greater robustness, instant start, available in Edison Screw, Bayonet Cap, Bi-Pin, GU10 and GX53 fittings.</p>
+  <p><strong>Colour temperature:</strong> Measured in Kelvin (K). A 2,700K lamp gives a warm yellow/white light (similar to GLS). A 3,000K+ lamp gives a bright white light suitable for kitchens and clinical environments.</p>
+
+  <div class="key-fact">
+    LED lamps and strips can exhibit flickering and stroboscopic effects similar to discharge lamps. Electrical designers must be aware of this.
+  </div>
+</div>
+
+<!-- ===================== SECTION 8: CONTROL CIRCUITS ===================== -->
+<div class="section" id="circuits">
+  <h2>8. Control Gear &amp; Starting Circuits</h2>
+  <p>Discharge lamps require additional control gear for safe and efficient operation. All discharge circuits are inductive and require power factor correction (usually a capacitor across the supply).</p>
+
+  <div class="tab-group">
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="showTab(this,'tab-switch')">Switch-Start</button>
+      <button class="tab-btn" onclick="showTab(this,'tab-quick')">Quick-Start</button>
+      <button class="tab-btn" onclick="showTab(this,'tab-semi')">Semi-Resonant</button>
+      <button class="tab-btn" onclick="showTab(this,'tab-discharge')">Discharge Lamp Gear</button>
+    </div>
+
+    <div class="tab-content active" id="tab-switch">
+      <h4>Switch-Start Fluorescent Lamp Circuit</h4>
+      <p>The most common circuit, using a <strong>glow-type starter switch</strong>:</p>
+      <svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;margin:1rem 0;">
+        <rect x="0" y="0" width="600" height="250" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+        <!-- Supply -->
+        <text x="30" y="60" font-size="12" font-weight="700" fill="#ef4444">L</text>
+        <text x="30" y="200" font-size="12" font-weight="700" fill="#2563eb">N</text>
+        <line x1="45" y1="55" x2="100" y2="55" stroke="#ef4444" stroke-width="2"/>
+        <line x1="45" y1="195" x2="480" y2="195" stroke="#2563eb" stroke-width="2"/>
+        <!-- Choke -->
+        <rect x="100" y="42" width="90" height="26" rx="4" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="145" y="60" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af">Choke</text>
+        <line x1="190" y1="55" x2="250" y2="55" stroke="#0a1950" stroke-width="2"/>
+        <!-- Lamp -->
+        <rect x="250" y="35" width="180" height="40" rx="20" fill="#e0e7ff" stroke="#2563eb" stroke-width="2"/>
+        <text x="340" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#1e40af">LAMP</text>
+        <line x1="430" y1="55" x2="480" y2="55" stroke="#0a1950" stroke-width="2"/>
+        <line x1="480" y1="55" x2="480" y2="195" stroke="#0a1950" stroke-width="2"/>
+        <!-- Starter wiring -->
+        <line x1="290" y1="55" x2="290" y2="140" stroke="#0a1950" stroke-width="2"/>
+        <line x1="290" y1="140" x2="318" y2="140" stroke="#0a1950" stroke-width="2"/>
+        <circle cx="290" cy="140" r="3" fill="#0a1950"/>
+        <circle cx="340" cy="140" r="22" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="340" y="137" text-anchor="middle" font-size="7" font-weight="700" fill="#92400e">Starter</text>
+        <text x="340" y="148" text-anchor="middle" font-size="7" fill="#92400e">Switch</text>
+        <line x1="362" y1="140" x2="400" y2="140" stroke="#0a1950" stroke-width="2"/>
+        <line x1="400" y1="55" x2="400" y2="140" stroke="#0a1950" stroke-width="2"/>
+        <circle cx="290" cy="55" r="3" fill="#0a1950"/>
+        <circle cx="400" cy="55" r="3" fill="#0a1950"/>
+        <circle cx="400" cy="140" r="3" fill="#0a1950"/>
+        <!-- PF Capacitor -->
+        <line x1="80" y1="55" x2="80" y2="120" stroke="#0a1950" stroke-width="1.5"/>
+        <rect x="65" y="120" width="30" height="20" rx="3" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+        <text x="80" y="134" text-anchor="middle" font-size="7" font-weight="600" fill="#166534">PF</text>
+        <line x1="80" y1="140" x2="80" y2="195" stroke="#0a1950" stroke-width="1.5"/>
+        <!-- Process steps -->
+        <text x="30" y="230" font-size="9" fill="#64748b">① Mains on → glow discharge in starter warms bimetallic contacts</text>
+        <text x="30" y="243" font-size="9" fill="#64748b">② Contacts close → current heats lamp cathodes → electron cloud forms → contacts cool and spring apart</text>
+        <text x="30" y="256" font-size="9" fill="#64748b">③ Inductive kick from choke strikes main arc → choke then limits current</text>
+      </svg>
+    </div>
+
+    <div class="tab-content" id="tab-quick">
+      <h4>Quick-Start Fluorescent Lamp Circuit</h4>
+      <p>Uses a small auto-transformer to heat the cathodes continuously. After a short pre-heating period, the mercury vapour ionises and the arc strikes. An earthed metal strip near the tube assists starting. No starter switch is needed. The choke limits current; a capacitor provides PF correction.</p>
+      <p><strong>Advantage:</strong> Faster, more reliable starting than switch-start.</p>
+    </div>
+
+    <div class="tab-content" id="tab-semi">
+      <h4>Semi-Resonant Start Circuit</h4>
+      <p>A specially wound transformer replaces the choke. Primary and secondary windings are wound in <strong>opposition</strong> (180° out of phase), boosting the voltage across the tube. The electron cloud forms quickly and the arc strikes very easily — even at temperatures as low as <strong>−5°C</strong>.</p>
+      <p><strong>Key advantage:</strong> No PF correction capacitor needed — the circuit is predominantly capacitive with a naturally high power factor.</p>
+    </div>
+
+    <div class="tab-content" id="tab-discharge">
+      <h4>Control Gear for Discharge Lamps</h4>
+      <p>Each discharge lamp type requires specific control gear:</p>
+      <table class="data-table">
+        <thead><tr><th>Lamp</th><th>Control Gear</th><th>Starting Method</th></tr></thead>
+        <tbody>
+          <tr><td>Mercury Vapour (MBF)</td><td>Choke ballast + PF capacitor</td><td>Starting electrode near main electrode</td></tr>
+          <tr><td>LP Sodium (SOX)</td><td>Transformer ballast + PF capacitor</td><td>Leakage transformer applies ~2× mains voltage</td></tr>
+          <tr><td>HP Sodium (SON)</td><td>Choke ballast + ignitor + PF capacitor</td><td>Electronic pulse igniter (2 kV+)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3>Loading of Discharge Circuits</h3>
+  <p>Discharge circuits must carry the total steady current (lamp + control gear). Where exact data is unavailable, the On-Site Guide states that the rating of final circuits for discharge lamps may be taken as:</p>
+  <div class="formula">
+    <span class="label">ASSUMED DEMAND</span>
+    Assumed demand = rated lamp watts × 1.8
+  </div>
+  <div class="example">
+    <div class="ex-title">Example 8 — Discharge Lamp Loading</div>
+    <p>An 80 W fluorescent lamp luminaire: Assumed demand = 80 × 1.8 = <strong>144 W</strong></p>
+    <p>The functional switch rating should be <strong>twice the total steady current</strong> of the inductive circuit to withstand the excessive contact wear caused by the inductive load.</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 9: STROBOSCOPIC ===================== -->
+<div class="section" id="stroboscopic">
+  <h2>9. Stroboscopic Effect</h2>
+  <p>All discharge lamps on a.c. circuits flicker because the arc is extinguished every half-cycle as the current passes through zero. This can cause rotating or reciprocating machinery to appear stationary or running at the wrong speed — an extremely dangerous effect called the <strong>stroboscopic effect</strong> (IET Regulation 559.9).</p>
+
+  <!-- SVG: Stroboscopic effect and elimination -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="320" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="350" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#0a1950">Stroboscopic Effect &amp; Elimination (Lead-Lag Circuit)</text>
+      <!-- Single lamp flicker -->
+      <text x="30" y="55" font-size="10" font-weight="600" fill="#991b1b">Single lamp — light output flickers:</text>
+      <polyline points="30,95 55,65 80,95 105,65 130,95 155,65 180,95 205,65 230,95 255,65 280,95" fill="none" stroke="#ef4444" stroke-width="2"/>
+      <text x="290" y="85" font-size="9" fill="#ef4444">← zero light at each crossing</text>
+      <!-- Lead-lag -->
+      <text x="30" y="140" font-size="10" font-weight="600" fill="#1e40af">Lead-Lag circuit — two lamps out of phase:</text>
+      <polyline points="30,175 55,155 80,175 105,155 130,175 155,155 180,175 205,155 230,175 255,155 280,175" fill="none" stroke="#2563eb" stroke-width="2"/>
+      <text x="290" y="165" font-size="9" fill="#2563eb">Lamp 1 (with choke)</text>
+      <polyline points="50,175 75,155 100,175 125,155 150,175 175,155 200,175 225,155 250,175 275,155 300,175" fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,3"/>
+      <text x="310" y="182" font-size="9" fill="#22c55e">Lamp 2 (with choke + capacitor)</text>
+      <!-- Combined -->
+      <text x="30" y="220" font-size="10" font-weight="600" fill="#166534">Combined output — much more uniform:</text>
+      <rect x="30" y="230" width="280" height="25" rx="4" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+      <text x="170" y="247" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">Nearly constant illumination ✓</text>
+      <!-- Methods box -->
+      <rect x="380" y="50" width="290" height="250" rx="10" fill="#eef2ff" stroke="#2563eb" stroke-width="1"/>
+      <text x="525" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#0a1950">Methods to Eliminate Flicker</text>
+      <text x="400" y="100" font-size="10" fill="#1a3a8a">① Use phosphors with a long afterglow</text>
+      <text x="400" y="125" font-size="10" fill="#1a3a8a">② Connect lamps to different phases</text>
+      <text x="415" y="142" font-size="9" fill="#64748b">(3-phase supply — peaks at different times)</text>
+      <text x="400" y="167" font-size="10" fill="#1a3a8a">③ Lead-Lag circuit (single phase)</text>
+      <text x="415" y="184" font-size="9" fill="#64748b">One lamp: choke only (lagging)</text>
+      <text x="415" y="200" font-size="9" fill="#64748b">Other lamp: choke + capacitor (leading)</text>
+      <text x="415" y="217" font-size="9" fill="#64748b">Currents differ by 120°–180°</text>
+      <text x="400" y="245" font-size="10" fill="#1a3a8a">④ GLS lamps do NOT flicker</text>
+      <text x="415" y="262" font-size="9" fill="#64748b">(filament carries over light output)</text>
+      <text x="415" y="279" font-size="9" fill="#64748b">during current reversal</text>
+    </svg>
+    <p class="diagram-caption">Figure 8 — The stroboscopic effect: discharge lamps flicker at 100 Hz. The lead-lag circuit eliminates this.</p>
+  </div>
+</div>
+
+<!-- ===================== SECTION 10: MAINTENANCE ===================== -->
+<div class="section" id="maintenance">
+  <h2>10. Installation &amp; Maintenance</h2>
+
+  <h3>Installation Considerations</h3>
+  <p>Discharge lamps may have restrictions on their operating position. The luminaire must suit the environment — corrosive, outdoor, low-temperature or decorative. Vibration causes premature lamp failure. Control gear must be rigidly fixed; plasterboard or wooden panels can amplify choke noise. Self-contained luminaires must have an adjacent means of isolation in addition to the functional switch (Reg. 537.2). Control gear must be in non-combustible enclosures or positioned to allow heat dissipation (Reg. 559.4.1).</p>
+
+  <h3>Maintenance — Spot vs Group Replacement</h3>
+  <div class="lamp-grid">
+    <div class="lamp-card" style="border-left:4px solid #f59e0b;">
+      <h4>Spot Replacement</h4>
+      <div class="specs">
+        <span>Replace individual lamps as they fail</span>
+        <span>Best for: small installations (shops, offices, domestic)</span>
+        <span>Disadvantage: repeated small disturbances</span>
+      </div>
+    </div>
+    <div class="lamp-card" style="border-left:4px solid #22c55e;">
+      <h4>Group Replacement</h4>
+      <div class="specs">
+        <span>Replace all lamps at the same scheduled time</span>
+        <span>Based on manufacturer's rated life + operating hours</span>
+        <span>Best for: big stores, major retail (done at night/weekends)</span>
+        <span>Advantage: reduced labour costs and disruption</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECTION 11: POWER CONSUMPTION ===================== -->
+<div class="section" id="power-consumption">
+  <h2>11. Power Consumption, kWh &amp; Design Rating</h2>
+
+  <h3>What is a Kilowatt-Hour (kWh)?</h3>
+  <p>Electricity is sold in units of energy, not power. The unit of electrical energy used for billing is the <strong>kilowatt-hour (kWh)</strong>, often simply called a "unit" of electricity. One kWh is the energy consumed when a load of 1 kW operates for 1 hour.</p>
+
+  <div class="formula">
+    <span class="label">ENERGY CONSUMED</span>
+    Energy (kWh) = Power (kW) × Time (hours)
+  </div>
+
+  <div class="def-box">
+    <span class="def-label">Definition</span>
+    <p><span class="symbol">Power (P)</span> — The rate at which electrical energy is consumed or converted. Measured in <span class="unit">watts (W)</span> or <span class="unit">kilowatts (kW)</span>. 1 kW = 1000 W.</p>
+  </div>
+
+  <div class="def-box">
+    <span class="def-label">Definition</span>
+    <p><span class="symbol">Kilowatt-Hour (kWh)</span> — A unit of energy equal to 1000 watts used for 1 hour. This is the "unit" shown on electricity bills. Cost = kWh × price per unit.</p>
+  </div>
+
+  <div class="key-fact">
+    To convert watts to kilowatts, divide by 1000. Always convert to kW before calculating kWh.
+  </div>
+
+  <!-- SVG: kWh concept diagram -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="200" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="350" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1950">Understanding kWh — The Unit of Electrical Energy</text>
+      <!-- Power box -->
+      <rect x="40" y="55" width="160" height="70" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+      <text x="120" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">Power (kW)</text>
+      <text x="120" y="102" text-anchor="middle" font-size="10" fill="#64748b">watts ÷ 1000</text>
+      <!-- × symbol -->
+      <text x="230" y="95" text-anchor="middle" font-size="24" font-weight="700" fill="#0a1950">×</text>
+      <!-- Time box -->
+      <rect x="260" y="55" width="160" height="70" rx="10" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+      <text x="340" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Time (hours)</text>
+      <text x="340" y="102" text-anchor="middle" font-size="10" fill="#64748b">how long it's on</text>
+      <!-- = symbol -->
+      <text x="450" y="95" text-anchor="middle" font-size="24" font-weight="700" fill="#0a1950">=</text>
+      <!-- Energy box -->
+      <rect x="480" y="55" width="180" height="70" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+      <text x="570" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">Energy (kWh)</text>
+      <text x="570" y="102" text-anchor="middle" font-size="10" fill="#64748b">"units" on your bill</text>
+      <!-- Cost line -->
+      <text x="350" y="160" text-anchor="middle" font-size="12" font-weight="600" fill="#0a1950">Total Cost (£) = Energy (kWh) × Price per unit (p/kWh) ÷ 100</text>
+      <text x="350" y="182" text-anchor="middle" font-size="10" fill="#64748b">e.g. if electricity costs 34p per kWh: Cost = kWh × 0.34</text>
+    </svg>
+    <p class="diagram-caption">Figure 9 — The relationship between power, time and energy (kWh).</p>
+  </div>
+
+  <h3>Basic Power Consumption Calculations</h3>
+
+  <div class="example">
+    <div class="ex-title">Example 9 — Simple kWh Calculation</div>
+    <p>A 100 W GLS lamp is left on for <strong>8 hours</strong>. How much energy does it consume?</p>
+    <div class="step"><span class="label">Convert to kW:</span> 100 W ÷ 1000 = 0.1 kW</div>
+    <div class="step"><span class="label">Apply formula:</span> Energy = 0.1 kW × 8 h</div>
+    <div class="result">Energy = 0.8 kWh</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 10 — Comparing GLS vs LED</div>
+    <p>A householder replaces a <strong>60 W GLS lamp</strong> with a <strong>7 W LED lamp</strong> that gives the same light output. Both are used for <strong>5 hours per day</strong> for <strong>365 days</strong>. Electricity costs <strong>34p per kWh</strong>. What is the annual saving?</p>
+    <h4>GLS lamp:</h4>
+    <div class="step"><span class="label">Annual energy:</span> (60 ÷ 1000) × 5 × 365 = 0.06 × 1825 = <strong>109.5 kWh</strong></div>
+    <div class="step"><span class="label">Annual cost:</span> 109.5 × £0.34 = <strong>£37.23</strong></div>
+    <h4 style="margin-top:.8rem;">LED lamp:</h4>
+    <div class="step"><span class="label">Annual energy:</span> (7 ÷ 1000) × 5 × 365 = 0.007 × 1825 = <strong>12.775 kWh</strong></div>
+    <div class="step"><span class="label">Annual cost:</span> 12.775 × £0.34 = <strong>£4.34</strong></div>
+    <div class="result">Annual saving = £37.23 − £4.34 = £32.89 per lamp</div>
+  </div>
+
+  <h3>Design Rating of Discharge Lamps — The 1.8 Multiplier</h3>
+
+  <p>When calculating the electrical loading of discharge lamp circuits, the power consumed is <strong>not just the lamp wattage</strong>. The control gear (chokes, ballasts, transformers, ignitors) also consumes power. The On-Site Guide (Appendix 1) states:</p>
+
+  <div class="formula">
+    <span class="label">DISCHARGE LAMP DESIGN RATING</span>
+    Assumed demand = Rated lamp wattage × 1.8
+  </div>
+
+  <div class="key-fact">
+    The <strong>×1.8 multiplier</strong> accounts for the additional current drawn by the control gear (choke/ballast) and the low power factor of the inductive circuit. This must be used when sizing cables, protective devices and switches for discharge lighting circuits, unless more accurate manufacturer's data is available.
+  </div>
+
+  <!-- SVG: Why 1.8 multiplier -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="250" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="350" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1950">Why ×1.8? — Discharge Lamp Design Rating</text>
+      <!-- Lamp power -->
+      <rect x="40" y="55" width="180" height="60" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+      <text x="130" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="#1e40af">Rated Lamp</text>
+      <text x="130" y="97" text-anchor="middle" font-size="12" font-weight="700" fill="#1e40af">Wattage</text>
+      <!-- + -->
+      <text x="250" y="90" text-anchor="middle" font-size="20" font-weight="700" fill="#0a1950">+</text>
+      <!-- Control gear -->
+      <rect x="280" y="55" width="180" height="60" rx="10" fill="#fef3c7" stroke="#fbbf24" stroke-width="2"/>
+      <text x="370" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">Control Gear Losses</text>
+      <text x="370" y="92" text-anchor="middle" font-size="9" fill="#92400e">Choke / Ballast / Ignitor</text>
+      <text x="370" y="105" text-anchor="middle" font-size="9" fill="#92400e">+ Low Power Factor</text>
+      <!-- = -->
+      <text x="490" y="90" text-anchor="middle" font-size="20" font-weight="700" fill="#0a1950">=</text>
+      <!-- Result -->
+      <rect x="510" y="50" width="160" height="70" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+      <text x="590" y="78" text-anchor="middle" font-size="12" font-weight="700" fill="#991b1b">Design Rating</text>
+      <text x="590" y="98" text-anchor="middle" font-size="14" font-weight="800" fill="#991b1b">= Watts × 1.8</text>
+      <!-- Use cases -->
+      <rect x="40" y="140" width="620" height="90" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
+      <text x="350" y="165" text-anchor="middle" font-size="12" font-weight="700" fill="#0a1950">Use the ×1.8 design rating when calculating:</text>
+      <text x="120" y="190" font-size="11" fill="#1a3a8a">✔ Cable sizes</text>
+      <text x="290" y="190" font-size="11" fill="#1a3a8a">✔ Circuit breaker ratings</text>
+      <text x="500" y="190" font-size="11" fill="#1a3a8a">✔ Switch ratings</text>
+      <text x="120" y="215" font-size="11" fill="#1a3a8a">✔ Maximum demand</text>
+      <text x="290" y="215" font-size="11" fill="#1a3a8a">✔ Energy consumption</text>
+      <text x="500" y="215" font-size="11" fill="#1a3a8a">✔ Circuit design current (Ib)</text>
+    </svg>
+    <p class="diagram-caption">Figure 10 — The ×1.8 multiplier accounts for control gear losses and poor power factor.</p>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 11 — Design Rating of a Single Discharge Lamp</div>
+    <p>A luminaire contains a <strong>65 W fluorescent tube</strong>. What is its assumed demand for circuit design purposes?</p>
+    <div class="step"><span class="label">Apply ×1.8:</span> 65 W × 1.8</div>
+    <div class="result">Assumed demand = 117 W</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 12 — Design Current for a Discharge Lighting Circuit</div>
+    <p>A single-phase 230 V circuit supplies <strong>12 fluorescent luminaires</strong>, each with a <strong>58 W</strong> tube. Calculate the design current (I<sub>b</sub>) of the circuit.</p>
+    <div class="step"><span class="label">Step 1 — Total rated wattage:</span> 12 × 58 = 696 W</div>
+    <div class="step"><span class="label">Step 2 — Apply ×1.8 for discharge lamps:</span> 696 × 1.8 = 1252.8 W</div>
+    <div class="step"><span class="label">Step 3 — Design current:</span> I<sub>b</sub> = P / V = 1252.8 / 230</div>
+    <div class="result">I<sub>b</sub> = 5.45 A</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 13 — Energy Cost with ×1.8 Multiplier</div>
+    <p>A workshop has <strong>15 luminaires</strong> each containing an <strong>80 W fluorescent tube</strong>. The workshop operates <strong>8 hours/day</strong>, <strong>5 days/week</strong>, <strong>50 weeks/year</strong>. Electricity costs <strong>34p per kWh</strong>. Calculate the annual energy cost using the ×1.8 multiplier.</p>
+    <div class="step"><span class="label">Step 1 — Total rated wattage:</span> 15 × 80 = 1200 W</div>
+    <div class="step"><span class="label">Step 2 — Apply ×1.8 design rating:</span> 1200 × 1.8 = 2160 W = 2.16 kW</div>
+    <div class="step"><span class="label">Step 3 — Annual hours:</span> 8 × 5 × 50 = 2000 hours</div>
+    <div class="step"><span class="label">Step 4 — Annual energy:</span> 2.16 × 2000 = 4320 kWh</div>
+    <div class="step"><span class="label">Step 5 — Annual cost:</span> 4320 × £0.34</div>
+    <div class="result">Annual energy cost = £1,468.80</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 14 — Comparing With and Without ×1.8</div>
+    <p>Using Example 13's workshop (15 × 80 W, 2000 h/year), compare the energy cost calculated <strong>without</strong> the ×1.8 multiplier vs <strong>with</strong> it.</p>
+    <h4>Without ×1.8 (lamp wattage only):</h4>
+    <div class="step"><span class="label">Energy:</span> (15 × 80 ÷ 1000) × 2000 = 1.2 × 2000 = 2400 kWh</div>
+    <div class="step"><span class="label">Cost:</span> 2400 × £0.34 = <strong>£816.00</strong></div>
+    <h4 style="margin-top:.8rem;">With ×1.8 (design rating):</h4>
+    <div class="step"><span class="label">Energy:</span> (15 × 80 × 1.8 ÷ 1000) × 2000 = 2.16 × 2000 = 4320 kWh</div>
+    <div class="step"><span class="label">Cost:</span> 4320 × £0.34 = <strong>£1,468.80</strong></div>
+    <div class="result">Difference = £652.80/year — ignoring the ×1.8 significantly underestimates the true energy cost</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 15 — Mixed Lamp Types on a Circuit</div>
+    <p>A retail unit has <strong>8 × 100 W GLS lamps</strong> and <strong>6 × 70 W SON discharge lamps</strong>, all on a single-phase 230 V supply. Calculate the total design current.</p>
+    <div class="step"><span class="label">GLS (no multiplier):</span> 8 × 100 = 800 W</div>
+    <div class="step"><span class="label">SON (×1.8):</span> 6 × 70 × 1.8 = 756 W</div>
+    <div class="step"><span class="label">Total assumed demand:</span> 800 + 756 = 1556 W</div>
+    <div class="step"><span class="label">Design current:</span> I<sub>b</sub> = 1556 / 230</div>
+    <div class="result">I<sub>b</sub> = 6.77 A</div>
+    <p style="font-size:.85rem;color:#64748b;margin-top:.4rem;">Note: The ×1.8 only applies to discharge lamps (fluorescent, sodium, mercury). GLS and LED lamps use their rated wattage directly.</p>
+  </div>
+
+  <h3>Summary — When to Apply ×1.8</h3>
+  <table class="data-table">
+    <thead><tr><th>Lamp Type</th><th>Apply ×1.8?</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td>GLS Filament</td><td style="color:#991b1b;font-weight:700;">No</td><td>Purely resistive — no control gear</td></tr>
+      <tr><td>Tungsten Halogen</td><td style="color:#991b1b;font-weight:700;">No</td><td>Purely resistive — no control gear</td></tr>
+      <tr><td>LED</td><td style="color:#991b1b;font-weight:700;">No</td><td>Driver losses minimal — use rated wattage</td></tr>
+      <tr><td>Fluorescent Tube</td><td style="color:#166534;font-weight:700;">Yes ×1.8</td><td>Choke/ballast + low power factor</td></tr>
+      <tr><td>CFL (with external ballast)</td><td style="color:#166534;font-weight:700;">Yes ×1.8</td><td>Separate control gear</td></tr>
+      <tr><td>Mercury Vapour (MBF)</td><td style="color:#166534;font-weight:700;">Yes ×1.8</td><td>Choke ballast + low PF</td></tr>
+      <tr><td>LP Sodium (SOX)</td><td style="color:#166534;font-weight:700;">Yes ×1.8</td><td>Transformer ballast + low PF</td></tr>
+      <tr><td>HP Sodium (SON)</td><td style="color:#166534;font-weight:700;">Yes ×1.8</td><td>Choke + ignitor + low PF</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Diversity — On-Site Guide Table 1B</h3>
+
+  <p>When designing an <strong>individual circuit</strong> (sizing cables, selecting MCBs), you use the <strong>full design current (I<sub>b</sub>)</strong> with no diversity — the circuit must be capable of carrying its entire connected load.</p>
+
+  <p><strong>Diversity</strong> is applied at the <strong>distribution board level</strong> when calculating the <strong>maximum demand</strong> of the whole installation. It recognises that not every lamp in a building will be switched on at the same time. The On-Site Guide Table 1B gives allowances for different premises types:</p>
+
+  <div class="key-fact">
+    Diversity reduces the maximum demand at the distribution board — it does <strong>NOT</strong> reduce the individual circuit design current (I<sub>b</sub>). Always size each circuit's cable and protective device for the full load.
+  </div>
+
+  <!-- SVG: Where diversity applies -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="700" height="280" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="350" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1950">Where Does Diversity Apply?</text>
+      <!-- Individual circuits - NO diversity -->
+      <rect x="30" y="50" width="280" height="100" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+      <text x="170" y="75" text-anchor="middle" font-size="12" font-weight="700" fill="#991b1b">Individual Circuit Design</text>
+      <text x="170" y="97" text-anchor="middle" font-size="11" fill="#991b1b">Cable sizing / MCB rating</text>
+      <text x="170" y="117" text-anchor="middle" font-size="13" font-weight="800" fill="#991b1b">✘ NO diversity applied</text>
+      <text x="170" y="137" text-anchor="middle" font-size="10" fill="#64748b">Use FULL design current (I<tspan font-size="8" dy="3">b</tspan><tspan dy="-3">)</tspan></text>
+      <!-- Arrow -->
+      <text x="345" y="105" text-anchor="middle" font-size="24" fill="#0a1950">→</text>
+      <!-- Distribution board - YES diversity -->
+      <rect x="390" y="50" width="280" height="100" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+      <text x="530" y="75" text-anchor="middle" font-size="12" font-weight="700" fill="#166534">Maximum Demand at DB</text>
+      <text x="530" y="97" text-anchor="middle" font-size="11" fill="#166534">Main cable / Main fuse / DNO</text>
+      <text x="530" y="117" text-anchor="middle" font-size="13" font-weight="800" fill="#166534">✔ Diversity IS applied</text>
+      <text x="530" y="137" text-anchor="middle" font-size="10" fill="#64748b">Use Table 1B percentages</text>
+      <!-- Summary -->
+      <rect x="100" y="175" width="500" height="85" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
+      <text x="350" y="200" text-anchor="middle" font-size="11" font-weight="700" fill="#0a1950">Think of it this way:</text>
+      <text x="350" y="222" text-anchor="middle" font-size="11" fill="#1a3a8a">Each circuit must handle its FULL load (no diversity)</text>
+      <text x="350" y="242" text-anchor="middle" font-size="11" fill="#1a3a8a">But the DB/main cable only needs to handle the LIKELY simultaneous load (with diversity)</text>
+    </svg>
+    <p class="diagram-caption">Figure 11 — Diversity applies at the distribution board level, not at individual circuit level.</p>
+  </div>
+
+  <h4>On-Site Guide Table 1B — Diversity Allowances for Lighting</h4>
+  <table class="data-table">
+    <thead><tr><th>Type of Premises</th><th>Diversity Allowance for Lighting</th><th>Applied to</th></tr></thead>
+    <tbody>
+      <tr><td>Individual domestic dwelling</td><td style="font-weight:700;color:#2563eb;">66%</td><td>Total connected lighting load</td></tr>
+      <tr><td>Small shops, stores, offices</td><td style="font-weight:700;color:#2563eb;">90%</td><td>Total connected lighting load</td></tr>
+      <tr><td>Hotels, boarding houses, guest houses</td><td style="font-weight:700;color:#2563eb;">75%</td><td>Total connected lighting load</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;color:#64748b;margin-top:.3rem;">These percentages are applied to the total lighting current demand when calculating the maximum demand contribution of lighting at the distribution board or main switch.</p>
+
+  <div class="example">
+    <div class="ex-title">Example 16 — Maximum Demand with Diversity (Retail Unit)</div>
+    <p>Using the retail unit from Example 15 — <strong>8 × 100 W GLS</strong> and <strong>6 × 70 W SON</strong> on a single-phase 230 V supply. Calculate: (a) the individual circuit design current, and (b) the maximum demand contribution of the lighting at the distribution board.</p>
+    <h4>(a) Circuit design current (NO diversity):</h4>
+    <div class="step"><span class="label">GLS:</span> 8 × 100 = 800 W</div>
+    <div class="step"><span class="label">SON (×1.8):</span> 6 × 70 × 1.8 = 756 W</div>
+    <div class="step"><span class="label">Total assumed demand:</span> 800 + 756 = 1556 W</div>
+    <div class="step"><span class="label">Design current:</span> I<sub>b</sub> = 1556 / 230 = <strong>6.77 A</strong></div>
+    <div class="result">I<sub>b</sub> = 6.77 A — use this to size cables and MCBs</div>
+    <h4 style="margin-top:1rem;">(b) Maximum demand at DB (WITH diversity):</h4>
+    <div class="step"><span class="label">Premises type:</span> Small shop → Table 1B diversity = <strong>90%</strong></div>
+    <div class="step"><span class="label">Apply diversity:</span> 6.77 × 0.90 = <strong>6.09 A</strong></div>
+    <div class="result">Maximum demand contribution of lighting = 6.09 A — use this when calculating the total maximum demand at the DB and sizing the main switch/cable</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 17 — Domestic Dwelling Maximum Demand</div>
+    <p>A domestic dwelling has three lighting circuits with the following connected loads: Circuit 1 = <strong>800 W</strong>, Circuit 2 = <strong>600 W</strong>, Circuit 3 = <strong>500 W</strong> (all LED/GLS — no ×1.8 needed). Supply is single-phase 230 V. Calculate (a) each circuit's design current and (b) the total lighting maximum demand at the consumer unit.</p>
+    <h4>(a) Individual circuit design currents (NO diversity):</h4>
+    <div class="step"><span class="label">Circuit 1:</span> I<sub>b</sub> = 800 / 230 = <strong>3.48 A</strong></div>
+    <div class="step"><span class="label">Circuit 2:</span> I<sub>b</sub> = 600 / 230 = <strong>2.61 A</strong></div>
+    <div class="step"><span class="label">Circuit 3:</span> I<sub>b</sub> = 500 / 230 = <strong>2.17 A</strong></div>
+    <p style="font-size:.85rem;color:#64748b;margin-top:.3rem;">Each circuit is sized individually for its full load.</p>
+    <h4 style="margin-top:1rem;">(b) Maximum demand at consumer unit (WITH diversity):</h4>
+    <div class="step"><span class="label">Total lighting load:</span> 800 + 600 + 500 = 1900 W</div>
+    <div class="step"><span class="label">Total current:</span> 1900 / 230 = 8.26 A</div>
+    <div class="step"><span class="label">Premises type:</span> Domestic dwelling → Table 1B diversity = <strong>66%</strong></div>
+    <div class="step"><span class="label">Apply diversity:</span> 8.26 × 0.66 = <strong>5.45 A</strong></div>
+    <div class="result">Total lighting maximum demand = 5.45 A — this is the lighting contribution when calculating the overall maximum demand of the installation</div>
+  </div>
+
+  <div class="example">
+    <div class="ex-title">Example 18 — Hotel with Discharge Lighting</div>
+    <p>A small hotel has a total connected lighting load of <strong>40 × 36 W fluorescent luminaires</strong> on a single-phase 230 V supply. Calculate (a) the total connected load and (b) the lighting maximum demand at the DB.</p>
+    <h4>(a) Total connected load:</h4>
+    <div class="step"><span class="label">Rated wattage:</span> 40 × 36 = 1440 W</div>
+    <div class="step"><span class="label">Apply ×1.8 (fluorescent = discharge):</span> 1440 × 1.8 = 2592 W</div>
+    <div class="step"><span class="label">Total current:</span> 2592 / 230 = <strong>11.27 A</strong></div>
+    <h4 style="margin-top:1rem;">(b) Maximum demand at DB (WITH diversity):</h4>
+    <div class="step"><span class="label">Premises type:</span> Hotel → Table 1B diversity = <strong>75%</strong></div>
+    <div class="step"><span class="label">Apply diversity:</span> 11.27 × 0.75 = <strong>8.45 A</strong></div>
+    <div class="result">Lighting maximum demand = 8.45 A</div>
+    <p style="font-size:.85rem;color:#64748b;margin-top:.4rem;">Note the order: first apply ×1.8 (for discharge lamps), then apply diversity (for maximum demand at the DB). These are two separate adjustments for different purposes.</p>
+  </div>
+</div>
+
+<!-- ===================== FLASH CARDS ===================== -->
+<div class="section" id="flashcards">
+  <h2>📇 Flash Cards</h2>
+  <p>Click the card to flip it. Use the buttons to navigate.</p>
+  <div id="flashcard-section">
+    <div class="fc-controls">
+      <button onclick="fcPrev()">◀ Previous</button>
+      <span class="fc-counter" id="fc-counter">1 / 1</span>
+      <button onclick="fcNext()">Next ▶</button>
+      <button onclick="fcShuffle()" style="background:#7c3aed;">🔀 Shuffle</button>
+    </div>
+    <div class="flashcard" id="flashcard" onclick="fcFlip()">
+      <div class="fc-face fc-front" id="fc-front"></div>
+      <div class="fc-face fc-back" id="fc-back"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MCQ SECTION ===================== -->
+<div class="section" id="mcq">
+  <h2>📝 Multiple Choice Questions</h2>
+  <p>One question at a time. Select your answer for instant feedback and explanation.</p>
+  <div class="mcq-nav">
+    <button onclick="mcqPrev()">◀ Previous</button>
+    <span class="mcq-score" id="mcq-score">Score: 0/0</span>
+    <button onclick="mcqNext()">Next ▶</button>
+    <button onclick="mcqReset()" style="background:#ef4444;">Reset Quiz</button>
+  </div>
+  <div id="mcq-container"></div>
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  <p>Lighting Laws, Lamps &amp; Luminaires — EAL Level 3 — Unit ELEC3/008</p>
+  <p>© <a href="https://tutorwarren.com" target="_blank">tutorwarren.com</a> — For educational use only</p>
+</div>
+
+<script>
+// ============ NAV ============
+function scrollTo_(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ============ TABS ============
+function showTab(btn, tabId){
+  btn.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  btn.closest('.tab-group').querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+}
+
+// ============ FLASH CARDS ============
+const flashcards = [
+  {q:"What is Luminous Intensity?",a:"The illuminating power of a light source to radiate luminous flux in a particular direction. Unit: candela (cd).",c:"Definitions"},
+  {q:"What is Luminous Flux?",a:"The total flow of light radiated from a source. Unit: lumen (lm). 1 lumen = light emitted within a unit solid angle from a 1 cd source.",c:"Definitions"},
+  {q:"What is Illuminance?",a:"A measure of the light falling on a surface (incident radiation). Unit: lux (lx). 1 lux = 1 lumen per m².",c:"Definitions"},
+  {q:"What is Luminance?",a:"A measure of the brightness of a surface — the light reflected from or emitted by a surface towards the eye.",c:"Definitions"},
+  {q:"What is a Luminaire?",a:"The complete light fitting — the equipment that supports, surrounds the lamp and may control light distribution.",c:"Definitions"},
+  {q:"What is Lamp Efficacy?",a:"The ratio of light output (lumens) to electrical power input (watts). Measured in lumens per watt (lm/W). Higher = more efficient.",c:"Definitions"},
+  {q:"What is Colour Rendering?",a:"The ability of a light source to reproduce the natural colours of objects as they would appear in daylight.",c:"Definitions"},
+  {q:"State the Inverse Square Law formula.",a:"E = I / d² (lux). Illuminance is inversely proportional to the square of the distance.",c:"Laws"},
+  {q:"State the Cosine Law formula.",a:"E = (I × cos θ) / d² (lux). Used when the surface is at an angle θ to the perpendicular rays.",c:"Laws"},
+  {q:"If a lamp's distance to a surface is doubled, what happens to illuminance?",a:"The illuminance reduces by a factor of 4 (falls to one quarter). This is because 2² = 4.",c:"Laws"},
+  {q:"What is the Lumen Method formula?",a:"Number of luminaires = (E × A) / (F × UF × LLF). Used for interior lighting design.",c:"Lumen Method"},
+  {q:"What does UF stand for?",a:"Utilisation Factor — accounts for light absorbed by surfaces. Always less than 1 (typically 0.9).",c:"Lumen Method"},
+  {q:"What does LLF stand for?",a:"Light Loss Factor — accounts for dirt accumulation, lamp ageing, room dirt, and lamp failure. Typically 0.8–0.9.",c:"Lumen Method"},
+  {q:"What four losses make up the LLF?",a:"1) Luminaire Dirt Depreciation (LDD), 2) Room Dirt Depreciation (RDD), 3) Lamp Failure Factor (LFF), 4) Lamp Lumen Depreciation (LLD).",c:"Lumen Method"},
+  {q:"How does a GLS lamp produce light?",a:"By heating a coiled-coil tungsten filament until it becomes white-hot (incandescence). Most energy becomes heat, a little becomes light.",c:"GLS Lamps"},
+  {q:"What is the efficacy and life of a GLS lamp?",a:"Efficacy: 14 lm/W. Rated life: 1000 hours. Colour rendering: Fairly good (warm white to yellow).",c:"GLS Lamps"},
+  {q:"Describe the Halogen Cycle.",a:"Evaporated tungsten combines with halogen gas near the cooler wall, forming tungsten halide. This drifts back to the hot filament, redeposits the tungsten, and releases the halogen for re-use.",c:"Halogen Lamps"},
+  {q:"Why must you never touch a tungsten halogen lamp with bare hands?",a:"Grease from skin on the glass envelope causes cracking and premature failure due to the very high operating temperatures.",c:"Halogen Lamps"},
+  {q:"What is the minimum bulb wall temperature for the halogen cycle?",a:"250°C — this is why the lamp needs a small glass envelope to maintain high gas pressure and temperature.",c:"Halogen Lamps"},
+  {q:"Tungsten halogen lamp: efficacy and life?",a:"Efficacy: 20 lm/W. Life: 2000 hours. Colour rendering: Good. Light: very white and intense.",c:"Halogen Lamps"},
+  {q:"How do discharge lamps produce light?",a:"By exciting a gas or metallic vapour with a voltage applied between two electrodes. The colour depends on the gas/vapour used.",c:"Discharge Lamps"},
+  {q:"What colour does neon gas produce?",a:"Red.",c:"Discharge Lamps"},
+  {q:"What colour does sodium vapour produce?",a:"Yellow.",c:"Discharge Lamps"},
+  {q:"What colour does mercury vapour produce?",a:"Blue.",c:"Discharge Lamps"},
+  {q:"How does a fluorescent lamp work?",a:"Current ionises mercury vapour and argon → produces UV light → UV hits phosphor coating on inside of tube → phosphor converts UV to visible light.",c:"Fluorescent"},
+  {q:"What is a CFL?",a:"A Compact Fluorescent Lamp — a miniature fluorescent lamp designed to replace ordinary GLS lamps, available in various shapes to fit existing fittings.",c:"Fluorescent"},
+  {q:"What is the rated life of a fluorescent tube?",a:"7500 hours, with an efficacy of 30–70 lm/W depending on tube colour.",c:"Fluorescent"},
+  {q:"HP Mercury Vapour (MBF): efficacy and life?",a:"Efficacy: 38–56 lm/W. Life: 7500 hours. Takes 5–7 min warm-up. Cannot restrike until pressure drops (~5 min). Colour rendering: fairly good but 'cold'.",c:"Mercury Vapour"},
+  {q:"LP Sodium (SOX): efficacy and life?",a:"Efficacy: 61–160 lm/W (very high). Life: 6000 hours. Must burn horizontally. Colour rendering: very poor (yellow only). 6–11 min warm-up.",c:"Sodium Lamps"},
+  {q:"Why does the SOX lamp have such high efficacy?",a:"Because sodium light's wavelength is close to the peak sensitivity of the human eye — but colour rendering is very poor.",c:"Sodium Lamps"},
+  {q:"HP Sodium (SON): efficacy and life?",a:"Efficacy: 100–120 lm/W. Life: 6000 hours. Colour rendering: Fair (warm golden white). Uses electronic pulse igniter (2 kV+). 5–7 min warm-up.",c:"Sodium Lamps"},
+  {q:"What does LED stand for?",a:"Light Emitting Diode — a P-N junction semiconductor that emits photons via electroluminescence.",c:"LED"},
+  {q:"What does the Kelvin rating of an LED lamp indicate?",a:"The colour temperature. 2700K = warm (like GLS). 3000K+ = bright white. Higher K = whiter/cooler light.",c:"LED"},
+  {q:"Name three advantages of LED lamps over GLS.",a:"1) Much lower energy consumption, 2) Much longer life (25,000–50,000+ hours), 3) Smaller size and greater robustness. Also instant start.",c:"LED"},
+  {q:"What is the stroboscopic effect?",a:"Discharge lamps on a.c. flicker every half-cycle. This can make rotating machinery appear stationary — extremely dangerous near lathes and circular saws.",c:"Stroboscopic"},
+  {q:"How does a lead-lag circuit eliminate flicker?",a:"One lamp in series with a choke (lagging), the other with a choke + capacitor (leading). Currents differ by 120–180°, so the lamps flicker out of phase for more uniform light.",c:"Stroboscopic"},
+  {q:"Why don't GLS lamps produce a stroboscopic effect?",a:"The incandescent filament carries over (retains) the light output during current reversal — the light remains almost constant.",c:"Stroboscopic"},
+  {q:"What is the assumed demand of a discharge luminaire?",a:"Rated lamp wattage × 1.8 (per the On-Site Guide). E.g. an 80 W fluorescent = 80 × 1.8 = 144 W assumed demand.",c:"Installation"},
+  {q:"What is Spot Replacement?",a:"Replacing individual lamps as and when they fail. Best for small installations (shops, offices, homes).",c:"Maintenance"},
+  {q:"What is Group Replacement?",a:"Replacing all lamps at the same scheduled time. Based on rated life and operating hours. Best for large commercial installations to reduce disruption.",c:"Maintenance"},
+  {q:"What IET Regulation requires RCD protection for luminaire circuits in domestic premises?",a:"Regulation 411.3.4 — all circuits supplying luminaires in domestic (household) premises must be protected by a 30 mA RCD.",c:"Regulations"},
+  {q:"What does IET Regulation 559.9 address?",a:"The stroboscopic effect — the flicker effect of any light source that can cause rotating machinery to appear to be running at incorrect speeds.",c:"Regulations"},
+  {q:"What illuminance level (lux) is recommended for classrooms?",a:"500 lux (for reading, writing and drawing tasks).",c:"IES Values"},
+  {q:"What illuminance level is recommended for workshops/garages?",a:"300 lux (for rough assembly tasks).",c:"IES Values"},
+  {q:"What illuminance is recommended for electronic component assembly?",a:"1000 lux (fine assembly tasks).",c:"IES Values"},
+  {q:"What is a Metal Halide lamp?",a:"A high-pressure mercury vapour lamp with added metal halide compounds. These improve colour rendering, making it a better light source for photography.",c:"Discharge Lamps"},
+  {q:"Name the three fluorescent starting circuits.",a:"1) Switch-start (glow-type starter), 2) Quick-start (auto-transformer), 3) Semi-resonant start (opposed windings, works to −5°C).",c:"Circuits"},
+  {q:"What is the role of the choke in a fluorescent circuit?",a:"1) During starting: its inductive kick provides the voltage surge to strike the arc. 2) During running: it limits the current through the lamp.",c:"Circuits"},
+  {q:"What is the max permitted noise level for chokes manufactured to BS EN 60598?",a:"30 dB — about equal to the sound of a Swatch watch at 1 metre in a very quiet room.",c:"Installation"},
+  {q:"Why should functional switches for discharge circuits be rated at twice the steady current?",a:"Because discharge circuits are inductive and cause excessive wear on switch contacts when breaking the inductive load.",c:"Installation"},
+  {q:"What is a kilowatt-hour (kWh)?",a:"A unit of energy equal to 1000 watts used for 1 hour. It is the 'unit' of electricity shown on bills. Energy (kWh) = Power (kW) × Time (hours).",c:"Power & kWh"},
+  {q:"How do you convert watts to kilowatts?",a:"Divide by 1000. For example: 500 W ÷ 1000 = 0.5 kW.",c:"Power & kWh"},
+  {q:"State the formula for calculating energy consumption in kWh.",a:"Energy (kWh) = Power (kW) × Time (hours). Remember to convert watts to kW first.",c:"Power & kWh"},
+  {q:"How do you calculate the cost of electricity consumed?",a:"Cost (£) = Energy (kWh) × price per unit (£/kWh). If price is in pence, divide by 100 first.",c:"Power & kWh"},
+  {q:"What is the ×1.8 multiplier for discharge lamps?",a:"The assumed demand of a discharge lamp = rated wattage × 1.8. This accounts for control gear losses (choke/ballast) and low power factor. From the On-Site Guide, Appendix 1.",c:"Power & kWh"},
+  {q:"Does the ×1.8 multiplier apply to GLS lamps?",a:"No — GLS lamps are purely resistive with no control gear. The ×1.8 only applies to discharge lamps (fluorescent, mercury vapour, sodium).",c:"Power & kWh"},
+  {q:"Does the ×1.8 multiplier apply to LED lamps?",a:"No — LED driver losses are minimal. Use the rated wattage directly for LEDs.",c:"Power & kWh"},
+  {q:"What is the assumed demand of a 58 W fluorescent luminaire?",a:"58 × 1.8 = 104.4 W. This is the figure used for cable sizing, circuit breakers and switch ratings.",c:"Power & kWh"},
+  {q:"When sizing cables for discharge lighting, which wattage do you use?",a:"The design rating (rated wattage × 1.8), NOT the lamp wattage alone. This ensures cables can carry the total steady current including control gear.",c:"Power & kWh"},
+  {q:"A 100 W GLS lamp runs for 10 hours. What energy is consumed?",a:"Energy = (100 ÷ 1000) × 10 = 0.1 × 10 = 1.0 kWh.",c:"Power & kWh"},
+  {q:"What is diversity in electrical installation design?",a:"Diversity recognises that not all connected loads operate simultaneously. It reduces the maximum demand at the distribution board level — but does NOT reduce individual circuit design current.",c:"Diversity"},
+  {q:"Does diversity apply to individual circuit design current (Ib)?",a:"No. Each circuit's cable and protective device must be sized for the FULL connected load. Diversity only applies when calculating maximum demand at the distribution board.",c:"Diversity"},
+  {q:"What diversity does Table 1B allow for lighting in a domestic dwelling?",a:"66% of the total connected lighting load.",c:"Diversity"},
+  {q:"What diversity does Table 1B allow for lighting in small shops and offices?",a:"90% of the total connected lighting load.",c:"Diversity"},
+  {q:"What diversity does Table 1B allow for lighting in hotels?",a:"75% of the total connected lighting load.",c:"Diversity"},
+  {q:"When both ×1.8 and diversity apply, what order do you calculate?",a:"First apply ×1.8 to get the assumed demand of discharge lamps, then apply diversity to the total lighting load for maximum demand at the DB. They are two separate adjustments.",c:"Diversity"},
+];
+let fcIndex=0;
+function fcRender(){
+  const fc=flashcards[fcIndex];
+  document.getElementById('fc-front').innerHTML=`<div><span class="fc-category">${fc.c}</span>${fc.q}<span class="fc-hint">Tap to reveal answer</span></div>`;
+  document.getElementById('fc-back').innerHTML=`<div><span class="fc-category">${fc.c}</span>${fc.a}<span class="fc-hint">Tap to see question</span></div>`;
+  document.getElementById('fc-counter').textContent=`${fcIndex+1} / ${flashcards.length}`;
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+function fcFlip(){document.getElementById('flashcard').classList.toggle('flipped');}
+function fcNext(){fcIndex=(fcIndex+1)%flashcards.length;fcRender();}
+function fcPrev(){fcIndex=(fcIndex-1+flashcards.length)%flashcards.length;fcRender();}
+function fcShuffle(){for(let i=flashcards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[flashcards[i],flashcards[j]]=[flashcards[j],flashcards[i]];}fcIndex=0;fcRender();}
+fcRender();
+
+// ============ MCQ ============
+const mcqs = [
+  {q:"What is the SI unit of luminous intensity?",opts:["Lumen","Lux","Candela","Watt"],ans:2,exp:"Luminous intensity is measured in candela (cd). Lumen measures flux, lux measures illuminance."},
+  {q:"What is the SI unit of illuminance?",opts:["Candela","Lux","Lumen","Candela per m²"],ans:1,exp:"Illuminance is measured in lux (lx). 1 lux = 1 lumen falling on 1 m²."},
+  {q:"According to the Inverse Square Law, if the distance from a lamp to a surface is trebled, the illuminance becomes:",opts:["1/3 of the original","1/6 of the original","1/9 of the original","3 times the original"],ans:2,exp:"E = I/d². If d is trebled: E = I/(3d)² = I/9d². The illuminance falls to 1/9."},
+  {q:"A 1200 cd lamp is 3 m above a bench. What is the illuminance directly below?",opts:["400 lx","133.3 lx","300 lx","100 lx"],ans:1,exp:"E = I/d² = 1200/3² = 1200/9 = 133.3 lx."},
+  {q:"The Cosine Law applies when:",opts:["The surface is directly below the lamp","The lamp is very bright","The surface is at an angle to the light","The lamp uses direct current"],ans:2,exp:"The Cosine Law (E = I cos θ / d²) applies when the illuminated point is offset from directly below, so the light hits the surface at an angle θ."},
+  {q:"In the Lumen Method, what does UF stand for?",opts:["Universal Factor","Unit Flux","Utilisation Factor","Ultra-violet Factor"],ans:2,exp:"UF = Utilisation Factor — it accounts for light absorbed by surfaces. It is always less than 1, typically about 0.9."},
+  {q:"What does a GLS lamp use to create light?",opts:["Gas excitation","A heated tungsten filament","A P-N junction","UV conversion via phosphor"],ans:1,exp:"GLS lamps work by the heating effect — a coiled-coil tungsten filament heated until white-hot (incandescence)."},
+  {q:"The efficacy of a GLS lamp is approximately:",opts:["50 lm/W","14 lm/W","100 lm/W","30 lm/W"],ans:1,exp:"GLS lamps have an efficacy of about 14 lm/W — most electricity is converted to heat, not light."},
+  {q:"What does the halogen cycle do in a tungsten halogen lamp?",opts:["Converts UV to visible light","Reduces the gas pressure","Returns evaporated tungsten to the filament","Increases the mains voltage"],ans:2,exp:"The halogen gas combines with evaporated tungsten near the wall, then redeposits it on the filament. This prevents bulb blackening and extends lamp life."},
+  {q:"Why must tungsten halogen lamps not be touched with bare hands?",opts:["They are radioactive","They operate at very high temperatures and grease causes cracking","They contain toxic gases","The glass is too thin"],ans:1,exp:"Grease from skin on the quartz envelope creates hot spots at the very high operating temperature, causing the glass to crack and the lamp to fail prematurely."},
+  {q:"How does a fluorescent lamp produce visible light?",opts:["By heating a filament","By gas discharge producing UV which is converted to visible light by phosphor","By passing current through a semiconductor","By burning sodium vapour"],ans:1,exp:"Current ionises mercury vapour/argon → produces UV → UV hits phosphor coating → phosphor converts it to visible light."},
+  {q:"The rated life of a fluorescent tube is approximately:",opts:["1000 hours","2000 hours","7500 hours","25000 hours"],ans:2,exp:"Fluorescent tubes have a rated life of about 7500 hours, with efficacy of 30–70 lm/W."},
+  {q:"Which lamp type has the highest efficacy?",opts:["GLS","Tungsten halogen","Low-pressure sodium (SOX)","High-pressure mercury"],ans:2,exp:"The SOX lamp achieves 61–160 lm/W — the highest of all discharge lamps — because sodium light's wavelength is near the human eye's peak sensitivity."},
+  {q:"The colour rendering of a low-pressure sodium lamp is:",opts:["Excellent","Good","Fair","Very poor"],ans:3,exp:"LP Sodium lamps produce only yellow light, so colour rendering is very poor — objects cannot be seen in their true colours."},
+  {q:"What type of starting device does an HP Sodium (SON) lamp use?",opts:["Glow-type starter switch","Auto-transformer","Electronic pulse igniter (2 kV+)","A manual switch"],ans:2,exp:"The SON lamp uses an electronic pulse igniter producing 2 kV or more to initiate the discharge in the starter gas."},
+  {q:"How long does an MBF (mercury vapour) lamp take to reach full brightness?",opts:["Instantly","30 seconds","5–7 minutes","30 minutes"],ans:2,exp:"Mercury vapour lamps take 5–7 minutes to warm up. If switched off, they need another ~5 minutes to cool before restriking."},
+  {q:"LED stands for:",opts:["Light Energy Device","Low Emission Diode","Light Emitting Diode","Luminaire Efficiency Detector"],ans:2,exp:"LED = Light Emitting Diode — a P-N junction semiconductor that produces light via electroluminescence."},
+  {q:"A 2700K LED lamp produces what kind of light?",opts:["Cool blue-white","Bright white","Warm yellow/white (like GLS)","Red"],ans:2,exp:"2700K gives a warm yellow/white light similar to a GLS filament lamp. Higher Kelvin values give whiter/cooler light."},
+  {q:"What causes the stroboscopic effect in discharge lamps?",opts:["The lamp overheating","The arc being extinguished every half-cycle as current passes through zero","Poor colour rendering","Low power factor"],ans:1,exp:"On a.c. circuits, the lamp current passes through zero every half-cycle (100 times per second at 50 Hz), extinguishing the arc briefly and causing flicker."},
+  {q:"How does a lead-lag circuit eliminate the stroboscopic effect?",opts:["By using DC instead of AC","By connecting one lamp with a choke and the other with a choke + capacitor so they flicker out of phase","By doubling the voltage","By using GLS lamps instead"],ans:1,exp:"The capacitor shifts one lamp's current, so the two lamps reach their brightness peaks at different times — producing more uniform illumination."},
+  {q:"Why don't GLS lamps produce a stroboscopic effect?",opts:["They use DC","The hot filament carries the light over during current reversal","They have perfect colour rendering","They use a lead-lag circuit"],ans:1,exp:"The incandescent filament retains heat and continues to glow during the current reversal, keeping light output almost constant."},
+  {q:"What is the assumed demand multiplier for discharge lamp circuits?",opts:["× 1.0","× 1.5","× 1.8","× 2.5"],ans:2,exp:"Per the On-Site Guide, the assumed demand = rated lamp wattage × 1.8. This accounts for control gear current as well."},
+  {q:"What IET Regulation requires RCD protection for luminaire circuits in domestic premises?",opts:["Regulation 559.9","Regulation 537.2","Regulation 411.3.4","Regulation 559.4.1"],ans:2,exp:"Regulation 411.3.4 requires all circuits supplying luminaires in domestic premises to be protected by a 30 mA RCD."},
+  {q:"In the Lumen Method, a room is 10 m × 6 m and needs 500 lx. Each luminaire outputs 4000 lm, UF=0.9, LLF=0.8. How many luminaires?",opts:["8","10","11","15"],ans:1,exp:"N = (500 × 60) / (4000 × 0.9 × 0.8) = 30000 / 2880 = 10.42 → round up to 11. Wait — let me recalculate: 500×60=30000. 4000×0.9×0.8=2880. 30000/2880=10.42 → 11 luminaires."},
+  {q:"The semi-resonant start circuit can operate at temperatures as low as:",opts:["0°C","−5°C","−20°C","10°C"],ans:1,exp:"The semi-resonant circuit starts very easily at temperatures as low as −5°C, making it ideal for cold environments."},
+  {q:"A discharge lamp's functional switch rating should typically be:",opts:["Equal to the lamp current","Half the steady current","Twice the total steady current","Ten times the lamp current"],ans:2,exp:"The switch rating should be twice the total steady current because discharge circuits are inductive and cause excessive contact wear."},
+  {q:"What gas is used in an LP Sodium lamp to assist starting?",opts:["Argon","Helium","Neon","Hydrogen"],ans:2,exp:"Neon gas is used to initiate the starting discharge (producing a red glow) which then heats the sodium until it vaporises."},
+  {q:"What is Group Replacement?",opts:["Replacing one lamp when it fails","Replacing all lamps at the same scheduled time","Replacing lamps in groups of three","Replacing control gear with each lamp"],ans:1,exp:"Group replacement means replacing ALL lamps at the same time, on a schedule based on rated life and operating hours. It reduces disruption in large installations."},
+  {q:"The recommended illuminance for a classroom is:",opts:["100 lx","300 lx","500 lx","1000 lx"],ans:2,exp:"The IES recommends 500 lx for reading, writing and drawing tasks in classrooms and offices."},
+  {q:"Which lamp type must be operated horizontally?",opts:["GLS","Tungsten halogen","Low-pressure sodium (SOX)","LED"],ans:2,exp:"The SOX lamp must burn horizontally (or within 20° of horizontal) so that condensing sodium is evenly distributed around the U-tube when switched off."},
+  {q:"A 200 W lamp runs for 5 hours. What energy is consumed?",opts:["1000 kWh","1.0 kWh","100 kWh","0.1 kWh"],ans:1,exp:"Energy = Power (kW) × Time (h) = (200 ÷ 1000) × 5 = 0.2 × 5 = 1.0 kWh."},
+  {q:"The ×1.8 multiplier for discharge lamps accounts for:",opts:["The lamp warming up period","Control gear losses and low power factor","The cost of replacement lamps","The lamp's colour rendering"],ans:1,exp:"The ×1.8 multiplier accounts for the additional current drawn by control gear (choke/ballast/ignitor) and the low power factor of the inductive circuit."},
+  {q:"What is the assumed demand of a 70 W SON discharge lamp?",opts:["70 W","100 W","126 W","140 W"],ans:2,exp:"Assumed demand = rated wattage × 1.8 = 70 × 1.8 = 126 W."},
+  {q:"Which of these lamp types does NOT require the ×1.8 multiplier?",opts:["Fluorescent tube","Low-pressure sodium","LED","Mercury vapour"],ans:2,exp:"LED lamps do not require the ×1.8 multiplier. It only applies to discharge lamps with inductive control gear (fluorescent, sodium, mercury vapour)."},
+  {q:"A circuit has 10 × 36 W fluorescent luminaires on 230 V single phase. What is the design current?",opts:["1.57 A","2.82 A","3.60 A","6.48 A"],ans:1,exp:"Total = 10 × 36 = 360 W. Apply ×1.8: 360 × 1.8 = 648 W. Design current Ib = 648 ÷ 230 = 2.82 A."},
+  {q:"A 60 W GLS lamp is used 4 hours/day for 30 days. Electricity costs 34p/kWh. What is the cost?",opts:["£0.82","£2.45","£7.20","£24.48"],ans:1,exp:"Energy = (60 ÷ 1000) × 4 × 30 = 0.06 × 120 = 7.2 kWh. Cost = 7.2 × £0.34 = £2.45."},
+  {q:"1 kWh equals:",opts:["1000 watts","1000 watts used for 1 second","1000 watts used for 1 hour","100 watts used for 10 hours"],ans:2,exp:"1 kWh = 1000 watts (1 kW) used for 1 hour. Note: 100 W for 10 hours also equals 1 kWh, but the definition is 1 kW for 1 hour."},
+  {q:"Diversity is applied when calculating:",opts:["Individual circuit design current (Ib)","Cable size for a lighting circuit","Maximum demand at the distribution board","The ×1.8 multiplier for discharge lamps"],ans:2,exp:"Diversity is applied at the distribution board level when calculating maximum demand. Individual circuits must always be sized for their full connected load — no diversity."},
+  {q:"According to On-Site Guide Table 1B, the diversity allowance for lighting in a domestic dwelling is:",opts:["50%","66%","75%","90%"],ans:1,exp:"Table 1B allows 66% diversity for lighting in individual domestic dwellings. This means only 66% of the total lighting load is used when calculating maximum demand."},
+  {q:"A small shop has a total lighting design current of 10 A. What is the maximum demand contribution of lighting at the DB?",opts:["6.6 A","7.5 A","9.0 A","10.0 A"],ans:2,exp:"Small shops use 90% diversity (Table 1B). Maximum demand = 10 × 0.90 = 9.0 A."},
+  {q:"A hotel has 20 × 58 W fluorescent luminaires on 230 V. What is the lighting maximum demand at the DB?",opts:["4.54 A","6.81 A","8.17 A","10.9 A"],ans:1,exp:"Step 1: Apply ×1.8: 20 × 58 × 1.8 = 2088 W. Step 2: Total current = 2088 ÷ 230 = 9.08 A. Step 3: Hotel diversity = 75%: 9.08 × 0.75 = 6.81 A."},
+  {q:"When both ×1.8 and diversity apply, the correct order is:",opts:["Apply diversity first, then ×1.8","Apply ×1.8 first, then diversity","Apply whichever gives the lower value","They cancel each other out"],ans:1,exp:"First apply ×1.8 to get the assumed demand (accounts for control gear), then apply the diversity percentage for the premises type (accounts for not all lamps being on simultaneously)."},
+];
+// Fix MCQ 24 explanation
+mcqs[23].exp="N = (500 × 60) / (4000 × 0.9 × 0.8) = 30,000 / 2,880 = 10.42. Always round up → 11 luminaires required.";
+mcqs[23].ans=2;
+
+let mcqIndex=0, mcqCorrect=0, mcqAnswered=0, mcqAttempted=new Set();
+function mcqRender(){
+  const m=mcqs[mcqIndex];
+  const answered=mcqAttempted.has(mcqIndex);
+  let html=`<div class="mcq-box"><div class="q-num">Question ${mcqIndex+1} of ${mcqs.length}</div><div class="q-text">${m.q}</div><div class="mcq-options">`;
+  m.opts.forEach((o,i)=>{
+    let cls='mcq-opt';
+    if(answered){
+      cls+=' disabled';
+      if(i===m.ans)cls+=' correct';
+      else if(m.userAns===i)cls+=' wrong';
+    }
+    html+=`<button class="${cls}" onclick="mcqAnswer(${i})">${String.fromCharCode(65+i)}) ${o}</button>`;
+  });
+  html+=`</div><div class="mcq-explain" id="mcq-explain" ${answered?'style="display:block"':''}>${m.exp}</div></div>`;
+  document.getElementById('mcq-container').innerHTML=html;
+  document.getElementById('mcq-score').textContent=`Score: ${mcqCorrect}/${mcqAnswered}`;
+}
+function mcqAnswer(i){
+  if(mcqAttempted.has(mcqIndex))return;
+  mcqAttempted.add(mcqIndex);
+  mcqs[mcqIndex].userAns=i;
+  mcqAnswered++;
+  if(i===mcqs[mcqIndex].ans)mcqCorrect++;
+  mcqRender();
+}
+function mcqNext(){mcqIndex=(mcqIndex+1)%mcqs.length;mcqRender();}
+function mcqPrev(){mcqIndex=(mcqIndex-1+mcqs.length)%mcqs.length;mcqRender();}
+function mcqReset(){mcqIndex=0;mcqCorrect=0;mcqAnswered=0;mcqAttempted.clear();mcqs.forEach(m=>delete m.userAns);mcqRender();}
+mcqRender();
+</script>
+</body>
+</html>
