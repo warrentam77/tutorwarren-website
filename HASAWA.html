@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HASAWA 1974 — Guided Reading | tutorwarren.com</title>
+<style>
+:root{
+  --navy:#102438;--teal:#1A6B6B;--teal-lt:#E6F1F1;
+  --amber:#C8960C;--amber-lt:#FFF7E6;--amber-dk:#8B6508;
+  --red:#C0392B;--red-lt:#FDECEB;
+  --green:#1ABC9C;--green-lt:#E8F8F5;
+  --paper:#FAF8F4;--white:#fff;--ink:#333;--muted:#777;--line:#E0D8C8;
+  --mono:'Courier New',monospace;
+  --body:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --head:Georgia,'Times New Roman',serif;
+  --shadow:0 2px 12px rgba(16,36,56,.08);
+  --radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
+.watermark{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.03;
+  background-image:repeating-linear-gradient(-30deg,transparent 0 180px,rgba(16,36,56,.5) 180px 182px)}
+.watermark span{font-family:var(--head);font-weight:bold;font-size:22px;transform:rotate(-30deg);white-space:nowrap;color:var(--ink)}
+
+/* ===== HEADER ===== */
+header{background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff;text-align:center;padding:48px 20px 40px;position:relative;overflow:hidden}
+header::after{content:'';position:absolute;bottom:-30px;left:50%;width:200%;height:60px;background:var(--paper);border-radius:50%;transform:translateX(-50%)}
+header h1{font-family:var(--head);font-size:clamp(1.8rem,5vw,2.8rem);margin-bottom:6px;letter-spacing:.5px}
+header .sub{font-size:1.1rem;opacity:.9;margin-bottom:12px;font-style:italic}
+header .meta{font-size:.82rem;opacity:.7;max-width:600px;margin:0 auto}
+.brand{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px}
+.brand .name{font-size:14px;letter-spacing:3px;text-transform:uppercase;opacity:.85}
+
+/* ===== NAV ===== */
+nav.toc{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:2px solid var(--line);padding:8px 0;overflow-x:auto;white-space:nowrap;text-align:center}
+nav.toc a{display:inline-block;padding:6px 14px;margin:2px 3px;border-radius:20px;font-size:.82rem;font-weight:600;color:var(--teal);text-decoration:none;border:1.5px solid var(--teal);transition:.2s}
+nav.toc a:hover,nav.toc a.active{background:var(--teal);color:#fff}
+nav.toc a.fc-link{border-color:var(--amber);color:var(--amber-dk)}
+nav.toc a.fc-link:hover{background:var(--amber);color:#fff}
+
+/* ===== SECTIONS ===== */
+.container{max-width:860px;margin:0 auto;padding:0 20px 60px}
+section{margin-top:40px}
+.sec-title{font-family:var(--head);font-size:1.6rem;color:var(--navy);margin-bottom:16px;padding-bottom:8px;border-bottom:3px solid var(--amber);display:flex;align-items:baseline;gap:12px}
+.sec-title .num{color:var(--amber);font-size:1.1rem;font-weight:bold}
+.sec-title .txt{flex:1}
+p{margin:12px 0;font-size:.97rem}
+b,.bold{font-weight:700}
+.teal{color:var(--teal)}
+.red{color:var(--red)}
+
+/* ===== INFO BOXES ===== */
+.box{border-radius:var(--radius);padding:18px 20px;margin:18px 0;font-size:.92rem}
+.box.key{background:var(--teal-lt);border-left:5px solid var(--teal)}
+.box.key .box-title{color:var(--teal);font-weight:bold;margin-bottom:8px;font-size:.95rem}
+.box.warn{background:var(--red-lt);border-left:5px solid var(--red)}
+.box.warn .box-title{color:var(--red);font-weight:bold;margin-bottom:8px}
+.box.modern{background:var(--green-lt);border-left:5px solid var(--green)}
+.box.modern .box-title{color:#0E6655;font-weight:bold;margin-bottom:8px}
+.box ul{list-style:none;padding:0}
+.box ul li{padding:4px 0 4px 22px;position:relative}
+.box ul li::before{content:'▸';position:absolute;left:2px;color:var(--amber);font-weight:bold}
+
+/* ===== RESPONSIBILITY TABLE ===== */
+.resp-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.88rem;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.resp-table th{padding:10px 14px;text-align:left;font-size:.82rem;color:#fff}
+.resp-table th:first-child{width:40px;text-align:center}
+.resp-table th.emp{background:var(--teal)}
+.resp-table th.ee{background:var(--navy)}
+.resp-table th.num{background:var(--teal)}
+.resp-table td{padding:8px 14px;border:1px solid var(--line);vertical-align:top}
+.resp-table tr:nth-child(even) td{background:var(--paper)}
+
+/* ===== COVERAGE ICONS ===== */
+.coverage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:18px 0}
+.cov-card{background:var(--teal);color:#fff;border-radius:var(--radius);padding:16px 12px;text-align:center;transition:.2s}
+.cov-card:nth-child(2){background:var(--navy)}
+.cov-card:nth-child(3){background:var(--amber)}
+.cov-card:nth-child(4){background:var(--teal)}
+.cov-card:nth-child(5){background:var(--navy)}
+.cov-card .icon{font-size:2rem;margin-bottom:6px}
+.cov-card .label{font-weight:bold;font-size:.85rem}
+.cov-card .desc{font-size:.75rem;opacity:.85;margin-top:4px}
+
+/* ===== FLASH CARDS ===== */
+.fc-section{margin-top:50px}
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:18px 0}
+.fc-wrap{perspective:900px;height:200px}
+.fc{position:relative;width:100%;height:100%;cursor:pointer;transform-style:preserve-3d;transition:transform .5s}
+.fc.flipped{transform:rotateY(180deg)}
+.fc-front,.fc-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow)}
+.fc-front{background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff}
+.fc-front .fc-tag{background:var(--amber);color:#fff;font-size:.7rem;padding:2px 10px;border-radius:10px;font-weight:bold;margin-bottom:8px;letter-spacing:.5px}
+.fc-front .fc-q{font-size:.92rem;font-weight:600;line-height:1.5}
+.fc-front .fc-hint{font-size:.72rem;opacity:.6;margin-top:auto;padding-top:8px}
+.fc-back{background:var(--amber-lt);border:2px solid var(--amber);color:var(--ink);transform:rotateY(180deg)}
+.fc-back .fc-a{font-size:.88rem;line-height:1.6}
+.fc-back .fc-hint{font-size:.72rem;color:var(--muted);margin-top:auto;padding-top:8px}
+
+/* ===== MCQ ===== */
+.mcq-section{margin-top:50px}
+.mcq{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0;box-shadow:var(--shadow)}
+.mcq .mcq-q{font-weight:bold;color:var(--navy);margin-bottom:12px;font-size:.95rem}
+.mcq .mcq-q .qnum{display:inline-block;background:var(--teal);color:#fff;width:28px;height:28px;border-radius:50%;text-align:center;line-height:28px;font-size:.8rem;margin-right:8px}
+.mcq label{display:block;padding:8px 14px;margin:4px 0;border-radius:8px;cursor:pointer;font-size:.9rem;border:1.5px solid transparent;transition:.15s}
+.mcq label:hover{background:var(--teal-lt);border-color:var(--teal)}
+.mcq label input{display:none}
+.mcq label .letter{display:inline-block;width:24px;height:24px;border-radius:50%;border:2px solid var(--teal);text-align:center;line-height:22px;font-size:.75rem;font-weight:bold;color:var(--teal);margin-right:8px;transition:.15s}
+.mcq label.selected .letter{background:var(--teal);color:#fff}
+.mcq label.correct{background:#d4edda;border-color:#28a745}
+.mcq label.correct .letter{background:#28a745;border-color:#28a745;color:#fff}
+.mcq label.wrong{background:#f8d7da;border-color:#dc3545}
+.mcq label.wrong .letter{background:#dc3545;border-color:#dc3545;color:#fff}
+.mcq .fb{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:.88rem;display:none}
+.mcq .fb.show{display:block}
+.mcq .fb.correct{background:#d4edda;color:#155724;border-left:4px solid #28a745}
+.mcq .fb.wrong{background:#f8d7da;color:#721c24;border-left:4px solid #dc3545}
+.mcq-btn{margin-top:8px;padding:8px 20px;background:var(--teal);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:.85rem;transition:.15s}
+.mcq-btn:hover{background:var(--navy)}
+.mcq-btn:disabled{opacity:.5;cursor:default}
+
+/* ===== SCORE ===== */
+.score-bar{background:var(--teal-lt);border:2px solid var(--teal);border-radius:var(--radius);padding:20px;margin:20px 0;text-align:center;font-family:var(--head)}
+.score-bar .score{font-size:2.5rem;color:var(--teal);font-weight:bold}
+.score-bar .label{font-size:.9rem;color:var(--muted)}
+
+/* ===== FOOTER ===== */
+footer{text-align:center;padding:30px 20px;color:var(--muted);font-size:.8rem;border-top:2px solid var(--line);margin-top:40px}
+
+/* ===== HOME BUTTON ===== */
+.home-btn{position:fixed;bottom:20px;right:20px;z-index:50;background:var(--teal);color:#fff;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,.2);transition:.2s}
+.home-btn:hover{background:var(--navy);transform:scale(1.1)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+  .fc-grid{grid-template-columns:1fr}
+  .coverage-grid{grid-template-columns:repeat(2,1fr)}
+  .resp-table{font-size:.78rem}
+  .resp-table td,.resp-table th{padding:6px 8px}
+}
+
+/* ===== PRINT / COPY PROTECTION ===== */
+@media print{body{display:none}}
+</style>
+</head>
+<body>
+<div class="watermark"><span>tutorwarren.com&emsp;&emsp;tutorwarren.com&emsp;&emsp;tutorwarren.com&emsp;&emsp;tutorwarren.com&emsp;&emsp;tutorwarren.com</span></div>
+
+<header id="top">
+  <div class="brand"><span class="name">tutorwarren.com</span></div>
+  <h1>The Health and Safety at Work Act 1974</h1>
+  <div class="sub">A 2026 Perspective — Guided Reading</div>
+  <div class="meta">Source: HSE Network (hse-network.com) — by David Foy — May 2026<br>Adapted for classroom use by tutorwarren.com<br><b>EAL Level 2 Electrical Installation — Unit ELEC2/01 — AC 1.1, 1.2, 1.3, 1.4</b></div>
+</header>
+
+<nav class="toc">
+  <a href="#s1">1. What Is HASAWA?</a>
+  <a href="#s2">2. Before &amp; After 1974</a>
+  <a href="#s3">3. Coverage</a>
+  <a href="#s4">4. Enforcement</a>
+  <a href="#s5">5. Key Regulations</a>
+  <a href="#s6">6. 2026 Relevance</a>
+  <a href="#flashcards" class="fc-link">⚡ Flash Cards</a>
+  <a href="#mcqs" class="fc-link">📝 MCQs</a>
+</nav>
+
+<div class="container">
+
+<!-- ============ SECTION 1 ============ -->
+<section id="s1">
+  <div class="sec-title"><span class="num">Section 1</span><span class="txt">What Is the Health and Safety at Work Act 1974?</span></div>
+  <p>The Health and Safety at Work etc. Act 1974 — commonly shortened to <b class="teal">HASAWA</b> — is the primary piece of UK legislation governing health and safety in the workplace. You may also see it called HSWA, the Health and Safety Act 1974, or simply 'the 1974 Act'. Whatever the label, they all refer to the same law.</p>
+  <p>At its core, HASAWA places a <b>legal duty on employers</b> to prevent harm to workers and anyone else affected by work activities, <i>"so far as is reasonably practicable."</i> This means employers must do everything reasonable — considering time, cost, and difficulty — to keep people safe. Crucially, the Act also gives <b>employees their own legal responsibilities</b>: they must take care of themselves and others, follow training, and not interfere with safety measures.</p>
+  <p>One of the Act's great strengths is that it is <b class="teal">principle-based rather than prescriptive</b>. Instead of listing detailed rules for every situation, it sets out broad duties that apply to <i>all</i> workplaces. This is exactly why HASAWA still works today — whether the workplace is a factory floor, a construction site, a school, or a home office.</p>
+  <div class="box key">
+    <div class="box-title">⚡ KEY FACTS</div>
+    <ul>
+      <li>HASAWA has been in force since 1974 — over 50 years.</li>
+      <li>It is principle-based, not prescriptive (general duties, not detailed rules).</li>
+      <li>It places duties on employers AND employees.</li>
+      <li>The test is 'so far as is reasonably practicable.'</li>
+      <li>No replacement Act has been introduced — HASAWA remains the current law in 2026.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ SECTION 2 ============ -->
+<section id="s2">
+  <div class="sec-title"><span class="num">Section 2</span><span class="txt">Before and After 1974 — Why Was the Act Introduced?</span></div>
+  <p>Before 1974, the UK relied on a <b>patchwork of sector-specific laws</b> — separate regulations for factories, offices, shops, mines, and railways. These older rules were narrow and rigid. For example, factory workers and miners had some protections, but chemical plant workers or office staff often had little or none. Members of the public exposed to workplace hazards were largely unprotected too.</p>
+  <p>A series of tragedies exposed serious gaps in this system. In the <b class="red">James Watt Street fire in Glasgow (1968)</b>, 22 factory workers died after being trapped behind barred windows. In <b>1974</b>, the same year the Act came into force, the <b class="red">Flixborough chemical plant explosion</b> killed 28 people and injured 36, highlighting the dangers of operating complex industrial sites without comprehensive safety law.</p>
+  <p>HASAWA replaced the patchwork with <b class="teal">one unified, flexible framework</b> that applied to all workplaces. Instead of prescribing specific rules for each industry, it established broad duties that apply everywhere. It also extended protection to the public for the first time.</p>
+  <div class="box warn">
+    <div class="box-title">⚠️ REAL-WORLD TRAGEDIES THAT LED TO HASAWA</div>
+    <ul>
+      <li>1968: James Watt Street fire, Glasgow — 22 workers killed (trapped behind barred windows).</li>
+      <li>1974: Flixborough chemical plant explosion — 28 killed, 36 injured.</li>
+      <li>These events showed that sector-specific laws were not enough to protect workers or the public.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ SECTION 3 ============ -->
+<section id="s3">
+  <div class="sec-title"><span class="num">Section 3</span><span class="txt">What Does HASAWA Cover?</span></div>
+  <p>HASAWA sets out the legal framework for managing workplace health and safety across Great Britain. It requires employers to take reasonable steps to protect the health, safety, and welfare of employees and anyone who could be affected by their work. That means providing <b>safe systems of work, safe equipment, adequate training, clear information, and a safe working environment</b>.</p>
+  <p><b class="teal">The Act applies broadly to:</b></p>
+  <div class="coverage-grid">
+    <div class="cov-card"><div class="icon">👷</div><div class="label">Employers</div><div class="desc">Must manage risks and provide safe workplaces</div></div>
+    <div class="cov-card"><div class="icon">🧑‍🔧</div><div class="label">Employees</div><div class="desc">Must follow training and not endanger others</div></div>
+    <div class="cov-card"><div class="icon">🔧</div><div class="label">Self-Employed</div><div class="desc">Must ensure activities do not put others at risk</div></div>
+    <div class="cov-card"><div class="icon">🏗️</div><div class="label">Contractors</div><div class="desc">Share responsibility for safe conditions</div></div>
+    <div class="cov-card"><div class="icon">👨‍👩‍👧</div><div class="label">Public &amp; Visitors</div><div class="desc">Protected when affected by work activities</div></div>
+  </div>
+  <h3 style="font-family:var(--head);color:var(--navy);margin:24px 0 12px">Employer vs Employee Responsibilities Under HASAWA</h3>
+  <table class="resp-table">
+    <tr><th class="num">#</th><th class="emp">Employer Responsibilities</th><th class="ee">Employee Responsibilities</th></tr>
+    <tr><td><b>1</b></td><td>Maintain safe workplaces and equipment</td><td>Take reasonable care for own health and safety</td></tr>
+    <tr><td><b>2</b></td><td>Carry out regular risk assessments</td><td>Follow health and safety training and procedures</td></tr>
+    <tr><td><b>3</b></td><td>Provide safe systems of work</td><td>Report hazards, defects, or unsafe practices</td></tr>
+    <tr><td><b>4</b></td><td>Provide information, instruction, and training</td><td>Use PPE and equipment properly</td></tr>
+    <tr><td><b>5</b></td><td>Consult with employees or safety reps</td><td>Avoid interfering with or misusing safety measures</td></tr>
+  </table>
+</section>
+
+<!-- ============ SECTION 4 ============ -->
+<section id="s4">
+  <div class="sec-title"><span class="num">Section 4</span><span class="txt">Who Enforces the Health and Safety at Work Act?</span></div>
+  <p>HASAWA is enforced by the <b class="teal">Health and Safety Executive (HSE)</b>, the national regulator for workplace health and safety, and by <b>local authorities</b> for lower-risk workplaces such as offices, shops, warehouses, and hospitality. The HSE focuses on higher-risk industries including construction, manufacturing, energy, and healthcare.</p>
+  <p>HSE inspectors have significant powers. They can <b>enter premises, investigate incidents, take samples,</b> and issue two types of enforcement notice:</p>
+  <p><b style="color:var(--amber)">Improvement Notice</b> — requires the employer to fix a specific breach of the law within a set time (usually at least 21 days). The business can continue operating while the improvement is made.</p>
+  <p><b style="color:var(--red)">Prohibition Notice</b> — requires the employer to STOP a dangerous activity <b>immediately</b>. The activity must not resume until the risk has been eliminated. This is used when there is a risk of serious personal injury.</p>
+  <p>Where serious breaches occur, the HSE can bring <b>criminal prosecutions</b>, which can result in heavy fines and even imprisonment. Employers also face a <b>Fee for Intervention (FFI)</b> charge — currently £188 per hour (from April 2026) — when inspectors find material breaches during visits.</p>
+  <div class="box key">
+    <div class="box-title">⚡ KEY FACTS</div>
+    <ul>
+      <li>HSE = national regulator for higher-risk industries (construction, manufacturing, etc.).</li>
+      <li>Local authorities enforce H&amp;S in lower-risk workplaces (offices, shops, hospitality).</li>
+      <li>Improvement Notice = fix within a set time; business can continue.</li>
+      <li>Prohibition Notice = STOP immediately; activity cannot resume until safe.</li>
+      <li>FFI rate from April 2026 = £188 per hour.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ SECTION 5 ============ -->
+<section id="s5">
+  <div class="sec-title"><span class="num">Section 5</span><span class="txt">Key Regulations That Sit Under HASAWA</span></div>
+  <p>HASAWA is the 'umbrella' Act. Beneath it sit several <b>supporting regulations (statutory instruments)</b> that provide more specific requirements. Here are the most important ones that most workplaces need to know about:</p>
+  <h3 style="color:var(--teal);margin:16px 0 6px">Management of Health and Safety at Work Regulations 1999</h3>
+  <p>Require employers to carry out risk assessments, appoint competent persons, plan for emergencies, provide training and supervision, and consider vulnerable workers (young, new, or pregnant employees).</p>
+  <h3 style="color:var(--teal);margin:16px 0 6px">Personal Protective Equipment (PPE) Regulations 2018</h3>
+  <p>Employers must provide suitable PPE when risks cannot be eliminated by other means, ensure it fits properly and is CE-marked, and train employees in correct use. Employees must wear PPE as instructed and report any defects.</p>
+  <h3 style="color:var(--teal);margin:16px 0 6px">RIDDOR 2013 — Reporting of Injuries, Diseases and Dangerous Occurrences</h3>
+  <p>Requires employers to report to the HSE: work-related deaths, specified injuries (fractures, amputations, serious burns), occupational diseases, and dangerous occurrences (near misses). In spring 2026, the HSE opened a consultation on the first major overhaul of RIDDOR since 2013.</p>
+  <h3 style="color:var(--teal);margin:16px 0 6px">Manual Handling Operations Regulations 1992</h3>
+  <p>Employers must avoid hazardous manual handling where possible, assess unavoidable tasks, and reduce risks through mechanical aids or task redesign. Employees must follow safe handling practices.</p>
+  <h3 style="color:var(--teal);margin:16px 0 6px">Control of Asbestos Regulations 2012</h3>
+  <p>One of the most active regulations under the Act in 2026. The HSE consulted on reforms to survey quality and clearance checks. However, in May 2026, the HSE confirmed the exposure control limit will stay at 0.1 fibres per cubic centimetre, as no clear evidence supported lowering it.</p>
+  <h3 style="color:var(--teal);margin:16px 0 6px">Display Screen Equipment (DSE) Regulations 1992</h3>
+  <p>Employers must carry out workstation assessments, provide ergonomic equipment, ensure staff take regular breaks, offer free eye tests, and train staff on safe use of screens and workstations.</p>
+</section>
+
+<!-- ============ SECTION 6 ============ -->
+<section id="s6">
+  <div class="sec-title"><span class="num">Section 6</span><span class="txt">Is HASAWA Still Fit for Purpose in 2026?</span></div>
+  <p>A common question is whether there is a newer Health and Safety at Work Act. The answer is <b>no</b>. The 1974 Act remains the current and latest version. It has never been replaced — instead, it has been kept up to date through amendments and supporting regulations.</p>
+  <p>The Act has stood the test of time because of its principle-based approach. The requirement to do what is <i>"reasonably practicable"</i> has allowed the law to adapt to new industries and risks for over 50 years. However, working life in 2026 looks very different from the 1970s, and there are strong arguments for refreshed guidance in several areas:</p>
+  <div class="box modern">
+    <div class="box-title">✅ MODERN CHALLENGES FOR HASAWA IN 2026</div>
+    <ul>
+      <li>Remote and hybrid work — employers are still responsible for home workstation safety.</li>
+      <li>Mental health — stress, burnout, and psychosocial risks are now leading causes of absence.</li>
+      <li>Technology — AI, robotics, and cobots (collaborative robots) are creating new safety concerns.</li>
+      <li>Climate — extreme weather and environmental hazards are increasingly affecting workplaces.</li>
+      <li>Gig economy — non-traditional employment blurs responsibility for safety.</li>
+      <li>RIDDOR reform — the first major overhaul since 2013 was consulted on in spring 2026.</li>
+    </ul>
+  </div>
+  <p>In summary, HASAWA is <b class="teal">legally unchanged and still effective</b>, but employers should proactively address modern challenges — wellbeing, technology, remote work — rather than waiting for legal reform. The RIDDOR consultation outcome and the new standalone Building Safety Regulator are the most concrete developments to monitor in 2026.</p>
+</section>
+
+<!-- ============ FLASH CARDS ============ -->
+<section id="flashcards" class="fc-section">
+  <div class="sec-title"><span class="num">⚡</span><span class="txt">Flash Cards — Tap to Reveal the Answer</span></div>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:16px">Click or tap each card to flip it. All questions are from the guided reading sections above.</p>
+  <div class="fc-grid" id="fcGrid"></div>
+</section>
+
+<!-- ============ MCQs ============ -->
+<section id="mcqs" class="mcq-section">
+  <div class="sec-title"><span class="num">📝</span><span class="txt">Multiple Choice Questions</span></div>
+  <p style="color:var(--muted);font-size:.88rem;margin-bottom:16px">Select the best answer for each question, then click "Check Answer".</p>
+  <div id="mcqContainer"></div>
+  <div class="score-bar" id="scoreBar" style="display:none">
+    <div class="label">Your Score</div>
+    <div class="score" id="scoreDisplay">0 / 0</div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer>
+  <p>© tutorwarren.com 2026 — EAL Level 2 ELEC2/01</p>
+  <p style="margin-top:4px"><i>End of Guided Reading — Well done for completing all sections!</i></p>
+</footer>
+
+<a href="#top" class="home-btn" title="Back to top">⬆</a>
+
+<script>
+/* ======= FLASH CARD DATA ======= */
+const flashCards = [
+  {s:"S1",q:"What does the abbreviation HASAWA stand for?",a:"Health and Safety at Work etc. Act (1974)."},
+  {s:"S1",q:"What does the phrase 'so far as is reasonably practicable' mean in your own words?",a:"Employers must do everything reasonable — weighing risk against time, cost, and difficulty — to keep people safe."},
+  {s:"S1",q:"Why is the Act described as 'principle-based rather than prescriptive'?",a:"It sets out broad duties that apply to all workplaces, rather than listing detailed rules for every specific situation."},
+  {s:"S1",q:"Name two groups of people who have legal duties under HASAWA.",a:"Employers and employees. (Also: self-employed, contractors, those in control of premises.)"},
+  {s:"S2",q:"Describe the system of health and safety law that existed BEFORE 1974.",a:"A patchwork of sector-specific laws — separate, narrow regulations for factories, offices, shops, mines, and railways. Many workers and the public had no protection."},
+  {s:"S2",q:"Name ONE real-world disaster that helped drive the introduction of HASAWA.",a:"The James Watt Street fire (Glasgow, 1968 — 22 killed) or the Flixborough chemical plant explosion (1974 — 28 killed, 36 injured)."},
+  {s:"S2",q:"How did HASAWA change the approach — from a 'patchwork' to what?",a:"One unified, flexible framework with broad duties applying to ALL workplaces, replacing sector-specific rules."},
+  {s:"S2",q:"Which group of people gained protection for the first time under HASAWA?",a:"The public (members of the public who could be affected by work activities)."},
+  {s:"S3",q:"List FIVE groups of people who are covered by HASAWA.",a:"Employers, employees, the self-employed, contractors (those in control of premises), and the public/visitors."},
+  {s:"S3",q:"State THREE things an employer must provide under the Act.",a:"Safe systems of work, safe equipment, adequate training, clear information, and a safe working environment (any three)."},
+  {s:"S3",q:"State TWO responsibilities that fall on employees under the Act.",a:"Take reasonable care for own health and safety; follow H&S training; report hazards; use PPE properly; not interfere with safety measures (any two)."},
+  {s:"S3",q:"A workplace has 5 or more employees. What written document must the employer produce?",a:"A written Health and Safety Policy Statement, kept up to date and brought to all employees' notice."},
+  {s:"S4",q:"What does HSE stand for?",a:"Health and Safety Executive."},
+  {s:"S4",q:"Which types of workplace does the HSE focus on? Give TWO examples.",a:"Higher-risk industries — e.g. construction, manufacturing, energy, healthcare (any two)."},
+  {s:"S4",q:"Explain the difference between an Improvement Notice and a Prohibition Notice.",a:"Improvement Notice: fix a breach within a set time (min 21 days); business can continue. Prohibition Notice: STOP immediately; activity cannot resume until the risk is eliminated."},
+  {s:"S4",q:"What is the Fee for Intervention (FFI) and how much is it per hour from April 2026?",a:"A charge the HSE makes when inspectors find material breaches during visits. £188 per hour from April 2026."},
+  {s:"S5",q:"Why is HASAWA sometimes called the 'umbrella' Act?",a:"Because all other supporting regulations (statutory instruments) sit beneath it — it provides the overarching legal framework."},
+  {s:"S5",q:"Which regulation requires employers to carry out risk assessments and appoint competent persons?",a:"Management of Health and Safety at Work Regulations 1999."},
+  {s:"S5",q:"Under RIDDOR, name THREE types of event that must be reported to the HSE.",a:"Work-related deaths, specified injuries (fractures, amputations, serious burns), occupational diseases, and dangerous occurrences/near misses (any three)."},
+  {s:"S5",q:"What must an employer do BEFORE deciding that PPE is needed? (Think about the hierarchy of control.)",a:"Try to eliminate or reduce the risk by other means first (elimination, substitution, engineering controls, administrative controls). PPE is the last resort."},
+  {s:"S5",q:"What is the current asbestos exposure control limit in the UK (as confirmed in May 2026)?",a:"0.1 fibres per cubic centimetre, averaged over four hours."},
+  {s:"S6",q:"Has HASAWA been replaced by a newer Act? Explain your answer.",a:"No. The 1974 Act remains the latest and current law. It has been kept up to date through amendments and supporting regulations, not replaced."},
+  {s:"S6",q:"What feature of the Act has allowed it to stay relevant for over 50 years?",a:"Its principle-based (not prescriptive) approach — requiring what is 'reasonably practicable' rather than listing specific rules."},
+  {s:"S6",q:"Name THREE modern workplace challenges that HASAWA must now cover.",a:"Remote/hybrid work, mental health/psychosocial risks, AI/robotics/cobots, climate/extreme weather, gig economy, RIDDOR reform (any three)."},
+  {s:"S6",q:"What major consultation did the HSE open in spring 2026, and what would it change?",a:"A consultation on the first major overhaul of RIDDOR since 2013. It would expand reportable occupational diseases from 6 to 19 and widen who can diagnose them."},
+  {s:"R",q:"In what year was HASAWA introduced, and what event in the same year highlighted the need for it?",a:"1974. The Flixborough chemical plant explosion killed 28 and injured 36 in the same year."},
+  {s:"R",q:"Explain the difference between 'statutory' and 'non-statutory' health and safety documents.",a:"Statutory = Acts of Parliament / the law — must be obeyed. Non-statutory = guidance, codes of practice — advise how to comply but are not legally binding in themselves."},
+  {s:"R",q:"A worker notices a damaged power tool on site. State TWO things they should do.",a:"Stop using it / remove from service, and report the defect to their supervisor."},
+  {s:"R",q:"An HSE inspector finds workers at height with no edge protection. Improvement or Prohibition Notice? Why?",a:"Prohibition Notice — there is a risk of serious personal injury (fall from height), so the activity must STOP immediately."},
+  {s:"R",q:"Name FOUR of the key regulations that sit beneath HASAWA as supporting legislation.",a:"Management of H&S at Work 1999, PPE Regs 2018, RIDDOR 2013, Manual Handling Ops 1992, Control of Asbestos 2012, DSE Regs 1992 (any four)."},
+  {s:"R",q:"Your employer has 8 employees. What written document must they produce and keep up to date?",a:"A written Health and Safety Policy Statement."},
+  {s:"R",q:"In your own words, explain why HASAWA is still considered effective in 2026.",a:"Because it is principle-based, not prescriptive. Its 'reasonably practicable' test adapts to any workplace, industry, or new risk without needing new legislation."},
+];
+
+/* ======= BUILD FLASH CARDS ======= */
+const fcGrid = document.getElementById('fcGrid');
+flashCards.forEach((fc, i) => {
+  const wrap = document.createElement('div');
+  wrap.className = 'fc-wrap';
+  wrap.innerHTML = `<div class="fc" onclick="this.classList.toggle('flipped')">
+    <div class="fc-front">
+      <span class="fc-tag">${fc.s === 'R' ? 'REVIEW' : fc.s}</span>
+      <div class="fc-q">${fc.q}</div>
+      <div class="fc-hint">Tap to reveal answer</div>
+    </div>
+    <div class="fc-back">
+      <div class="fc-a">${fc.a}</div>
+      <div class="fc-hint">Tap to flip back</div>
+    </div>
+  </div>`;
+  fcGrid.appendChild(wrap);
+});
+
+/* ======= MCQ DATA ======= */
+const mcqs = [
+  {q:"What year was HASAWA introduced?",opts:["1968","1974","1992","2002"],ans:1,fb:"HASAWA was introduced in 1974 following the Robens Report and a series of workplace tragedies."},
+  {q:"HASAWA is best described as:",opts:["Prescriptive — detailed rules for every industry","Principle-based — broad duties applying to all workplaces","Only applicable to factories and mines","A voluntary code of practice"],ans:1,fb:"HASAWA is principle-based, setting broad duties rather than prescriptive rules for each industry."},
+  {q:"The phrase 'so far as is reasonably practicable' means employers must:",opts:["Eliminate every possible risk regardless of cost","Do everything reasonable, weighing risk against time, cost, and difficulty","Only act when told to by the HSE","Follow the exact rules set out for their industry"],ans:1,fb:"'Reasonably practicable' means balancing risk against time, cost, and difficulty of preventing it."},
+  {q:"Which disaster in 1968 exposed gaps in pre-HASAWA safety laws?",opts:["Flixborough chemical plant explosion","Piper Alpha oil rig disaster","James Watt Street fire in Glasgow","Grenfell Tower fire"],ans:2,fb:"The James Watt Street fire in Glasgow (1968) killed 22 workers trapped behind barred windows."},
+  {q:"Which of these groups gained protection for the FIRST time under HASAWA?",opts:["Factory workers","Miners","The public","Office staff"],ans:2,fb:"HASAWA extended protection to members of the public affected by work activities for the first time."},
+  {q:"An Improvement Notice requires the employer to:",opts:["Stop all work immediately","Fix a specific breach within a set time","Pay a fine on the spot","Close the business permanently"],ans:1,fb:"An Improvement Notice gives the employer a set time (minimum 21 days) to fix the breach. The business can continue operating."},
+  {q:"A Prohibition Notice is used when there is:",opts:["A minor administrative error","A risk of serious personal injury","An employee complaint about temperature","A request for a risk assessment"],ans:1,fb:"A Prohibition Notice requires immediate cessation of the dangerous activity due to risk of serious personal injury."},
+  {q:"What is the FFI rate from April 2026?",opts:["£120 per hour","£150 per hour","£166 per hour","£188 per hour"],ans:3,fb:"The Fee for Intervention (FFI) rate increased to £188 per hour from April 2026."},
+  {q:"Which regulation requires employers to carry out risk assessments?",opts:["PPE Regulations 2018","RIDDOR 2013","Management of H&S at Work Regulations 1999","Control of Asbestos Regulations 2012"],ans:2,fb:"The Management of Health and Safety at Work Regulations 1999 require employers to carry out risk assessments."},
+  {q:"Under RIDDOR, which of these must be reported to the HSE?",opts:["A paper cut","A worker's common cold","A fractured bone from a workplace fall","An employee being 10 minutes late"],ans:2,fb:"Specified injuries including fractures must be reported under RIDDOR 2013."},
+  {q:"What is the UK asbestos exposure control limit confirmed in May 2026?",opts:["0.01 fibres/cm³","0.05 fibres/cm³","0.1 fibres/cm³","1.0 fibres/cm³"],ans:2,fb:"The HSE confirmed the limit stays at 0.1 fibres per cubic centimetre, averaged over four hours."},
+  {q:"Has HASAWA been replaced by a newer Act?",opts:["Yes, in 2006","Yes, in 2018","No — it remains the current law, updated through amendments","No — but it is no longer enforced"],ans:2,fb:"HASAWA has never been replaced. It is kept up to date through amendments and supporting regulations."},
+  {q:"Workplaces with 5 or more employees must produce:",opts:["A fire certificate","A written Health and Safety Policy Statement","A RIDDOR report every month","A weekly inspection log"],ans:1,fb:"Employers with 5+ employees must keep a written, up-to-date Health and Safety Policy Statement."},
+  {q:"Which of these is NOT a modern challenge for HASAWA in 2026?",opts:["Remote and hybrid working","Mental health and psychosocial risks","Regulation of horse-drawn carriages","AI, robotics, and collaborative robots"],ans:2,fb:"Horse-drawn carriages are not a modern workplace challenge. Remote work, mental health, and AI/robotics are key 2026 issues."},
+  {q:"PPE should be used:",opts:["As the first line of defence against any hazard","Only when other control measures cannot adequately reduce the risk","Instead of carrying out a risk assessment","Only on construction sites"],ans:1,fb:"PPE is the last line of defence — employers must first try to eliminate, reduce, or control risks by other means."},
+];
+
+/* ======= BUILD MCQs ======= */
+const mcqCont = document.getElementById('mcqContainer');
+let answered = 0, correct = 0;
+const letters = ['A','B','C','D'];
+
+mcqs.forEach((m, qi) => {
+  const div = document.createElement('div');
+  div.className = 'mcq';
+  div.id = 'mcq-' + qi;
+  let optsHtml = m.opts.map((o, oi) =>
+    `<label id="lbl-${qi}-${oi}" onclick="selectOpt(${qi},${oi})"><input type="radio" name="mcq${qi}" value="${oi}"><span class="letter">${letters[oi]}</span>${o}</label>`
+  ).join('');
+  div.innerHTML = `<div class="mcq-q"><span class="qnum">${qi+1}</span>${m.q}</div>${optsHtml}<button class="mcq-btn" id="btn-${qi}" onclick="checkMCQ(${qi})">Check Answer</button><div class="fb" id="fb-${qi}"></div>`;
+  mcqCont.appendChild(div);
+});
+
+function selectOpt(qi, oi) {
+  document.querySelectorAll(`#mcq-${qi} label`).forEach((l,i) => {
+    l.classList.toggle('selected', i === oi);
+  });
+}
+
+function checkMCQ(qi) {
+  const m = mcqs[qi];
+  const sel = document.querySelector(`input[name="mcq${qi}"]:checked`);
+  if (!sel) return;
+  const chosen = parseInt(sel.value);
+  const btn = document.getElementById('btn-' + qi);
+  const fb = document.getElementById('fb-' + qi);
+  btn.disabled = true;
+  // Disable further selection
+  document.querySelectorAll(`#mcq-${qi} label`).forEach(l => l.style.pointerEvents = 'none');
+  // Mark correct/wrong
+  document.getElementById(`lbl-${qi}-${m.ans}`).classList.add('correct');
+  if (chosen !== m.ans) {
+    document.getElementById(`lbl-${qi}-${chosen}`).classList.add('wrong');
+    fb.className = 'fb show wrong';
+    fb.textContent = '✗ ' + m.fb;
+  } else {
+    fb.className = 'fb show correct';
+    fb.textContent = '✓ Correct! ' + m.fb;
+    correct++;
+  }
+  answered++;
+  if (answered === mcqs.length) {
+    const bar = document.getElementById('scoreBar');
+    bar.style.display = 'block';
+    document.getElementById('scoreDisplay').textContent = correct + ' / ' + mcqs.length;
+    bar.scrollIntoView({behavior:'smooth'});
+  }
+}
+
+/* ======= COPY/RIGHT-CLICK PROTECTION ======= */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('copy', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && ['c','u','s','p'].includes(e.key.toLowerCase())) e.preventDefault();
+});
+</script>
+</body>
+</html>
