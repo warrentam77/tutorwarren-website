@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Tables to Answers — Voltage Drop, Diversity & Cable Sizing Calculations | tutorwarren.com</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#faf8f5;--card:#fff;--text:#2c2420;--muted:#6b5e54;
+  --accent:#7a5c3e;--accent-light:#a8875e;--accent-pale:#f0e6d8;
+  --success:#3a7d44;--fail:#b84233;--border:#ddd2c6;
+  --highlight:#fff7ed;--code-bg:#f5f0ea;
+  --nav-bg:#3b2f25;--nav-text:#f0e6d8;
+  --section-alt:#f5f0ea;
+}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:local('Inter Regular'),local('Inter-Regular')}
+body{
+  font-family:'Segoe UI','Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.65;
+  font-size:16px;-webkit-text-size-adjust:100%;
+  user-select:none;-webkit-user-select:none;
+}
+@media print{body{display:none}}
+
+/* WATERMARK */
+body::before{
+  content:'tutorwarren.com';position:fixed;top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(-35deg);
+  font-size:5rem;font-weight:700;color:rgba(122,92,62,0.04);
+  pointer-events:none;z-index:0;white-space:nowrap;
+  letter-spacing:0.1em;
+}
+
+/* NAVIGATION */
+.nav{
+  position:sticky;top:0;z-index:1000;
+  background:var(--nav-bg);color:var(--nav-text);
+  box-shadow:0 2px 12px rgba(0,0,0,0.15);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.6rem 1rem;flex-wrap:wrap;
+}
+.nav-brand{
+  font-weight:700;font-size:1.05rem;letter-spacing:0.02em;
+  color:#f0e6d8;margin-right:auto;white-space:nowrap;
+}
+.nav-brand span{color:var(--accent-light)}
+.nav-links{
+  display:flex;gap:0.25rem;flex-wrap:wrap;align-items:center;
+}
+.nav-links a{
+  color:var(--nav-text);text-decoration:none;
+  padding:0.35rem 0.65rem;border-radius:6px;
+  font-size:0.78rem;font-weight:500;transition:all 0.2s;
+  white-space:nowrap;
+}
+.nav-links a:hover,.nav-links a.active{
+  background:rgba(255,255,255,0.12);color:#fff;
+}
+.hamburger{
+  display:none;background:none;border:none;color:var(--nav-text);
+  font-size:1.5rem;cursor:pointer;padding:0.25rem;
+}
+@media(max-width:768px){
+  .hamburger{display:block}
+  .nav-links{
+    display:none;width:100%;flex-direction:column;
+    padding:0.5rem 0;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:0.5rem 0.75rem;font-size:0.85rem}
+}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#3b2f25 0%,#5a4535 60%,#7a5c3e 100%);
+  color:#fff;text-align:center;
+  padding:3.5rem 1.5rem 3rem;position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--accent-light),#d4a96a,var(--accent-light));
+}
+.hero h1{
+  font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;
+  letter-spacing:-0.02em;margin-bottom:0.5rem;
+}
+.hero p{
+  font-size:clamp(0.9rem,2vw,1.1rem);opacity:0.85;max-width:600px;margin:0 auto;
+}
+
+/* LAYOUT */
+.container{max-width:960px;margin:0 auto;padding:1rem 1.25rem 3rem}
+section{
+  margin-bottom:2.5rem;scroll-margin-top:60px;
+}
+.section-header{
+  background:var(--accent);color:#fff;
+  padding:1rem 1.25rem;border-radius:10px 10px 0 0;
+  font-size:1.15rem;font-weight:700;letter-spacing:0.01em;
+  display:flex;align-items:center;gap:0.6rem;
+}
+.section-header .icon{font-size:1.3rem}
+.section-body{
+  background:var(--card);border:1px solid var(--border);
+  border-top:none;border-radius:0 0 10px 10px;
+  padding:1.5rem 1.25rem;
+}
+h3{
+  color:var(--accent);font-size:1.05rem;font-weight:700;
+  margin:1.5rem 0 0.6rem;padding-bottom:0.3rem;
+  border-bottom:2px solid var(--accent-pale);
+}
+h3:first-child{margin-top:0}
+p{margin-bottom:0.75rem}
+strong{color:var(--accent)}
+
+/* FORMULA BOXES */
+.formula-box{
+  background:var(--highlight);border-left:4px solid var(--accent);
+  padding:1rem 1.25rem;border-radius:0 8px 8px 0;margin:1rem 0;
+  font-size:0.95rem;
+}
+.formula-box .formula{
+  font-family:'Courier New',monospace;font-size:1.1rem;
+  font-weight:700;color:var(--accent);margin:0.5rem 0;
+  text-align:center;
+}
+
+/* WORKED EXAMPLE */
+.worked-example{
+  background:#fff;border:2px solid var(--accent-pale);
+  border-radius:10px;margin:1.25rem 0;overflow:hidden;
+}
+.we-header{
+  background:var(--accent-pale);padding:0.75rem 1rem;
+  font-weight:700;color:var(--accent);font-size:0.95rem;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.we-body{padding:1rem 1.25rem}
+.step{
+  display:flex;gap:0.75rem;margin:0.6rem 0;align-items:flex-start;
+}
+.step-num{
+  flex-shrink:0;width:28px;height:28px;
+  background:var(--accent);color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.78rem;font-weight:700;margin-top:2px;
+}
+.step-content{flex:1;font-size:0.93rem}
+.step-content .calc{
+  font-family:'Courier New',monospace;
+  background:var(--code-bg);padding:0.2rem 0.5rem;
+  border-radius:4px;display:inline-block;margin:0.2rem 0;
+  font-size:0.9rem;
+}
+.result-box{
+  background:var(--success);color:#fff;
+  padding:0.6rem 1rem;border-radius:6px;
+  font-weight:700;text-align:center;margin-top:0.75rem;
+  font-size:0.95rem;
+}
+.result-fail{background:var(--fail)}
+
+/* INSIGHT BOX */
+.insight{
+  background:#f0f7f1;border-left:4px solid var(--success);
+  padding:0.75rem 1rem;border-radius:0 8px 8px 0;
+  margin:0.75rem 0;font-size:0.9rem;color:#2d5a34;
+}
+.insight::before{content:'💡 ';font-size:1rem}
+
+/* REFERENCE TABLE */
+.ref-table{
+  width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.88rem;
+}
+.ref-table th{
+  background:var(--accent);color:#fff;padding:0.6rem 0.75rem;
+  text-align:left;font-weight:600;font-size:0.82rem;
+  letter-spacing:0.03em;
+}
+.ref-table td{
+  padding:0.55rem 0.75rem;border-bottom:1px solid var(--border);
+}
+.ref-table tr:nth-child(even) td{background:var(--section-alt)}
+.ref-table tr:hover td{background:var(--accent-pale)}
+
+/* MCQ QUIZ */
+.quiz-container{counter-reset:quiz-q}
+.quiz-q{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;margin:1rem 0;overflow:hidden;
+  counter-increment:quiz-q;
+}
+.quiz-q-text{
+  padding:1rem 1.25rem;font-weight:600;font-size:0.95rem;
+  background:var(--section-alt);border-bottom:1px solid var(--border);
+}
+.quiz-q-text::before{
+  content:'Q' counter(quiz-q) '. ';color:var(--accent);font-weight:700;
+}
+.quiz-options{padding:0.75rem 1.25rem}
+.quiz-opt{
+  display:flex;align-items:center;gap:0.6rem;
+  padding:0.5rem 0.75rem;margin:0.3rem 0;border-radius:6px;
+  cursor:pointer;transition:all 0.2s;border:2px solid transparent;
+  font-size:0.9rem;
+}
+.quiz-opt:hover{background:var(--accent-pale)}
+.quiz-opt input{display:none}
+.quiz-opt .radio{
+  width:20px;height:20px;border-radius:50%;
+  border:2px solid var(--border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.quiz-opt.selected .radio{
+  border-color:var(--accent);background:var(--accent);
+}
+.quiz-opt.selected .radio::after{
+  content:'';width:8px;height:8px;background:#fff;border-radius:50%;
+}
+.quiz-opt.correct{
+  background:#e8f5e9;border-color:var(--success);
+}
+.quiz-opt.correct .radio{border-color:var(--success);background:var(--success)}
+.quiz-opt.wrong{
+  background:#fce4ec;border-color:var(--fail);
+}
+.quiz-opt.wrong .radio{border-color:var(--fail);background:var(--fail)}
+.quiz-feedback{
+  padding:0.75rem 1.25rem;border-top:1px solid var(--border);
+  font-size:0.88rem;display:none;
+}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct-fb{background:#e8f5e9;color:#2d5a34}
+.quiz-feedback.wrong-fb{background:#fce4ec;color:#8b2020}
+
+.quiz-controls{
+  text-align:center;margin:1.25rem 0;
+}
+.btn{
+  display:inline-block;padding:0.65rem 1.75rem;
+  background:var(--accent);color:#fff;border:none;
+  border-radius:8px;font-weight:600;font-size:0.9rem;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn:hover{background:#5c4430;transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn-outline{
+  background:transparent;color:var(--accent);
+  border:2px solid var(--accent);
+}
+.btn-outline:hover{background:var(--accent);color:#fff}
+
+.score-display{
+  text-align:center;padding:1.5rem;background:var(--highlight);
+  border-radius:10px;margin:1rem 0;display:none;
+}
+.score-display.show{display:block}
+.score-display .score-num{
+  font-size:2.5rem;font-weight:800;color:var(--accent);
+}
+.score-display .score-label{
+  font-size:0.95rem;color:var(--muted);margin-top:0.25rem;
+}
+
+/* KEY FACTS LIST */
+.key-facts{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:0.75rem;margin:1rem 0;
+}
+.key-fact{
+  background:var(--highlight);padding:0.75rem 1rem;
+  border-radius:8px;border-left:3px solid var(--accent);
+  font-size:0.9rem;
+}
+.key-fact .label{
+  font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;
+  color:var(--muted);font-weight:600;margin-bottom:0.2rem;
+}
+.key-fact .label sub{text-transform:lowercase}
+.key-fact .value{font-weight:700;color:var(--accent)}
+
+/* FLIP CARD */
+.flip-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1rem;margin:1rem 0;
+}
+.flip-card{
+  perspective:1000px;height:160px;cursor:pointer;
+}
+.flip-inner{
+  width:100%;height:100%;transition:transform 0.5s;
+  transform-style:preserve-3d;position:relative;
+}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border-radius:10px;display:flex;align-items:center;
+  justify-content:center;padding:1rem;text-align:center;
+  font-size:0.88rem;
+}
+.flip-front{
+  background:var(--accent);color:#fff;font-weight:600;
+}
+.flip-back{
+  background:var(--accent-pale);color:var(--text);
+  transform:rotateY(180deg);font-weight:500;
+  border:2px solid var(--accent);
+}
+
+/* TABS */
+.tab-bar{
+  display:flex;gap:0.25rem;border-bottom:2px solid var(--border);
+  margin-bottom:1rem;flex-wrap:wrap;
+}
+.tab-btn{
+  padding:0.6rem 1.1rem;background:none;border:none;
+  font-weight:600;color:var(--muted);cursor:pointer;
+  font-size:0.85rem;border-bottom:3px solid transparent;
+  margin-bottom:-2px;transition:all 0.2s;
+  white-space:nowrap;
+}
+.tab-btn:hover{color:var(--accent)}
+.tab-btn.active{
+  color:var(--accent);border-bottom-color:var(--accent);
+}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* PROGRESS BAR */
+.progress-bar{
+  width:100%;height:6px;background:var(--border);
+  border-radius:3px;margin:0.75rem 0;overflow:hidden;
+}
+.progress-fill{
+  height:100%;background:var(--success);border-radius:3px;
+  transition:width 0.4s ease;width:0%;
+}
+
+/* FOOTER */
+.footer{
+  background:var(--nav-bg);color:var(--nav-text);
+  text-align:center;padding:1.5rem;font-size:0.82rem;
+  margin-top:2rem;
+}
+.footer a{color:var(--accent-light)}
+
+/* Responsive */
+@media(max-width:600px){
+  .section-body{padding:1rem}
+  .worked-example .we-body{padding:0.75rem}
+  .flip-grid{grid-template-columns:1fr}
+  .key-facts{grid-template-columns:1fr}
+  .hero{padding:2.5rem 1rem 2rem}
+}
+
+/* Print protection */
+@media print{*{display:none!important}}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">tutor<span>warren</span>.com</div>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+    <div class="nav-links">
+      <a href="https://www.tutorwarren.com" style="background:rgba(255,255,255,0.1);border-radius:6px">🏠 Home</a>
+      <a href="#vd" onclick="closeMob()">Voltage Drop</a>
+      <a href="#vd-examples" onclick="closeMob()">Worked Examples</a>
+      <a href="#vd-quiz" onclick="closeMob()">VD Quiz</a>
+      <a href="#diversity" onclick="closeMob()">Diversity</a>
+      <a href="#overcurrent" onclick="closeMob()">Overcurrent</a>
+      <a href="#circuits" onclick="closeMob()">Circuits</a>
+      <a href="#trunking" onclick="closeMob()">Trunking</a>
+      <a href="#osg-quiz" onclick="closeMob()">OSG Quiz</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <h1 style="font-size:clamp(1.15rem,3vw,1.5rem);opacity:0.85;font-weight:600;margin-bottom:0.4rem">From Tables to Answers</h1>
+  <p style="font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;letter-spacing:-0.02em">Voltage Drop, Diversity &amp; Cable Sizing Calculations</p>
+  <p>Voltage Drop &amp; Cable Sizing · Diversity · Overcurrent Protection · Standard Circuits · Trunking Calculations · OSG Appendix Revision</p>
+</header>
+
+<div class="container">
+
+<!-- ===================== SECTION 1: VOLTAGE DROP THEORY ===================== -->
+<section id="vd">
+  <div class="section-header"><span class="icon">⚡</span> Voltage Drop &amp; Cable Sizing</div>
+  <div class="section-body">
+
+    <h3>1. Core Principles of Circuit Design</h3>
+    <p>To design a circuit safely, we follow this regulatory logic:</p>
+
+    <div class="key-facts">
+      <div class="key-fact">
+        <div class="label">I<sub>b</sub> — Design Current</div>
+        <div class="value">The actual load current the circuit must carry.</div>
+      </div>
+      <div class="key-fact">
+        <div class="label">I<sub>n</sub> — Nominal Rating</div>
+        <div class="value">The breaker / fuse size (I<sub>n</sub> ≥ I<sub>b</sub>).</div>
+      </div>
+      <div class="key-fact">
+        <div class="label">I<sub>t</sub> — Tabulated Current</div>
+        <div class="value">Min. cable rating after applying Correction Factors.</div>
+      </div>
+      <div class="key-fact">
+        <div class="label">V<sub>d</sub> — Voltage Drop</div>
+        <div class="value">The loss of voltage over the cable length.</div>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <strong>Statutory Voltage Drop Limits (230 V Supply)</strong>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-top:0.5rem">
+        <div>🔦 <strong>Lighting:</strong> 3% = max <strong>6.9 V</strong></div>
+        <div>🔌 <strong>Power / Other:</strong> 5% = max <strong>11.5 V</strong></div>
+      </div>
+    </div>
+
+    <h3>2. Step 1 — Calculating I<sub>t</sub></h3>
+    <div class="formula-box">
+      <div class="formula">I<sub>t</sub> ≥ I<sub>n</sub> / (C<sub>a</sub> × C<sub>g</sub> × C<sub>i</sub> × C<sub>f</sub>)</div>
+    </div>
+
+    <table class="ref-table">
+      <thead><tr><th>Factor</th><th>Meaning</th><th>OSG Table</th></tr></thead>
+      <tbody>
+        <tr><td><strong>C<sub>a</sub></strong></td><td>Ambient Temperature (if &gt; 30 °C)</td><td>Table F1</td></tr>
+        <tr><td><strong>C<sub>i</sub></strong></td><td>Thermal Insulation (thickness dependent)</td><td>Table F2</td></tr>
+        <tr><td><strong>C<sub>g</sub></strong></td><td>Grouping (bunched cables)</td><td>Table F3</td></tr>
+        <tr><td><strong>C<sub>f</sub></strong></td><td>Rewirable Fuse (BS 3036)</td><td>0.725 (Constant)</td></tr>
+      </tbody>
+    </table>
+    <div class="insight">Only apply C<sub>f</sub> = 0.725 when the protective device is a BS 3036 semi-enclosed (rewirable) fuse. For MCBs and cartridge fuses, C<sub>f</sub> = 1.</div>
+
+    <h3>3. Step 2 — Calculating Voltage Drop (V<sub>d</sub>)</h3>
+    <div class="formula-box">
+      <div class="formula">V<sub>d</sub> = (mV/A/m × I<sub>b</sub> × L) / 1000</div>
+      <p style="margin:0.5rem 0 0;font-size:0.88rem"><strong>mV/A/m</strong> = millivolt drop per amp per metre (from OSG Table F4 / F6) · <strong>I<sub>b</sub></strong> = design current · <strong>L</strong> = cable length in metres</p>
+      <p style="margin:0.4rem 0 0;font-size:0.88rem">We divide by 1000 because the table values are in <em>millivolts</em>, but we need our answer in <em>Volts</em>.</p>
+    </div>
+
+    <h3>Quick Reference — Twin &amp; Earth Cable Data</h3>
+    <table class="ref-table">
+      <thead><tr><th>Cable Size (mm²)</th><th>Method C (Amps)</th><th>Method B (Amps)</th><th>Method A (Amps)</th><th>mV/A/m</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1.0</strong></td><td>16</td><td>13</td><td>11.5</td><td>44</td></tr>
+        <tr><td><strong>1.5</strong></td><td>20</td><td>16.5</td><td>14.5</td><td>29</td></tr>
+        <tr><td><strong>2.5</strong></td><td>27</td><td>23</td><td>20</td><td>18</td></tr>
+        <tr><td><strong>4.0</strong></td><td>37</td><td>30</td><td>26</td><td>11</td></tr>
+        <tr><td><strong>6.0</strong></td><td>47</td><td>38</td><td>32</td><td>7.3</td></tr>
+        <tr><td><strong>10.0</strong></td><td>64</td><td>50</td><td>34</td><td>4.4</td></tr>
+        <tr><td><strong>16.0</strong></td><td>85</td><td>68</td><td>46</td><td>2.8</td></tr>
+      </tbody>
+    </table>
+    <div class="insight">As the cross-sectional area increases, the mV/A/m value <em>decreases</em> — thicker cables have lower resistance and therefore less voltage drop.</div>
+
+  </div>
+</section>
+
+<!-- ===================== SECTION 2: WORKED EXAMPLES ===================== -->
+<section id="vd-examples">
+  <div class="section-header"><span class="icon">📝</span> Voltage Drop — Worked Examples</div>
+  <div class="section-body">
+
+    <!-- Example 1 -->
+    <div class="worked-example">
+      <div class="we-header">📐 Example 1: Method C — Clipped Direct (Ambient Temp.)</div>
+      <div class="we-body">
+        <p><strong>Question:</strong> A 230 V radial supplies a <strong>16 A</strong> load (I<sub>b</sub>) using a <strong>20 A MCB</strong> (I<sub>n</sub>). The <strong>20 m</strong> cable is Clipped Direct (Method C) at <strong>40 °C</strong>.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Calculate I<sub>t</sub></strong> (only C<sub>a</sub> applies at 40 °C → C<sub>a</sub> = 0.87):<br><span class="calc">I<sub>t</sub> = 20 / 0.87 = <strong>22.98 A</strong></span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Select Cable</strong> — Table F4 (Method C): 1.5 mm² handles 20 A (too small). <strong>Select 2.5 mm²</strong> (handles 27 A).</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate V<sub>d</sub></strong>:<br><span class="calc">V<sub>d</sub> = (18 × 16 × 20) / 1000 = <strong>5.76 V</strong></span></div></div>
+        <div class="result-box">✓ PASS — 5.76 V is within the 11.5 V limit (5% for power)</div>
+      </div>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="worked-example">
+      <div class="we-header">📐 Example 2: Method B — In Trunking (Grouping)</div>
+      <div class="we-body">
+        <p><strong>Question:</strong> A 32 A Ring (I<sub>b</sub> = 25 A) is in <strong>Trunking (Method B)</strong> grouped with <strong>two other circuits</strong>. Length is <strong>25 m</strong>.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Calculate I<sub>t</sub></strong> (3 circuits grouped → C<sub>g</sub> = 0.70):<br><span class="calc">I<sub>t</sub> = 32 / 0.70 = <strong>45.71 A</strong></span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Select Cable</strong> — Table F4 (Method B): 6 mm² handles 38 A (too small). <strong>Select 10 mm²</strong> (handles 50 A).</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate V<sub>d</sub></strong>:<br><span class="calc">V<sub>d</sub> = (4.4 × 25 × 25) / 1000 = <strong>2.75 V</strong></span></div></div>
+        <div class="result-box">✓ PASS — 2.75 V is well within the 11.5 V limit</div>
+      </div>
+    </div>
+
+    <!-- Example 3 -->
+    <div class="worked-example">
+      <div class="we-header">📐 Example 3: Method 101 — In Thermal Insulation</div>
+      <div class="we-body">
+        <p><strong>Question:</strong> A <strong>3 A</strong> lighting load (I<sub>b</sub>) uses a <strong>6 A MCB</strong> (I<sub>n</sub>). The <strong>30 m</strong> cable is in a loft, touching a ceiling, and is <strong>totally surrounded by 150 mm of insulation</strong> (Method 101).</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Calculate I<sub>t</sub></strong> (insulation &gt; 100 mm → C<sub>i</sub> = 0.50 from Table F2):<br><span class="calc">I<sub>t</sub> = 6 / 0.50 = <strong>12 A</strong></span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Select Cable</strong> — Table F6 (Method 101): 1.5 mm² handles 10.5 A (too small). <strong>Select 2.5 mm²</strong> (handles 13.5 A).</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate V<sub>d</sub></strong>:<br><span class="calc">V<sub>d</sub> = (18 × 3 × 30) / 1000 = <strong>1.62 V</strong></span></div></div>
+        <div class="result-box">✓ PASS — 1.62 V is well within the 6.9 V limit (3% for lighting)</div>
+      </div>
+    </div>
+
+    <!-- Example 4 -->
+    <div class="worked-example">
+      <div class="we-header">📐 Example 4: Method C — Rewirable Fuse (BS 3036)</div>
+      <div class="we-body">
+        <p><strong>Question:</strong> A <strong>10 A</strong> heater (I<sub>b</sub>) uses a <strong>15 A BS 3036</strong> fuse. The <strong>40 m</strong> cable is <strong>Clipped Direct (Method C)</strong>.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Calculate I<sub>t</sub></strong> (BS 3036 → C<sub>f</sub> = 0.725):<br><span class="calc">I<sub>t</sub> = 15 / 0.725 = <strong>20.68 A</strong></span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Select Cable</strong> — Table F4 (Method C): <strong>Select 2.5 mm²</strong> (handles 27 A).</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate V<sub>d</sub></strong>:<br><span class="calc">V<sub>d</sub> = (18 × 10 × 40) / 1000 = <strong>7.2 V</strong></span></div></div>
+        <div class="result-box">✓ PASS — 7.2 V is within the 11.5 V limit</div>
+      </div>
+    </div>
+
+    <!-- Example 5 -->
+    <div class="worked-example">
+      <div class="we-header">📐 Example 5: Method A — Multiple Factors (C<sub>a</sub> + C<sub>g</sub>)</div>
+      <div class="we-body">
+        <p><strong>Question:</strong> A 32 A cooker (I<sub>b</sub> = 28 A) is in <strong>Conduit in an insulated wall (Method A)</strong>. Ambient temp is <strong>35 °C</strong> and it is grouped with <strong>one other circuit</strong> for <strong>15 m</strong>.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Calculate I<sub>t</sub></strong> (C<sub>a</sub> = 0.94 at 35 °C, C<sub>g</sub> = 0.80 for 2 circuits):<br><span class="calc">I<sub>t</sub> = 32 / (0.94 × 0.80) = 32 / 0.752 = <strong>42.55 A</strong></span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Select Cable</strong> — OSG Table F4 (Method A): 10 mm² handles 34 A (too small). <strong>Select 16 mm²</strong> (handles 43 A).</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate V<sub>d</sub></strong>:<br><span class="calc">V<sub>d</sub> = (2.8 × 28 × 15) / 1000 = <strong>1.18 V</strong></span></div></div>
+        <div class="result-box">✓ PASS — 1.18 V is well within the 11.5 V limit</div>
+      </div>
+    </div>
+
+    <div class="insight">If your calculated voltage drop is too high, the most common solution is to <strong>increase the cross-sectional area of the cable</strong> (e.g. jump from 2.5 mm² to 4 mm²). This lowers the mV/A/m value and therefore reduces the voltage drop.</div>
+
+  </div>
+</section>
+
+<!-- ===================== SECTION 3: VOLTAGE DROP MCQ QUIZ ===================== -->
+<section id="vd-quiz">
+  <div class="section-header"><span class="icon">🧪</span> Voltage Drop — Multiple Choice Quiz</div>
+  <div class="section-body">
+    <p>Test your knowledge on voltage drop and cable sizing. Select an answer then check your results.</p>
+    <div class="progress-bar"><div class="progress-fill" id="vdProgress"></div></div>
+    <div class="quiz-container" id="vdQuizContainer"></div>
+    <div class="quiz-controls">
+      <button class="btn" onclick="checkQuiz('vd')">Check My Answers</button>
+      <button class="btn btn-outline" onclick="resetQuiz('vd')" style="margin-left:0.5rem">Reset</button>
+    </div>
+    <div class="score-display" id="vdScore">
+      <div class="score-num" id="vdScoreNum">0/20</div>
+      <div class="score-label">Correct Answers</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 4: DIVERSITY ===================== -->
+<section id="diversity">
+  <div class="section-header"><span class="icon">📊</span> Maximum Demand &amp; Diversity (OSG Appendix A)</div>
+  <div class="section-body">
+
+    <h3>What is Diversity?</h3>
+    <p><strong>Diversity</strong> recognises that not all appliances in a building will operate at full power at the same time. For example, in a typical home, it is highly unlikely that every light, the oven, the shower, and all plug-in heaters will all be switched on simultaneously.</p>
+    <p>OSG <strong>Appendix A</strong> provides <strong>diversity factors</strong> based on years of industry experience that allow us to estimate a realistic <em>maximum demand</em> rather than an oversized theoretical total.</p>
+
+    <div class="formula-box">
+      <strong>Why Use Diversity?</strong>
+      <p style="margin:0.5rem 0 0">① Prevents over-engineering — avoids unnecessarily large, expensive cables and switchgear.<br>
+      ② Reflects realistic usage patterns — load is spread over time.<br>
+      ③ Balances safety and economy — the installation is safe but not wastefully oversized.</p>
+    </div>
+
+    <h3>Key Diversity Rules (Domestic)</h3>
+    <table class="ref-table">
+      <thead><tr><th>Circuit Type</th><th>Diversity Rule</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Cooking Appliance</strong></td><td>First <strong>10 A</strong> + <strong>30%</strong> of remainder + <strong>5 A</strong> if socket on cooker unit</td></tr>
+        <tr><td><strong>Lighting</strong></td><td><strong>66%</strong> of total connected load</td></tr>
+        <tr><td><strong>Socket Outlets</strong></td><td><strong>100%</strong> of largest circuit + <strong>40%</strong> of each additional circuit</td></tr>
+        <tr><td><strong>Space Heating</strong></td><td><strong>100%</strong> of largest + <strong>75%</strong> of remainder</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Diversity Worked Examples -->
+    <div class="worked-example">
+      <div class="we-header">📐 Example 1: Cooking Appliance (with socket)</div>
+      <div class="we-body">
+        <p><strong>Scenario:</strong> A <strong>32 A</strong> rated electric cooker with a socket on the control unit.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content">Take the first <strong>10 A</strong>.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">Remaining current: <span class="calc">32 − 10 = 22 A</span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">30% of remainder: <span class="calc">22 × 0.3 = 6.6 A</span></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">Add 5 A for the socket on the cooker unit.</div></div>
+        <div class="result-box">Assumed Demand: 10 + 6.6 + 5 = 21.6 A</div>
+        <div class="insight">Even though the cooker could draw 32 A, we assume only about 21.6 A because thermostats will cycle the heating elements on and off.</div>
+      </div>
+    </div>
+
+    <div class="worked-example">
+      <div class="we-header">📐 Example 2: Lighting Circuits</div>
+      <div class="we-body">
+        <p><strong>Scenario:</strong> A house has 20 LED downlights, each rated at 10 W. Total load = 200 W.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content">Find the current: <span class="calc">I = P / V = 200 / 230 = 0.87 A</span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">Apply 66% diversity: <span class="calc">0.87 × 0.66 = 0.57 A</span></div></div>
+        <div class="result-box">Assumed Demand: 0.57 A</div>
+      </div>
+    </div>
+
+    <div class="worked-example">
+      <div class="we-header">📐 Example 3: Socket Outlets (Multiple Circuits)</div>
+      <div class="we-body">
+        <p><strong>Scenario:</strong> A house with three 32 A ring final circuits (Kitchen, Downstairs, Upstairs).</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content">Circuit 1 (Kitchen — largest): <span class="calc">100% = 32 A</span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">Circuit 2 (Downstairs): <span class="calc">40% × 32 = 12.8 A</span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">Circuit 3 (Upstairs): <span class="calc">40% × 32 = 12.8 A</span></div></div>
+        <div class="result-box">Assumed Demand: 32 + 12.8 + 12.8 = 57.6 A</div>
+        <div class="insight">Without diversity: 32 + 32 + 32 = 96 A. Diversity acknowledges you won't be boiling three kettles and running three vacuums in different rooms at the same second!</div>
+      </div>
+    </div>
+
+    <h3>Practice Questions</h3>
+
+    <div class="worked-example">
+      <div class="we-header">❓ Practice 1: 45 A Cooker (No Socket)</div>
+      <div class="we-body">
+        <p><strong>Task:</strong> Using the standard cooker diversity rule, calculate the assumed demand for a <strong>45 A</strong> rated electric range cooker. The cooker control unit does <strong>not</strong> have a socket outlet.</p>
+        <details style="margin-top:0.75rem">
+          <summary style="cursor:pointer;font-weight:600;color:var(--accent)">Reveal Answer</summary>
+          <div style="margin-top:0.75rem">
+            <div class="step"><div class="step-num">1</div><div class="step-content">Take the first <strong>10 A</strong>.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-content">Remainder: <span class="calc">45 − 10 = 35 A</span></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-content">30% of remainder: <span class="calc">35 × 0.3 = 10.5 A</span></div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-content">No socket, so nothing extra to add.</div></div>
+            <div class="result-box">Assumed Demand: 10 + 10.5 = 20.5 A</div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="worked-example">
+      <div class="we-header">❓ Practice 2: Small Studio Flat — Total Demand</div>
+      <div class="we-body">
+        <p><strong>Task:</strong> Calculate the total assumed demand for a flat with: one 32 A Ring (sockets), one 32 A Radial (additional sockets), and one 6 A lighting circuit (actual load 4 A).</p>
+        <details style="margin-top:0.75rem">
+          <summary style="cursor:pointer;font-weight:600;color:var(--accent)">Reveal Answer</summary>
+          <div style="margin-top:0.75rem">
+            <div class="step"><div class="step-num">1</div><div class="step-content">Socket Circuit 1 (largest): <span class="calc">100% = 32 A</span></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-content">Socket Circuit 2: <span class="calc">40% × 32 = 12.8 A</span></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-content">Lighting (66% of <em>actual</em> load, not breaker size): <span class="calc">4 × 0.66 = 2.64 A</span></div></div>
+            <div class="result-box">Total Assumed Demand: 32 + 12.8 + 2.64 = 47.44 A</div>
+            <div class="insight">Without diversity the total would be 32 + 32 + 6 = 70 A. Many older UK flats have a 60 A main fuse — without diversity it looks inadequate, but with diversity the 47.44 A load is perfectly safe.</div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== SECTION 5: OVERCURRENT PROTECTION ===================== -->
+<section id="overcurrent">
+  <div class="section-header"><span class="icon">🛡️</span> Overcurrent Protection &amp; Protective Devices</div>
+  <div class="section-body">
+
+    <h3>Types of Faults</h3>
+    <div class="flip-grid">
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">Overload Fault</div>
+          <div class="flip-back">Circuit is electrically sound, but too many appliances draw more current than the circuit is designed for.</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">Short Circuit Fault</div>
+          <div class="flip-back">An overcurrent resulting from a fault of small resistance between two live conductors at different potentials under normal conditions.</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">Earth Fault</div>
+          <div class="flip-back">Current flows between an exposed or extraneous conductive part and earth via the earth path to the protective device.</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">In-Rush Current</div>
+          <div class="flip-back">A brief, high surge of current when equipment first starts — common with motors, transformers, and discharge lighting.</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:0.82rem;color:var(--muted);text-align:center;margin-top:0.25rem">Tap / click each card to reveal the definition</p>
+
+    <h3>Key Definitions</h3>
+    <div class="formula-box">
+      <p><strong>Fuse:</strong> Provides local protection of the circuit from overload. Used in domestic and similar premises.</p>
+      <p style="margin-bottom:0"><strong>Basic Protection:</strong> A physical barrier between a person / livestock and a live part.<br>
+      <strong>Fault Protection:</strong> Current flowing between exposed/extraneous conductive parts and earth — the earth path allows this current to reach the protective device.</p>
+    </div>
+
+    <h3>Overcurrent Selection Rule</h3>
+    <div class="formula-box">
+      <div class="formula">I<sub>b</sub> ≤ I<sub>n</sub> ≤ I<sub>z</sub></div>
+      <p style="margin:0.5rem 0 0;font-size:0.88rem">The design current must not exceed the device rating, and the device rating must not exceed the cable's current-carrying capacity.</p>
+    </div>
+
+    <h3>Prospective Fault Current (PFC)</h3>
+    <div class="formula-box">
+      <div class="formula">I<sub>pf</sub> = U₀ / Z<sub>e</sub></div>
+    </div>
+    <div class="key-facts">
+      <div class="key-fact"><div class="label">TNS System — Z<sub>e</sub> = 0.8 Ω</div><div class="value">PFC = 230 / 0.8 = 287.5 A ≈ 290 A</div></div>
+      <div class="key-fact"><div class="label">TNC-S System — Z<sub>e</sub> = 0.35 Ω</div><div class="value">PFC = 230 / 0.35 = 657 A ≈ 660 A</div></div>
+    </div>
+
+    <h3>Protective Devices Comparison</h3>
+    <table class="ref-table">
+      <thead><tr><th>Device</th><th>Advantages</th><th>Disadvantages</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Re-wireable Fuse</strong><br>(BS 3036)</td>
+          <td>No moving parts · Cheap · Low replacement cost</td>
+          <td>Incorrect element size can be fitted · Slow to repair · Poor breaking capacity</td>
+        </tr>
+        <tr>
+          <td><strong>Cartridge Fuse</strong><br>(BS 1361)</td>
+          <td>No moving parts · Small physical size · Accurate current rating</td>
+          <td>Incorrect cartridge can be fitted · Not suitable for high fault current · Can be shorted out</td>
+        </tr>
+        <tr>
+          <td><strong>MCB</strong><br>(BS EN 60898)</td>
+          <td>Tamper proof · Supply quickly restored · Pre-set tripping characteristics</td>
+          <td>Expensive · Regular testing required · Has moving parts</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>MCB Types</h3>
+    <table class="ref-table">
+      <thead><tr><th>Type</th><th>Trip Range</th><th>Best Suited For</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Type B</strong></td><td>3–5 × I<sub>n</sub></td><td>Domestic ring mains, lighting, sockets</td></tr>
+        <tr><td><strong>Type C</strong></td><td>5–10 × I<sub>n</sub></td><td>Discharge lighting in large premises (e.g. supermarket)</td></tr>
+        <tr><td><strong>Type D</strong></td><td>10–20 × I<sub>n</sub></td><td>Welding and X-ray machines (large in-rush currents)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>RCD &amp; RCBO</h3>
+    <div class="key-facts">
+      <div class="key-fact"><div class="label">RCD</div><div class="value">Protects against earth faults only. Measures incoming vs outgoing current and trips if there is a difference.</div></div>
+      <div class="key-fact"><div class="label">RCBO</div><div class="value">Combines overload protection AND earth fault protection in one device.</div></div>
+    </div>
+    <div class="insight">An RCD does <strong>not</strong> protect against overload or short-circuit current — it only protects against earth fault current. That's why RCBOs are increasingly preferred.</div>
+
+    <h3>Discrimination</h3>
+    <p>For effective discrimination, protective devices should be sized from <strong>smallest at the load</strong> to <strong>largest at the supply</strong>: e.g. 13 A at the socket → 32 A at the distribution board → 100 A at the main switch.</p>
+
+  </div>
+</section>
+
+<!-- ===================== SECTION 6: STANDARD CIRCUITS ===================== -->
+<section id="circuits">
+  <div class="section-header"><span class="icon">🔌</span> Standard Ring &amp; Radial Final Circuits</div>
+  <div class="section-body">
+
+    <h3>Ring vs. Radial — Key Difference</h3>
+    <div class="key-facts">
+      <div class="key-fact"><div class="label">Ring Final Circuit (A1)</div><div class="value">Phase, neutral and CPC all loop out from the CU, through each socket, and <strong>return</strong> to the CU.</div></div>
+      <div class="key-fact"><div class="label">Radial Circuit (A2 / A3)</div><div class="value">Phase, neutral and CPC loop out from the CU, through each socket, and do <strong>not</strong> return to the CU.</div></div>
+    </div>
+
+    <h3>Circuit Specifications (BS 7671)</h3>
+    <table class="ref-table">
+      <thead><tr><th>Spec</th><th>A1 — Ring</th><th>A2 — Radial (20 A)</th><th>A3 — Radial (32 A)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>MCB Size</strong></td><td>32 A</td><td>20 A</td><td>32 A</td></tr>
+        <tr><td><strong>Live Cable</strong></td><td>2.5 mm²</td><td>2.5 mm²</td><td>4 mm²</td></tr>
+        <tr><td><strong>Max Floor Area</strong></td><td>100 m²</td><td>50 m²</td><td>75 m²</td></tr>
+        <tr><td><strong>Max Sockets</strong></td><td>No limit</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Spurs &amp; Additional Rules</h3>
+    <table class="ref-table">
+      <thead><tr><th>Rule</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Non-fused spur</strong></td><td>May only feed <strong>one</strong> single or twin socket outlet</td></tr>
+        <tr><td><strong>Fused spurs</strong></td><td><strong>Unlimited</strong> number allowed from a ring</td></tr>
+        <tr><td><strong>Fused spur fuse (BS 1362)</strong></td><td>Must not exceed <strong>13 A</strong></td></tr>
+        <tr><td><strong>Permanently connected equipment</strong></td><td>Protected by breaker not exceeding <strong>16 A</strong></td></tr>
+        <tr><td><strong>Cooker control unit distance</strong></td><td>Within <strong>2 m</strong> of the cooker</td></tr>
+        <tr><td><strong>Cooker control unit position</strong></td><td>Must <strong>not</strong> be located directly above the unit</td></tr>
+        <tr><td><strong>Water heater (&gt; 15 litres)</strong></td><td>Must be on its own <strong>separate circuit</strong></td></tr>
+        <tr><td><strong>Socket/switch heights (new dwellings)</strong></td><td><strong>450 mm to 1200 mm</strong> from floor</td></tr>
+        <tr><td><strong>RCD protection for sockets &lt; 20 A</strong></td><td><strong>30 mA</strong> RCD required</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Recommended Socket Outlets per Room</h3>
+    <table class="ref-table">
+      <thead><tr><th>Room</th><th>Small (&lt;12 m²)</th><th>Medium (12–25 m²)</th><th>Large (&gt;25 m²)</th></tr></thead>
+      <tbody>
+        <tr><td>Living Room</td><td>4</td><td>6</td><td>8</td></tr>
+        <tr><td>Dining Room</td><td>3</td><td>4</td><td>5</td></tr>
+        <tr><td>Single Bedroom</td><td>2</td><td>3</td><td>4</td></tr>
+        <tr><td>Double Bedroom</td><td>3</td><td>4</td><td>5</td></tr>
+        <tr><td>Study</td><td>4</td><td>5</td><td>6</td></tr>
+        <tr><td>Kitchen</td><td>6</td><td>8</td><td>10</td></tr>
+        <tr><td>Bathroom</td><td>0</td><td>0</td><td>0</td></tr>
+      </tbody>
+    </table>
+
+  </div>
+</section>
+
+<!-- ===================== SECTION 7: TRUNKING ===================== -->
+<section id="trunking">
+  <div class="section-header"><span class="icon">📏</span> Trunking Size Calculation</div>
+  <div class="section-body">
+
+    <h3>The Rule</h3>
+    <div class="formula-box">
+      <div class="formula">Sum of Cable Factors ≤ Trunking Factor</div>
+      <p style="margin:0.5rem 0 0;font-size:0.88rem">Look up each cable's <strong>factor</strong> from the tables (e.g. Table 3.4 / OSG Table E3), multiply by the quantity, sum them, then pick a trunking size whose factor meets or exceeds that sum (Table 3.5 / OSG Table E5).</p>
+    </div>
+
+    <div class="worked-example">
+      <div class="we-header">📐 Example 1: Small Load</div>
+      <div class="we-body">
+        <p><strong>Requirement:</strong> 10 × 1.5 mm² solid PVC + 5 × 2.5 mm² solid PVC.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Find factors:</strong> 1.5 mm² solid = 8.0 · 2.5 mm² solid = 11.9</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate sum:</strong><br><span class="calc">(10 × 8.0) + (5 × 11.9) = 80 + 59.5 = <strong>139.5</strong></span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Select Trunking:</strong> We need a factor ≥ 139.5.</div></div>
+        <div class="result-box">Minimum Size: 50 × 38 mm (Factor 767)</div>
+      </div>
+    </div>
+
+    <div class="worked-example">
+      <div class="we-header">📐 Example 2: Medium Load</div>
+      <div class="we-body">
+        <p><strong>Requirement:</strong> 30 × 4.0 mm² stranded PVC + 20 × 6.0 mm² stranded PVC.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Find factors:</strong> 4.0 mm² stranded = 16.6 · 6.0 mm² stranded = 21.2</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate sum:</strong><br><span class="calc">(30 × 16.6) + (20 × 21.2) = 498 + 424 = <strong>922</strong></span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Select Trunking:</strong> We need a factor ≥ 922.</div></div>
+        <div class="result-box">Minimum Size: 100 × 25 mm (Factor 993)</div>
+      </div>
+    </div>
+
+    <div class="worked-example">
+      <div class="we-header">📐 Example 3: Larger Load</div>
+      <div class="we-body">
+        <p><strong>Requirement:</strong> 50 × 2.5 mm² stranded + 40 × 4.0 mm² stranded + 20 × 10 mm² stranded PVC.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Find factors:</strong> 2.5 mm² stranded = 12.6 · 4.0 mm² stranded = 16.6 · 10 mm² stranded = 35.3</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate sum:</strong><br><span class="calc">(50 × 12.6) + (40 × 16.6) + (20 × 35.3)</span><br><span class="calc">= 630 + 664 + 706 = <strong>2000</strong></span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Select Trunking:</strong> We need a factor ≥ 2000.</div></div>
+        <div class="result-box">Minimum Size: 100 × 50 mm (Factor 2091)</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== SECTION 8: OSG APPENDIX QUIZ ===================== -->
+<section id="osg-quiz">
+  <div class="section-header"><span class="icon">📚</span> OSG Appendix Revision — Quick-Fire Quiz</div>
+  <div class="section-body">
+    <p>Test yourself across all OSG Appendices (A–F). Select your answer then check your results.</p>
+    <div class="progress-bar"><div class="progress-fill" id="osgProgress"></div></div>
+    <div class="quiz-container" id="osgQuizContainer"></div>
+    <div class="quiz-controls">
+      <button class="btn" onclick="checkQuiz('osg')">Check My Answers</button>
+      <button class="btn btn-outline" onclick="resetQuiz('osg')" style="margin-left:0.5rem">Reset</button>
+    </div>
+    <div class="score-display" id="osgScore">
+      <div class="score-num" id="osgScoreNum">0/20</div>
+      <div class="score-label">Correct Answers</div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Developed by <strong><a href="https://www.tutorwarren.com">tutorwarren.com</a></strong> · Electrical Installation</p>
+  <p style="margin-top:0.25rem;opacity:0.7">For educational use only. Content aligned to BS 7671 18th Edition &amp; On-Site Guide.</p>
+</div>
+
+<script>
+// ======== MOBILE NAV ========
+function closeMob(){document.querySelector('.nav-links').classList.remove('open')}
+
+// ======== QUIZ DATA ========
+const quizData = {
+  vd: [
+    {q:"What is the maximum permitted voltage drop for a lighting circuit supplied directly from a public low-voltage distribution system?",opts:["3%","5%","6%","1.5%"],ans:0,exp:"Lighting circuits have a stricter limit of 3% to prevent visible flickering or dimming."},
+    {q:"Which OSG table is used to find the mV/A/m values for standard copper Twin & Earth cables?",opts:["Table F4","Table F1","Table F3","Table F2"],ans:0,exp:"Table F4 is the primary table for voltage drop (mV/A/m) for multi-core copper cables like Twin & Earth."},
+    {q:"What does the symbol 'Iᵇ' represent in the voltage drop formula?",opts:["Design current of the circuit","The rating of the protective device","Current-carrying capacity of the cable","Breaking capacity of the circuit breaker"],ans:0,exp:"Iᵇ is the actual load the circuit is designed to carry."},
+    {q:"If a cable is surrounded by thermal insulation for a length of 100 mm, which factor from Table F2 should be applied?",opts:["0.78","0.5","1.0","0.87"],ans:0,exp:"OSG Table F2 provides specific factors for cables in short lengths of insulation (100 mm = 0.78)."},
+    {q:"A 230 V radial circuit has a voltage drop limit of 5%. What is the maximum allowed voltage drop in Volts?",opts:["11.5 V","6.9 V","10 V","9.2 V"],ans:0,exp:"230 V × 0.05 (5%) = 11.5 V."},
+    {q:"When calculating voltage drop, why do we divide the final product of mV × I × L by 1000?",opts:["To convert millivolts to Volts","To account for Earth's resistance","To convert metres to kilometres","To apply the grouping factor"],ans:0,exp:"The cable data is in millivolts (1/1000th of a Volt), so we divide by 1000 for the final answer in Volts."},
+    {q:"Which factor is applied specifically when a semi-enclosed (rewirable) fuse (BS 3036) is used?",opts:["0.725","0.80","0.91","1.2"],ans:0,exp:"This constant (Cf) is only used for BS 3036 semi-enclosed (rewirable) fuses."},
+    {q:"In Table F3, if 3 circuits are grouped together, what is the Cg factor?",opts:["0.70","0.80","0.65","1.0"],ans:0,exp:"Per OSG Table F3, three circuits bunched together reduce the current capacity to 70% (0.70)."},
+    {q:"A 1.5 mm² cable has a mV/A/m value of 29. If the load is 10 A and the length is 20 m, what is the voltage drop?",opts:["5.8 V","2.9 V","58 V","0.58 V"],ans:0,exp:"(29 × 10 × 20) / 1000 = 5.8 V."},
+    {q:"If the ambient temperature in a room is 40 °C, which OSG table do you use for the Ca factor?",opts:["Table F1","Table F4","Table F6","Table 4D5"],ans:0,exp:"Table F1 provides correction factors (Ca) for temperatures other than 30 °C."},
+    {q:"What happens to the mV/A/m value as the cross-sectional area of a cable increases?",opts:["It decreases","It increases","It stays the same","It doubles"],ans:0,exp:"As a wire gets thicker, its resistance goes down, so the voltage drop (mV/A/m) also goes down."},
+    {q:"A power circuit has a calculated voltage drop of 12.5 V on a 230 V supply. Does this comply with the 18th Edition?",opts:["No, it exceeds the 11.5 V limit","Yes, it is within the 15 V limit","Yes, because it is under 10%","No, it exceeds the 6.9 V limit"],ans:0,exp:"The maximum for power is 5% (11.5 V). 12.5 V is a fail."},
+    {q:"Which of these factors is the 'Grouping' factor?",opts:["Cg","Ca","Ci","Cf"],ans:0,exp:"The subscript 'g' stands for Grouping."},
+    {q:"True or False: Voltage drop is only a concern for long cable runs.",opts:["True","False"],ans:1,exp:"Even a short cable can have a massive voltage drop if the current (Iᵇ) is extremely high or the cable is too thin."},
+    {q:"If your calculated voltage drop is too high, what is the most common solution?",opts:["Increase the cross-sectional area of the cable","Increase the circuit breaker size","Decrease the supply voltage","Use an aluminium cable of the same size"],ans:0,exp:"Using a thicker cable (e.g. jumping from 2.5 mm² to 4 mm²) is the standard way to fix a voltage drop fail."},
+    {q:"What is the mV/A/m for 6.0 mm² Twin and Earth cable according to Table F4?",opts:["7.3","11","4.4","18"],ans:0,exp:"You can find this value in the 6.0 mm² row of Table F4."},
+    {q:"Does applying Cg (grouping factor) change the mV/A/m value used for voltage drop?",opts:["Yes","No"],ans:1,exp:"Derating factors (C factors) change the allowed current (Iz), but the mV/A/m value is a physical constant of the cable size."},
+    {q:"A cable is completely surrounded by thermal insulation for 3 metres. What factor is used from the OSG (Table F2)?",opts:["0.5","0.78","0.63","1.0"],ans:0,exp:"For any length of insulation over 500 mm (0.5 m), the factor is 0.5 (half capacity)."},
+    {q:"Which of the following describes 'Design Current' (Iᵇ)?",opts:["The maximum current intended to be carried by the circuit in normal service","The current that will cause the fuse to blow","The highest possible fault current","The current-carrying capacity of the cable after derating"],ans:0,exp:"This is the standard definition of Iᵇ."},
+    {q:"Calculate the voltage drop: 4 mm² cable (mV/A/m = 11), Iᵇ = 32 A, L = 15 m.",opts:["5.28 V","3.52 V","52.8 V","1.1 V"],ans:0,exp:"(11 × 32 × 15) / 1000 = 5.28 V."}
+  ],
+  osg: [
+    {q:"3 lighting circuits (1 kW each) — what is the assumed demand after applying 66% domestic lighting diversity?",opts:["≈ 8.6 A","13 A","6 A","4.3 A"],ans:0,exp:"Total = 3 kW → I = 3000 ÷ 230 = 13 A → 66% = 8.6 A."},
+    {q:"Small hotel heaters (5 kW, 3 kW, 1 kW, 1 kW) — what is the diversified demand? (100% largest + 75% remainder)",opts:["≈ 38 A","≈ 43 A","≈ 30 A","≈ 25 A"],ans:0,exp:"Total 10 kW → 5 kW + 0.75 × 5 kW = 8.75 kW → 8750 ÷ 230 ≈ 38 A."},
+    {q:"A 5 kW cooker with socket outlet — what is the assumed demand using the cooker diversity rule?",opts:["≈ 18.5 A","≈ 21.7 A","≈ 15 A","≈ 25 A"],ans:0,exp:"I = 5000 ÷ 230 = 21.7 A → 10 + 0.3(11.7) + 5 = 18.5 A."},
+    {q:"What is the rating factor symbol for grouping?",opts:["Cg","Ca","Ci","Cf"],ans:0,exp:"'g' stands for Grouping."},
+    {q:"What is the maximum voltage drop allowed for lighting circuits?",opts:["3%","5%","6%","10%"],ans:0,exp:"Lighting has a stricter 3% limit."},
+    {q:"What is the ambient temperature correction factor (Ca) at 40 °C for 70 °C PVC cable?",opts:["0.87","0.94","0.79","1.0"],ans:0,exp:"From OSG Table F1, the Ca factor at 40 °C for 70 °C PVC is 0.87."},
+    {q:"A cable is surrounded by insulation for 400 mm. What Ci factor applies (Table F2)?",opts:["0.51","0.78","0.5","1.0"],ans:0,exp:"From OSG Table F2, 400 mm of surrounding insulation gives Ci = 0.51."},
+    {q:"Table F4(i) — what cable is needed for a 37 A load in conduit on a wall?",opts:["6 mm² (41 A capacity)","4 mm² (30 A capacity)","10 mm² (57 A capacity)","2.5 mm² (23 A capacity)"],ans:0,exp:"6 mm² handles 41 A — enough to carry 37 A."},
+    {q:"What is the current-carrying capacity of 2.5 mm² PVC twin & earth in an insulated stud wall?",opts:["≈ 13.5 A","≈ 20 A","≈ 27 A","≈ 16.5 A"],ans:0,exp:"From OSG Table F6, approximately 13.5 A."},
+    {q:"What is the required clip spacing for 10 mm² SWA cable (horizontal)?",opts:["350 mm","450 mm","250 mm","500 mm"],ans:0,exp:"From Table D1: 350 mm horizontal / 450 mm vertical."},
+    {q:"What is the minimum height for an aerial cable with vehicular access?",opts:["5.8 m","3.5 m","5.2 m","4.5 m"],ans:0,exp:"The required height for vehicular access is 5.8 m."},
+    {q:"What is the support spacing for 25×25 mm metal trunking (horizontal)?",opts:["0.75 m","1.0 m","0.5 m","1.5 m"],ans:0,exp:"0.75 m horizontal / 1.0 m vertical."},
+    {q:"Conduit sizing: 10 × 1.5 mm² solid (factor 27) + 6 × 2.5 mm² stranded (factor 43). Total cable factor?",opts:["528","370","458","600"],ans:0,exp:"(10 × 27) + (6 × 43) = 270 + 258 = 528. A 25 mm conduit (factor 800) is suitable."},
+    {q:"25 mm conduit, 8 m, two bends — how many 2.5 mm² stranded cables can be installed? (Conduit factor 442, cable factor 43)",opts:["10","12","8","15"],ans:0,exp:"442 ÷ 43 = 10.27 → answer is 10 (round down)."},
+    {q:"Steel trunking for 30 × 1.5 mm², 25 × 2.5 mm², 12 × 4 mm² — what size?",opts:["75 × 50 mm","50 × 38 mm","100 × 25 mm","100 × 50 mm"],ans:0,exp:"Applying trunking factors gives 75 × 50 mm."},
+    {q:"What is the maximum Zs for a 45 A BS 3036 fuse with 4 mm CPC (Table B1)?",opts:["1.2 Ω","0.8 Ω","1.84 Ω","2.0 Ω"],ans:0,exp:"From OSG Table B1 for a 45 A BS 3036 fuse with 4 mm cpc, max Zs = 1.2 Ω."},
+    {q:"What is the maximum Zs for a 32 A BS 88-2 fuse on a ring circuit?",opts:["0.8 Ω","1.2 Ω","1.09 Ω","0.6 Ω"],ans:0,exp:"Max Zs = 0.8 Ω for a 32 A BS 88-2 fuse."},
+    {q:"For a multicore thermosetting cable in an insulated wall, what size is needed for a 37 A load?",opts:["10 mm² (42 A capacity)","6 mm² (38 A capacity)","16 mm² (55 A capacity)","4 mm² (30 A capacity)"],ans:0,exp:"10 mm² handles 42 A, enough for a 37 A load."},
+    {q:"What size conduit is needed for 10 × 1.5 mm² solid + 6 × 2.5 mm² stranded cables? (Cable factor total = 528)",opts:["25 mm (factor 800)","20 mm (factor 460)","32 mm (factor 1300)","16 mm (factor 290)"],ans:0,exp:"We need a conduit factor ≥ 528. The 25 mm conduit with factor 800 is sufficient."},
+    {q:"What is the vertical clip spacing for 10 mm² SWA cable?",opts:["450 mm","350 mm","500 mm","300 mm"],ans:0,exp:"From Table D1: 350 mm horizontal / 450 mm vertical."}
+  ]
+};
+
+// ======== QUIZ RENDERING ========
+function buildQuiz(quizId){
+  const container = document.getElementById(quizId+'QuizContainer');
+  const data = quizData[quizId];
+  let html = '';
+  data.forEach((item,qi) => {
+    html += `<div class="quiz-q" data-qi="${qi}" data-ans="${item.ans}">
+      <div class="quiz-q-text">${item.q}</div>
+      <div class="quiz-options">`;
+    item.opts.forEach((opt,oi) => {
+      html += `<div class="quiz-opt" data-oi="${oi}" onclick="selectOpt(this,'${quizId}')">
+        <div class="radio"></div><span>${opt}</span>
+      </div>`;
+    });
+    html += `</div><div class="quiz-feedback" data-exp="${item.exp}"></div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function selectOpt(el, quizId){
+  const qEl = el.closest('.quiz-q');
+  if(qEl.classList.contains('checked')) return;
+  qEl.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  updateProgress(quizId);
+}
+
+function updateProgress(quizId){
+  const total = quizData[quizId].length;
+  const answered = document.querySelectorAll(`#${quizId}QuizContainer .quiz-opt.selected`).length;
+  const uniqueQs = new Set();
+  document.querySelectorAll(`#${quizId}QuizContainer .quiz-opt.selected`).forEach(el => {
+    uniqueQs.add(el.closest('.quiz-q').dataset.qi);
+  });
+  const pct = (uniqueQs.size / total) * 100;
+  document.getElementById(quizId+'Progress').style.width = pct+'%';
+}
+
+function checkQuiz(quizId){
+  const questions = document.querySelectorAll(`#${quizId}QuizContainer .quiz-q`);
+  let correct = 0;
+  questions.forEach(qEl => {
+    qEl.classList.add('checked');
+    const ans = parseInt(qEl.dataset.ans);
+    const selected = qEl.querySelector('.quiz-opt.selected');
+    const fb = qEl.querySelector('.quiz-feedback');
+    const correctOpt = qEl.querySelectorAll('.quiz-opt')[ans];
+    correctOpt.classList.add('correct');
+    if(selected){
+      const selIdx = parseInt(selected.dataset.oi);
+      if(selIdx === ans){
+        correct++;
+        fb.className = 'quiz-feedback show correct-fb';
+        fb.innerHTML = '✓ Correct! ' + fb.dataset.exp;
+      } else {
+        selected.classList.add('wrong');
+        fb.className = 'quiz-feedback show wrong-fb';
+        fb.innerHTML = '✗ Incorrect. ' + fb.dataset.exp;
+      }
+    } else {
+      fb.className = 'quiz-feedback show wrong-fb';
+      fb.innerHTML = '⚠ Not answered. ' + fb.dataset.exp;
+    }
+  });
+  const scoreEl = document.getElementById(quizId+'Score');
+  scoreEl.classList.add('show');
+  document.getElementById(quizId+'ScoreNum').textContent = correct + '/' + questions.length;
+  scoreEl.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function resetQuiz(quizId){
+  buildQuiz(quizId);
+  document.getElementById(quizId+'Score').classList.remove('show');
+  document.getElementById(quizId+'Progress').style.width = '0%';
+}
+
+// Init
+buildQuiz('vd');
+buildQuiz('osg');
+
+// Active nav highlight
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if(window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+  });
+});
+</script>
+</body>
+</html>
