@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EAL L3 Unit 8 (NELEC3/08B) Exam Revision | tutorwarren.com</title>
+<style>
+:root{--navy:#0f2342;--blue:#1d4e89;--teal:#0e9aa7;--amber:#f2a900;--bg:#f3f6fa;--ok:#1b8a4b;--bad:#c0392b}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,Arial,sans-serif;background:var(--bg);color:#1c2733;user-select:none;-webkit-user-select:none}
+h1,h2,h3{font-family:Georgia,serif;color:var(--navy)}
+nav{position:sticky;top:0;z-index:5;background:var(--navy);display:flex;flex-wrap:wrap;gap:4px;padding:8px 12px;align-items:center}
+nav a,nav button{background:none;border:0;color:#fff;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:15px;text-decoration:none}
+nav button.on,nav button:hover,nav a:hover{background:var(--teal)}nav .brand{margin-left:auto;color:var(--amber);font-family:Georgia,serif}
+header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:28px 20px}header h1{color:#fff;margin:0 0 6px}header p{margin:0;opacity:.9}
+main{max-width:900px;margin:auto;padding:18px}section{display:none}section.on{display:block}
+.card{background:#fff;border-radius:10px;padding:16px 18px;margin:12px 0;box-shadow:0 1px 4px #0002;border-left:5px solid var(--teal)}
+table{width:100%;border-collapse:collapse;background:#fff}td,th{padding:8px;border-bottom:1px solid #dde;text-align:left}th{background:var(--navy);color:#fff}
+.bar{height:10px;background:var(--amber);border-radius:5px}
+.f{background:#fff7e0;border:1px dashed var(--amber);padding:2px 8px;border-radius:5px;font-family:Consolas,monospace;white-space:nowrap}
+button.b{background:var(--blue);color:#fff;border:0;border-radius:8px;padding:10px 16px;margin:4px 4px 4px 0;cursor:pointer;font-size:15px}button.b:hover{background:var(--teal)}
+.flip{background:var(--navy);color:#fff;border-radius:12px;min-height:170px;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:20px;cursor:pointer;margin:12px 0}
+.flip.back{background:var(--teal)}.opt{display:block;width:100%;text-align:left;background:#fff;border:2px solid #cfd8e3;border-radius:8px;padding:10px;margin:6px 0;cursor:pointer;font-size:16px}
+.opt:hover{border-color:var(--teal)}.opt.ok{background:#d9f3e4;border-color:var(--ok)}.opt.no{background:#f9dcd8;border-color:var(--bad)}
+.exp{background:#eef6ff;padding:10px;border-radius:8px;margin-top:8px}.tag{display:inline-block;background:var(--amber);color:#000;border-radius:10px;padding:1px 9px;font-size:12px}
+#wm{position:fixed;inset:0;pointer-events:none;z-index:1;display:flex;align-items:center;justify-content:center;font-size:7vw;color:#0f234210;transform:rotate(-30deg);font-family:Georgia,serif}
+@media print{body{display:none}}
+</style></head><body oncontextmenu="return false">
+<div id="wm">tutorwarren.com</div>
+<nav><a href="index.html">🏠 Home</a><button data-t="ov" class="on">Exam Info</button><button data-t="nt">Notes</button><button data-t="fc">Flash Cards</button><button data-t="pq">Practice</button><button data-t="mk">Mock Exam</button><span class="brand">tutorwarren.com</span></nav>
+<header><h1>Unit NELEC3/08B: Electrical Science and Principles</h1><p>EAL Level 3 Electrical Installation · Exam revision suite</p></header>
+<main>
+<section id="ov" class="on">
+<div class="card"><h2>The exam</h2><p><b>On-screen MCQ and advanced question types · closed book · 30 questions · 60 minutes.</b> Pass mark normally around 50%. Non-programmable calculator allowed. One re-take only, and the centre-marked assignment must also be passed.</p></div>
+<h2>Where the marks are</h2><div id="wt"></div>
+<div class="card"><h3>Exam technique</h3><p>Allow about 2 minutes per question. Write down the formula, convert units first (kW to W, µF to F, mm² etc.), then calculate. Use BODMAS. On calculation MCQs, check your answer is sensible, as wrong options are often the result of common slips such as forgetting √3 or using poles instead of pole pairs.</p></div>
+</section>
+<section id="nt"><div id="notes"></div></section>
+<section id="fc"><div class="card"><select id="fcl" class="opt" style="width:auto"></select> <button class="b" onclick="shuf()">Shuffle</button></div>
+<div id="fcard" class="flip" onclick="flipc()"></div><div><button class="b" onclick="nc(-1)">◀ Prev</button><button class="b" onclick="nc(1)">Next ▶</button> <span id="fcn"></span></div></section>
+<section id="pq"><div class="card"><select id="pql" class="opt" style="width:auto"></select> <button class="b" onclick="startPQ()">Start</button></div><div id="pqa"></div></section>
+<section id="mk"><div class="card"><h3>Mock exam</h3><p>30 questions, weighted to match the real paper (2/4/7/5/7/2/3). 60-minute timer. Pass at 50%.</p><button class="b" onclick="startMock()">Start mock exam</button> <b id="tm"></b></div><div id="mka"></div></section>
+</main>
+<script>
+const LO=["Mathematical methods","Electronic components","AC circuits","Luminaires","DC machines & AC motors","Electrical components","Electric heating"];
+const W=[2,4,7,5,7,2,3];
+const NOTES=[
+["BODMAS: Brackets, Other (indices), Division, Multiplication, then Addition/Subtraction left to right. e.g. 6 + 4 × 2 = 14.","Like signs give positive, unlike signs give negative.","Percentage = (part ÷ whole) × 100. Voltage drop limits (BS 7671): <b>3%</b> lighting (6.9 V of 230 V), <b>5%</b> power (11.5 V of 230 V).","Prefixes: k = 10³, M = 10⁶, m = 10⁻³, µ = 10⁻⁶, n = 10⁻⁹, p = 10⁻¹².","Transposition: do the same to both sides. V = IR → R = V/I, I = V/R.","Pythagoras for right-angle triangles: c² = a² + b² (used for Z, S)."],
+["<b>Diode</b>: current one way only; rectification (AC to DC). <b>Bridge rectifier</b> uses 4 diodes for full-wave. <b>Smoothing capacitor</b> reduces ripple.","<b>Zener diode</b>: conducts in reverse at its breakdown voltage; used for voltage regulation.","<b>LED</b>: low energy light-emitting diode, needs current-limiting resistor.","<b>Transistor</b>: small base current controls larger collector current; used as switch/amplifier.","<b>Thyristor (SCR)</b>: gate pulse turns on, then latches until current falls; DC/half-wave control. <b>Triac</b>: controls AC in both directions (dimmers, motor speed).","<b>Thermistor</b> (temperature), <b>LDR</b> (light) change resistance with conditions. Capacitor stores charge; resistor limits current."],
+["<span class='f'>X<sub>L</sub> = 2πfL</span> (rises with frequency) · <span class='f'>X<sub>C</sub> = 1/(2πfC)</span> (falls with frequency).","<span class='f'>Z = √(R² + (X<sub>L</sub> − X<sub>C</sub>)²)</span>. Inductive: current lags voltage. Capacitive: current leads (CIVIL).","<span class='f'>P = VI cosφ</span> (W) · <span class='f'>S = VI</span> (VA) · <span class='f'>Q = VI sinφ</span> (var) · <span class='f'>pf = P/S = cosφ</span>.","Power factor correction: connect <b>capacitors</b> across inductive loads (or use a synchronous motor) to reduce current and losses.","Star: V<sub>L</sub> = √3 V<sub>ph</sub>, I<sub>L</sub> = I<sub>ph</sub>. Delta: V<sub>L</sub> = V<sub>ph</sub>, I<sub>L</sub> = √3 I<sub>ph</sub>. 3-phase power <span class='f'>P = √3 V<sub>L</sub>I<sub>L</sub> cosφ</span>.","Balanced 3-phase 4-wire: neutral current = 0. Unbalanced: use phasor addition. RMS = 0.707 × peak; f = 1/T."],
+["Luminous flux (lumen, lm) · luminous intensity (candela, cd) · illuminance (lux = lm/m²) · efficacy (lm/W).","<b>Inverse square law</b>: <span class='f'>E = I/d²</span>. <b>Cosine law</b>: <span class='f'>E = I cosθ / h²</span>.","<b>Lumen method</b>: <span class='f'>N = (E × A) / (F × UF × MF)</span>. Round N up.","Discharge lamps need control gear: apply the ×1.8 multiplier to circuit design current (OSG).","Lamps: GLS, tungsten halogen, fluorescent, high-pressure sodium (SON), low-pressure sodium, metal halide, LED. LED and LPS give highest efficacy.","Stroboscopic effect: rotating machinery can appear stationary, a safety hazard."],
+["<b>DC motor types</b>: series, shunt, compound. Force <span class='f'>F = BIl</span>; Fleming's left hand (motor), right hand (generator). Commutator and brushes.","<b>Series</b>: very high starting torque (cranes, traction); <b>never run off-load</b> (overspeed). <b>Shunt</b>: near-constant speed (lathes, fans). <b>Compound</b>: high torque and fairly steady speed.","<b>Induction motor</b>: squirrel cage (simple, robust) or wound rotor. <span class='f'>n<sub>s</sub> = 60f / p</span> (p = pole <u>pairs</u>). <span class='f'>Slip % = (n<sub>s</sub> − n<sub>r</sub>)/n<sub>s</sub> × 100</span>.","Single phase: split-phase, capacitor-start, shaded-pole (small fans).","Starting: DOL, <b>star-delta</b> (about ⅓ starting current), auto-transformer, soft start, inverter/VSD for speed control.","Reverse a 3-phase motor by swapping any two line conductors."],
+["<b>Relay</b>: low-power coil switches separate contacts. <b>Contactor</b>: same principle for heavy loads such as motors.","<b>Transformer</b>: V<sub>p</sub>/V<sub>s</sub> = N<sub>p</sub>/N<sub>s</sub>; works on AC only.","<b>MCB</b>/fuse: overcurrent protection. <b>RCD</b>: detects imbalance (earth leakage). <b>Thermal overload</b>: protects motors. <b>Solenoid</b>: electromagnet moving a plunger."],
+["Space heating: storage heaters (off-peak charging, release heat during the day), panel/convector, radiant, underfloor, heat pumps.","Water heating: immersion heaters (thermostat controlled), instantaneous showers, unvented cylinders.","<span class='f'>Q = m c ΔT</span> (c of water = 4.18 kJ/kg°C, 1 litre = 1 kg). <span class='f'>Energy (kWh) = kW × hours</span>. Time = Q ÷ P.","Efficiency = useful output ÷ input × 100."]];
+const CARDS=[
+[["BODMAS","Brackets, Other (indices), Division, Multiplication, Addition, Subtraction"],["Max volt drop, lighting (230 V)","3% = 6.9 V"],["Max volt drop, power (230 V)","5% = 11.5 V"]],
+[["Zener diode","Conducts in reverse at set breakdown voltage; regulation"],["Triac","Controls AC power in both directions; dimmers"],["Thyristor","Gate-triggered, latches on; DC/half-wave control"],["LDR","Resistance falls as light increases"]],
+[["Power factor","P ÷ S = cosφ"],["Capacitive reactance","X_C = 1 / 2πfC"],["Star connection","V_L = √3 V_ph, I_L = I_ph"],["Delta connection","V_L = V_ph, I_L = √3 I_ph"],["Apparent power","S = VI (VA)"]],
+[["Lux","Lumens per square metre"],["Inverse square law","E = I / d²"],["Lumen method","N = E×A / (F×UF×MF)"],["Candela","Unit of luminous intensity"]],
+[["Series DC motor","High starting torque; dangerous off-load"],["Shunt DC motor","Near-constant speed"],["Slip","(ns − nr) / ns × 100"],["Star-delta starter","Reduces starting current to about one third"],["Capacitor-start motor","Single-phase; capacitor gives phase shift for starting torque"]],
+[["Relay","Electromagnetic switch; coil circuit isolated from contacts"],["Transformer ratio","Vp/Vs = Np/Ns"]],
+[["Heat energy formula","Q = m c ΔT"],["Specific heat of water","4.18 kJ/kg°C"],["Storage heater","Charges off-peak, releases heat through the day"]]];
+// [LO, question, options, correct index, explanation]
+const Q=[
+[0,"Evaluate 6 + 4 × 2",["20","14","12","10"],1,"Multiplication before addition: 8 + 6 = 14."],
+[0,"Maximum permitted voltage drop on a 230 V lighting circuit (3%)?",["11.5 V","6.9 V","9.2 V","5.75 V"],1,"3 × 230 ÷ 100 = 6.9 V."],
+[0,"Transposing V = IR for resistance gives:",["R = V × I","R = I/V","R = V/I","R = V − I"],2,"Divide both sides by I."],
+[0,"Evaluate 20 × 4 − 10 + 2",["72","68","48","80"],0,"80 − 10 + 2, left to right = 72."],
+[1,"The main purpose of a rectifier diode is to:",["Convert AC to DC","Amplify signals","Store charge","Step up voltage"],0,"Diodes conduct one way only."],
+[1,"A zener diode is used to:",["Rectify AC","Emit light","Regulate voltage using reverse breakdown","Switch AC loads"],2,"It holds a fixed voltage when reverse-biased past breakdown."],
+[1,"A triac is typically used for:",["Half-wave rectification","Smoothing","Current measurement","Controlling AC power in both directions, e.g. a dimmer"],3,"Triacs conduct in both directions."],
+[1,"In a transistor, the base current:",["Flows only in AC","Controls a larger collector current","Equals the collector current","Is always zero"],1,"Small base current switches/amplifies larger collector current."],
+[1,"A smoothing capacitor after a rectifier:",["Increases frequency","Blocks DC","Reduces ripple","Reverses polarity"],2,"It stores charge and fills in the gaps."],
+[2,"Inductive reactance at 50 Hz for L = 0.1 H is approximately:",["3.14 Ω","31.4 Ω","314 Ω","0.5 Ω"],1,"2π × 50 × 0.1 = 31.4 Ω."],
+[2,"Capacitive reactance of 100 µF at 50 Hz is approximately:",["31.8 Ω","318 Ω","3.18 Ω","0.03 Ω"],0,"1 ÷ (2π × 50 × 0.0001) = 31.8 Ω."],
+[2,"R = 30 Ω in series with X_L = 40 Ω. Impedance is:",["70 Ω","10 Ω","50 Ω","1200 Ω"],2,"√(900 + 1600) = 50 Ω."],
+[2,"A load takes 4 kW and 5 kVA. Power factor is:",["1.25","0.8","0.6","0.2"],1,"4 ÷ 5 = 0.8."],
+[2,"Line voltage of a star system with 230 V phase voltage is approximately:",["230 V","400 V","690 V","133 V"],1,"√3 × 230 ≈ 400 V."],
+[2,"In a delta system the phase current is 10 A. Line current is approximately:",["10 A","5.8 A","17.3 A","30 A"],2,"I_L = √3 × I_ph."],
+[2,"Power factor correction of an inductive load is achieved by:",["Connecting capacitors across the load","Adding series resistors","Using larger cables","Raising supply voltage"],0,"Capacitor current leads and cancels the lagging reactive current."],
+[2,"The neutral current in a balanced 3-phase 4-wire system is:",["Equal to line current","√3 × line current","Three times line current","Zero"],3,"Balanced phasors sum to zero."],
+[3,"The unit of illuminance is the:",["Lumen","Candela","Lux","Watt"],2,"Lux = lm/m²."],
+[3,"If distance from a point source doubles, illuminance:",["Halves","Quarters","Doubles","Stays same"],1,"E ∝ 1/d²."],
+[3,"E = 300 lx, A = 20 m², F = 2000 lm, UF = 0.5, MF = 0.8. Minimum luminaires?",["6","7","8","10"],2,"6000 ÷ 800 = 7.5, round up to 8."],
+[3,"Luminous efficacy is measured in:",["lx/m²","cd/m","W/lm","lm/W"],3,"Lumens per watt."],
+[3,"Which lamp requires control gear?",["GLS","Tungsten halogen","High-pressure sodium","Incandescent"],2,"Discharge lamps need ballast/ignitor."],
+[3,"The stroboscopic effect is a hazard because:",["Lamps overheat","Rotating machinery may appear stationary","It reduces lux","It causes under-voltage"],1,"Flicker can mask moving parts."],
+[4,"A series DC motor is chosen where there is a need for:",["Low starting torque","High starting torque","Zero speed","Constant speed under all loads"],1,"Used in cranes and traction."],
+[4,"A shunt DC motor is best suited to:",["Cranes","Starter motors","Lathes and fans needing near-constant speed","Lifts needing high torque"],2,"Field in parallel gives steady speed."],
+[4,"Synchronous speed of a 4-pole motor on 50 Hz?",["3000 rpm","1500 rpm","1000 rpm","750 rpm"],1,"p = 2 pole pairs: 60 × 50 ÷ 2 = 1500."],
+[4,"n_s = 1500 rpm, n_r = 1440 rpm. Slip is:",["4%","6%","40%","0.4%"],0,"60 ÷ 1500 × 100 = 4%."],
+[4,"A star-delta starter is used to:",["Raise speed","Reverse rotation","Improve power factor","Reduce starting current"],3,"Star start gives about ⅓ of delta current."],
+[4,"To reverse a 3-phase induction motor:",["Swap neutral and earth","Reverse supply frequency","Swap any two line conductors","Increase voltage"],2,"Reverses the rotating field."],
+[4,"A capacitor-start motor is:",["Single-phase, capacitor aids starting torque","3-phase","A DC series motor","A synchronous generator"],0,"The capacitor creates a phase shift in the start winding."],
+[4,"Running a series DC motor off-load causes:",["Stalling","Dangerous overspeed","Zero current","Reverse rotation"],1,"Speed rises uncontrollably as flux falls."],
+[5,"A relay is:",["A transformer","A fuse","An electromagnetic switch","A capacitor"],2,"A coil operates separate contacts."],
+[5,"Transformer: 1000 primary turns, 50 secondary turns, 230 V primary. Secondary voltage:",["4.6 V","11.5 V","46 V","115 V"],1,"230 × 50 ÷ 1000 = 11.5 V."],
+[5,"Compared with a relay, a contactor is designed to:",["Measure current","Detect leakage","Store energy","Switch heavy loads such as motors"],3,"Contactors have heavy-duty contacts."],
+[6,"Energy to heat 150 litres of water from 10°C to 60°C (c = 4.18 kJ/kg°C) is about:",["2.9 kWh","8.7 kWh","31.4 kWh","87 kWh"],1,"150 × 4.18 × 50 = 31,350 kJ ÷ 3600 ≈ 8.7 kWh."],
+[6,"A storage heater:",["Heats only on demand","Uses a heat pump","Charges off-peak and releases heat through the day","Needs no thermostat"],2,"It uses cheaper off-peak electricity."],
+[6,"A 3 kW heater runs for 4 hours. Energy used:",["0.75 kWh","7 kWh","1.3 kWh","12 kWh"],3,"3 × 4 = 12 kWh."],
+[6,"The specific heat capacity of water is:",["4.18 kJ/kg°C","1 kJ/kg°C","418 kJ/kg°C","0.42 kJ/kg°C"],0,"Used in Q = mcΔT."]];
+const $=id=>document.getElementById(id);
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button,section").forEach(e=>e.classList.remove("on"));b.classList.add("on");$(b.dataset.t).classList.add("on")});
+$("wt").innerHTML="<table><tr><th>Learning outcome</th><th>Qs</th><th></th></tr>"+LO.map((l,i)=>`<tr><td>${i+1}. ${l}</td><td>${W[i]} (${Math.round(W[i]/.3)}%)</td><td style="width:35%"><div class="bar" style="width:${W[i]*13}%"></div></td></tr>`).join("")+"</table><p>Biggest payoffs: <b>AC circuits</b> and <b>DC machines & AC motors</b> (7 questions each).</p>";
+$("notes").innerHTML=NOTES.map((n,i)=>`<div class="card"><h2>LO${i+1}: ${LO[i]} <span class="tag">${W[i]} Qs</span></h2><ul>${n.map(x=>`<li style="margin:6px 0">${x}</li>`).join("")}</ul></div>`).join("");
+const opts='<option value="-1">All outcomes</option>'+LO.map((l,i)=>`<option value="${i}">LO${i+1}: ${l}</option>`).join("");
+$("fcl").innerHTML=opts;$("pql").innerHTML=opts;
+let deck=[],ci=0,back=false;
+function build(){const v=+$("fcl").value;deck=CARDS.flatMap((c,i)=>v<0||v==i?c:[]);ci=0;back=false;show()}
+function show(){const c=deck[ci];$("fcard").className="flip"+(back?" back":"");$("fcard").innerHTML=back?c[1]:"<b>"+c[0]+"</b>";$("fcn").textContent=(ci+1)+" / "+deck.length}
+function flipc(){back=!back;show()}function nc(d){ci=(ci+d+deck.length)%deck.length;back=false;show()}
+function shuf(){deck.sort(()=>Math.random()-.5);ci=0;back=false;show()}
+$("fcl").onchange=build;build();
+let qs=[],qi=0,sc=0,done=false,mock=false,timer;
+const sh=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+function startPQ(){const v=+$("pql").value;qs=sh(Q.filter(q=>v<0||q[0]==v));run(false)}
+function startMock(){qs=[];W.forEach((n,i)=>qs.push(...sh(Q.filter(q=>q[0]==i)).slice(0,n)));qs=sh(qs);run(true);let t=3600;clearInterval(timer);timer=setInterval(()=>{t--;$("tm").textContent=Math.floor(t/60)+":"+String(t%60).padStart(2,"0");if(t<=0){clearInterval(timer);finish()}},1000)}
+function run(m){mock=m;qi=0;sc=0;done=false;ask()}
+function ask(){const box=$(mock?"mka":"pqa");if(qi>=qs.length)return finish();const q=qs[qi];
+box.innerHTML=`<div class="card"><span class="tag">LO${q[0]+1}</span> Q${qi+1}/${qs.length}<h3>${q[1]}</h3>`+q[2].map((o,i)=>`<button class="opt" onclick="pick(${i})">${o}</button>`).join("")+`<div id="ex"></div></div>`}
+function pick(i){if(done)return;const q=qs[qi];done=true;const bs=document.querySelectorAll(".opt");bs.forEach((b,j)=>{if(j==q[3])b.classList.add("ok");else if(j==i)b.classList.add("no")});if(i==q[3])sc++;
+if(mock){setTimeout(()=>{done=false;qi++;ask()},500)}else{$("ex").innerHTML=`<div class="exp">${i==q[3]?"✅ Correct. ":"❌ Not quite. "}${q[4]}</div><button class="b" onclick="done=false;qi++;ask()">Next ▶</button>`}}
+function finish(){clearInterval(timer);const p=Math.round(sc/qs.length*100);$(mock?"mka":"pqa").innerHTML=`<div class="card"><h2>Score: ${sc}/${qs.length} (${p}%)</h2><p>${p>=50?"✅ Above the ~50% pass mark.":"Below the ~50% pass mark. Revisit the notes and try again."}</p></div>`}
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&["c","p","s","u","a"].includes(e.key.toLowerCase())||e.key=="F12")e.preventDefault()});
+</script></body></html>
