@@ -1,0 +1,1497 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DOL Starter — 3D Operation & Fault Diagnosis Laboratory | tutorwarren.com</title><style>
+:root{color-scheme:dark;--bg:#0b1322;--panel:#142239;--line:#2b425e;--txt:#eaf2ff;--muted:#b2c5df;--accent:#57b6ed}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 65% 0%,#1b344b,var(--bg) 65%);color:var(--txt);font:15px system-ui,Segoe UI,Arial,sans-serif}header{padding:17px 23px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:clamp(20px,2.5vw,29px);margin:0}header small{color:var(--muted)}.brand{font-weight:800;font-size:20px}.brand b{color:#b88255}.brand span{color:#55b5ed}.brand .brand-com{color:#39c86b}main{max-width:1510px;margin:auto;padding:16px;display:grid;grid-template-columns:minmax(0,1fr) 315px;gap:15px}.stage{position:relative;min-height:490px;background:linear-gradient(140deg,#101f34,#0c1727);border:1px solid var(--line);border-radius:16px;overflow:hidden}canvas{display:block;position:absolute;inset:0;touch-action:none}.overlay{position:absolute;left:15px;top:14px;pointer-events:none;background:#0b182ac9;border:1px solid #2b4966;padding:12px 14px;border-radius:10px;max-width:285px}.overlay strong{display:block;font-size:15px}.overlay p{color:var(--muted);font-size:12px;margin:5px 0 0;line-height:1.5}.legend{position:absolute;bottom:13px;left:13px;right:13px;display:flex;flex-wrap:wrap;gap:8px;pointer-events:none}.chip{background:#091a2cdd;border:1px solid #38516a;border-radius:18px;padding:5px 9px;font-size:12px}.chip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.side{display:flex;flex-direction:column;gap:12px}.card{background:#142238;border:1px solid var(--line);border-radius:13px;padding:15px}.card h2{font-size:16px;margin:0 0 12px}.buttonrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn{border:1px solid #456381;background:#203b56;color:#f0f7ff;border-radius:9px;padding:11px 8px;cursor:pointer;font:inherit;font-weight:650}.btn:hover,.btn:focus-visible{background:#315776;outline:2px solid #77bce8}.btn.active{background:#156089;border-color:#72c3f3}.btn.wide{grid-column:span 2}.label{display:flex;align-items:center;gap:9px;padding:9px 2px;color:var(--muted)}input{accent-color:#5fc4ef}.info{font-size:13px;line-height:1.55;color:var(--muted)}.info strong{color:white}.status{font-size:13px;background:#0b192a;border-radius:9px;padding:10px;border:1px solid #2a465e}.status b{color:#7bd8b5}.warning{color:#ffd28d}footer{max-width:1510px;margin:0 auto;padding:5px 20px 25px;color:#a8bdd5;font-size:13px;line-height:1.6}.callout{border-left:3px solid #d7a75b;padding-left:10px;margin-top:10px}.hint{position:absolute;right:15px;top:14px;color:#c1d5e9;font-size:12px;background:#09192bbf;padding:8px;border-radius:8px}@media(max-width:920px){main{grid-template-columns:1fr}.stage{min-height:520px}.side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.stage{min-height:440px}.side{display:flex}.overlay{max-width:210px}.hint{top:auto;bottom:60px;right:8px}.brand{font-size:17px}}
+</style><style>
+.circuit-section{max-width:1510px;margin:0 auto 20px;padding:0 16px}.circuit-panel{background:#142238;border:1px solid #2b425e;border-radius:15px;padding:18px}.circuit-panel h2{margin:0 0 7px;font-size:21px}.circuit-panel p{color:#b2c5df;line-height:1.5}.circuit-layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:15px}.circuit-diagram{width:100%;height:auto;display:block;background:#0b192b;border:1px solid #344e68;border-radius:12px}.wire{stroke:#8198b2;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.wire.live{stroke:#50d5ac;filter:drop-shadow(0 0 3px #2cdca2)}.symbol{stroke:#e5efff;stroke-width:4;fill:none;stroke-linecap:round}.symbol.closed{stroke:#50d5ac}.circuit-diagram text{font:15px system-ui,Arial,sans-serif;fill:#edf5ff}.circuit-diagram .small{font-size:12px;fill:#b6cbe4}.circuit-diagram .heading{font-size:18px;font-weight:700}.circuit-note{background:#0b192b;border:1px solid #304b67;border-radius:10px;padding:14px;line-height:1.6}.circuit-note strong{color:#83e0c1}.key{display:inline-block;width:12px;height:12px;background:#50d5ac;border-radius:50%;margin-right:7px}.circuit-warning{font-size:12px;color:#ffd28d!important}@media(max-width:750px){.circuit-layout{grid-template-columns:1fr}.circuit-panel{padding:11px}.circuit-diagram text{font-size:14px}}
+.circuit-diagram #startSymbol.pressed path{stroke:#50d5ac;filter:drop-shadow(0 0 4px #50d5ac)}#sequenceStage{margin:10px 0 14px;color:#bcebdc;font-weight:650} @media(min-width:921px){.stage{min-height:490px}main{align-items:start}.circuit-section{margin-top:-1px}.circuit-panel{padding:12px 16px}.circuit-panel>p{margin:5px 0 10px}.circuit-diagram{max-height:370px}}
+</style><style>
+/* V3.7: circuit immediately under the 3D display, controls alongside both. */
+@media(min-width:921px){
+ main{grid-template-columns:minmax(0,1fr) 315px;grid-template-rows:490px auto;column-gap:12px;row-gap:8px;align-items:start}
+ main>.stage{grid-column:1;grid-row:1;height:490px;min-height:0}
+ main>.circuit-section{grid-column:1;grid-row:2;max-width:none;margin:0;padding:0;min-width:0}
+ main>.side{grid-column:2;grid-row:1 / span 2}
+ .circuit-panel{padding:12px}
+ .circuit-layout{grid-template-columns:minmax(0,1fr) 215px;gap:9px}
+ .circuit-panel h2{font-size:17px}
+ .circuit-panel>p{font-size:12px;margin:4px 0 7px}
+ .circuit-diagram{max-height:none}
+ .circuit-note{padding:9px;font-size:12px}
+ .circuit-note p{margin:7px 0}
+ #sequenceStage{margin:6px 0;padding:7px;font-size:12px}
+}
+@media(max-width:920px){main>.stage{order:0}main>.circuit-section{order:1;margin:0;padding:0;max-width:none}main>.side{order:2}}
+</style><style>
+.power-panel{margin-top:9px;border:1px solid #31516f;border-radius:13px;background:#122238;padding:12px;color:#e8f1ff}.power-panel h2{font-size:17px;margin:0 0 5px}.power-panel p{font-size:12px;color:#bcd2e8;margin:5px 0 10px}.power-svg{width:100%;height:auto;max-height:275px;display:block;background:#09192b;border:1px solid #294967;border-radius:9px}.power-svg text{fill:#e9f3ff;font-family:Arial,sans-serif;font-size:14px}.power-svg .minor{font-size:11px;fill:#a8c4dd}.power-svg .phase{stroke:#9fb2c9;stroke-width:5;fill:none;stroke-linecap:round;transition:stroke .2s}.power-svg .phase.live{stroke:#4ed9a6;filter:drop-shadow(0 0 3px #38bc96)}.power-svg .contact{stroke:#e5eaf4;stroke-width:5;stroke-linecap:round;transition:transform .25s}.power-svg .contact.closed{stroke:#4ed9a6}.power-svg .motor{stroke:#9fb2c9;stroke-width:4;fill:#172b42}.power-svg .motor.running{stroke:#4ed9a6;fill:#125143}.power-state{padding:7px 9px;border:1px solid #31516f;border-radius:7px;background:#07182a;font-size:13px;margin-top:8px;color:#d3e8fa}.power-key{color:#4ed9a6;font-weight:bold}
+</style><style>
+/* V3.54: use horizontal space rather than leaving the 3D viewport mostly empty. */
+@media(min-width:1180px){
+ main{max-width:1800px;grid-template-columns:minmax(280px,0.85fr) minmax(430px,1.25fr) minmax(265px,0.78fr)!important;grid-template-rows:auto!important;align-items:start!important;gap:10px!important;padding:10px!important}
+ main>.stage{grid-column:1!important;grid-row:1!important;height:430px!important;min-height:0!important}
+ main>.circuit-section{grid-column:2!important;grid-row:1!important;margin:0!important;padding:0!important;min-width:0!important}
+ main>.side{grid-column:3!important;grid-row:1!important;gap:7px!important}
+ .circuit-layout{grid-template-columns:minmax(0,1fr)!important;gap:7px!important}
+ .circuit-diagram{max-height:290px!important;min-height:0!important}
+ .circuit-note{padding:8px!important}
+ .circuit-note p{margin:4px 0!important}
+ .circuit-panel{padding:10px!important}
+ .circuit-panel>p{margin:3px 0 5px!important;font-size:11px!important;line-height:1.3!important}
+ #sequenceStage{margin:4px 0!important;padding:5px!important}
+ .side .card{padding:9px!important}
+ .side .card h2{margin:0 0 6px!important}
+ .side .buttonrow{gap:5px!important}
+ .side .btn{padding:7px 5px!important;font-size:12px!important}
+ .overlay{max-width:210px;padding:8px 9px;left:8px;top:8px}
+ .legend{gap:4px;bottom:7px;left:7px;right:7px}
+ .chip{padding:3px 6px;font-size:10px}
+}
+@media(min-width:921px) and (max-width:1179px){
+ main{grid-template-columns:minmax(0,1fr) 285px!important;grid-template-rows:340px auto!important;gap:8px!important;padding:9px!important}
+ main>.stage{grid-column:1!important;grid-row:1!important;height:340px!important;min-height:0!important}
+ main>.circuit-section{grid-column:1!important;grid-row:2!important;margin:0!important;padding:0!important}
+ main>.side{grid-column:2!important;grid-row:1/span 2!important;gap:8px!important}
+ .circuit-layout{grid-template-columns:minmax(0,1fr) 190px!important}
+ .circuit-diagram{max-height:310px!important}
+ .side .card{padding:10px!important}
+ .side .btn{padding:7px 5px!important;font-size:12px!important}
+}
+@media(max-width:920px){.stage{min-height:310px!important;height:340px!important}.side{gap:8px!important}}
+</style><style>
+/* V3.55: keep all view captions outside the 3D model viewport. */
+#modelViewInfo{border-color:#476987;background:#10263e;padding:9px 11px!important}
+#modelViewInfo strong{display:block;color:#eaf5ff;font-size:13px;line-height:1.35}
+#modelViewInfo p{margin:4px 0 0;font-size:11px;line-height:1.4;color:#c7d7e9}
+#modelViewInfo .modelGestureHint{color:#9eddd2;font-size:11px}
+.stage .overlay,.stage .hint{display:none!important}
+</style><style>.terminal-reference{grid-column:1;background:#0c2137;border:1px solid #385f80;border-radius:10px;padding:10px 12px;color:#eaf6ff}.terminal-reference strong{font-size:14px}.terminal-reference-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:7px 0}.terminal-reference-grid span{background:#1b415e;border:1px solid #6696b7;border-radius:5px;text-align:center;padding:6px 2px;font-weight:750;font-size:clamp(11px,1.05vw,15px)}.terminal-reference small{font-size:11px;color:#b9d2e5}@media(max-width:720px){.terminal-reference-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Desktop browser advisory */
+.desktop-advisory{max-width:1510px;margin:12px auto 0;padding:13px 17px;background:#253b50;border:1px solid #e6b55b;border-left:5px solid #f4c768;border-radius:10px;color:#fff1d2;display:flex;align-items:flex-start;gap:12px;line-height:1.45}
+.desktop-advisory strong{color:#ffe29b}
+.desktop-advisory p{margin:3px 0 0;font-size:14px}
+.desktop-advisory .advisory-icon{font-size:22px;line-height:1.2}
+@media(max-width:700px){.desktop-advisory{margin:10px 10px 0;padding:14px}.desktop-advisory p{font-size:14px}}
+@media print{.desktop-advisory{display:none!important}}
+</style></head><body><header><div><h1>DOL Starter — 3D Operation & Fault Diagnosis Laboratory</h1><small>Crompton CC0910 contactor + CR09/4 overload relay · External model + interactive illustrative electromagnetic cutaway</small></div><div class="brand"><b>tutor</b><span>warren</span><span class="brand-com">.com</span></div></header><aside class="desktop-advisory" role="note" aria-label="Computer browser recommended"><span class="advisory-icon" aria-hidden="true">⚠</span><div><strong>Important — Computer browser required for the best experience</strong><p>This virtual learning resource is designed to work properly in a computer browser (desktop or laptop). If you are viewing it on a smartphone, please switch to a computer screen to use the 3D simulation, virtual testing and fault-finding assessment.</p></div></aside><main><section class="stage" id="stage"><div id="loadStatus" style="position:absolute;top:44%;left:10%;right:10%;text-align:center;color:#ffdc98;font-size:14px;pointer-events:none">Loading 3D model…</div><div class="legend"><span class="chip"><i style="background:#e6e0ce"></i>Terminal blocks</span><span class="chip"><i style="background:#313b4a"></i>Contactor</span><span class="chip"><i style="background:#ed982c"></i>Overload setting</span></div></section><div class="terminal-reference" aria-label="Contactor terminal reference"><strong>Contactor terminal labels</strong><div class="terminal-reference-grid"><span>1L1 → 2T1</span><span>3L2 → 4T2</span><span>5L3 → 6T3</span><span>13NO → 14NO</span></div><small>Three main poles (L1, L2, L3) and one normally-open auxiliary contact.</small></div><section class="circuit-section"><div class="circuit-panel"><h2>Interactive DOL control circuit — START, STOP and overload</h2><p>This simplified ladder diagram follows the 3D mechanism above. Use its START, STOP, Trip overload and Reset overload buttons to observe the electrical holding circuit. Green indicates an energised path, not the colour of a real conductor.</p><div class="status" id="sequenceStage" aria-live="polite">Ready: press Demonstrate START sequence to watch the holding circuit.</div><div class="circuit-layout"><svg class="circuit-diagram" viewBox="0 0 840 490" role="img" aria-label="Interactive DOL starter control circuit with STOP normally closed, overload 95-96 normally closed, START normally open, parallel 13-14 holding contact and A1 A2 coil"><text x="30" y="34" class="heading">CONTROL CIRCUIT · conceptual ladder</text><text x="55" y="75">L / control supply</text><text x="713" y="75">N / return*</text><path class="wire" d="M60 95 V430 M755 95 V430"/><path id="pathSupply" class="wire" d="M60 152 H165"/><g id="stopSymbol"><path class="symbol" d="M165 133 V172 M220 133 V172 M165 146 L220 132"/></g><path id="pathAfterStop" class="wire" d="M220 152 H285"/><g id="olSymbol"><path class="symbol" d="M285 133 V172 M340 133 V172 M285 146 L340 132"/></g><path id="pathAfterOl" class="wire" d="M340 152 H395 V270"/><path id="pathStartFeed" class="wire" d="M395 152 H455"/><g id="startSymbol"><path class="symbol" d="M455 133 V172 M510 133 V172 M455 152 L500 112"/></g><path id="pathStartOut" class="wire" d="M510 152 H610"/><path id="pathHoldFeed" class="wire" d="M395 270 H455"/><g id="holdSymbol"><path class="symbol" d="M455 251 V290 M510 251 V290 M455 270 L500 230"/></g><path id="pathHoldOut" class="wire" d="M510 270 H610 V152"/><path id="pathCoilFeed" class="wire" d="M610 152 H650"/><rect id="coilSymbol" x="650" y="126" width="65" height="52" rx="9" fill="#17283d" stroke="#e5efff" stroke-width="3"/><text x="683" y="157" text-anchor="middle">KM</text><path id="pathCoilReturn" class="wire" d="M715 152 H755"/><text x="190" y="113" text-anchor="middle">STOP</text><text x="190" y="192" text-anchor="middle" class="small">NC</text><text x="313" y="113" text-anchor="middle">OVERLOAD</text><text x="313" y="192" text-anchor="middle" class="small">95–96 NC</text><text x="482" y="113" text-anchor="middle">START</text><text x="482" y="192" text-anchor="middle" class="small">NO (momentary)</text><text x="482" y="237" text-anchor="middle">13–14 KM</text><text x="482" y="310" text-anchor="middle" class="small">NO holding contact</text><text x="683" y="112" text-anchor="middle">A1</text><text x="683" y="197" text-anchor="middle">A2</text><text x="35" y="448" class="small">* Control voltage and return arrangement depend on the actual installation.</text></svg><div class="circuit-note"><div><span class="key"></span><strong id="circuitState">Stopped — coil de-energised</strong></div><p id="circuitExplanation">STOP and overload 95–96 are closed, but START and 13–14 are open, so the coil has no complete supply path.</p><p id="circuitContacts">START: open · STOP: closed · 95–96: closed · 13–14: open</p><p class="circuit-warning">Teaching schematic only. The actual device coil rating, protection, terminal markings and circuit design must be verified before any practical wiring.</p></div></div></div><div class="power-panel"><h2>Three-phase power circuit — linked to the 3D contactor</h2><p>Follow the three separate poles through the contactor (KM), thermal overload relay (OL) and motor. Green indicates an energised motor path; grey indicates a de-energised path. Supply is shown conceptually, without installation-specific protective devices.</p><svg class="power-svg" viewBox="0 0 840 270" role="img" aria-label="Three phase DOL motor power circuit with three separate contactor poles, overload elements and motor">
+<text x="25" y="25">SUPPLY</text><text x="185" y="25">KM · 3 MAIN CONTACTS</text><text x="460" y="25">OL — THERMAL OVERLOAD RELAY · 3 ELEMENTS</text><text x="737" y="25">MOTOR</text>
+<g id="powerPaths"><path id="powerL1" class="phase" d="M40 70 H196"/><path id="powerL2" class="phase" d="M40 135 H196"/><path id="powerL3" class="phase" d="M40 200 H196"/><path id="powerR1" class="phase" d="M258 70 H736"/><path id="powerR2" class="phase" d="M258 135 H736"/><path id="powerR3" class="phase" d="M258 200 H736"/></g>
+<g><circle cx="196" cy="70" r="5" fill="#dce9fa"/><circle cx="258" cy="70" r="5" fill="#dce9fa"/><line id="powerContact1" class="contact" x1="196" y1="70" x2="247" y2="48"/><circle cx="196" cy="135" r="5" fill="#dce9fa"/><circle cx="258" cy="135" r="5" fill="#dce9fa"/><line id="powerContact2" class="contact" x1="196" y1="135" x2="247" y2="113"/><circle cx="196" cy="200" r="5" fill="#dce9fa"/><circle cx="258" cy="200" r="5" fill="#dce9fa"/><line id="powerContact3" class="contact" x1="196" y1="200" x2="247" y2="178"/></g>
+<g stroke="#f5a44a" stroke-width="3" fill="none"><path d="M477 58 l10 12 -10 12 10 0 10 -12 -10 -12"/><path d="M477 123 l10 12 -10 12 10 0 10 -12 -10 -12"/><path d="M477 188 l10 12 -10 12 10 0 10 -12 -10 -12"/></g>
+<text x="40" y="58" class="minor">L1 / 1L1</text><text x="40" y="123" class="minor">L2 / 3L2</text><text x="40" y="188" class="minor">L3 / 5L3</text><text x="285" y="57" class="minor">2T1</text><text x="285" y="122" class="minor">4T2</text><text x="285" y="187" class="minor">6T3</text><rect x="735" y="45" width="75" height="180" rx="20" id="motorBody" class="motor"/><text x="772" y="130" text-anchor="middle" font-size="25">M</text><text x="772" y="153" text-anchor="middle" class="minor">3~</text><text x="420" y="253" class="minor" text-anchor="middle">Illustrative power path: actual motor connections, protective devices and ratings must be verified.</text></svg><div class="power-state" id="powerState" aria-live="polite">KM open — motor supply interrupted.</div></div></section><aside class="side"><section class="card" id="modelViewInfo" aria-live="polite"><strong id="viewName">Detailed external assembly</strong><p id="viewDesc">Rotate the model to inspect the contactor and overload relay. Select a component for more information.</p><p class="modelGestureHint">Drag to rotate · Scroll/pinch to zoom</p></section><section class="card"><h2>Model controls</h2><div class="buttonrow"><button class="btn active" id="front">Front view</button><button class="btn" id="angle">3D angle</button><button class="btn" id="rear">Rear view</button><button class="btn" id="reset">Reset view</button><button class="btn wide" id="explode">Explode assembly</button></div><label class="label"><input type="checkbox" id="labels" checked> Show terminal labels</label><label class="label"><input type="checkbox" id="transparent"> Transparent contactor housing</label><label class="label"><input type="checkbox" id="spin"> Auto-rotate slowly</label></section><section class="card"><h2>Electromagnetic mechanism</h2><div class="buttonrow"><button class="btn wide" id="cutaway">Show internal cutaway</button><button class="btn" id="startMotor">START</button><button class="btn" id="stopMotor">STOP</button><button class="btn" id="tripMotor">Trip overload</button><button class="btn" id="resetTrip">Reset overload</button><button class="btn wide" id="slowDemo">Slow-motion mechanism</button><button class="btn wide" id="teachStart">Demonstrate START sequence (4 seconds)</button><button class="btn wide" id="teachStop">Demonstrate STOP sequence (4 seconds)</button><button class="btn wide" id="teachTrip">Demonstrate overload trip (4 seconds)</button><button class="btn" id="pauseSequence">Pause</button><button class="btn" id="replaySequence">Replay sequence</button><button class="btn wide" id="manualMode">Manual teaching mode: OFF</button><button class="btn" id="previousStep">← Previous stage</button><button class="btn" id="nextStep">Next stage →</button><div class="status wide" id="manualStage">Select START, STOP or overload demonstration, then switch on manual mode to step through four stages.</div></div><div class="status" id="gapStatus" aria-live="polite">Three main poles: OPEN · 13–14: OPEN</div><div class="status" id="operationStatus" aria-live="polite">State: <b>Stopped · coil off</b></div><p class="info" id="operationExplain">Open the cutaway to inspect a schematic coil, moving armature, three main contacts and 13–14 auxiliary contact. START and STOP also work in external view.</p></section><section class="card"><h2>Inspect components — changes the 3D view</h2><div class="buttonrow"><button class="btn" data-focus="contactor">Contactor</button><button class="btn" data-focus="terminals">Main terminals</button><button class="btn" data-focus="aux">13–14 NO</button><button class="btn" data-focus="overload">Overload relay</button></div><p class="info" id="detail">Click a component to zoom and reposition the 3D model. Its function will be explained here. Model dimensions are approximate.</p></section><section class="card"><h2>Construction check</h2><div class="status" id="state">Model: <b>external reconstruction + illustrative operating cutaway</b></div><p class="info">The internal cutaway is a functional teaching schematic, not a verified CC0910 internal CAD reconstruction. START/STOP and overload demonstrate control logic; the actual coil voltage and wiring are not specified.</p><p class="info warning">Illustrative 3D reconstruction, not a manufacturer CAD file. Not suitable for wiring or safety decisions.</p></section></aside></main><footer><strong>Reference:</strong> The photographed Crompton CC0910 contactor has top terminals 1L1, 3L2, 5L3 and 13NO; lower terminals 2T1, 4T2, 6T3 and 14NO. A CR09/4 thermal overload relay is fitted below. The external model uses these visible details; the internal cutaway is an explanatory schematic, not a manufacturer-verified mechanism.<div class="callout">For classroom use: isolate and prove dead before accessing real equipment. This digital model is a visual learning aid, not a replacement for the manufacturer's data or approved practical procedures.</div></footer><section class="release-guide" aria-label="Student quick-start guide">
+ <details><summary>How to use this laboratory — quick guide</summary>
+ <ol><li><strong>Explore:</strong> rotate the 3D contactor and use START, STOP and overload demonstrations to observe the holding circuit.</li>
+ <li><strong>Investigate:</strong> choose a random fault, observe the symptoms and inspect the control and three-phase power diagrams.</li>
+ <li><strong>Measure:</strong> select the Robin tester function and range, use the simulated isolation option where required, place both probes on labelled terminals and take a reading.</li>
+ <li><strong>Diagnose and repair:</strong> choose <em>Which Fault?</em>, check the diagnosis, apply the simulated repair and verify START–RELEASE–STOP.</li>
+ <li><strong>Assess:</strong> complete the ten-case challenge, then preview or print the individual A4 report.</li></ol>
+ <p><strong>Reading guide:</strong> 0.01 Ω represents illustrative low resistance; ↑ 1 represents open circuit or over-range on the selected resistance range. Connected parallel branches can affect a continuity reading.</p>
+ <p><strong>Safety:</strong> this is a teaching simulation. It does not perform live measurements or replace safe isolation, instrument verification or manufacturer instructions.</p>
+ </details>
+ <div class="release-mark">Version 3.63a · Publication release · tutorwarren.com</div>
+</section>
+<style>
+.release-guide{max-width:1510px;margin:8px auto 18px;padding:0 16px;color:#e6f3ff}
+.release-guide details{background:#12263d;border:1px solid #3b6585;border-radius:11px;padding:11px 14px}
+.release-guide summary{font-weight:700;cursor:pointer;line-height:1.5}
+.release-guide li{margin:6px 0;line-height:1.45}
+.release-guide p{font-size:13px;line-height:1.5}
+.release-mark{text-align:right;color:#a9c8dd;font-size:12px;margin:7px 3px}
+button,select{max-width:100%}
+button:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #ffcc6e;outline-offset:2px}
+@media print{.release-guide{display:none!important}}
+</style>
+
+<script>
+// Reliable fallback for local iOS file viewers, where ES module imports may be blocked.
+let modelReady=false;
+function showFallback(message){
+ if(modelReady)return;
+ const host=document.getElementById('stage'), status=document.getElementById('loadStatus');
+ if(!host || !status)return;
+ status.style.top='auto';status.style.bottom='105px';status.style.fontSize='12px';
+ status.textContent=message||'Interactive preview: external 3D libraries could not load in this file viewer.';
+ if(document.getElementById('offlinePreview'))return;
+ const panel=document.createElement('div');panel.id='offlinePreview';panel.style.cssText='position:absolute;inset:125px 8px 155px;display:flex;align-items:center;justify-content:center;pointer-events:none';
+ panel.innerHTML=`<svg viewBox="0 0 360 390" role="img" aria-label="Illustrated front view of contactor and overload relay" style="width:100%;height:100%;max-width:410px"><defs><linearGradient id="g" x2="1" y2=".3"><stop stop-color="#3a4552"/><stop offset="1" stop-color="#141a24"/></linearGradient></defs><rect x="50" y="15" width="260" height="218" rx="12" fill="url(#g)" stroke="#64748b" stroke-width="3"/><rect x="55" y="20" width="250" height="46" rx="5" fill="#e8e4d8"/><rect x="55" y="185" width="250" height="45" rx="5" fill="#e8e4d8"/><rect x="72" y="79" width="216" height="95" rx="4" fill="#111827" stroke="#6b7280"/><rect x="137" y="128" width="85" height="25" fill="#d5e3ed"/><text x="180" y="145" text-anchor="middle" font-size="12" fill="#101820">CC0910</text><text x="180" y="104" text-anchor="middle" font-size="13" fill="white">CONTACTOR</text>${['1L1','3L2','5L3','13NO'].map((t,i)=>`<circle cx="${82+i*64}" cy="39" r="10" fill="#64748b"/><text x="${82+i*64}" y="61" text-anchor="middle" font-size="10" fill="#101820">${t}</text>`).join('')}${['2T1','4T2','6T3','14NO'].map((t,i)=>`<circle cx="${82+i*64}" cy="203" r="10" fill="#64748b"/><text x="${82+i*64}" y="225" text-anchor="middle" font-size="10" fill="#101820">${t}</text>`).join('')}<rect x="58" y="239" width="244" height="121" rx="9" fill="url(#g)" stroke="#64748b" stroke-width="3"/><rect x="60" y="317" width="240" height="38" fill="#e8e4d8"/><circle cx="104" cy="277" r="24" fill="#e58a22" stroke="#f8b454" stroke-width="3"/><text x="104" y="282" font-size="12" fill="#1b2530" text-anchor="middle">A</text><rect x="190" y="256" width="17" height="37" fill="#e58a22"/><text x="232" y="290" fill="#f8fafc" font-size="13" text-anchor="middle">CR09/4</text><text x="180" y="341" fill="#17212d" text-anchor="middle" font-size="12">THERMAL OVERLOAD RELAY</text></svg>`;
+ host.appendChild(panel);
+ const info=document.getElementById('detail');if(info)info.textContent='Static reference preview only. The 3D library may be blocked in local iPhone file viewers.';
+}
+setTimeout(()=>showFallback('3D library did not initialise. Showing a static preview; upload this file to tutorwarren.com for full 3D.'),6500);
+</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"}}</script>
+<script>
+window.addEventListener('error',function(e){let el=document.getElementById('loadStatus');if(el)showFallback('3D error: '+(e.message||'browser error'))});
+window.addEventListener('unhandledrejection',function(e){let el=document.getElementById('loadStatus');if(el)showFallback('3D library unavailable. Try opening the HTML from tutorwarren.com.')});
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+const host=document.getElementById('stage');document.getElementById('loadStatus').textContent="Preparing 3D model…";const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(37,1,.1,100);camera.position.set(6,4,12);const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.insertBefore(renderer.domElement,host.firstChild);const orbit=new OrbitControls(camera,renderer.domElement);orbit.enableDamping=true;orbit.minDistance=7;orbit.maxDistance=28;orbit.target.set(0,-.35,0);orbit.update();scene.add(new THREE.HemisphereLight(0xc7e6ff,0x172238,2.0));const key=new THREE.DirectionalLight(0xffffff,3.2);key.position.set(5,9,9);key.castShadow=true;scene.add(key);const rim=new THREE.DirectionalLight(0x67baff,1.6);rim.position.set(-6,2,-7);scene.add(rim);
+const mat=(c,metal=0,rough=.7)=>new THREE.MeshStandardMaterial({color:c,metalness:metal,roughness:rough});const black=mat(0x242b34),dark=mat(0x101820),ivory=mat(0xe4dfd0),white=mat(0xe9e6df),steel=mat(0xaab6c4,.65,.3),screw=mat(0x8995a4,.8,.24),orange=mat(0xe48b21),red=mat(0xc93139),green=mat(0x189f7c);const contactor=new THREE.Group(),overload=new THREE.Group(),labels=[];scene.add(contactor,overload);contactor.position.y=1.2;overload.position.y=-2.05;
+function block(parent,w,h,d,x,y,z,m,bevel=.055){const shape=new THREE.BoxGeometry(w,h,d);const mesh=new THREE.Mesh(shape,m);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh}
+function cylinder(parent,r,depth,x,y,z,m,axis='z'){const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r,r,depth,28),m);mesh.rotation.x=axis==='z'?Math.PI/2:0;mesh.position.set(x,y,z);parent.add(mesh);return mesh}
+function txt(text,size=.18,color='#18212b'){
+ const canvas=document.createElement('canvas');const ctx=canvas.getContext('2d');
+ canvas.width=1024;canvas.height=192;
+ ctx.fillStyle='rgba(5,18,32,.95)';ctx.beginPath();ctx.roundRect(5,8,1014,176,22);ctx.fill();
+ ctx.strokeStyle='#9cdbfa';ctx.lineWidth=5;ctx.stroke();
+ ctx.fillStyle='#ffffff';ctx.font='bold 100px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+ ctx.fillText(text,512,99,955);
+ const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
+ const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false,depthWrite:false}));
+ sprite.scale.set(Math.max(1.04,size*8.3),Math.max(.25,size*2.1),1);sprite.renderOrder=28;
+ labels.push(sprite);return sprite;
+}
+function label(parent,text,x,y,z,size=.18){const sp=txt(text,size);sp.position.set(x,y,z);parent.add(sp);return sp}
+// High-contrast nameplates are reserved for the internal schematic.
+function mechanismLabel(text,x,y,z,size=.18){
+ const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=144;
+ const c=canvas.getContext('2d');c.fillStyle='rgba(6,19,35,.93)';c.beginPath();c.roundRect(5,8,1014,128,19);c.fill();
+ c.strokeStyle='#78c9ee';c.lineWidth=3;c.stroke();c.fillStyle='#f3f9ff';c.textAlign='center';c.textBaseline='middle';
+ c.font='bold 49px Arial';c.fillText(text,512,73,955);
+ const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;
+ const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,depthWrite:false}));
+ sp.scale.set(Math.max(1.30,size*9.2),Math.max(.25,size*1.6),1);sp.position.set(x,y,z);sp.renderOrder=30;
+ mechanism.add(sp);labels.push(sp);return sp;
+}
+// Version 2: more detailed external reconstruction from the user's Crompton photographs.
+// All geometry is illustrative, not a measured manufacturer CAD drawing.
+const plastic=mat(0x1b2028),front=mat(0x252a32),recess=mat(0x080e16),cream=mat(0xe8e4d7),silver=mat(0xb6c0c8,.75,.26),copper=mat(0x9b7d60,.6,.35),shadow=mat(0x111820);
+const housing=block(contactor,3.58,2.85,1.45,0,0,-.08,plastic);
+// Stepped moulded side shells, front bezel, grooves and mechanical actuator.
+for(const x of [-1.72,1.72]){block(contactor,.13,2.45,1.46,x,-.02,-.02,front);block(contactor,.12,.56,1.1,x,-.12,.03,black)}
+block(contactor,3.35,1.44,.16,0,.05,.70,front);
+block(contactor,3.08,1.03,.045,0,.10,.80,recess);
+for(let i=0;i<3;i++){const x=-1.08+i*1.06;block(contactor,.76,.67,.11,x,.18,.85,plastic);block(contactor,.58,.18,.12,x,-.26,.87,front);block(contactor,.22,.78,.19,x,.25,.96,black);}
+block(contactor,.93,.40,.24,0,-.15,1.02,mat(0x48515e));
+block(contactor,1.15,.23,.09,0,-.72,.80,cream);
+label(contactor,'CC0910',0,-.71,.90,.14);
+label(contactor,'Crompton',-1.07,.54,.94,.13);
+// Four real-world terminal positions per bank; inset dark wells and slotted screw heads.
+const xs=[-1.28,-.43,.43,1.28],top=['1L1','3L2','5L3','13NO'],bottom=['2T1','4T2','6T3','14NO'];
+function terminalBank(y,terms){
+ block(contactor,3.55,.52,1.52,0,y,-.015,cream);
+ xs.forEach((x,i)=>{
+   // dark cylindrical terminal well, copper back and metallic screw
+   cylinder(contactor,.208,.055,x,y,.773,recess);
+   cylinder(contactor,.143,.062,x,y,.812,copper);
+   cylinder(contactor,.119,.074,x,y,.859,silver);
+   block(contactor,.18,.027,.016,x,y,.906,recess);
+   label(contactor,terms[i],x,y+(y>0?.36:-.36),1.01,.155);
+ });
+}
+terminalBank(1.17,top);terminalBank(-1.16,bottom);
+// Raised moulding at terminal ends, mechanical interlock guides.
+for(const x of [-1.69,1.69]){block(contactor,.08,.32,.20,x,.82,.79,plastic);block(contactor,.08,.32,.20,x,-.79,.79,plastic)}
+// Overload relay: reduced height, stepped moulding, recessed terminal strip and adjustment face.
+block(overload,3.31,1.49,1.35,0,0,-.09,plastic);
+block(overload,3.24,.67,.12,0,.34,.65,front);
+block(overload,3.26,.49,1.39,0,-.47,-.02,cream);
+block(overload,1.20,.47,.10,-.92,.32,.76,mat(0x303a44));
+// Orange current adjustment wheel and tick marks around its face.
+cylinder(overload,.31,.14,-1.08,.34,.84,orange);
+cylinder(overload,.205,.02,-1.08,.34,.923,mat(0xf5a238));
+for(let i=0;i<10;i++){const a=(-145+i*29)*Math.PI/180;const tick=block(overload,.018,.071,.013,-1.08+Math.sin(a)*.235,.34+Math.cos(a)*.235,.947,recess);tick.rotation.z=-a;}
+label(overload,'A',-1.08,.34,.96,.12);
+// Central orange trip indicator and reset/test buttons.
+block(overload,.17,.40,.17,.38,.37,.81,orange);
+block(overload,.29,.24,.17,1.01,.39,.81,red);
+block(overload,.25,.18,.17,1.43,.38,.81,green);
+label(overload,'CR09/4',-.13,-.44,.81,.14);
+// Auxiliary contact markings as seen in reference photos, simplified.
+label(overload,'95-96 NC',.93,-.78,.80,.105);
+label(overload,'97-98 NO',-.90,-.78,.80,.105);
+for(const x of xs){cylinder(overload,.174,.06,x,-.48,.73,recess);cylinder(overload,.12,.06,x,-.48,.78,silver);block(overload,.17,.025,.015,x,-.48,.825,recess);}
+// Exposed rear mounting clip and coupling ribs; no invented internal moving parts.
+block(contactor,1.4,.23,.15,0,-1.52,-.62,steel);
+block(overload,1.50,.17,.15,0,.79,-.63,steel);
+for(const x of [-1.5,1.5])block(overload,.10,1.3,.20,x,0,-.52,front);
+// Educational operating cutaway. This is a functional schematic, NOT an exact CC0910 internal mechanism.
+const mechanism=new THREE.Group();scene.add(mechanism);mechanism.visible=false;
+const frame=mat(0x34465b),iron=mat(0x8495a7,.65,.32),winding=mat(0xc77a39,.48,.3),liveMetal=mat(0xe0ba69,.75,.23),offMetal=mat(0x8599ae,.65,.28);
+// Position the schematic assembly in the same scene coordinates as the external assembly.
+block(mechanism,4.5,5.6,.20,0,-.28,-.85,frame);
+mechanismLabel('THREE SEPARATE MAIN CONTACTS',0,2.39,.80,.21);
+// Three electrically isolated single-break pole representations. Each has a fixed upper
+// contact and a lower moving contact; there is never a shared conductive phase bar.
+const bridges=[],indicators=[],poleRods=[];
+for(let i=0;i<3;i++){
+ const x=-1.28+i*1.28;
+ // Stationary upper contact, centre at 1.52; bottom face at 1.465.
+ block(mechanism,.59,.11,.28,x,1.52,.31,liveMetal);
+ // Separate input and output conductors for each pole, deliberately no cross-phase connection.
+ block(mechanism,.12,.35,.14,x,1.75,.10,iron);
+ const rod=block(mechanism,.13,.63,.15,x,.91,.08,iron);poleRods.push(rod);
+ // Moving contact top at 1.275 when open, 1.465 when closed (0.19 travel).
+ const b=block(mechanism,.59,.11,.28,x,1.22,.32,offMetal);bridges.push(b);
+ mechanismLabel(['1L1 → 2T1','3L2 → 4T2','5L3 → 6T3'][i],x,1.97,.78,.15);
+ const led=cylinder(mechanism,.075,.035,x,.48,.40,offMetal);indicators.push(led);
+}
+// Coil with visible copper turns around stationary magnetic core.
+block(mechanism,1.15,1.12,.62,0,-1.12,.12,iron);
+for(let j=0;j<10;j++)block(mechanism,1.55,.045,.76,0,-1.58+j*.103,.23,winding);
+mechanismLabel('A1 / A2  ·  ELECTROMAGNETIC COIL',0,-2.03,.85,.16);
+const armature=block(mechanism,2.35,.23,.49,0,-.25,.45,iron);
+mechanismLabel('MOVING ARMATURE',0,.10,1.00,.16);
+// 13–14 NO holding auxiliary contact (schematic).
+block(mechanism,.68,.12,.20,1.60,-.70,.37,liveMetal);
+const auxBridge=block(mechanism,.65,.11,.20,1.60,-1.00,.39,offMetal);
+mechanismLabel('13 NO',1.62,-.43,.91,.15);
+mechanismLabel('14 NO',1.62,-1.36,.91,.15);
+mechanismLabel('RETURN SPRING',-1.38,-.49,.92,.13);
+const spring=[];for(let j=0;j<6;j++){const a=block(mechanism,.48,.04,.10,-1.45,-.88+j*.13,.32,steel);a.rotation.z=j%2?.24:-.24;spring.push(a)}
+// Pulsing cyan field lines illustrate magnetic flux only while the coil is energised.
+// These are conceptual field indicators, not physical current paths.
+const fieldRings=[];
+for(let j=0;j<3;j++){
+ const fm=new THREE.MeshBasicMaterial({color:0x54d7ff,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide});
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(.76+j*.17,.018,8,70),fm);
+ ring.position.set(0,-1.12,.63+j*.035);ring.rotation.x=.16;
+ mechanism.add(ring);fieldRings.push(ring);
+}
+let cutaway=false,energised=false,tripped=false,actuation=0,slowDemo=false;
+let sequenceActive=false,sequencePaused=false,sequenceElapsed=0,sequenceLast=0,startPressed=false,holdClosed=false,sequenceKind='start',stopPressed=false;
+function updateOperatingState(){
+ const status=document.getElementById('operationStatus');status.innerHTML='State: <b>'+ (tripped?'Overload tripped · coil off':energised?'Running · coil energised · 13–14 closed':'Stopped · coil off · 13–14 open')+'</b>';
+ document.getElementById('operationExplain').textContent=tripped?'The overload opens the 95–96 NC control path, de-energising the coil. Reset the overload before restarting.':energised?'The energised coil attracts the armature. Three main contacts and the 13–14 holding contact close; releasing START does not stop the motor.':'Press START to energise the coil, or open the internal cutaway to observe the mechanism.';
+}
+document.getElementById('cutaway').onclick=()=>{cutaway=!cutaway;mechanism.visible=cutaway;contactor.visible=!cutaway;overload.visible=!cutaway;document.getElementById('cutaway').textContent=cutaway?'Show external assembly':'Show internal cutaway';document.getElementById('cutaway').classList.toggle('active',cutaway);document.getElementById('viewName').textContent=cutaway?'Illustrative internal cutaway':'Detailed external assembly';document.getElementById('viewDesc').textContent=cutaway?'A teaching schematic of the electromagnetic mechanism; not an exact manufacturer cutaway.':'Rotate the external contactor and overload relay.';};
+// Normal-speed buttons still show a readable, brief physical switching sequence.
+let normalActionTimers=[];
+function clearNormalActionTimers(){normalActionTimers.forEach(clearTimeout);normalActionTimers=[];}
+function afterNormal(ms,fn){normalActionTimers.push(setTimeout(fn,ms));}
+document.getElementById('startMotor').onclick=()=>{
+ clearNormalActionTimers();cancelSequence();
+ if(tripped){document.getElementById('sequenceStage').textContent='Overload tripped — reset before starting.';return;}
+ energised=true;updateOperatingState();startPressed=true;holdClosed=false;updateCircuit();
+ document.getElementById('sequenceStage').textContent='START pressed — START contact closes; KM coil energises.';
+ afterNormal(380,()=>{holdClosed=true;updateCircuit();document.getElementById('sequenceStage').textContent='KM pulled in — auxiliary 13–14 closes to hold the coil.';});
+ afterNormal(950,()=>{startPressed=false;updateCircuit();document.getElementById('sequenceStage').textContent='START released — 13–14 holds KM energised.';normalActionTimers=[];});
+};
+document.getElementById('stopMotor').onclick=()=>{
+ clearNormalActionTimers();cancelSequence();
+ energised=false;updateOperatingState();stopPressed=true;holdClosed=false;updateCircuit();
+ document.getElementById('sequenceStage').textContent='STOP pressed — normally-closed STOP contact opens; KM drops out.';
+ afterNormal(850,()=>{stopPressed=false;updateCircuit();document.getElementById('sequenceStage').textContent='STOP released — STOP returns closed; KM remains off until START is pressed.';normalActionTimers=[];});
+};
+document.getElementById('tripMotor').onclick=()=>{clearNormalActionTimers();cancelSequence();tripped=true;energised=false;updateOperatingState()};
+document.getElementById('resetTrip').onclick=()=>{clearNormalActionTimers();cancelSequence();tripped=false;energised=false;updateOperatingState()};
+updateOperatingState();
+// Schematic synchronises with existing stable V3.4 model state; no changes to Three.js renderer.
+
+function updatePowerCircuit(){
+ const closed=energised&&!tripped;
+ for(let i=1;i<=3;i++){
+  const c=document.getElementById('powerContact'+i),y=70+(i-1)*65;
+  c.setAttribute('x2',closed?'258':'247');c.setAttribute('y2',closed?String(y):String(y-22));c.classList.toggle('closed',closed);
+  document.getElementById('powerL'+i).classList.toggle('live',closed);
+  document.getElementById('powerR'+i).classList.toggle('live',closed);
+ }
+ document.getElementById('motorBody').classList.toggle('running',closed);
+ document.getElementById('powerState').textContent=tripped?'OVERLOAD TRIPPED — 95–96 opens the control circuit, KM drops out, all three power contacts open. Reset does not restart the motor.':closed?'RUNNING — KM closes three independent main contacts. L1, L2 and L3 feed the motor through the overload elements.':'STOPPED — all three KM main contacts open; motor supply is interrupted.';
+}
+// Animate the movable blades in the conceptual ladder, independently of 3D frame rate.
+const ladderBladeState={};
+function animateLadderBlade(id,closed,x1,y1,openX,openY,closedX,closedY){
+ const node=document.querySelector('#'+id+' path');if(!node)return;
+ let state=ladderBladeState[id];
+ if(!state){state={x:openX,y:openY,target:null,frame:0};ladderBladeState[id]=state;}
+ const target=closed?1:0;
+ if(state.target===target)return;
+ state.target=target;
+ if(state.frame)cancelAnimationFrame(state.frame);
+ const fromX=state.x,fromY=state.y;
+ const toX=closed?closedX:openX,toY=closed?closedY:openY;
+ const begin=performance.now(),duration=440;
+ function frame(now){
+   const u=Math.min(1,(now-begin)/duration),ease=u*u*(3-2*u);
+   state.x=fromX+(toX-fromX)*ease;state.y=fromY+(toY-fromY)*ease;
+   node.setAttribute('d',`M${x1} ${y1-19} V${y1+20} M${closedX} ${y1-19} V${y1+20} M${x1} ${y1-6} L${state.x.toFixed(2)} ${state.y.toFixed(2)}`);
+   if(u<1)state.frame=requestAnimationFrame(frame);else state.frame=0;
+ }
+ state.frame=requestAnimationFrame(frame);
+}
+function updateCircuit(){
+ const on=energised&&!tripped;
+ const setLive=(id,active)=>document.getElementById(id)?.classList.toggle('live',!!active);
+ ['pathSupply','pathAfterStop','pathAfterOl','pathStartFeed','pathStartOut','pathHoldFeed','pathHoldOut','pathCoilFeed','pathCoilReturn'].forEach(id=>setLive(id,false));
+ setLive('pathSupply',true);setLive('pathAfterStop',!stopPressed);
+ setLive('pathAfterOl',!tripped&&!stopPressed);setLive('pathStartFeed',!tripped&&!stopPressed);
+ setLive('pathStartOut',on&&startPressed);setLive('pathHoldFeed',on);setLive('pathHoldOut',on&&holdClosed);setLive('pathCoilFeed',on);setLive('pathCoilReturn',on);
+ document.querySelector('#holdSymbol path')?.classList.toggle('closed',on&&holdClosed);
+  document.querySelector('#startSymbol path')?.classList.toggle('closed',startPressed);
+  document.getElementById('startSymbol').classList.toggle('pressed',startPressed);animateLadderBlade('startSymbol',startPressed,455,152,500,112,510,152);
+ animateLadderBlade('holdSymbol',on&&holdClosed,455,270,500,230,510,270);
+ document.querySelector('#olSymbol path')?.classList.toggle('closed',!tripped);
+ // Animate the physical 95–96 NC contact: a trip lifts the moving blade away.
+ animateLadderBlade('olSymbol',!tripped,285,152,330,112,340,132);
+ document.querySelector('#stopSymbol path')?.classList.toggle('closed',!stopPressed);
+  animateLadderBlade('stopSymbol',!stopPressed,165,152,210,112,220,132);
+ const coil=document.getElementById('coilSymbol');coil.setAttribute('stroke',on?'#50d5ac':'#e5efff');coil.setAttribute('fill',on?'#125847':'#17283d');
+ document.getElementById('circuitState').textContent=tripped?'Overload tripped — control circuit interrupted':on?'Running — KM energised and held by 13–14':'Stopped — coil de-energised';
+ document.getElementById('circuitExplanation').textContent=tripped?'Overload contact 95–96 opens, disconnecting the KM coil. Resetting the overload restores the NC path but does not automatically restart the motor.':on?'Pressing START initially energises KM. The three main poles and auxiliary 13–14 close; 13–14 provides a parallel holding path after START is released. STOP opens this path and releases KM.':'STOP and overload 95–96 are closed, but START and 13–14 are open, so the coil has no complete supply path. Press START above to run.';
+ updatePowerCircuit();
+ document.getElementById('circuitContacts').textContent='START: '+(startPressed?'CLOSED (pressed)':'open (released)')+' · STOP: '+(stopPressed?'open (pressed)':'closed')+' · 95–96: '+(tripped?'open':'closed')+' · 13–14: '+(on&&holdClosed?'closed':'open');
+}
+const oldUpdateOperatingState=updateOperatingState;
+updateOperatingState=function(){if(!sequenceActive && !normalActionTimers.length){startPressed=false;holdClosed=energised&&!tripped;}oldUpdateOperatingState();updateCircuit()};
+updateCircuit();
+function cancelSequence(){sequenceActive=false;sequencePaused=false;sequenceElapsed=0;startPressed=false;stopPressed=false;holdClosed=energised&&!tripped;document.getElementById('pauseSequence').textContent='Pause';document.getElementById('sequenceStage').textContent='Sequence interrupted. Use Replay sequence to start again.';updateCircuit();}
+function beginSequence(){sequenceKind='start';stopPressed=false;if(tripped){document.getElementById('sequenceStage').textContent='Reset the overload before demonstrating START.';return;}energised=false;actuation=0;sequenceActive=true;sequencePaused=false;sequenceElapsed=0;sequenceLast=performance.now();startPressed=false;holdClosed=false;document.getElementById('pauseSequence').textContent='Pause';updateOperatingState();updateCircuit();}
+document.getElementById('teachStart').onclick=beginSequence;
+document.getElementById('replaySequence').onclick=()=>{if(sequenceKind==='stop')beginStopSequence();else if(sequenceKind==='trip')beginTripSequence();else beginSequence();};
+function beginStopSequence(){cancelSequence();sequenceKind='stop';tripped=false;energised=true;holdClosed=true;stopPressed=false;sequenceActive=true;sequenceElapsed=0;sequenceLast=performance.now();updateOperatingState();document.getElementById('sequenceStage').textContent='STOP demonstration ready — observe the holding contact.';}
+function beginTripSequence(){cancelSequence();sequenceKind='trip';tripped=false;energised=true;holdClosed=true;stopPressed=false;sequenceActive=true;sequenceElapsed=0;sequenceLast=performance.now();updateOperatingState();document.getElementById('sequenceStage').textContent='Overload demonstration ready — motor running before the trip.';}
+document.getElementById('teachStop').onclick=beginStopSequence;
+document.getElementById('teachTrip').onclick=beginTripSequence;
+document.getElementById('pauseSequence').onclick=()=>{if(!sequenceActive)return;sequencePaused=!sequencePaused;sequenceLast=performance.now();document.getElementById('pauseSequence').textContent=sequencePaused?'Resume':'Pause';};
+let manualMode=false,manualStep=0;
+function applyManualStep(){
+ if(!manualMode)return;
+ if(!sequenceActive){
+   if(sequenceKind==='stop')beginStopSequence();
+   else if(sequenceKind==='trip')beginTripSequence();
+   else beginSequence();
+ }
+ sequenceActive=true;
+ sequencePaused=false;
+ sequenceElapsed=manualStep*1000+500;
+ sequenceLast=performance.now();
+ tickSequence(sequenceLast);
+ sequenceActive=true; // Preserve manual navigation even after the final stage.
+ sequencePaused=true;
+ document.getElementById('pauseSequence').textContent='Resume';
+ document.getElementById('manualStage').textContent='Manual stage '+(manualStep+1)+' of 4 — use Previous / Next to examine the contact positions.';
+}
+document.getElementById('manualMode').onclick=()=>{
+ manualMode=!manualMode;
+ document.getElementById('manualMode').textContent='Manual teaching mode: '+(manualMode?'ON':'OFF');
+ if(manualMode){sequenceActive=false;manualStep=0;applyManualStep();}
+ else {sequenceActive=false;sequencePaused=false;sequenceLast=performance.now();document.getElementById('pauseSequence').textContent='Pause';document.getElementById('manualStage').textContent='Automatic demonstration restored. Choose a demonstration to play.';}
+};
+document.getElementById('previousStep').onclick=()=>{if(!manualMode)return;manualStep=Math.max(0,manualStep-1);applyManualStep();};
+document.getElementById('nextStep').onclick=()=>{if(!manualMode)return;manualStep=Math.min(3,manualStep+1);applyManualStep();};
+for(const id of ['teachStart','teachStop','teachTrip']){
+ const button=document.getElementById(id),original=button.onclick;
+ button.onclick=()=>{
+   if(manualMode){manualMode=false;document.getElementById('manualMode').textContent='Manual teaching mode: OFF';document.getElementById('manualStage').textContent='Automatic demonstration playing. Switch manual mode ON to navigate stages.';}
+   original();
+ }; 
+}
+function tickSequence(now){
+ if(!sequenceActive||sequencePaused)return;
+ sequenceElapsed+=Math.min(100,now-sequenceLast);
+ sequenceLast=now;
+ const t=sequenceElapsed/1000;
+ if(sequenceKind==='stop'){
+   startPressed=false;
+   if(t<1){
+     stopPressed=false;energised=true;holdClosed=true;
+     document.getElementById('sequenceStage').textContent='STEP 1 / 4 — Motor running; START is OPEN and 13–14 holds KM energised.';
+   }else if(t<2){
+     stopPressed=true;energised=false;holdClosed=false;
+     document.getElementById('sequenceStage').textContent='STEP 2 / 4 — STOP pressed: NC STOP opens, interrupting coil supply.';
+   }else if(t<3){
+     stopPressed=true;energised=false;holdClosed=false;
+     document.getElementById('sequenceStage').textContent='STEP 3 / 4 — Coil releases: all three power contacts and 13–14 open.';
+   }else{
+     stopPressed=false;energised=false;holdClosed=false;
+     document.getElementById('sequenceStage').textContent='STEP 4 / 4 — STOP released and closes again; START and 13–14 remain OPEN.';
+     if(t>=4)sequenceActive=false;
+   }
+ }else if(sequenceKind==='trip'){
+   startPressed=false;stopPressed=false;
+   if(t<1){
+     tripped=false;energised=true;holdClosed=true;
+     document.getElementById('sequenceStage').textContent='STEP 1 / 4 — Motor running; START OPEN, 13–14 CLOSED, overload 95–96 CLOSED.';
+   }else if(t<2){
+     tripped=true;energised=false;holdClosed=false;
+     document.getElementById('sequenceStage').textContent='STEP 2 / 4 — Overload trips: 95–96 opens, disconnecting KM.';
+   }else if(t<3){
+     tripped=true;energised=false;holdClosed=false;
+     document.getElementById('sequenceStage').textContent='STEP 3 / 4 — KM releases; main contacts and 13–14 OPEN; START stays OPEN.';
+   }else{
+     tripped=true;energised=false;holdClosed=false;
+     document.getElementById('sequenceStage').textContent='STEP 4 / 4 — Overload remains tripped; reset it before restarting with START.';
+     if(t>=4)sequenceActive=false;
+   }
+ }else{
+   stopPressed=false;
+   if(t<1){startPressed=true;energised=true;holdClosed=false;document.getElementById('sequenceStage').textContent='STEP 1 / 4 — START pressed: normally-open contact closes; coil receives supply.';}
+   else if(t<2){startPressed=true;energised=true;holdClosed=false;document.getElementById('sequenceStage').textContent='STEP 2 / 4 — Coil attracts armature; three main poles move closed.';}
+   else if(t<3){startPressed=true;energised=true;holdClosed=true;document.getElementById('sequenceStage').textContent='STEP 3 / 4 — Auxiliary 13–14 closes, creating the parallel holding path.';}
+   else {startPressed=false;energised=true;holdClosed=true;document.getElementById('sequenceStage').textContent='STEP 4 / 4 — START springs open; 13–14 maintains supply to the KM coil.';if(t>=4)sequenceActive=false;}
+ }
+ updateOperatingState();updateCircuit();
+}
+document.getElementById('slowDemo').onclick=()=>{
+ slowDemo=!slowDemo;
+ document.getElementById('slowDemo').classList.toggle('active',slowDemo);
+ document.getElementById('slowDemo').textContent=slowDemo?'Slow motion ON — click to return to normal':'Slow-motion mechanism';
+};
+// Standalone equipment: intentionally no oversized mounting board or pedestal.
+let exploded=false;const orig={c:1.2,o:-2.05};document.getElementById('explode').onclick=()=>{exploded=!exploded;document.getElementById('explode').textContent=exploded?'Reassemble':'Explode assembly';document.getElementById('explode').classList.toggle('active',exploded);document.getElementById('viewName').textContent=exploded?'Exploded assembly':'External assembly';document.getElementById('viewDesc').textContent=exploded?'The overload relay is separated from the contactor for inspection.':'Rotate the model to inspect the contactor and overload relay.'};document.getElementById('labels').onchange=e=>labels.forEach(x=>x.visible=e.target.checked);document.getElementById('transparent').onchange=e=>{housing.material=e.target.checked?new THREE.MeshStandardMaterial({color:0x334357,transparent:true,opacity:.28,roughness:.25,depthWrite:false}):black};document.getElementById('spin').onchange=e=>orbit.autoRotate=e.target.checked;orbit.autoRotateSpeed=.65;
+const views={front:[0,0,13],angle:[6,4,12],rear:[0,2,-13]};function setView(key){camera.position.set(...views[key]);orbit.target.set(0,-.35,0);orbit.update();document.querySelectorAll('#front,#angle,#rear').forEach(b=>b.classList.toggle('active',b.id===key))}['front','angle','rear'].forEach(k=>document.getElementById(k).onclick=()=>setView(k));document.getElementById('reset').onclick=()=>{setView('angle');orbit.reset();camera.position.set(6,4,12);orbit.target.set(0,-.35,0);orbit.update()};const details={contactor:'The CC0910 contactor is a three-pole electromagnetic switching device. The coil and moving armature are not visible in these photos, so this model does not invent their exact shape.',terminals:'Main input: 1L1, 3L2, 5L3. Main output: 2T1, 4T2, 6T3. These are the three switched power paths.',aux:'13NO and 14NO identify a normally-open auxiliary contact, often used in the DOL holding (seal-in) circuit.',overload:'The CR09/4 thermal overload relay sits below the contactor. Its setting dial and auxiliary trip contacts are represented schematically; verify actual device markings before wiring.'};document.querySelectorAll('[data-focus]').forEach(btn=>btn.onclick=()=>{
+ const selected=btn.dataset.focus;
+ document.querySelectorAll('[data-focus]').forEach(b=>b.classList.toggle('active',b===btn));
+ document.getElementById('detail').textContent=details[selected];
+ document.getElementById('viewName').textContent=btn.textContent+' — component inspection';
+ document.getElementById('viewDesc').textContent=details[selected];
+ // Component selection changes the 3D view and zoom as well as the description.
+ orbit.autoRotate=false;document.getElementById('spin').checked=false;
+ if(selected==='aux'){
+   if(!cutaway)document.getElementById('cutaway').click();
+   camera.position.set(2.2,1.3,8.5);orbit.target.set(0,.35,0);
+ }else if(selected==='terminals'){
+   if(cutaway)document.getElementById('cutaway').click();
+   camera.position.set(2.3,4.0,8.5);orbit.target.set(0,1.25,0);
+ }else if(selected==='overload'){
+   if(cutaway)document.getElementById('cutaway').click();
+   camera.position.set(3,-.8,8);orbit.target.set(0,-2.0,0);
+ }else{
+   if(cutaway)document.getElementById('cutaway').click();
+   camera.position.set(3,2.1,9);orbit.target.set(0,1.0,0);
+ }
+ orbit.update();
+ document.getElementById('detail').textContent='VIEW CHANGED — '+details[selected];
+});function resize(){
+ const r=host.getBoundingClientRect();
+ const w=Math.max(1,Math.round(r.width-2)),h=Math.max(1,Math.round(r.height-2));
+ if(w===lastW&&h===lastH)return;
+ lastW=w;lastH=h;
+ renderer.setSize(w,h,false);
+ renderer.domElement.style.width=w+'px';renderer.domElement.style.height=h+'px';
+ camera.aspect=w/h;
+ // Fit the full assembly in both wide and narrow viewports, without changing orbit direction.
+ const distance=Math.max(13.5, 7.5/(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.aspect));
+ const direction=camera.position.clone().sub(orbit.target).normalize();
+ camera.position.copy(orbit.target).addScaledVector(direction,distance);
+ camera.updateProjectionMatrix();orbit.update();
+}
+let lastW=0,lastH=0;
+new ResizeObserver(()=>requestAnimationFrame(resize)).observe(host);
+window.addEventListener('resize',resize);
+resize();modelReady=true;document.getElementById('loadStatus').remove();document.getElementById('offlinePreview')?.remove();function animate(){requestAnimationFrame(animate);tickSequence(performance.now());contactor.position.y+=(orig.c-contactor.position.y)*.12;overload.position.y+=((exploded?-3.1:orig.o)-overload.position.y)*.12;actuation+=(Number(energised)-actuation)*(slowDemo?.012:.09);
+ bridges.forEach(b=>{b.position.y=1.22+actuation*.19;b.material=actuation>.995?liveMetal:offMetal});
+ indicators.forEach(i=>{i.material=actuation>.995?green:offMetal});
+ armature.position.y=-.25-actuation*.28;
+ fieldRings.forEach((r,j)=>{r.material.opacity=cutaway?actuation*(.28+.17*Math.sin(performance.now()*.003-j*.9)):0;r.scale.setScalar(1+.035*Math.sin(performance.now()*.002-j));});
+ auxBridge.position.y=-1.00+actuation*.19;auxBridge.material=actuation>.995?liveMetal:offMetal;
+ document.getElementById('gapStatus').textContent='Three main poles: '+(actuation>.995?'CLOSED':actuation<.005?'OPEN':'MOVING')+' · 13–14: '+(actuation>.995?'CLOSED':actuation<.005?'OPEN':'MOVING')+' · contact gap: '+((1-actuation)*.19).toFixed(2)+' model units';
+ orbit.update();
+ // Check layout each frame: local Edge file viewers may not emit a reliable resize event.
+ if(host.clientWidth!==lastW+2 || host.clientHeight!==lastH+2)resize();
+ renderer.render(scene,camera)}animate();
+</script><section id="knowledgeCheck" style="max-width:1450px;margin:16px auto;padding:20px;border:1px solid #31516f;border-radius:16px;background:#102139;color:#e9f4ff;font-family:system-ui,Segoe UI,Arial,sans-serif">
+<h2 style="margin:0 0 8px">Check your understanding — DOL starter</h2>
+<p style="color:#bcd5ed;margin:0 0 14px">Five quick questions based on the 3D mechanism and control circuit. Select an answer, then check your understanding. This quiz does not change the simulation.</p>
+<div id="dolQuizItems"></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+<button type="button" id="dolQuizMark" style="background:#14638c;color:white;border:1px solid #70caff;border-radius:8px;padding:12px 20px;font-weight:700;cursor:pointer">Mark answers</button>
+<button type="button" id="dolQuizReset" style="background:#23405d;color:white;border:1px solid #537797;border-radius:8px;padding:12px 20px;cursor:pointer">Try again</button>
+</div>
+<div id="dolQuizResult" aria-live="polite" style="margin-top:12px;font-weight:700"></div>
+</section>
+<script>
+(function(){
+const qs=[
+{q:"What happens to the three main power contacts when the KM coil is energised?",a:["All three close together","Only L1 closes","They remain open"],correct:0,why:"The electromagnet attracts the armature and closes three separate main contacts."},
+{q:"What is the purpose of the normally-open auxiliary contact 13–14?",a:["Overload protection","Maintain coil supply after START is released","Replace the STOP contact"],correct:1,why:"13–14 closes with KM and provides a holding path in parallel with the momentary START push button."},
+{q:"After the START button is released while the motor is running, what happens to START?",a:["It stays closed","It returns to open","It trips the overload"],correct:1,why:"START is momentary NO; it springs open. The closed 13–14 contact maintains the coil supply."},
+{q:"What happens to overload auxiliary contact 95–96 when the overload relay trips?",a:["It opens","It closes","It stays closed until STOP is pressed"],correct:0,why:"95–96 is normally closed and opens on overload trip, removing power from the KM coil."},
+{q:"After a STOP operation, what is required to restart the motor?",a:["Nothing: it restarts automatically","Press START again once the STOP path is closed and the overload is reset","Bridge 95–96 permanently"],correct:1,why:"The holding contact opens when KM releases, so a new START command is required. Never bypass the overload protection."}
+];
+const root=document.getElementById("dolQuizItems");
+root.innerHTML=qs.map((x,i)=>'<fieldset style="border:1px solid #31516f;border-radius:10px;padding:12px;margin:10px 0"><legend style="font-weight:700;padding:0 5px">Question '+(i+1)+'</legend><div style="margin-bottom:8px">'+x.q+'</div>'+x.a.map((a,j)=>'<label style="display:block;margin:7px 0;cursor:pointer"><input type="radio" name="dolq'+i+'" value="'+j+'" style="margin-right:8px">'+a+'</label>').join('')+'<div id="dolfb'+i+'" style="margin-top:7px;color:#c9e4ff"></div></fieldset>').join('');
+document.getElementById("dolQuizMark").addEventListener("click",()=>{
+let score=0,answered=0;
+qs.forEach((x,i)=>{
+const checked=root.querySelector('input[name="dolq'+i+'"]:checked');
+const fb=document.getElementById('dolfb'+i);
+if(checked)answered++;
+const ok=checked&&Number(checked.value)===x.correct;
+if(ok)score++;
+fb.textContent=(ok?"✓ Correct. ":checked?"✗ Not quite. ":"Not answered. ")+x.why;
+fb.style.color=ok?"#76f0c5":"#ffd394";
+});
+document.getElementById("dolQuizResult").textContent="Score: "+score+" / "+qs.length+" ("+Math.round(score/qs.length*100)+"%). "+(answered<qs.length?"You have "+(qs.length-answered)+" unanswered question(s).":"Review the explanations above.");
+});
+document.getElementById("dolQuizReset").addEventListener("click",()=>{
+root.querySelectorAll('input[type="radio"]').forEach(x=>x.checked=false);
+qs.forEach((_,i)=>document.getElementById('dolfb'+i).textContent='');
+document.getElementById("dolQuizResult").textContent='';
+});
+})();
+</script>
+<section id="faultLab" style="max-width:1450px;margin:16px auto;padding:20px;border:1px solid #31516f;border-radius:16px;background:#102139;color:#e9f4ff;font-family:system-ui,Segoe UI,Arial,sans-serif">
+<h2>Fault Diagnosis Laboratory — Visual Troubleshooting</h2>
+<p style="color:#bcd5ed">Choose a random fault for practice, or start the ten-case assessment. Observe the animated contactor and live ladder circuit, investigate using virtual isolated continuity tests, then diagnose the problem. Ten faults and answer choices are shuffled independently. This teaching simulator is separate from the working 3D demonstration above.</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;margin:12px 0" id="fdMainControls">
+<button id="fdNew" class="fdBtn">Click for Ranom Fault</button><button id="fdStart" class="fdBtn">Press START</button><button id="fdRelease" class="fdBtn">Release START</button><button id="fdStop" class="fdBtn">Press STOP</button><button id="fdReset" class="fdBtn">Reset operation</button>
+</div>
+<div id="fdSymptom" aria-live="polite" style="background:#081a2d;border:1px solid #b94646;color:#ff7373;font-weight:600;padding:12px;border-radius:8px;margin:12px 0"></div>
+<div class="fdVisuals">
+<div class="fdFrame"><h3>Visual contactor — three separate poles</h3>
+<svg id="fdDevice" viewBox="0 0 520 370" role="img" aria-label="Animated schematic of contactor coil, armature and three main contacts" style="width:100%;height:auto">
+<rect x="30" y="24" width="460" height="324" rx="15" fill="#253d54" stroke="#6686a4" stroke-width="3"/>
+<text x="260" y="51" text-anchor="middle" fill="#f1f6ff" font-size="17" font-weight="bold">KM CONTACTOR — SCHEMATIC CUTAWAY</text>
+<g id="fdPoles"></g>
+<rect x="176" y="256" width="168" height="70" rx="8" fill="#a96525" stroke="#e3a15b" stroke-width="3"/>
+<g stroke="#dba166" stroke-width="3"><path d="M186 266H334 M186 277H334 M186 288H334 M186 299H334 M186 310H334"/></g>
+<text x="260" y="344" text-anchor="middle" fill="#fff" font-size="14">A1 / A2 — COIL</text>
+<rect id="fdArmature" x="130" y="225" width="260" height="21" rx="4" fill="#9bb2c8"/>
+<text x="260" y="217" text-anchor="middle" fill="#e6f3ff" font-size="14">MOVING ARMATURE</text>
+<circle id="fdCoilLamp" cx="385" cy="285" r="10" fill="#718398"/><text x="402" y="290" fill="#fff" font-size="13">KM</text>
+</svg>
+<div id="fdMechanism" aria-live="polite"></div>
+<div id="fdPoleElectricalStatus" aria-live="polite" style="margin-top:8px;padding:8px;border:1px solid #4e7692;border-radius:7px;background:#0b263b;color:#e4f3ff;font-size:12px;line-height:1.5"></div>
+<div style="font-size:11px;color:#bbd6e9;margin-top:5px">Contact position is mechanical; a closed pole does not prove its upstream fuse or motor winding is healthy.</div>
+<!-- Legacy testing hooks retained invisibly for compatibility; all testing uses the Robin meter. -->
+<div hidden aria-hidden="true"><div id="fdTests"></div><div id="fdTestResult"></div></div>
+</div>
+<div class="fdFrame"><h3>Control circuit — animated fault response</h3>
+<svg id="fdLadder" viewBox="0 0 750 320" role="img" aria-label="Interactive conceptual DOL ladder diagram with visible opening contacts and green energised paths" style="width:100%;height:auto">
+<g stroke="#8aa3b9" stroke-width="4" fill="none"><path d="M35 35V270 M715 35V270"/></g>
+<text x="20" y="22" fill="#fff" font-size="15">L</text><text x="700" y="22" fill="#fff" font-size="15">N*</text>
+<g id="fdWire" fill="none" stroke="#8aa3b9" stroke-width="4">
+<path d="M35 92H135 M193 92H260 M318 92H385 M443 92H650 M692 92H715"/>
+<path d="M351 92V192H385 M443 192H610V92"/>
+</g>
+<g id="fdLive" fill="none" stroke="#51edbb" stroke-width="6" stroke-linecap="round"></g>
+<g fill="#dceeff" font-size="17" text-anchor="middle">
+<text x="165" y="53">STOP</text><text x="289" y="53">95–96</text><text x="414" y="53">START</text><text x="414" y="159">13–14</text>
+</g>
+<g id="fdStopContact"></g><g id="fdOverContact"></g><g id="fdStartContact"></g><g id="fdHoldContact"></g>
+<rect id="fdCoil" x="650" y="66" width="42" height="52" rx="8" fill="#142d45" stroke="#b2c6d8" stroke-width="4"/>
+<text x="671" y="88" fill="#fff" font-size="15" text-anchor="middle">KM</text><text x="671" y="106" fill="#fff" font-size="12" text-anchor="middle">A1/A2</text>
+<g id="fdReturnDetail" aria-label="Enlarged A1 coil A2 return detail">
+<rect x="474" y="211" width="267" height="89" rx="9" fill="#071b2e" stroke="#6593b6" stroke-width="2"/>
+<text x="608" y="230" fill="#dcefff" text-anchor="middle" font-size="14" font-weight="bold">COIL RETURN — ENLARGED</text>
+<text x="504" y="253" fill="#e3f2ff" font-size="14">A1</text><text x="606" y="253" fill="#e3f2ff" font-size="14">A2</text><text x="715" y="253" fill="#e3f2ff" font-size="14">N</text>
+<path id="fdReturnLeft" d="M520 249H555" stroke="#93a8b8" stroke-width="5" fill="none"/>
+<rect x="555" y="239" width="33" height="22" rx="5" fill="#223f54" stroke="#d1e3ee" stroke-width="2"/>
+<text x="571" y="255" text-anchor="middle" fill="#fff" font-size="12">KM</text>
+<path id="fdReturnWire" d="M588 249H703" stroke="#93a8b8" stroke-width="5" fill="none"/>
+<g id="fdReturnGap" style="display:none"><path d="M624 249H645 M678 249H703" stroke="#e5ac62" stroke-width="5"/><path d="M648 236L670 262 M670 236L648 262" stroke="#ff7474" stroke-width="4"/><text x="661" y="284" text-anchor="middle" fill="#ffaaaa" font-size="12" font-weight="bold">A2 OPEN</text></g>
+<text id="fdReturnState" x="605" y="296" fill="#c2d8e8" font-size="11" text-anchor="middle">Return path not yet energised</text>
+</g>
+<text x="240" y="285" fill="#bcd5ed" text-anchor="middle" font-size="13">Green = complete coil-current path ONLY</text>
+</svg>
+<div id="fdCircuitState" aria-live="polite"></div></div></div>
+
+<section id="fdDirectProbe" style="margin:14px 0;padding:14px;border:1px solid #4c789a;background:#0b233a;border-radius:12px;color:#e8f5ff">
+<h3 style="margin:0 0 8px">Direct probe placement on the control diagram</h3>
+<p style="color:#c2d9ec;margin:0 0 10px">Choose BLACK or RED and click the two circuit terminals. For START test <strong>3–4</strong>; for overload test <strong>95–96</strong>. The Robin tester updates after placing both probes.</p>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+<button id="fdProbeBlack" type="button" class="fdBtn" aria-pressed="true">● Place BLACK probe</button>
+<button id="fdProbeRed" type="button" class="fdBtn" aria-pressed="false">● Place RED probe</button>
+<label style="display:flex;gap:6px;align-items:center"><input id="fdIsolated" type="checkbox" checked> Simulated supply isolated / proven dead</label>
+<button id="fdProbeClear" type="button" class="fdBtn">Clear probe positions</button>
+</div>
+<div style="margin:9px 0;padding:10px;border:1px solid #547895;border-radius:8px;background:#102a43">
+<label style="display:flex;gap:9px;align-items:flex-start;font-size:13px;cursor:pointer"><input type="checkbox" id="fdIsolateParallel" checked style="margin-top:3px">
+<span><strong>Isolate the parallel START / 13–14 branches for individual contact tests</strong><span style="display:block;color:#bad6e9;margin-top:3px">ON: test the selected contact by itself. OFF: measure the connected circuit, including alternate paths through the other branch.</span></span></label>
+<div id="fdBranchInfo" aria-live="polite" style="margin-top:7px;color:#8fe4c7;font-size:12px">Individual-contact testing: parallel branch excluded.</div>
+</div>
+<div style="color:#f5d9a2;font-size:12px;margin:5px 0">New: probe <strong>FUSE IN</strong> and <strong>FUSE OUT</strong> on the supply line, or test from <strong>L</strong> towards <strong>START 3</strong> to trace an open control fuse. An open <em>power L1 fuse</em> is a separate fault in the three-phase power circuit and cannot be diagnosed from control L to START.</div>
+<details id="fdPowerTestingDrawer" style="margin:10px 0;border:1px solid #527b9b;border-radius:9px;background:#0b233a">
+<summary style="cursor:pointer;padding:12px 14px;color:#fff;font-weight:700;list-style:revert">⚡ Three-phase power-circuit testing — click to expand / collapse</summary>
+<div style="padding:0 10px 10px"><div id="fdPowerProbePanel" style="margin:8px 0;padding:10px;background:#0b233a;border:1px solid #527b9b;border-radius:9px">
+<h4 style="margin:0 0 5px">Three-phase power circuit — fuse, contactor, thermal overload relay (OL) and motor</h4><p style="margin:5px 0;padding:7px;background:#19394c;border-left:3px solid #f5bb71;font-size:12px;color:#e8f6ff"><strong>Two different fuse circuits:</strong> The control fuse (FI → F) supplies the KM coil. The three power fuses (PF1I → PF1O, PF2I → PF2O, PF3I → PF3O) supply the motor phases. A failed control fuse can leave all three power fuses showing continuity.</p>
+<p style="font-size:12px">Select BLACK or RED above, then click the test circles on any phase. Simulated supply must be isolated for continuity tests.</p>
+<svg id="fdPowerTestSvg" viewBox="0 0 420 355" style="width:100%;max-height:340px" role="img" aria-label="Complete simplified three phase DOL power circuit with accessible test terminals">
+<g id="fdPowerStatic"></g><g id="fdPowerTestNodes"></g><g id="fdPowerTestLeads" pointer-events="none"></g></svg>
+<div id="fdPowerProbeStatus" style="font-size:12px;color:#aee3cb">Select a probe and click a labelled test point.</div><div style="margin:10px 0;padding:10px;background:#112e46;border:1px solid #49748e;border-radius:8px">
+<strong style="color:#e5f4ff">Guided power-circuit testing</strong>
+<p style="font-size:12px;color:#bdd5e7;margin:5px 0">Choose a phase and component to highlight its two terminals. You still position both probes yourself; the guide does not reveal the fault.</p>
+<div style="display:flex;gap:7px;flex-wrap:wrap">
+<label style="font-size:12px">Phase <select id="fdPowerGuidePhase" style="padding:7px;background:#193c56;color:#fff;border:1px solid #6793ae;border-radius:5px"><option value="1">L1</option><option value="2">L2</option><option value="3">L3</option></select></label>
+<label style="font-size:12px">Component <select id="fdPowerGuidePart" style="padding:7px;background:#193c56;color:#fff;border:1px solid #6793ae;border-radius:5px"><option value="PF">Power fuse</option><option value="KM">Main contact</option><option value="OL">OL — Thermal overload relay</option></select></label>
+<button id="fdPowerGuideShow" type="button" class="fdBtn" style="padding:7px 10px">Highlight test points</button>
+</div>
+<div id="fdPowerGuideResult" aria-live="polite" style="font-size:12px;color:#aee3cb;margin-top:8px">Select a component, then place BLACK and RED probes on its highlighted terminals.</div>
+</div>
+
+<p style="font-size:11px;color:#ffdca7">Simplified isolated test model: motor windings are not treated as zero-ohm links between phases.</p>
+</div>
+</div></details>
+<div id="fdProbeInfo" aria-live="polite" style="margin-top:10px;color:#c5e4fa">Black: START 3 · Red: START 4</div>
+<p style="font-size:12px;color:#ffdaaa;margin:8px 0 0">Continuity and resistance measurements are disabled when simulated isolation is OFF. AC voltage mode is a numerical demonstration only, not a procedure for live testing.</p>
+</section>
+<div id="fdMeterPanel" style="background:#081a2d;border:1px solid #365d7b;padding:15px;border-radius:12px;margin:16px 0">
+<h3 style="margin:0 0 8px">Robin KMP 3075DL — simulated insulation and continuity tester</h3>
+<p style="color:#bcd5ed">Place the probes directly on the labelled circuit terminals above. On the continuity/low-ohms setting, a closed contact displays <strong>0.01 Ω</strong>; an open circuit displays <strong>↑ 1</strong> (over-range), matching the Robin KMP 3075DL shown in the reference photographs. Continuity readings respond to the active fault and simulated START/STOP state. Insulation resistance mode provides a clearly labelled illustrative over-range display, not a circuit-specific insulation measurement. For example, with START released its isolated resistance is ↑ 1 (over-range); while START is pressed it is 0.01 Ω unless its contact has failed. Guided mode explains the result; assessment mode hides interpretation.</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:start">
+<div id="robinBody" style="background:#252b2b;border:9px solid #f2ba0b;border-radius:22px;padding:13px;min-width:260px;max-width:405px;flex:1;box-shadow:inset 0 0 0 2px #a2a2a2,0 8px 20px #0008;color:#eee">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><strong style="font-size:23px;letter-spacing:1px;color:#eee">R<span style="color:#f07136">O</span>BIN</strong><span style="font-size:11px;font-weight:bold;color:#ccc">KMP 3075DL</span></div>
+<div style="font-size:11px;letter-spacing:.6px;color:#ddd;margin:4px 0 8px">INSULATION–CONTINUITY TESTER · EDUCATIONAL REPLICA</div>
+<div style="background:#b9c8b2;color:#1b2920;border:5px solid #535d50;border-radius:7px;padding:12px 10px;min-height:86px;box-shadow:inset 0 0 14px #778b80">
+<div id="fdActiveProbePair" aria-live="polite" style="color:#193a42;background:#d7e5d6;border-radius:5px;padding:4px 7px;font-size:12px;font-weight:700;margin-bottom:5px">No probes selected — reading not yet taken</div><div id="fdMeterDisplay" style="font-family:Consolas,monospace;font-size:48px;font-weight:bold;text-align:right;line-height:1.15">—</div>
+<div id="fdMeterUnit" style="font-size:12px;text-align:right;font-weight:bold">SELECT FUNCTION</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px">
+<div><label for="fdMeterMode" style="display:block;font-size:11px;font-weight:bold;color:#f5bb71;margin-bottom:5px">FUNCTION SELECTOR</label>
+<select id="fdMeterMode" style="width:100%;padding:9px 5px;background:#161e24;color:white;border:1px solid #9caaae;border-radius:6px"><option value="beep" selected>Ω CONTINUITY</option><option value="ohm">Ω RESISTANCE</option><option value="insulation">INSULATION DC</option><option value="vac">V~ DEMO</option></select></div>
+<div><label for="fdMeterRange" style="display:block;font-size:11px;font-weight:bold;color:#8ce4a5;margin-bottom:5px">RANGE SELECTOR</label>
+<select id="fdMeterRange" style="width:100%;padding:9px 5px;background:#161e24;color:white;border:1px solid #9caaae;border-radius:6px"><option value="20">20 Ω</option><option value="200">200 Ω</option><option value="2000">2000 Ω</option></select></div>
+</div>
+<div style="display:flex;justify-content:space-around;align-items:center;margin-top:13px;gap:12px">
+<div style="text-align:center"><div id="fdDial" aria-label="Function selector illustration" style="margin:auto;width:68px;height:68px;border-radius:50%;background:#171c20;border:5px solid #4a4c4e;position:relative;box-shadow:inset 0 0 0 9px #343a3c"><div id="fdDialPointer" style="position:absolute;left:50%;top:4px;width:5px;height:21px;background:#f6a245;border-radius:5px;transform-origin:50% 29px;transform:translateX(-50%) rotate(0deg)"></div></div><div id="fdDialLabel" style="font-size:11px;margin-top:4px;color:#fff">CONT · Ω</div></div>
+<div style="text-align:center"><div style="width:68px;height:68px;border-radius:50%;background:#171c20;border:5px solid #4a4c4e;box-shadow:inset 0 0 0 9px #343a3c;display:grid;place-items:center"><span id="fdRangeDial" style="color:#9aefaf;font-weight:bold;font-size:14px">20Ω</span></div><div style="font-size:11px;margin-top:4px;color:#fff">RANGE</div></div>
+</div>
+<div id="fdInsulationNote" style="font-size:11px;color:#e6c29c;margin-top:9px;display:none">Insulation test is a separate 500 V DC mathematical simulation; no real voltage is generated.</div>
+<div style="display:flex;justify-content:space-around;margin-top:12px;font-size:12px"><span>● COM (black)</span><span style="color:#ff8686">● V/Ω (red)</span></div>
+</div>
+<div style="flex:2;min-width:235px">
+<!-- Keep internal selectors for meter calculations, but use direct terminal placement only. -->
+<div hidden aria-hidden="true"><select id="fdBlack"></select><select id="fdRed"></select><div id="fdQuickTests"></div></div>
+<p style="color:#c2d7e9;margin:0 0 12px">Place both probes by clicking the labelled terminal circles on the control diagram above. Select <strong>BLACK</strong>, click the first terminal, then select <strong>RED</strong> and click the second. Use <strong>Take measurement</strong> to read the meter.</p>
+<label style="display:block;margin:10px 0"><input type="checkbox" id="fdGuided" checked> Guided explanations</label><button type="button" class="fdBtn" id="fdMeasure">Take measurement</button><div id="fdMeterExplanation" aria-live="polite" style="color:#bcd5ed;margin-top:12px"></div><div id="fdMeterLog" style="font-size:13px;color:#c6d5e5;margin-top:10px;max-height:150px;overflow:auto"></div></div></div>
+<p style="font-size:12px;color:#f5cda2">Safety: The live-voltage mode is a mathematical simulation only. Resistance and continuity modes represent an isolated, proven-dead and suitably disconnected circuit. Do not use this interface as a real testing procedure. Control voltage is assumed 230 V AC for these example readings. The 0.01 Ω reading is a simplified teaching value; the ↑ 1 indication represents an over-range/open circuit on this instrument.</p></div>
+<div id="fdDiagnosisAnchor"></div><details id="fdEvidencePanel" style="margin:10px 0;border:1px solid #4c819f;border-radius:8px;background:#0c263d;padding:9px">
+<summary style="cursor:pointer;font-weight:700;color:#c9edff">Diagnostic evidence record <span id="fdEvidenceCount" style="font-weight:400">(0 measurements)</span></summary>
+<p style="font-size:12px;margin:7px 0;color:#c6d9e8">Readings are recorded automatically when you press Take measurement. Each new fault starts a fresh record. A reading is evidence, not proof of a particular fault on its own.</p>
+<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px" id="fdEvidenceTable"><thead><tr><th style="text-align:left">#</th><th style="text-align:left">Tester setting</th><th style="text-align:left">Black probe</th><th style="text-align:left">Red probe</th><th style="text-align:left">Reading</th><th style="text-align:left">Circuit state</th></tr></thead><tbody id="fdEvidenceBody"><tr><td colspan="6" style="padding:7px">No measurements taken yet.</td></tr></tbody></table></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button type="button" class="fdBtn" id="fdEvidenceCopy">Copy evidence</button><button type="button" class="fdBtn" id="fdEvidenceClear">Clear current evidence</button></div>
+<div id="fdEvidenceNotice" aria-live="polite" style="font-size:12px;color:#b9e8d5;margin-top:5px"></div>
+</details>
+<h3>Your diagnosis</h3><p style="color:#bcd5ed;margin:5px 0 10px">The dropdown is <strong>your proposed answer</strong>, not the fault currently inserted into the simulator. Click <strong>Check diagnosis</strong> to compare your choice with the hidden fault.</p><div class="fdDiagnosisActions">
+<select id="fdAnswer" aria-label="Which Fault?" style="background:#203d59;color:white;border:1px solid #6085a3;padding:11px;border-radius:8px;min-width:0;width:100%"></select>
+<button id="fdCheck" class="fdBtn">Check diagnosis</button><button id="fdReveal" class="fdBtn">Show explanation</button></div>
+<div id="fdFeedback" aria-live="polite" style="margin-top:12px;line-height:1.5"></div>
+<div id="fdRepairPanel" style="margin-top:14px;padding:14px;background:#081a2d;border:1px solid #365d7b;border-radius:10px">
+<h3 style="margin:0 0 8px">Fault rectification and verification</h3>
+<p style="color:#bcd5ed;margin:4px 0 10px">After diagnosing the fault, select the correct action and <strong>click Apply simulated repair</strong> (selecting from the list alone does not repair anything). Then click Verify START → RELEASE → STOP to check the operation. Educational simulation only: isolate, prove dead and follow approved procedures in practice.</p>
+<select id="fdRepairChoice" style="background:#203d59;color:#fff;border:1px solid #6085a3;padding:10px;border-radius:8px;max-width:100%;width:100%"><option value="">Choose a corrective action…</option></select>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"><button id="fdRepairApply" class="fdBtn" type="button">Apply simulated repair</button><button id="fdRepairVerify" class="fdBtn" type="button">Verify START → RELEASE → STOP</button></div>
+<div id="fdRepairResult" aria-live="polite" style="margin-top:9px;color:#dceeff">Step 1: Confirm diagnosis. Step 2: Select repair. Step 3: Click Apply simulated repair. Step 4: Verify.</div>
+</div>
+<div style="margin-top:16px;padding:14px;background:#081a2d;border:1px solid #365d7b;border-radius:10px">
+<h3 style="margin:0 0 8px">Assessment challenge — ten different faults</h3>
+<p style="color:#bcd5ed;margin:4px 0 10px">Complete ten different faults. Each case awards up to 6 marks for a correct diagnosis, 2 for a recorded safe continuity measurement, and 2 for a fault-relevant terminal test. Each incorrect diagnosis attempt deducts 2 marks from the diagnosis portion. Revealing an answer awards zero. Testing must be completed before submitting a diagnosis.</p>
+<button id="fdChallenge" class="fdBtn" type="button">Start ten-case challenge</button>
+<button id="fdNext" class="fdBtn" type="button" disabled>Next case</button>
+<button id="fdHint" class="fdBtn" type="button">Show symptom hint</button>
+<div id="fdChallengeStatus" aria-live="polite" style="margin-top:10px;color:#bde7f6">Practice mode — no score recorded.</div>
+<div id="fdChallengeReport" style="margin-top:8px"></div>
+<div id="fdStudentReportControls" style="margin-top:14px;padding:12px;border:1px solid #456d8a;border-radius:9px">
+<h3 style="margin:0 0 8px">Student diagnostic assessment report</h3>
+<div style="display:flex;flex-wrap:wrap;gap:9px">
+<label style="flex:1;min-width:160px">Student name <input id="fdStudentName" placeholder="Enter name" style="display:block;width:100%;box-sizing:border-box;padding:9px;background:#19344c;color:#fff;border:1px solid #648ca7;border-radius:6px"></label>
+<label style="flex:1;min-width:130px">Group <input id="fdStudentGroup" placeholder="e.g. L3B" style="display:block;width:100%;box-sizing:border-box;padding:9px;background:#19344c;color:#fff;border:1px solid #648ca7;border-radius:6px"></label>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"><label>Report type <select id="fdReportFormat" style="padding:9px;background:#19344c;color:white;border:1px solid #648ca7;border-radius:6px"><option value="detail">Detailed Summary</option><option value="summary">A4 summary</option></select></label><button type="button" id="fdPreviewReport" class="fdBtn">Preview report</button><button type="button" id="fdPrintReport" class="fdBtn">Print / Save as PDF</button></div>
+<div style="font-size:12px;color:#bcd5ed;margin-top:8px">The report records the ten-case assessment and available test evidence. Complete the challenge for a final score. Printing uses your browser's print dialog.</div>
+</div>
+</div>
+<p style="font-size:12px;color:#bcd5ed">Illustrative educational model, not a manufacturer's cutaway or a practical testing instruction. Real electrical testing requires appropriate safe isolation, proving dead and approved procedures. Never bypass overload protection.</p>
+</section>
+<style>
+#faultLab .fdBtn{background:#205477;color:#fff;border:1px solid #6bbbe9;border-radius:8px;padding:11px 15px;font-weight:700;cursor:pointer}
+#faultLab .fdBtn:hover{background:#176d9d}
+/* Diagnosis controls: enough room for full labels, with responsive wrapping. */
+#faultLab .fdDiagnosisActions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-items:stretch;width:100%}
+#faultLab .fdDiagnosisActions select{grid-column:1/-1}
+#faultLab .fdDiagnosisActions select,#faultLab .fdDiagnosisActions button{box-sizing:border-box;min-width:0;width:100%;font-size:13px;white-space:nowrap}
+#faultLab .fdDiagnosisActions .fdBtn{padding:10px 7px}
+
+@media(max-width:350px){#faultLab .fdDiagnosisActions{grid-template-columns:1fr}}
+#faultLab .fdVisuals{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}
+#faultLab .fdFrame{background:#081a2d;border:1px solid #365d7b;border-radius:12px;padding:12px;min-width:0}
+#faultLab .fdFrame h3{margin:0 0 10px}
+#faultLab #fdTests{gap:5px!important}
+#faultLab #fdTests .fdBtn{padding:7px 9px;font-size:12px}
+#faultLab #fdTestResult{font-size:12px;line-height:1.4;margin-top:8px!important}
+@media(max-width:850px){#faultLab .fdVisuals{grid-template-columns:1fr}}
+</style>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const data={
+start:{name:"START push button fails to close",symptom:"The motor does not start when START is pressed.",clue:"START stays open even when pressed."},
+stop:{name:"STOP NC contact failed open",symptom:"The motor does not start when START is pressed.",clue:"STOP remains open when released."},
+hold:{name:"13–14 holding contact fails to close",symptom:"The motor runs while START is held, but stops as soon as START is released.",clue:"13–14 remains open despite KM pulling in."},
+overload:{name:"Overload relay tripped (95–96 open)",symptom:"The motor will not restart after a protection event.",clue:"95–96 remains open while the overload is tripped."},
+coil:{name:"Contactor coil A1–A2 open circuit",symptom:"Pressing START does not pull in the contactor.",clue:"The KM winding is open circuit."},
+fuse:{name:"Control-circuit fuse open",symptom:"All control functions are dead; START produces no response.",clue:"The isolated control fuse has no continuity; there is no supply to the control circuit."},
+return:{name:"A2 coil return conductor disconnected",symptom:"The contactor does not pull in despite healthy push-button contacts.",clue:"The control return path from A2 is open; coil current cannot flow."},
+pole:{name:"Contactor main pole L2/T2 fails to close",symptom:"The contactor pulls in, but the motor does not run normally (phase loss).",clue:"Main pole 3L2–4T2 stays open even though the armature has pulled in."},
+powerfuse:{name:"Power-circuit L1 fuse open",symptom:"The contactor pulls in but the motor has a missing supply phase.",clue:"The L1 power fuse is open; the main contacts still operate."},
+motor:{name:"Motor winding open circuit",symptom:"The contactor pulls in and all main contacts close, but the motor does not run.",clue:"One isolated motor winding measures open circuit."}
+};
+const keys=Object.keys(data);
+let key,held=false,stopHeld=false,running=false,tries=0;
+let challenge=false,queue=[],results=[],resolved=false,hintUsed=false,repaired=false;
+// One straightforward workflow: random-fault practice or the ten-case assessment.
+let studentMode=false;
+function fault(){return repaired?"healthy":key}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function contacts(){return {stop:!stopHeld&&fault()!=="stop",over:fault()!=="overload",start:held&&fault()!=="start",hold:running&&fault()!=="hold",coil:fault()!=="coil"&&fault()!=="return"&&fault()!=="fuse"}}
+function calc(){
+let c=contacts();
+if(!(c.stop&&c.over&&c.coil&&(c.start||c.hold)))running=false;
+else running=true;
+}
+function contactSVG(x,y,closed){
+const end=closed?y:y-27;
+return '<g stroke="'+(closed?'#53e8b6':'#dbe9f7')+'" stroke-width="5" stroke-linecap="round"><path d="M'+(x-29)+' '+(y-22)+'V'+(y+22)+' M'+(x+29)+' '+(y-22)+'V'+(y+22)+' M'+(x-29)+' '+(y-14)+'L'+(x+25)+' '+end+'"/></g>';
+}
+function render(){
+calc();
+const c=contacts();
+$('fdStopContact').innerHTML=contactSVG(164,92,c.stop);
+$('fdOverContact').innerHTML=contactSVG(289,92,c.over);
+$('fdStartContact').innerHTML=contactSVG(414,92,c.start);
+$('fdHoldContact').innerHTML=contactSVG(414,192,c.hold);
+const input=c.stop&&c.over&&fault()!=='fuse',branch=c.start||c.hold,live=input&&branch&&c.coil;
+// A green path is shown ONLY if there is a complete circuit through A1, KM and A2.
+// An open A2 return must never be depicted as coil current, even if START is pressed.
+let paths=[];
+if(live){
+ paths=['M35 92H135','M193 92H260','M318 92H385','M443 92H650','M692 92H715'];
+ if(c.start)paths.push('M385 92H443');
+ if(c.hold)paths.push('M351 92V192H385','M385 192H443','M443 192H610V92');
+}
+$('fdLive').innerHTML=paths.map(d=>'<path d="'+d+'"/>').join('');
+$('fdCoil').setAttribute('stroke',running?'#51edbb':'#b2c6d8');
+$('fdCoil').setAttribute('fill',running?'#17634e':'#142d45');
+$('fdCoilLamp').setAttribute('fill',running?'#51edbb':'#718398');
+const returnBroken=fault()==='return';
+$('fdReturnWire').style.display=returnBroken?'none':'';
+$('fdReturnGap').style.display=returnBroken?'':'none';
+$('fdReturnLeft').setAttribute('stroke',running?'#51edbb':'#93a8b8');
+$('fdReturnWire').setAttribute('stroke',running?'#51edbb':'#93a8b8');
+$('fdReturnState').textContent=returnBroken?'BROKEN RETURN — NO COIL CURRENT':running?'COMPLETE PATH — COIL ENERGISED':'COIL CURRENT OFF';
+$('fdReturnState').setAttribute('fill',returnBroken?'#ffaaaa':running?'#72f4be':'#c2d8e8');
+$('fdArmature').setAttribute('y',running?'208':'225');
+let poles='';
+const phaseStates=[];
+[120,260,400].forEach((x,i)=>{
+ const isBadPole=fault()==='pole'&&i===1;
+ const badFuse=fault()==='powerfuse'&&i===0;
+ const badWinding=fault()==='motor'&&i===2;
+ const mechanicallyClosed=running;
+ const electricallyClosed=mechanicallyClosed&&!isBadPole;
+ const contactColor=isBadPole&&mechanicallyClosed?'#ff7777':electricallyClosed?'#51edbb':'#b2c6d8';
+ poles+='<text x="'+x+'" y="88" text-anchor="middle" fill="#fff" font-size="14">'+['1L1 → 2T1','3L2 → 4T2','5L3 → 6T3'][i]+'</text>';
+ poles+='<path d="M'+x+' 102V130 M'+x+' 188V210" stroke="#c0d2e2" stroke-width="10"/>';
+ poles+='<rect x="'+(x-30)+'" y="130" width="60" height="17" rx="3" fill="#c99743"/>';
+ poles+='<rect x="'+(x-30)+'" y="'+(electricallyClosed?147:174)+'" width="60" height="17" rx="3" fill="'+contactColor+'"/>';
+ if(isBadPole&&mechanicallyClosed){poles+='<path d="M'+(x-23)+' 170 L'+(x+23)+' 189 M'+(x+23)+' 170 L'+(x-23)+' 189" stroke="#ff7777" stroke-width="4"/>';}
+ const label=isBadPole&&mechanicallyClosed?'POLE FAULT':electricallyClosed?'CLOSED':'OPEN';
+ poles+='<text x="'+x+'" y="238" text-anchor="middle" fill="'+contactColor+'" font-size="13" font-weight="bold">'+label+'</text>';
+ const detail=isBadPole&&mechanicallyClosed?'KM pulled in; L2 contact electrically OPEN':badFuse?'KM pole '+(mechanicallyClosed?'closed':'open')+'; upstream L1 fuse OPEN':badWinding?'KM pole '+(mechanicallyClosed?'closed':'open')+'; motor winding OPEN':mechanicallyClosed?'KM pole closed; contact continuous':'KM pole open (coil released)';
+ phaseStates.push('<span style="color:'+(isBadPole||badFuse||badWinding?'#ffaaa0':mechanicallyClosed?'#70eec0':'#c2d7e9')+'"><b>L'+(i+1)+'</b>: '+detail+'</span>');
+});
+$('fdPoleElectricalStatus').innerHTML='<strong>Contactor pole and associated fault status</strong><div style="display:grid;gap:4px;margin-top:5px">'+phaseStates.join('')+'</div>';
+;
+$('fdPoles').innerHTML=poles;
+$('fdMechanism').textContent=running?(fault()==='pole'?'Coil energised; armature attracted, but L2 main contact remains electrically OPEN.': 'Coil energised; armature attracted; three main contacts mechanically closed.'):'Coil de-energised: armature released; three main contacts open.';
+if(typeof window.fdUpdatePowerVisual==='function')window.fdUpdatePowerVisual(fault(),running);
+$('fdCircuitState').textContent=(fault()==='return'?'⚠ A2 RETURN DISCONNECTED: COIL CIRCUIT OPEN; KM CANNOT ENERGISE.  ':fault()==='coil'?'⚠ KM COIL OPEN: NO COIL CURRENT.  ':'')+(running&&['pole','powerfuse','motor'].includes(fault())?'⚠ MOTOR NOT RUNNING NORMALLY — check the power circuit.  ':'')+'START: '+(c.start?'CLOSED':'OPEN')+' · STOP: '+(c.stop?'CLOSED':'OPEN')+' · 95–96: '+(c.over?'CLOSED':'OPEN')+' · 13–14: '+(c.hold?'CLOSED':'OPEN')+' · KM: '+(running?'ON':'OFF');
+}
+function newFault(forcedKey){
+let options=keys.filter(k=>k!==key);key=forcedKey||options[Math.floor(Math.random()*options.length)];
+resolved=false;hintUsed=false;repaired=false;
+$('fdHint').disabled=false;
+$('fdNext').disabled=true;
+held=false;stopHeld=false;running=false;tries=0;
+// For power-side failures the symptom is observed with KM already pulled in.
+// Simulate START pressed then released: the auxiliary 13–14 holds the coil.
+if(['pole','powerfuse','motor'].includes(key)){held=true;calc();held=false;calc();}
+$('fdSymptom').innerHTML='<strong>Case '+String(Math.floor(Math.random()*900)+100)+'</strong> — '+data[key].symptom+' Investigate the cause using the controls and tester.'+( ['pole','powerfuse','motor'].includes(key)?' The KM contactor is initially energised and held by 13–14; START is released (normally open).':'');
+$('fdAnswer').innerHTML='<option value="">Which Fault?</option>'+shuffle(keys).map(k=>'<option value="'+k+'">'+data[k].name+'</option>').join('');
+$('fdRepairResult').textContent='';$('fdRepairChoice').value='';$('fdFeedback').textContent='';$('fdFeedback').style.color='#dceeff';$('fdTestResult').textContent='Choose a component to test.';render();
+}
+$('fdNew').addEventListener('click',()=>{if(studentMode)return;if(challenge&&!resolved){$('fdFeedback').textContent='Complete the current challenge case first, or start a new challenge.';return}if(challenge){challenge=false;$('fdChallengeStatus').textContent='Challenge ended. Practice mode.';}newFault();});
+$('fdStart').addEventListener('click',()=>{stopHeld=false;held=true;render()});
+$('fdRelease').addEventListener('click',()=>{held=false;render()});
+$('fdStop').addEventListener('click',()=>{stopHeld=true;held=false;running=false;render();window.setTimeout(()=>{stopHeld=false;render()},450)});
+$('fdReset').addEventListener('click',()=>{held=false;stopHeld=false;running=false;render()});
+const names={start:'START NO',stop:'STOP NC',hold:'13–14 auxiliary NO',overload:'Overload 95–96 NC',coil:'KM coil A1–A2',fuse:'Control fuse',return:'A2 return conductor',pole:'Main pole 3L2–4T2',powerfuse:'Power L1 fuse',motor:'Motor winding'};
+$('fdTests').innerHTML=shuffle(keys).map(k=>'<button class="fdBtn" type="button" data-fd="'+k+'">Test '+names[k]+'</button>').join('');
+$('fdTests').addEventListener('click',e=>{
+const b=e.target.closest('[data-fd]');if(!b)return;const k=b.dataset.fd;
+let result;
+if(k==='start')result=fault()==='start'?'OPEN even when pressed (abnormal)':'OPEN at rest; CLOSED when pressed';
+if(k==='stop')result=fault()==='stop'?'OPEN even when released (abnormal)':'CLOSED when released; OPEN when pressed';
+if(k==='hold')result=fault()==='hold'?'OPEN even when KM is energised (abnormal)':'OPEN with KM released; CLOSED with KM energised';
+if(k==='overload')result=fault()==='overload'?'OPEN — overload tripped':'CLOSED — overload healthy';
+if(k==='coil')result=fault()==='coil'?'OPEN CIRCUIT — winding fault':'Winding continuity present (nominal)';
+if(k==='fuse')result=fault()==='fuse'?'OPEN CIRCUIT — fuse failed':'Fuse continuity present';
+if(k==='return')result=fault()==='return'?'OPEN CIRCUIT — A2 return broken':'A2 return continuity present';
+if(k==='pole')result=fault()==='pole'?'OPEN despite contactor pulled in':'Closes when contactor pulls in';
+if(k==='powerfuse')result=fault()==='powerfuse'?'OPEN CIRCUIT — L1 fuse failed':'Power fuse continuity present';
+if(k==='motor')result=fault()==='motor'?'OPEN CIRCUIT — motor winding':'Motor winding continuity present';
+$('fdTestResult').textContent=names[k]+': '+result+'. Virtual isolated test.';
+});
+// Version 3.60: evidence-based assessment. A valid recorded test must be isolated,
+// continuity-mode, with distinct probe terminals; fault-relevant evidence is a
+// measurement across the component being investigated. This scores procedure,
+// not whether a measurement alone proves the fault.
+const assessmentPairs={
+ start:[['O','B']],stop:[['F','S']],hold:[['H13','H14']],
+ overload:[['T95','T96'],['S','O']],coil:[['A1','A2']],
+ fuse:[['FI','F']],return:[['A2','N']],pole:[['P2','T2']],
+ powerfuse:[['P1','P1O']],motor:[['MW','N']]
+};
+function assessEvidence(faultKey){
+ const readings=window.fdDiagnosticEvidence?.getCurrent?.()||[];
+ const valid=readings.filter(r=>r.state==='Isolated'&&/CONTINUITY|\bΩ\b|20 Ω|200 Ω|2000 Ω/i.test(r.setting)&&r.black!==r.red&&r.black&&r.red&& !/BLOCKED|SELECT|READY|RETEST|POSITION|SUPPLY ON/i.test(r.reading));
+ const relevant=(assessmentPairs[faultKey]||[]).some(pair=>valid.some(r=>pair.includes(r.black)&&pair.includes(r.red)));
+ return {count:valid.length,safe:valid.length>0?2:0,relevant:relevant?2:0,readings:readings.length};
+}
+function finishCase(correct,revealed){
+ if(resolved)return;
+ resolved=true;
+ if(!challenge)return;
+ const evidence=assessEvidence(key);
+ const diagnosis=revealed?0:Math.max(0,6-(tries-1)*2-(hintUsed?2:0));
+ const points=revealed?0:diagnosis+evidence.safe+evidence.relevant;
+ results.push({name:data[key].name,points,correct,revealed,diagnosis,evidencePoints:revealed?0:evidence.safe+evidence.relevant,tests:evidence.count,relevant:evidence.relevant>0,chosen:$('fdAnswer').selectedOptions[0]?.textContent||'Not selected',attempts:tries,measurements:(window.fdDiagnosticEvidence?.getCurrent?.()||[]).map(r=>({...r}))});
+ window.fdAssessmentResults=results.map(r=>({...r,measurements:r.measurements.map(m=>({...m}))}));
+ $('fdFeedback').textContent+=' | Assessment: '+points+'/10 (diagnosis '+diagnosis+'/6, testing '+(revealed?0:evidence.safe+evidence.relevant)+'/4).';
+ $('fdNext').disabled=results.length>=10;
+ $('fdChallengeStatus').textContent='Case '+results.length+'/10 complete · Total '+results.reduce((a,b)=>a+b.points,0)+' / 100 points'+(results.length===10?' — challenge finished!':'');
+ if(results.length===10){
+   const score=results.reduce((a,b)=>a+b.points,0);
+   $('fdChallengeReport').innerHTML='<strong>Final result: '+score+' / 100 ('+score+'%).</strong><ol>'+results.map(r=>'<li>'+r.name+' — '+r.points+'/10 (diagnosis '+r.diagnosis+'/6; testing '+r.evidencePoints+'/4; valid tests '+r.tests+')</li>').join('')+'</ol>';
+ }
+}
+$('fdAnswer').addEventListener('change',()=>{
+ if(!resolved){$('fdFeedback').textContent='Selected diagnosis: '+($('fdAnswer').selectedOptions[0]?.textContent||'None')+'. Click Check diagnosis to see whether it matches the actual fault.';$('fdFeedback').style.color='#dceeff';}
+});
+$('fdCheck').addEventListener('click',()=>{
+ if(resolved){$('fdFeedback').textContent='This case has already been marked. Select Next case or New random fault.';return}
+ const v=$('fdAnswer').value;
+ if(!v){$('fdFeedback').textContent='Select a diagnosis first.';return}
+ tries++;
+ if(v===key){
+  $('fdFeedback').textContent=studentMode?'✓ CORRECT — Diagnosis accepted. Evidence marks are calculated from measurements already recorded. Continue to the next case.':'✓ CORRECT — Your answer: '+data[v].name+'. Actual fault: '+data[key].name+'. Evidence: '+data[key].clue;
+  $('fdFeedback').style.color='#74ecc4';finishCase(true,false);
+ }else{
+  $('fdFeedback').textContent='✗ INCORRECT — Your answer: '+data[v].name+'. This does not match the simulated circuit. Investigate the contact states and isolated tests, then try again. The actual fault is still hidden.';
+  $('fdFeedback').style.color='#ffd394';
+ }
+});
+$('fdReveal').addEventListener('click',()=>{if(studentMode)return;
+ const selected=$('fdAnswer').value;
+ $('fdFeedback').textContent='ACTUAL SIMULATED FAULT: '+data[key].name+'. '+(selected?'Your selected answer was: '+data[selected].name+'. ':'')+'Evidence: '+data[key].clue+' '+data[key].symptom;
+ $('fdFeedback').style.color='#ffd394';finishCase(false,true);
+});
+$('fdHint').addEventListener('click',()=>{if(studentMode)return;
+ hintUsed=true;
+ $('fdFeedback').textContent='Hint: '+data[key].clue;
+ $('fdFeedback').style.color='#ffd394';
+});
+const repairActions={
+start:'Replace defective START push-button contact',stop:'Replace defective STOP NC contact',hold:'Replace defective 13–14 auxiliary contact',overload:'Investigate overload cause and reset correctly',coil:'Replace defective contactor coil',fuse:'Investigate cause and replace control fuse with correct rating',return:'Restore and secure A2 return connection',pole:'Replace defective contactor / main contact assembly',powerfuse:'Investigate cause and replace L1 power fuse with correct rating',motor:'Repair or replace motor after appropriate motor testing'
+};
+$('fdRepairChoice').innerHTML='<option value="">Choose a corrective action…</option>'+shuffle(keys).map(k=>'<option value="'+k+'">'+repairActions[k]+'</option>').join('');
+$('fdRepairApply').addEventListener('click',()=>{
+ if(!resolved){$('fdRepairResult').textContent='First identify the fault correctly using Check diagnosis. Then choose and apply the repair.';return}
+ const choice=$('fdRepairChoice').value;
+ if(!choice){$('fdRepairResult').textContent='Choose a repair action.';return}
+ if(choice!==key){$('fdRepairResult').textContent=studentMode?'✗ This repair did not clear the simulated fault. Review the evidence and choose another action.':'✗ Incorrect repair: '+repairActions[choice]+'. This does not correct '+data[key].name+'. The fault is still present.';return}
+ repaired=true;held=false;stopHeld=false;running=false;render();
+ // The electrical network has changed: invalidate the pre-repair meter reading.
+ $('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='REPAIRED — RETEST';
+ $('fdMeterExplanation').textContent='The repair changed the circuit. Press Take measurement again to obtain a fresh reading.';
+ $('fdRepairResult').textContent='✓ REPAIR APPLIED — '+repairActions[key]+'. Fault cleared in the simulation. Now click Verify START → RELEASE → STOP.';
+});
+$('fdRepairVerify').addEventListener('click',()=>{
+ if(!repaired){$('fdRepairResult').textContent='Repair not yet applied. Choose the correct action, then click Apply simulated repair before verifying.';return}
+ held=true;stopHeld=false;running=false;render();const startOK=running;
+ held=false;render();const holdOK=running;
+ stopHeld=true;running=false;render();const stopOK=!running;
+ held=false;stopHeld=false;render();
+ $('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='VERIFIED — RETEST';
+ $('fdMeterExplanation').textContent='The operating state has changed during verification. Take a new reading.';
+ $('fdRepairResult').textContent=(startOK&&holdOK&&stopOK?'✓ PASS':'✗ CHECK')+' — START: '+(startOK?'KM energised':'failed')+'; RELEASE: '+(holdOK?'13–14 held KM':'holding failed')+'; STOP: '+(stopOK?'KM released':'failed')+'. Visual model returned to STOPPED.';
+});
+$('fdChallenge').addEventListener('click',()=>{
+ if(studentMode){$('fdFeedback').textContent='Assessment restarted. Complete all ten cases to view the final report.';}
+ challenge=true;queue=shuffle(keys);results=[];window.fdAssessmentResults=[];resolved=false;
+ $('fdChallengeReport').textContent='';
+ $('fdChallengeStatus').textContent='Challenge started · Case 1/10 · 0/100 points earned';
+ newFault(queue.shift());
+});
+$('fdNext').addEventListener('click',()=>{
+ if(!challenge||!resolved||!queue.length)return;
+ newFault(queue.shift());
+ $('fdChallengeStatus').textContent='Case '+(results.length+1)+'/10 · '+results.reduce((a,b)=>a+b.points,0)+' points earned so far';
+});
+// Multimeter extension: controlled, fault-dependent example readings.
+const meterNodes={N:'Control return N / A2 reference',L:'Control supply L',FI:'Control fuse incoming terminal',F:'Control fuse outgoing terminal / before STOP',S:'After STOP',T95:'Overload terminal 95',T96:'Overload terminal 96',O:'START terminal 3 — BEFORE START (after 95–96)',B:'START terminal 4 — AFTER START (towards A1)',H13:'KM auxiliary terminal 13 — holding contact input',H14:'KM auxiliary terminal 14 — holding contact output',A1:'Coil A1',A2:'Coil A2',P1:'Power L1 upstream fuse',P1O:'Power L1 downstream fuse',P2:'Main contact L2 input',T2:'Main contact T2 output',MW:'Motor winding terminal'};
+const meterKeys=Object.keys(meterNodes);
+for(const id of ['fdBlack','fdRed']){$(id).innerHTML=meterKeys.map(k=>'<option value="'+k+'">'+meterNodes[k]+'</option>').join('')}
+$('fdBlack').selectedIndex=-1;$('fdRed').selectedIndex=-1;
+const quickPairs=[['START 3–4','O','B'],['Holding contact 13–14','H13','H14'],['STOP NC','F','S'],['Overload 95–96','S','O'],['KM coil A1–A2','A1','A2'],['Control fuse','FI','F'],['Power L1 fuse','P1','P1O'],['Main contact L2','P2','T2'],['A2 return','A2','N'],['Motor winding','MW','N']];
+$('fdQuickTests').innerHTML=quickPairs.map((p,i)=>'<button class="fdBtn" type="button" data-quick="'+i+'" style="font-size:13px;padding:8px 10px">'+p[0]+'</button>').join('');
+$('fdQuickTests').addEventListener('click',e=>{const b=e.target.closest('[data-quick]');if(!b)return;const p=quickPairs[Number(b.dataset.quick)];$('fdMeterMode').value='beep';updateDial();$('fdBlack').value=p[1];$('fdRed').value=p[2];$('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='READY — CONTINUITY';$('fdMeterExplanation').textContent='Probes positioned across '+p[0]+'. Press Take measurement. This assumes safe isolation and component disconnection where needed.';});
+let meterCount=0;
+function connectedControlPath(from,to,c,exclude){
+ const links=[];
+ function wire(u,v,ok=true){if(ok)links.push([u,v]);}
+ wire('L','FI');wire('FI','F',fault()!=='fuse');wire('F','S',c.stop);
+ wire('S','T95');wire('T95','T96',c.over);wire('T96','O');
+ wire('O','B',c.start&&exclude!=='start');
+ wire('O','H13');wire('H13','H14',c.hold&&exclude!=='hold');wire('H14','B');
+ wire('B','A1');wire('A1','A2',fault()!=='coil');wire('A2','N',fault()!=='return');
+ const seen=new Set([from]),todo=[from];
+ while(todo.length){const n=todo.shift();for(const [a,b] of links){
+  const next=a===n?b:b===n?a:null;
+  if(next!==null&&!seen.has(next)){seen.add(next);todo.push(next);}
+ }}
+ return seen.has(to);
+}
+$('fdIsolateParallel').addEventListener('change',()=>{
+ const isolated=$('fdIsolateParallel').checked;
+ $('fdBranchInfo').textContent=isolated?'Individual-contact testing: parallel branch excluded.':'Connected-circuit testing: alternative paths through START and 13–14 are included.';
+ $('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='PRESS TAKE MEASUREMENT';
+});
+function meterValue(){
+ const mode=$('fdMeterMode').value,rawA=$('fdBlack').value,rawB=$('fdRed').value,a=rawA==='T95'?'S':rawA==='T96'?'O':rawA,b=rawB==='T95'?'S':rawB==='T96'?'O':rawB,c=contacts();
+ const pair=[a,b].sort().join('|');
+ if(mode!=='vac'&&!$('fdIsolated').checked)return {value:'—',unit:'TEST BLOCKED',why:'Continuity and resistance tests require simulated supply isolation. Isolate first.'};
+ if(a===b)return {value:mode==='vac'?'0.0':mode==='insulation'?'INVALID':'0.01',unit:mode==='vac'?'V AC':mode==='insulation'?'TEST POINTS':'Ω',why:'Both probes are on the same test point. Insulation resistance must be tested between separate, appropriately prepared conductors.'};
+ if(mode==='vac'){
+   // Supply is an illustrative single-phase 230 V control circuit. Open-coil / floating nodes
+   // are intentionally not assigned misleading definitive voltage readings.
+   const supply=fault()!=='fuse', stop=supply&&c.stop, overload=stop&&c.over;
+   const startPath=overload&&(c.start||c.hold);
+   const control={N:0,L:230,FI:230,F:supply?230:0,S:stop?230:0,T95:stop?230:0,T96:overload?230:0,O:overload?230:0,
+     B:startPath?230:0,A1:startPath?230:0,A2:fault()==='return'?null:0};
+   const power={P1:230,P1O:fault()==='powerfuse'?0:230,P2:230,T2:running&&fault()!=='pole'?230:0,MW:running&&fault()!=='pole'&&fault()!=='powerfuse'?230:0};
+   const vals={...control,...power};
+   if(vals[a]===undefined||vals[b]===undefined)return {value:'—',unit:'V AC',why:'No common defined reference for these terminals in this teaching model.'};
+   if(vals[a]===null||vals[b]===null)return {value:'—',unit:'V AC',why:'Floating return: no reliable defined voltage can be inferred in this simplified model.'};
+   return {value:Math.abs(vals[a]-vals[b]).toFixed(1),unit:'V AC',why:'Illustrative voltage difference. A healthy OPEN START contact may show voltage across it with a complete downstream return; a CLOSED contact is approximately 0 V. Actual readings depend on the connected load and circuit.'};
+ }
+ const powerIds=new Set(['1','2','3'].flatMap(n=>['PF'+n+'I','PF'+n+'O','KM'+n+'I','KM'+n+'O','OL'+n+'I','OL'+n+'O','M'+n]));
+ if(powerIds.has(rawA)||powerIds.has(rawB)){
+   if(!powerIds.has(rawA)||!powerIds.has(rawB))return {value:'↑ 1',unit:'Ω · OPEN',why:'The control fuse and the motor power fuses are separate circuits; do not connect probes between them in this isolated teaching model.'};
+   const links=[];
+   const link=(a,b,ok=true)=>{if(ok)links.push([a,b])};
+   for(const n of ['1','2','3']){
+     link('PF'+n+'I','PF'+n+'O',n!=='1'||fault()!=='powerfuse');
+     link('PF'+n+'O','KM'+n+'I');
+     link('KM'+n+'I','KM'+n+'O',running&&(n!=='2'||fault()!=='pole'));
+     link('KM'+n+'O','OL'+n+'I');link('OL'+n+'I','OL'+n+'O');link('OL'+n+'O','M'+n);
+   }
+   const visited=new Set([rawA]),queue=[rawA];
+   while(queue.length){const at=queue.shift();for(const [x,y] of links){const next=x===at?y:y===at?x:null;if(next!==null&&!visited.has(next)){visited.add(next);queue.push(next)}}}
+   const ok=visited.has(rawB);
+   return {value:ok?'0.01':'↑ 1',unit:ok?'Ω · CONT':'Ω · OPEN / OVER-RANGE',why:'THREE-PHASE POWER CIRCUIT — tracing '+rawA+' to '+rawB+': '+(ok?'continuous low-resistance path.':'open path.')+' The control-circuit fuse is electrically separate from all three power fuses. An open control fuse does not make L1, L2 or L3 power fuses open. Main contacts require KM energised to show continuity. Motor windings and inter-phase paths are not included.'};
+ }
+ const tests={
+  'H13|H14':{closed:c.hold,label:'KM auxiliary contact 13–14. For an individual-contact continuity test, isolate the parallel START branch; otherwise START can provide an alternative path.'},
+  'B|O':{closed:c.start,label:'START 3–4: '+(held?'button pressed':'button released')+'. The 13–14 parallel branch is assumed disconnected for this component test.'},
+  'F|S':{closed:c.stop,label:'STOP NC: '+(stopHeld?'button pressed':'button released')},
+  'O|S':{closed:c.over,label:'Overload 95–96'},
+  'A1|A2':{closed:fault()!=='coil',label:'Isolated contactor coil: this low-ohms model checks winding continuity, not actual coil resistance'},
+  'F|FI':{closed:fault()!=='fuse',label:'Isolated control fuse between its incoming and outgoing terminals'},
+  'P1|P1O':{closed:fault()!=='powerfuse',label:'Isolated power L1 fuse'},
+  'P2|T2':{closed:fault()!=='pole'&&running,label:'Main L2 contact: follows the contactor position'},
+  'MW|N':{closed:fault()!=='motor',label:'Isolated motor winding: illustrative continuity only'},
+  'A2|N':{closed:fault()!=='return',label:'Isolated A2 return conductor'}
+ };
+ // When branches are not separated, a reading across one contact may
+ // also pass through the other parallel contact, even if the tested one is open.
+ if(!$('fdIsolateParallel').checked&&(pair==='B|O'||pair==='H13|H14')){
+   const alternate=pair==='B|O'?c.hold:c.start;
+   const direct=pair==='B|O'?c.start:c.hold;
+   const ok=direct||alternate;
+   return {value:ok?'0.01':'↑ 1',unit:ok?'Ω · CONT':'Ω · OPEN / OVER-RANGE',
+     why:'CONNECTED PARALLEL BRANCHES: '+(direct?'The contact under test is closed. ': 'The contact under test is open. ')+(alternate?'The other parallel branch provides a conductive path. ':'The other branch is also open. ')+'A continuity reading across connected parallel branches cannot prove which individual contact is closed. Isolate the alternate branch to test the contact independently.'};
+ }
+ const t=tests[pair];
+ if(!t){
+   // General continuity between any two selectable control-circuit terminals.
+   // Model wires and contact paths; do not mistake a coil winding for a short.
+   // When testing an auxiliary-contact terminal, physically disconnect the
+   // parallel START branch for the *whole* traced network, not just H13-H14.
+   // Otherwise a closed START incorrectly bridges H13 to A1 via O-B.
+   // For START-side testing, disconnect the auxiliary holding branch instead.
+   const individual=$('fdIsolateParallel').checked;
+   // Individual-contact isolation is local to the contact being examined.
+   // Never globally remove the holding branch for a general trace such as
+   // overload 96 -> A1: with 13-14 closed, that is a valid continuous path.
+   // START bypass is excluded for 13/14 tests; holding bypass is excluded
+   // for START 3 -> 4/A1 tests. Other circuit traces retain both branches.
+   const auxiliaryProbe=[rawA,rawB].some(node=>node==='H13'||node==='H14');
+   // Isolate the OTHER parallel branch according to the actual contact under test.
+   // START 3 (O) -> START 4 (B), or O -> A1: remove 13-14 holding bypass.
+   // H13/H14 contact tests: remove the START bypass instead.
+   // T96 -> A1 is a GENERAL trace, so retain both branches.
+   const startInputProbe=[rawA,rawB].includes('O');
+   const startOutputProbe=[rawA,rawB].some(node=>node==='B'||node==='A1');
+   const startContactProbe=startInputProbe&&startOutputProbe;
+   const excludedBranch=individual?(auxiliaryProbe?'start':startContactProbe?'hold':null):null;
+   const continuous=connectedControlPath(rawA,rawB,c,excludedBranch);
+   const isolationNote=!individual?'Connected-circuit mode: both parallel branches remain connected. ':auxiliaryProbe?'Individual auxiliary-contact test: START bypass excluded. ':startContactProbe?'Individual START-contact test: 13–14 holding bypass excluded. ':'General circuit trace: both branches retained. ';
+
+   return {value:continuous?'0.01':'↑ 1',
+      unit:continuous?'Ω · CONT':'Ω · OPEN / OVER-RANGE',
+      why:'Continuity traced between '+(meterNodes[rawA]||rawA)+' and '+(meterNodes[rawB]||rawB)+'. '+(continuous?'A conductive path exists through the modelled wires and currently closed contacts.':'No low-resistance path exists between these two test points in the present circuit state.')+' '+isolationNote+'This teaching model treats a healthy coil as a continuous winding; its actual resistance is not 0.01 Ω. Motor windings and external wiring are not included.'};
+ }
+ return {value:t.closed?'0.01':'↑ 1',unit:t.closed?'Ω · CONT':'Ω · OPEN / OVER-RANGE',why:t.label+'. '+(t.closed?'Low resistance indicates continuity.':'The upward arrow and 1 indicate over-range (open circuit) on this tester; this is not a measured 2000 MΩ resistance.')};
+}
+function clearMeter(){ $('fdBlack').selectedIndex=-1;$('fdRed').selectedIndex=-1;$('fdActiveProbePair').textContent='New fault — select two terminals and take a fresh measurement';meterCount=0;$('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='SELECT FUNCTION';$('fdMeterExplanation').textContent='';$('fdMeterLog').textContent=''}
+$('fdMeasure').addEventListener('click',()=>{
+ const m=meterValue();meterCount++;
+ $('fdMeterDisplay').textContent=m.value;$('fdMeterUnit').textContent=m.unit;
+ $('fdActiveProbePair').textContent='BLACK: '+$('fdBlack').value+'  |  RED: '+$('fdRed').value+'  |  '+($('fdIsolateParallel').checked?'Individual contact test':'Connected parallel branches');
+ $('fdMeterExplanation').textContent=$('fdGuided').checked?m.why:'Reading recorded. Interpret the result before diagnosing the fault.';
+ const row=document.createElement('div');row.textContent=meterCount+'. '+$('fdMeterMode').selectedOptions[0].text+' · '+$('fdBlack').value+' → '+$('fdRed').value+' = '+m.value+' '+m.unit;
+ $('fdMeterLog').prepend(row);
+});
+function updateDial(){
+ const m=$('fdMeterMode').value,range=$('fdMeterRange');
+ const old=range.value;
+ const options=m==='insulation'?[['20','20 MΩ'],['200','200 MΩ'],['2000','2000 MΩ']]:m==='vac'?[['230','230 V AC demo']]:[['20','20 Ω'],['200','200 Ω'],['2000','2000 Ω']];
+ range.innerHTML=options.map(x=>'<option value="'+x[0]+'">'+x[1]+'</option>').join('');
+ range.value=options.some(x=>x[0]===old)?old:(m==='insulation'?'2000':options[0][0]);
+ const deg=m==='vac'?-65:m==='insulation'?45:m==='ohm'?105:155;
+ $('fdDialPointer').style.transform='translateX(-50%) rotate('+deg+'deg)';
+ $('fdDialLabel').textContent=m==='vac'?'V~':m==='insulation'?'500 V DC':m==='ohm'?'Ω':'CONT · Ω';
+ $('fdRangeDial').textContent=range.options[range.selectedIndex].text;
+ $('fdInsulationNote').style.display=m==='insulation'?'block':'none';
+}
+$('fdMeterRange').addEventListener('change',()=>{$('fdRangeDial').textContent=$('fdMeterRange').selectedOptions[0].text;$('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='READY'});
+$('fdMeterMode').addEventListener('change',()=>{updateDial();$('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='SELECT PROBES';$('fdMeterExplanation').textContent=''});
+$('fdNew').addEventListener('click',clearMeter);
+$('fdChallenge').addEventListener('click',clearMeter);
+$('fdNext').addEventListener('click',clearMeter);
+updateDial();
+newFault();
+})();
+</script>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const svg=$('fdLadder');
+if(!svg||!$('fdBlack')||!$('fdRed'))return;
+const ns='http://www.w3.org/2000/svg';
+const nodes=[
+ {id:'L',x:35,y:92,label:'L'},
+ {id:'FI',x:69,y:92,label:'FUSE IN'},
+ {id:'F',x:113,y:92,label:'FUSE OUT / STOP 1'},
+ {id:'S',x:193,y:92,label:'STOP 2'},
+ {id:'O',x:385,y:92,label:'START 3'},
+ {id:'B',x:443,y:92,label:'START 4'},
+ {id:'H13',x:385,y:192,label:'13'},
+ {id:'H14',x:443,y:192,label:'14'},
+ {id:'A1',x:650,y:92,label:'A1'},
+ {id:'A2',x:692,y:92,label:'A2'},
+ {id:'N',x:715,y:92,label:'N'}
+];
+// 13–14 has two independently selectable probe markers on the holding branch.
+// 95–96 is represented by a separate pair of visible selectable terminal points;
+// START terminal 3 is electrically the same downstream node as 95–96 terminal 96.
+// The fuse sits between its incoming (FI) and outgoing (F) terminals.
+// Draw it above the original plain supply line so the physical test points are visible.
+const fuseVisual=document.createElementNS(ns,'g');fuseVisual.setAttribute('id','fdControlFuseVisual');svg.appendChild(fuseVisual);
+const fuseBack=document.createElementNS(ns,'rect');
+for(const [k,v] of Object.entries({x:80,y:84,width:21,height:16,fill:'#071b2e',stroke:'#ffcb77','stroke-width':2,rx:2}))fuseBack.setAttribute(k,v);
+fuseVisual.appendChild(fuseBack);
+const fuseLabel=document.createElementNS(ns,'text');
+for(const [k,v] of Object.entries({x:90,y:72,'text-anchor':'middle','font-size':10,fill:'#ffdfaa','font-weight':'bold'}))fuseLabel.setAttribute(k,v);
+fuseLabel.textContent='FUSE';fuseVisual.appendChild(fuseLabel);
+const group=document.createElementNS(ns,'g');group.setAttribute('id','fdProbeOverlay');svg.appendChild(group);
+const leadLayer=document.createElementNS(ns,'g');leadLayer.setAttribute('pointer-events','none');group.appendChild(leadLayer);
+const hitLayer=document.createElementNS(ns,'g');group.appendChild(hitLayer);
+const chosen={black:null,red:null};
+let active='black';
+function element(tag,attrs,parent){let el=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));parent.appendChild(el);return el}
+const shownNodes=nodes.filter(n=>!['F','S'].includes(n.id));
+// Markers at component terminals, including the actual 95–96 and STOP locations.
+shownNodes.push({id:'F',x:113,y:92,label:'FUSE OUT / STOP 1'},{id:'S',x:193,y:92,label:'STOP 2'});
+const extra=[{id:'T95',x:260,y:92,label:'95'},{id:'T96',x:318,y:92,label:'96'}];
+const all=[...shownNodes,...extra];
+all.forEach(n=>{
+ const g=element('g',{role:'button',tabindex:'0','aria-label':'Place probe at '+n.label,style:'cursor:pointer'},hitLayer);
+ element('circle',{cx:n.x,cy:n.y,r:13,fill:'#133f5d',stroke:'#ffe28a','stroke-width':2},g);
+ const text=element('text',{x:n.x,y:n.y+4,'text-anchor':'middle','font-size':10,'font-weight':'bold',fill:'#fff','pointer-events':'none'},g);
+ text.textContent=n.id==='FI'?'IN':n.id==='F'?'OUT':n.label.replace('START ','').replace('STOP ','');
+ const desc=element('title',{},g);desc.textContent=n.label;
+ const select=()=>{chosen[active]=n.id;$(active==='black'?'fdBlack':'fdRed').value=n.id;active=active==='black'?'red':'black';draw();$('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='PRESS TAKE MEASUREMENT'};
+ g.addEventListener('click',select);
+ g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select()}});
+});
+function draw(){
+ leadLayer.replaceChildren();
+ for(const [probe,color,anchor] of [['black','#aab6c2',-1],['red','#ff6666',1]]){
+  const id=chosen[probe];if(!id)continue;
+  const n=all.find(x=>x.id===id);
+  if(!n)continue;
+  element('path',{d:`M${n.x} ${n.y} Q${n.x+anchor*22} 200 ${anchor===-1?180:560} 285`,fill:'none',stroke:color,'stroke-width':3,'stroke-dasharray':'7 4'},leadLayer);
+  element('circle',{cx:n.x,cy:n.y,r:8,fill:color,stroke:'#102139','stroke-width':2},leadLayer);
+ }
+ $('fdProbeBlack').setAttribute('aria-pressed',String(active==='black'));
+ $('fdProbeRed').setAttribute('aria-pressed',String(active==='red'));
+ $('fdProbeBlack').style.outline=active==='black'?'3px solid #f5e5a1':'none';
+ $('fdProbeRed').style.outline=active==='red'?'3px solid #ff8585':'none';
+ const label=id=>id?(all.find(n=>n.id===id)?.label||id):'not placed';
+ $('fdProbeInfo').textContent='Black: '+label(chosen.black)+' · Red: '+label(chosen.red)+' · Next click places '+active.toUpperCase()+' probe.';
+}
+$('fdProbeBlack').addEventListener('click',()=>{active='black';draw()});
+$('fdProbeRed').addEventListener('click',()=>{active='red';draw()});
+$('fdProbeClear').addEventListener('click',()=>{chosen.black=null;chosen.red=null;$('fdBlack').selectedIndex=-1;$('fdRed').selectedIndex=-1;active='black';draw()});
+for(const [id,probe] of [['fdBlack','black'],['fdRed','red']])$(id).addEventListener('change',()=>{chosen[probe]=$(id).value;draw()});
+$('fdQuickTests').addEventListener('click',()=>{chosen.black=$('fdBlack').value;chosen.red=$('fdRed').value;draw()});
+// Capture measurement requests to enforce the simulated isolation interlock.
+// Capture phase runs before the pre-existing measurement handler.
+$('fdMeasure').addEventListener('click',e=>{
+ const mode=$('fdMeterMode').value,isolated=$('fdIsolated').checked;
+ if(mode==='vac'&&isolated){e.stopImmediatePropagation();$('fdMeterDisplay').textContent='LOCK';$('fdMeterUnit').textContent='ISOLATED';$('fdMeterExplanation').textContent='Voltage testing is disabled while the simulated supply is isolated. Voltage mode is a numerical teaching demonstration only.';return}
+ if(mode!=='vac'&&!isolated){e.stopImmediatePropagation();$('fdMeterDisplay').textContent='LOCK';$('fdMeterUnit').textContent='ISOLATE SUPPLY';$('fdMeterExplanation').textContent='Resistance / continuity measurement blocked: switch on simulated isolation before testing.';return}
+ if(!$('fdBlack').value||!$('fdRed').value){e.stopImmediatePropagation();$('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='POSITION BOTH PROBES';return}
+},true);
+for(const id of ['fdStart','fdRelease','fdStop','fdReset'])$(id).addEventListener('click',()=>{$('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='STATE CHANGED — PRESS TAKE MEASUREMENT';});
+$('fdIsolated').addEventListener('change',()=>{$('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent=$('fdIsolated').checked?'ISOLATED — PRESS TAKE MEASUREMENT':'SIMULATED SUPPLY ON';});
+// Preserve meter selection and clear visible leads on a fresh challenge only when requested.
+draw();
+})();
+</script>
+
+<style id="fdCompactLayoutStyles">
+/* V3.28: Keep test points, probe controls and Robin tester within one working view. */
+#faultLab .fdVisuals{grid-template-columns:minmax(205px,0.30fr) minmax(0,1fr);align-items:start;gap:10px}
+#faultLab .fdFrame{padding:10px}
+#faultLab .fdFrame h3{font-size:15px;margin-bottom:5px}
+#faultLab #fdDevice{max-height:265px}
+#faultLab #fdTestingWorkspace{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(295px,0.85fr);gap:10px;align-items:start}
+#faultLab #fdDiagramAndProbes{min-width:0}
+#faultLab #fdDiagramAndProbes #fdLadder{display:block;width:100%;height:auto}
+#faultLab #fdDirectProbe{margin:5px 0;padding:9px}
+#faultLab #fdDirectProbe h3{font-size:14px;margin:0 0 5px}
+#faultLab #fdDirectProbe>p:first-of-type{font-size:11px;line-height:1.35;margin:0 0 6px}
+#faultLab #fdDirectProbe .fdBtn{padding:7px 9px;font-size:12px}
+#faultLab #fdProbeInfo{margin-top:5px!important;font-size:12px}
+#faultLab #fdMeterPanel{margin:0!important;padding:9px!important;min-width:0}
+#faultLab #fdMeterPanel h3{font-size:14px}
+#faultLab #fdMeterPanel>p{font-size:11px;line-height:1.3;margin:3px 0 8px!important}
+#faultLab #robinBody{min-width:0!important;max-width:none!important;padding:9px!important;border-width:6px!important}
+#faultLab #fdMeterDisplay{font-size:38px!important}
+#faultLab #fdMeterPanel #fdMeterLog{max-height:65px!important}
+#faultLab #fdMeterPanel .fdBtn{padding:8px 11px}
+#faultLab #fdMeterPanel #fdMeterExplanation{font-size:12px}
+@media(max-width:1050px){#faultLab .fdVisuals{grid-template-columns:1fr}#faultLab #fdDevice{max-height:200px}}
+@media(max-width:760px){#faultLab #fdTestingWorkspace{grid-template-columns:1fr}}
+
+/* V3.32: compact Robin tester on the LEFT; descriptions and measurement controls on the RIGHT. */
+#faultLab #fdRobinLayout{display:grid;grid-template-columns:minmax(235px,.95fr) minmax(175px,1.05fr);gap:10px;align-items:start;width:100%}
+#faultLab #fdRobinInfo{min-width:0;display:flex;flex-direction:column;gap:8px}
+#faultLab #fdRobinInfo p{margin:0!important;font-size:11px;line-height:1.4;color:#c2d7e9}
+#faultLab #fdRobinInfo p:last-of-type{color:#f5cda2}
+#faultLab #fdRobinControls{margin-top:auto}
+#faultLab #fdRobinControls>div{min-width:0!important;flex:none!important}
+#faultLab #fdRobinControls p{margin:0 0 7px!important}
+#faultLab #fdRobinControls label{font-size:12px;margin:6px 0!important}
+#faultLab #fdRobinControls #fdMeterExplanation{margin-top:7px!important}
+#faultLab #robinBody{width:100%;min-width:0!important;max-width:none!important;box-sizing:border-box;flex:none!important;border-radius:16px!important;align-self:start;display:flex;flex-direction:column;justify-content:space-between}
+#faultLab #robinBody #fdMeterDisplay{font-size:clamp(36px,3.2vw,52px)!important}
+#faultLab #fdMeterPanel{overflow:visible}
+@media(max-width:900px){#faultLab #fdRobinLayout{grid-template-columns:1fr}#faultLab #fdRobinControls{margin-top:4px}}
+@media(min-width:1201px){#faultLab #fdTestingWorkspace{grid-template-columns:minmax(0,1fr) minmax(440px,1.1fr)}}
+</style>
+
+<style id="fdDenseWorkspaceStyles">
+/* Compact two-column workstation: no unused space under the contactor. */
+#faultLab .fdVisuals{grid-template-columns:minmax(310px,0.82fr) minmax(0,1.85fr)!important;align-items:start;gap:10px}
+#faultLab .fdFrame{padding:10px!important}
+#faultLab #fdDevice{max-height:205px!important;display:block;margin:auto}
+#faultLab #fdMechanism{font-size:12px;line-height:1.3}
+#faultLab #fdCompactDiagnosis{margin-top:10px;border-top:1px solid #365d7b;padding-top:8px;min-width:0}
+#faultLab #fdCompactDiagnosis h3{font-size:15px;margin:5px 0!important}
+#faultLab #fdCompactDiagnosis>p{font-size:12px!important;line-height:1.3;margin:3px 0 8px!important}
+#faultLab #fdCompactDiagnosis #fdAnswer{width:100%;min-width:0;padding:8px!important}
+#faultLab #fdCompactDiagnosis #fdRepairPanel{padding:9px!important;margin-top:9px!important}
+#faultLab #fdCompactDiagnosis #fdRepairPanel p{font-size:11px;line-height:1.35;margin:3px 0 7px!important}
+#faultLab #fdCompactDiagnosis #fdRepairPanel .fdBtn{padding:7px 9px!important;font-size:11px}
+#faultLab #fdCompactDiagnosis #fdRepairChoice{padding:8px!important}
+#faultLab #fdCompactDiagnosis #fdFeedback{margin-top:7px!important;font-size:12px;line-height:1.35!important}
+#faultLab #fdTestingWorkspace{grid-template-columns:minmax(0,1fr) minmax(265px,1fr)!important;gap:8px!important}
+#faultLab #fdDirectProbe{padding:8px!important}
+#faultLab #fdDirectProbe>div[style*="padding:10px"]{padding:7px!important;margin:5px 0!important}
+#faultLab #fdMeterPanel{padding:8px!important}
+#faultLab #fdRobinLayout{grid-template-columns:minmax(0,1fr)!important}
+#faultLab #robinBody{max-width:350px!important;margin:auto}
+#faultLab #fdRobinInfo{gap:4px!important}
+#faultLab #fdRobinInfo>p:first-child{display:none}
+#faultLab #fdRobinInfo p:last-of-type{font-size:10px!important}
+#faultLab #fdMeterLog{max-height:42px!important}
+#faultLab #fdRobinControls{margin-top:0!important}
+#faultLab #fdSymptom{padding:8px!important;margin:8px 0!important}
+#faultLab #fdPowerTestingDrawer{margin:6px 0!important}
+@media(max-width:1200px){
+ #faultLab .fdVisuals{grid-template-columns:minmax(280px,.85fr) minmax(0,1.45fr)!important}
+ #faultLab #fdTestingWorkspace{grid-template-columns:1fr!important}
+ #faultLab #fdRobinLayout{grid-template-columns:minmax(200px,1fr) minmax(170px,1fr)!important}
+ #faultLab #fdRobinInfo>p:first-child{display:block}
+}
+@media(max-width:780px){
+ #faultLab .fdVisuals{grid-template-columns:1fr!important}
+ #faultLab #fdTestingWorkspace{grid-template-columns:1fr!important}
+ #faultLab #fdRobinLayout{grid-template-columns:1fr!important}
+ #faultLab #fdDevice{max-height:180px!important}
+}
+</style>
+<script id="fdCompactLayoutScript">
+(function(){
+ function assemble(){
+  const ladder=document.getElementById('fdLadder');
+  const meter=document.getElementById('fdMeterPanel');
+  const probe=document.getElementById('fdDirectProbe');
+  const state=document.getElementById('fdCircuitState');
+  if(!ladder||!meter||!probe||!state||document.getElementById('fdTestingWorkspace'))return;
+  const frame=ladder.closest('.fdFrame');if(!frame)return;
+  const workspace=document.createElement('div');workspace.id='fdTestingWorkspace';
+  const diagram=document.createElement('div');diagram.id='fdDiagramAndProbes';
+  frame.appendChild(workspace);workspace.appendChild(diagram);
+  diagram.appendChild(ladder);diagram.appendChild(state);diagram.appendChild(probe);
+  workspace.appendChild(meter);
+  const h=meter.querySelector('h3');if(h)h.textContent='Robin tester — direct circuit measurements';
+  // Use the unused space beneath the contactor for diagnosis and repair.
+  // Move (rather than duplicate) original controls to retain all event handlers.
+  const contactor=document.getElementById('fdDevice').closest('.fdFrame');
+  const diagnosis=document.getElementById('fdDiagnosisAnchor');
+  const repair=document.getElementById('fdRepairPanel');
+  if(contactor&&diagnosis&&repair&&!document.getElementById('fdCompactDiagnosis')){
+    const section=document.createElement('div');section.id='fdCompactDiagnosis';
+    contactor.appendChild(section);
+    let node=diagnosis;
+    while(node){
+      const next=node.nextSibling;
+      section.appendChild(node);
+      if(node===repair)break;
+      node=next;
+    }
+  }
+
+  // Place the Robin instrument on the left and explanations and controls on the right.
+  // Keep original interactive elements and IDs, so all existing event listeners work.
+  const meterRow=meter.querySelector('div[style*="flex-wrap:wrap"]');
+  const robin=document.getElementById('robinBody');
+  if(meterRow&&robin){
+    const info=document.createElement('div');info.id='fdRobinInfo';
+    const controls=document.createElement('div');controls.id='fdRobinControls';
+    const layout=document.createElement('div');layout.id='fdRobinLayout';
+    const description=meter.querySelector(':scope > p');
+    if(description)info.appendChild(description);
+    const safety=meter.querySelector(':scope > p:last-of-type');
+    if(safety&&safety!==description)info.appendChild(safety);
+    const existingControls=Array.from(meterRow.children).find(el=>el!==robin);
+    if(existingControls)controls.appendChild(existingControls);
+    info.appendChild(controls);
+    layout.appendChild(robin);
+    layout.appendChild(info);
+    meterRow.replaceWith(layout);
+  }
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',assemble);else assemble();
+})();
+</script>
+
+<section id="fdPrintableReport" style="display:none;background:white;color:#172a3b;padding:24px;font-family:Arial,sans-serif;max-width:950px;margin:18px auto;border-radius:8px">
+<h1 style="margin:0 0 4px">DOL Starter — Fault Diagnosis Assessment</h1><p style="margin:0 0 12px"><strong style="color:#a46d3e">tutor</strong><strong style="color:#197db9">warren</strong><strong style="color:#168c4c">.com</strong> · Educational simulation</p><div id="fdReportBody"></div><p style="font-size:10px">Simulation only; this report does not certify competence in practical electrical testing.</p></section>
+<style>@media print{body *{visibility:hidden!important}#fdPrintableReport,#fdPrintableReport *{visibility:visible!important}#fdPrintableReport{display:block!important;position:absolute!important;top:0!important;left:0!important;width:100%!important;max-width:none!important;box-sizing:border-box!important;padding:0!important;margin:0!important;background:white!important;color:black!important}#fdPrintableReport table{border-collapse:collapse;width:100%;font-size:10px}#fdPrintableReport th,#fdPrintableReport td{border:1px solid #888;padding:5px;text-align:left;vertical-align:top}#fdPrintableReport tr{break-inside:avoid}#fdPrintableReport .fdEvidencePage{break-before:page}@page{size:A4;margin:13mm}}</style>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+function safe(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function prepare(){
+ const cases=window.fdAssessmentResults||[],complete=cases.length===10;
+ const score=cases.reduce((n,r)=>n+r.points,0);
+ const grade=!complete?'Pending':score>=80?'Distinction':score>=65?'Merit':score>=50?'Pass':'Fail';
+ const details=$('fdReportFormat').value==='detail';
+ const info='<p><b>Student:</b> '+safe($('fdStudentName').value.trim()||'Not entered')+' &nbsp; <b>Group:</b> '+safe($('fdStudentGroup').value.trim()||'Not entered')+' &nbsp; <b>Date:</b> '+new Date().toLocaleDateString('en-GB')+'</p>';
+ const headline='<p style="border:1px solid #888;padding:8px"><b>Progress:</b> '+cases.length+'/10 cases &nbsp; <b>Score:</b> '+(complete?score+'/100 ('+score+'%)':'Provisional '+score+' points')+' &nbsp; <b>Grade:</b> '+grade+'</p>';
+ const rows=cases.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+safe(r.name)+'</td><td>'+safe(r.chosen)+'</td><td>'+r.diagnosis+'/6</td><td>'+r.evidencePoints+'/4</td><td><b>'+r.points+'/10</b></td></tr>').join('');
+ const summary='<table><thead><tr><th>#</th><th>Actual fault</th><th>Learner diagnosis</th><th>Diagnosis</th><th>Testing</th><th>Marks</th></tr></thead><tbody>'+rows+'</tbody></table>';
+ const d=cases.reduce((n,r)=>n+r.diagnosis,0),t=cases.reduce((n,r)=>n+r.evidencePoints,0);
+ const advice=!complete?'Complete all ten cases to obtain a final grade.':t<28?'Improve the selection and recording of fault-relevant measurements.':d<42?'Use test results to confirm the diagnosis before answering.':'Continue practising structured testing and verification.';
+ let evidence='';
+ if(details)evidence=cases.map((r,i)=>'<section class="fdEvidencePage"><h2>Case '+(i+1)+' — '+safe(r.name)+'</h2><p><b>Diagnosis:</b> '+safe(r.chosen)+' &nbsp; <b>Attempts:</b> '+r.attempts+' &nbsp; <b>Marks:</b> '+r.points+'/10</p><table><thead><tr><th>#</th><th>Function / range</th><th>Black</th><th>Red</th><th>Reading</th><th>Supply</th></tr></thead><tbody>'+((r.measurements||[]).length?r.measurements.map((m,j)=>'<tr><td>'+(j+1)+'</td><td>'+safe(m.setting)+'</td><td>'+safe(m.black)+'</td><td>'+safe(m.red)+'</td><td>'+safe(m.reading)+'</td><td>'+safe(m.state)+'</td></tr>').join(''):'<tr><td colspan="6">No measurements recorded</td></tr>')+'</tbody></table></section>').join('');
+ $('fdReportBody').innerHTML=info+headline+summary+'<p><b>Breakdown:</b> Diagnosis '+d+'/60; testing '+t+'/40.</p><p><b>Development feedback:</b> '+safe(advice)+'</p><p><b>Tutor comments:</b> ________________________________________________________</p>'+evidence;
+ $('fdPrintableReport').style.display='block';
+}
+$('fdPreviewReport').addEventListener('click',()=>{prepare();$('fdPrintableReport').scrollIntoView({behavior:'smooth',block:'start'});});
+$('fdPrintReport').addEventListener('click',()=>{prepare();window.print();});
+})();
+</script>
+<script>
+(function(){
+const $=id=>document.getElementById(id),ns='http://www.w3.org/2000/svg',g=$('fdPowerStatic'),nodes=$('fdPowerTestNodes'),leads=$('fdPowerTestLeads'),points=[];
+function add(tag,attrs,parent=g){const e=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,v);parent.appendChild(e);return e}
+function line(x,y,xx,yy,color='#a9bdcb'){add('line',{x1:x,y1:y,x2:xx,y2:yy,stroke:color,'stroke-width':2})}
+function text(x,y,str,size=11,color='#dceeff'){const e=add('text',{x,y,'text-anchor':'middle','font-size':size,fill:color});e.textContent=str}
+function point(id,x,y){points.push({id,x,y})}
+for(let n=1;n<=3;n++){
+ const x=75+(n-1)*135;
+ text(x,18,'L'+n,14);line(x,24,x,43);point('PF'+n+'I',x,43);
+ line(x,48,x,60);add('rect',{x:x-15,y:60,width:30,height:28,fill:'#25374a',stroke:'#eebd6e','stroke-width':2});
+ line(x-8,82,x+8,66,'#eebd6e');text(x+26,78,'F'+n,10,'#eebd6e');
+ line(x,88,x,111);point('PF'+n+'O',x,111);
+ line(x,116,x,137);point('KM'+n+'I',x,137);
+ line(x,142,x,153);line(x-13,153,x+13,153,'#90d9c0');line(x-13,170,x+13,170,'#eebd6e');text(x+28,165,'KM',10);
+ line(x,173,x,191);point('KM'+n+'O',x,191);
+ line(x,196,x,215);point('OL'+n+'I',x,215);
+ line(x,220,x,231);add('rect',{x:x-15,y:231,width:30,height:34,fill:'#25374a',stroke:'#dca17f','stroke-width':2});
+ text(x,253,'OL',12,'#efbd9c');line(x,265,x,286);point('OL'+n+'O',x,286);
+ line(x,291,x,315);point('M'+n,x,315);
+ text(x,337,['U','V','W'][n-1],12);
+}
+// Descriptive labels belong below the diagram, not on top of its test terminals.
+const powerCaption=document.createElement('div');
+powerCaption.id='fdPowerCaption';powerCaption.style.cssText='margin:8px 0 2px;line-height:1.55;font-size:12px;color:#d8eafa';
+powerCaption.innerHTML='<strong>MOTOR</strong> — three separate phase connections<br><strong>OL</strong> — Thermal Overload Relay';
+g.ownerSVGElement.insertAdjacentElement('afterend',powerCaption);
+// Phase fault indicators are placed alongside, not over, the clickable terminals.
+const phaseIndicators=[];
+for(let i=0;i<3;i++){
+ const x=75+i*135;
+ const marker=add('g',{'pointer-events':'none'});
+ const band=add('rect',{x:x-18,y:64,width:36,height:24,rx:3,fill:'transparent',stroke:'transparent','stroke-width':3},marker);
+ const fuseCross=add('path',{d:`M${x-10} 68 L${x+10} 84 M${x+10} 68 L${x-10} 84`,stroke:'transparent','stroke-width':3},marker);
+ const contactCross=add('path',{d:`M${x-11} 154 L${x+11} 169 M${x+11} 154 L${x-11} 169`,stroke:'transparent','stroke-width':3},marker);
+ const motorMark=add('circle',{cx:x,cy:313,r:13,fill:'none',stroke:'transparent','stroke-width':3},marker);
+ phaseIndicators.push({band,fuseCross,contactCross,motorMark});
+}
+const phaseSummary=document.createElement('div');phaseSummary.id='fdPhaseSummary';
+phaseSummary.style.cssText='border:1px solid #426d88;border-radius:7px;background:#0b263c;color:#d9edfa;padding:8px;margin:7px 0;font-size:12px;line-height:1.5';
+powerCaption.insertAdjacentElement('afterend',phaseSummary);
+window.fdUpdatePowerVisual=function(faultName,kmOn){
+ const badPhase=faultName==='powerfuse'?0:faultName==='pole'?1:faultName==='motor'?2:-1;
+ const type=faultName==='powerfuse'?'fuse':faultName==='pole'?'contact':faultName==='motor'?'winding':'';
+ const lines=[];
+ for(let i=0;i<3;i++){
+  const isFault=i===badPhase;
+  const v=phaseIndicators[i];
+  v.band.setAttribute('stroke',isFault&&type==='fuse'?'#ff6464':'transparent');
+  v.fuseCross.setAttribute('stroke',isFault&&type==='fuse'?'#ff6464':'transparent');
+  v.contactCross.setAttribute('stroke',isFault&&type==='contact'?'#ff6464':'transparent');
+  v.motorMark.setAttribute('stroke',isFault&&type==='winding'?'#ff6464':'transparent');
+  lines.push('<b style="color:'+(isFault?'#ff8e8e':kmOn?'#65e7b2':'#bdd3e4')+'">L'+(i+1)+'</b>: '+(isFault?(type==='fuse'?'UPSTREAM FUSE OPEN (KM POLE CLOSED)':type==='contact'?'KM POLE OPEN DESPITE ARMATURE':'MOTOR WINDING OPEN (KM POLE CLOSED)'):(kmOn?'PATH AVAILABLE':'CONTACTOR OPEN')));
+ }
+ phaseSummary.innerHTML='<strong>Three-phase fault indication:</strong> '+lines.join(' &nbsp; | &nbsp; ')+(kmOn&&badPhase>=0?'<br><span style="color:#ffd08c">KM coil energised; motor cannot operate normally with the indicated fault.</span>':'');
+};
+window.fdUpdatePowerVisual('healthy',false);
+const all=$('fdBlack'),red=$('fdRed');
+const guideCircles=new Map();let guidePair=[];
+function highlight(){
+ const n=$('fdPowerGuidePhase').value,part=$('fdPowerGuidePart').value;
+ guidePair=[part+n+'I',part+n+'O'];
+ for(const [id,circle] of guideCircles){
+   const selected=guidePair.includes(id);
+   circle.setAttribute('stroke',selected?'#ffdc4d':'#ffe1a1');
+   circle.setAttribute('stroke-width',selected?'5':'2');
+   circle.setAttribute('r',selected?'10':'7');
+ }
+ $('fdPowerGuideResult').textContent='Highlighted '+guidePair.join(' and ')+'. Place BLACK on one point and RED on the other, then read the Robin tester. A low resistance indicates a conducting path; ↑ 1 indicates an open/over-range path in this model.';
+}
+$('fdPowerGuideShow').addEventListener('click',highlight);
+
+for(const p of points){
+ for(const sel of [all,red]){if(!Array.from(sel.options).some(o=>o.value===p.id)){const o=document.createElement('option');o.value=p.id;o.textContent=p.id;sel.appendChild(o)}}
+ const grp=add('g',{role:'button',tabindex:'0',style:'cursor:pointer','aria-label':p.id},nodes);
+ const circle=add('circle',{cx:p.x,cy:p.y,r:7,fill:'#11516e',stroke:'#ffe1a1','stroke-width':2},grp);guideCircles.set(p.id,circle);
+ const title=add('title',{},grp);title.textContent=p.id;
+ const choose=()=>{
+  const black=$('fdProbeBlack').getAttribute('aria-pressed')==='true',target=black?all:red;
+  target.value=p.id;target.dispatchEvent(new Event('change',{bubbles:true}));
+  $('fdPowerProbeStatus').textContent=(black?'BLACK':'RED')+' probe placed on '+p.id;
+  (black?$('fdProbeRed'):$('fdProbeBlack')).click();draw();
+  $('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='PRESS TAKE MEASUREMENT';
+ };
+ grp.addEventListener('click',choose);
+ grp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose()}});
+}
+function draw(){leads.replaceChildren();for(const [sel,color] of [[all,'#dbe3ec'],[red,'#ff7474']]){const p=points.find(q=>q.id===sel.value);if(p)add('circle',{cx:p.x,cy:p.y,r:11,fill:'none',stroke:color,'stroke-width':3},leads)}}
+all.addEventListener('change',draw);red.addEventListener('change',draw);$('fdProbeClear').addEventListener('click',draw);draw();
+})();
+</script>
+<style>
+/* V3.56 — balanced teaching workspace, three functional columns */
+@media(min-width:1180px){
+ main{display:grid!important;grid-template-columns:minmax(280px,1fr) minmax(430px,1.38fr) minmax(270px,.96fr)!important;grid-template-rows:auto!important;gap:12px!important;align-items:start!important}
+ main>.model-column{grid-column:1!important;grid-row:1!important;display:flex;flex-direction:column;gap:10px;min-width:0}
+ main>.model-column>.stage{height:345px!important;min-height:345px!important;position:relative}
+ main>.circuit-section{grid-column:2!important;grid-row:1!important;min-width:0}
+ main>.side{grid-column:3!important;grid-row:1!important;gap:10px!important}
+ .model-column>.card{padding:11px!important}
+ .model-column>.card h2{margin-bottom:7px!important}
+ .model-column .info{font-size:12px;line-height:1.4}
+ .side .card{padding:11px!important}
+ .circuit-panel{padding:11px!important}
+ .circuit-panel>p,.power-panel>p{line-height:1.4!important}
+ .stage .legend{bottom:8px}
+}
+@media(min-width:921px) and (max-width:1179px){
+ main>.model-column{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:9px;min-width:0}
+ main>.model-column>.stage{height:340px!important;min-height:340px!important}
+ main>.circuit-section{grid-column:1;grid-row:2}
+ main>.side{grid-column:2;grid-row:1/span 2}
+}
+@media(max-width:920px){main>.model-column{display:flex;flex-direction:column;gap:9px;min-width:0}main>.model-column>.stage{height:340px!important;min-height:340px!important}}
+</style>
+<script>
+/* Reposition information and component cards without cloning or replacing their live controls. */
+(function(){
+ const main=document.querySelector('main'),stage=document.getElementById('stage'),side=main&&main.querySelector('.side');
+ if(!main||!stage||!side)return;
+ const column=document.createElement('div');column.className='model-column';
+ main.insertBefore(column,stage);column.appendChild(stage);
+ for(const id of ['modelViewInfo']){const el=document.getElementById(id);if(el)column.appendChild(el)}
+ const cards=Array.from(side.querySelectorAll(':scope > .card'));
+ for(const card of cards){const h=card.querySelector('h2');if(h&&['Inspect components — changes the 3D view','Construction check'].includes(h.textContent.trim()))column.appendChild(card)}
+})();
+</script>
+<script>
+/* Version 3.59 — measurement evidence ledger. Records displayed meter results, not inferred fault answers. */
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+let entries=[];let sequence=0;
+function escapeHTML(s){return String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function update(){
+ $('fdEvidenceCount').textContent='('+entries.length+' measurement'+(entries.length===1?'':'s')+')';
+ $('fdEvidenceBody').innerHTML=entries.length?entries.map((r,i)=>'<tr style="border-top:1px solid #33556e"><td style="padding:5px">'+(i+1)+'</td><td>'+escapeHTML(r.setting)+'</td><td>'+escapeHTML(r.black)+'</td><td>'+escapeHTML(r.red)+'</td><td>'+escapeHTML(r.reading)+'</td><td>'+escapeHTML(r.state)+'</td></tr>').join(''):'<tr><td colspan="6" style="padding:7px">No measurements taken yet.</td></tr>';
+}
+function reset(){entries=[];sequence++;update();$('fdEvidenceNotice').textContent='New case — evidence record reset.';}
+function getCurrentLines(){return entries.map((r,i)=>(i+1)+'. '+r.setting+' | BLACK '+r.black+' → RED '+r.red+' | '+r.reading+' | '+r.state);}
+window.fdDiagnosticEvidence={getCurrentLines,getCurrent:()=>entries.map(r=>({...r}))};
+$('fdMeasure').addEventListener('click',()=>{
+ const black=$('fdBlack').value,red=$('fdRed').value;
+ if(!black||!red)return;
+ const reading=($('fdMeterDisplay').textContent+' '+$('fdMeterUnit').textContent).trim();
+ if(/POSITION BOTH PROBES|SELECT FUNCTION|READY|STATE CHANGED|SIMULATED SUPPLY ON|TEST BLOCKED|PRESS TAKE MEASUREMENT/.test(reading))return;
+ const setting=$('fdMeterMode').selectedOptions[0]?.textContent+' / '+$('fdMeterRange').selectedOptions[0]?.textContent;
+ const state=$('fdIsolated').checked?'Isolated':'Supply ON (demonstration)';
+ const previous=entries.at(-1);
+ // Avoid duplicate consecutive auto-readings from repeated control events.
+ if(previous&&previous.black===black&&previous.red===red&&previous.setting===setting&&previous.reading===reading&&previous.state===state)return;
+ entries.push({setting,black,red,reading,state});update();
+ $('fdEvidenceNotice').textContent='Measurement '+entries.length+' recorded.';
+});
+for(const id of ['fdNew','fdChallenge','fdNext'])$(id).addEventListener('click',reset);
+$('fdEvidenceClear').addEventListener('click',()=>{entries=[];update();$('fdEvidenceNotice').textContent='Current evidence cleared.';});
+$('fdEvidenceCopy').addEventListener('click',()=>{
+ const text=['DOL STARTER — DIAGNOSTIC EVIDENCE',...getCurrentLines()].join('\n');
+ if(navigator.clipboard?.writeText){navigator.clipboard.writeText(text).then(()=>$('fdEvidenceNotice').textContent='Evidence copied.').catch(()=>$('fdEvidenceNotice').textContent='Clipboard permission unavailable.');}
+ else $('fdEvidenceNotice').textContent='Clipboard unavailable in this browser context.';
+});
+update();
+})();
+</script>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+for(const id of ['fdBlack','fdRed'])$(id).addEventListener('change',()=>{
+ $('fdMeterDisplay').textContent='—';$('fdMeterUnit').textContent='PRESS TAKE MEASUREMENT';
+ $('fdActiveProbePair').textContent='BLACK: '+$('fdBlack').value+' | RED: '+$('fdRed').value+' — new measurement required';
+});
+})();
+</script></body></html>
